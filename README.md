@@ -246,7 +246,7 @@ For support and questions:
 - Admin panel feature enhancements
 - Performance optimizations
 
-### v1.1 - Final Major Release
+### v1.1 - Major Feature Release
 - **Mobile compatibility** (responsive design optimization)
 - **Foundry VTT integration** (maybe - if feasible)
 - **AI-powered game assistance** features
@@ -254,3 +254,6 @@ For support and questions:
 - Multi-system RPG support (D&D, Pathfinder, etc.)
 - Community sharing and campaign marketplace
 - Extended VTT platform integrations
+
+### v1.2 - Future Development
+- TBD (To Be Determined based on community feedback and project evolution)
