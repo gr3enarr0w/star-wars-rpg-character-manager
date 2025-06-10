@@ -27,7 +27,11 @@ def main():
             print("⚠️  Admin user already exists")
         else:
             # Create admin user
-            admin_password = "AdminPassword123!@#$"  # Change this in production
+            admin_password = os.getenv('ADMIN_PASSWORD')
+            if not admin_password:
+                print("ERROR: ADMIN_PASSWORD environment variable must be set!")
+                print("Set it with: export ADMIN_PASSWORD='your-secure-password'")
+                sys.exit(1)
             admin = User(
                 email=admin_email,
                 username="admin",

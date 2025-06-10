@@ -180,3 +180,11 @@ uploads/
 temp/
 *.sqlite
 *.db
+
+# Security - Never commit these
+*.key
+.encryption_key
+credentials.json
+service-account.json
+*.pem
+*.p12
