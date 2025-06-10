@@ -1062,7 +1062,7 @@ Campaign selection and character filtering may be basic or non-functional.
 
 **Priority:** Medium
 **Estimated Effort:** Medium
-**Target Version:** 1.2.0
+**Target Version:** 1.1.0
 
 ---
 
@@ -1106,7 +1106,7 @@ Settings are scattered across different pages and modals without clear organizat
 
 **Priority:** Medium
 **Estimated Effort:** Medium
-**Target Version:** 1.2.0
+**Target Version:** 1.1.0
 
 ---
 
@@ -1151,7 +1151,7 @@ Basic admin panel exists but could be enhanced with additional features and bett
 
 **Priority:** Low
 **Estimated Effort:** Large
-**Target Version:** 1.3.0
+**Target Version:** 1.1.0
 
 ---
 
@@ -1241,52 +1241,98 @@ Application requires manual refresh to see updates from other users.
 
 **Priority:** Medium
 **Estimated Effort:** Large
-**Target Version:** 1.2.0
+**Target Version:** 1.1.0
 
 ---
 
-### 10. Mobile Application Development 🚀
+### 10. Foundry VTT Integration 🚀
 
-**Title:** `[ENHANCEMENT] Develop React Native mobile application for iOS and Android`
+**Title:** `[ENHANCEMENT] Integrate with Foundry Virtual Tabletop for seamless character import/export`
 
-**Labels:** `enhancement`, `mobile`, `react-native`, `platform-expansion`
+**Labels:** `enhancement`, `integration`, `foundry-vtt`, `character-sync`
 
 **Description:**
-Develop native mobile applications for iOS and Android to provide better mobile experience and offline capabilities.
+Integrate with Foundry VTT to allow seamless character import/export and real-time synchronization during gameplay sessions.
 
 **Current State:**
-Application is web-based with responsive design but lacks native mobile features.
+Characters exist only within the character manager with no VTT integration.
 
 **Proposed Enhancement:**
-- React Native application for iOS and Android
-- Offline character sheet access
-- Push notifications for campaign updates
-- Native mobile UI/UX patterns
-- Touch-optimized character creation
-- Camera integration for character photos
+- Foundry VTT character export functionality
+- Import characters from Foundry VTT
+- Real-time character updates during Foundry sessions
+- Support for Foundry's Star Wars RPG system modules
+- Dice roll integration and result logging
+- Campaign synchronization between platforms
 
 **User Value:**
-- Better mobile experience with native performance
-- Offline access to character information
-- Push notifications for important updates
-- Mobile-specific features and interactions
+- Seamless workflow between character management and gameplay
+- Real-time character updates during sessions
+- Reduced manual data entry and synchronization
+- Enhanced gaming experience with integrated tools
 
 **Implementation Considerations:**
-- React Native development setup
-- API compatibility and optimization
-- Offline data synchronization
-- App store deployment processes
+- Foundry VTT API integration
+- Character data format mapping
+- Real-time WebSocket connections
+- Security and authentication for VTT access
+- Module compatibility considerations
 
 **Acceptance Criteria:**
-- [ ] iOS app functional and published
-- [ ] Android app functional and published
-- [ ] Offline capabilities working
-- [ ] Push notifications operational
-- [ ] Core functionality equivalent to web app
+- [ ] Character export to Foundry VTT working
+- [ ] Character import from Foundry VTT functional
+- [ ] Real-time sync during gameplay sessions
+- [ ] Compatible with popular Star Wars RPG modules
+- [ ] Secure authentication and data protection
 
-**Priority:** Low
-**Estimated Effort:** Very Large
-**Target Version:** 2.0.0
+**Priority:** Medium
+**Estimated Effort:** Large
+**Target Version:** 1.1.0
+
+---
+
+### 11. Mobile Responsive Design Enhancement 🚀
+
+**Title:** `[ENHANCEMENT] Optimize responsive design for mobile devices and touch interfaces`
+
+**Labels:** `enhancement`, `mobile`, `responsive`, `ui-ux`
+
+**Description:**
+Enhance the responsive design to provide optimal mobile experience with touch-optimized interfaces and mobile-first design patterns.
+
+**Current State:**
+Application has basic responsive design but needs optimization for mobile devices and touch interactions.
+
+**Proposed Enhancement:**
+- Mobile-first responsive design optimization
+- Touch-optimized character creation and editing
+- Improved navigation for mobile devices
+- Better form layouts for small screens
+- Optimized typography and spacing for mobile
+- Touch gesture support where appropriate
+
+**User Value:**
+- Excellent mobile experience without native app
+- Easy character management on phones and tablets
+- Better accessibility for users who primarily use mobile devices
+- Consistent experience across all device types
+
+**Implementation Considerations:**
+- Mobile-first CSS media queries
+- Touch target sizing optimization
+- Performance optimization for mobile devices
+- Cross-browser mobile compatibility testing
+
+**Acceptance Criteria:**
+- [ ] Character creation works smoothly on mobile
+- [ ] All major features accessible on mobile devices
+- [ ] Touch interactions optimized and responsive
+- [ ] Mobile performance meets usability standards
+- [ ] Cross-browser mobile compatibility verified
+
+**Priority:** High
+**Estimated Effort:** Medium
+**Target Version:** 1.1.0
 
 ---
 
@@ -1319,17 +1365,18 @@ This document provides comprehensive issue descriptions for:
 10. Profile Settings Should Be Full Page (Medium Priority)
 11. MFA Settings Don't Reflect Current User Profile (Medium Priority)
 
-### 🚀 **10 Enhancement Requests** for future improvements:
-1. Consistent Dark Theme Implementation (High Priority)
-2. Responsive Modal Design System (Medium Priority)
-3. Enhanced Loading States and Empty States (Medium Priority)
-4. Character Management Workflow Polish (High Priority)
-5. Campaign Filtering and Selection Enhancement (Medium Priority)
-6. Settings Page Architecture Restructure (Medium Priority)
-7. Admin Panel Feature Enhancement (Low Priority)
-8. Font Contrast and Accessibility Optimization (High Priority)
-9. Real-time Notifications and Updates (Medium Priority)
-10. Mobile Application Development (Low Priority)
+### 🚀 **11 Enhancement Requests** for future improvements:
+1. Consistent Dark Theme Implementation (High Priority - v1.0)
+2. Responsive Modal Design System (Medium Priority - v1.0)
+3. Enhanced Loading States and Empty States (Medium Priority - v1.0)
+4. Character Management Workflow Polish (High Priority - v1.0)
+5. Campaign Filtering and Selection Enhancement (Medium Priority - v1.0)
+6. Settings Page Architecture Restructure (Medium Priority - v1.0)
+7. Admin Panel Feature Enhancement (Low Priority - v1.01-1.09)
+8. Font Contrast and Accessibility Optimization (High Priority - v1.0)
+9. Real-time Notifications and Updates (Medium Priority - v1.01-1.09)
+10. Foundry VTT Integration (Medium Priority - v1.1)
+11. Mobile Responsive Design Enhancement (High Priority - v1.1)
 
 Each issue description includes:
 - Clear title with appropriate labels

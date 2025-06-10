@@ -228,17 +228,29 @@ For support and questions:
 - **Last Updated**: January 2024
 - **Maintainers**: Development Team
 
-## Roadmap
+## Development Roadmap
 
-### Upcoming Features
+### v1.0 - Core Platform (Current)
+- Fix critical bugs (Create Character button, loading states, theme issues)
+- Character management workflow polish
+- Campaign filtering and selection enhancement
+- Enhanced loading states and empty states
+- Consistent dark theme implementation
+- Settings page architecture restructure
+- Font contrast and accessibility optimization
+
+### v1.01-1.09 - Incremental Improvements
+- Real-time notifications and updates
 - Enhanced character progression tracking
 - Advanced campaign management tools
-- Mobile application development
-- Integration with popular VTT platforms
-- Advanced reporting and analytics
+- Admin panel feature enhancements
+- Performance optimizations
 
-### Long-term Goals
+### v1.1 - Final Major Release
+- **Mobile compatibility** (responsive design optimization)
+- **Foundry VTT integration** (maybe - if feasible)
+- **AI-powered game assistance** features
+- Advanced reporting and analytics
 - Multi-system RPG support (D&D, Pathfinder, etc.)
-- Real-time collaboration features
-- Advanced AI-powered game assistance
 - Community sharing and campaign marketplace
+- Extended VTT platform integrations
