@@ -1,14 +1,8 @@
 blank_issues_enabled: false
 contact_links:
-  - name: 🤝 Community Discussion
-    url: https://github.com/yourusername/star-wars-rpg-character-manager/discussions
-    about: Ask questions, share ideas, and discuss features with the community
-  - name: 🔒 Security Vulnerability
-    url: https://github.com/yourusername/star-wars-rpg-character-manager/security/advisories/new
-    about: Report security vulnerabilities privately (not for general bugs)
   - name: 📚 Documentation
-    url: https://github.com/yourusername/star-wars-rpg-character-manager/wiki
-    about: Check our comprehensive documentation and guides
-  - name: 🆘 Get Help
-    url: https://github.com/yourusername/star-wars-rpg-character-manager/discussions/categories/q-a
-    about: Get help with installation, setup, or usage questions
+    url: https://github.com/gr3enarr0w/star-wars-rpg-character-manager/blob/main/README.md
+    about: Check the README and project documentation for setup and usage guides
+  - name: 🔒 Security Issues
+    url: https://github.com/gr3enarr0w/star-wars-rpg-character-manager/issues/new?template=bug_report.yml&labels=security,critical
+    about: Report security vulnerabilities as bug reports with security label

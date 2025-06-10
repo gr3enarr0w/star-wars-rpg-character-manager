@@ -206,9 +206,10 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## Support
 
 For support and questions:
-- Create an issue for bugs or feature requests
-- Check existing documentation for common questions
-- Contact the development team for urgent issues
+- **Bug Reports**: [Create a bug report](https://github.com/gr3enarr0w/star-wars-rpg-character-manager/issues/new?template=bug_report.yml)
+- **Feature Requests**: [Request a feature](https://github.com/gr3enarr0w/star-wars-rpg-character-manager/issues/new?template=feature_request.yml)
+- **Documentation Issues**: [Report docs problems](https://github.com/gr3enarr0w/star-wars-rpg-character-manager/issues/new?template=documentation.yml)
+- **General Questions**: [Browse existing issues](https://github.com/gr3enarr0w/star-wars-rpg-character-manager/issues) or create a new one
 
 ## Acknowledgments
 
