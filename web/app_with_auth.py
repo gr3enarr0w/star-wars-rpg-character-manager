@@ -1363,5 +1363,11 @@ if __name__ == '__main__':
     # Create character data directory if it doesn't exist
     os.makedirs('character_data', exist_ok=True)
 
+    # Use port 8080 to avoid macOS AirPlay conflicts on port 5000
+    port = int(os.getenv('FLASK_PORT', 8080))
+    
+    print(f"🚀 Starting Star Wars RPG Character Manager on http://localhost:{port}")
+    print("🔧 Set FLASK_PORT environment variable to use a different port")
+    
     # Run the Flask app
-    app.run(debug=True, host='127.0.0.1', port=5000)  # Use standard Flask port
+    app.run(debug=True, host='0.0.0.0', port=port)
