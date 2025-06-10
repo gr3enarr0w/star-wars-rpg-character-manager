@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frontend Debug Console</title>
+    <style>
+        body { font-family: monospace; padding: 20px; }
+        .debug-section { margin: 20px 0; padding: 15px; border: 1px solid #ccc; }
+        .error { color: red; }
+        .success { color: green; }
+        .warning { color: orange; }
+        button { margin: 5px; padding: 8px 12px; }
+        .output { background: #f5f5f5; padding: 10px; margin: 10px 0; white-space: pre-wrap; }
+    </style>
+</head>
+<body>
+    <h1>Star Wars RPG Character Manager - Debug Console</h1>
+    
+    <div class="debug-section">
+        <h3>Application State</h3>
+        <button onclick="checkAppState()">Check App State</button>
+        <button onclick="checkCharacterManager()">Check CharacterManager</button>
+        <button onclick="checkAPIConnection()">Test API Connection</button>
+        <div id="app-state-output" class="output"></div>
+    </div>
+    
+    <div class="debug-section">
+        <h3>Character Operations</h3>
+        <button onclick="testCharacterCreation()">Test Character Creation</button>
+        <button onclick="testCharacterAdvancement()">Test Character Advancement</button>
+        <button onclick="testXPAward()">Test XP Award</button>
+        <div id="character-ops-output" class="output"></div>
+    </div>
+    
+    <div class="debug-section">
+        <h3>Error Monitoring</h3>
+        <button onclick="checkConsoleErrors()">Check Console Errors</button>
+        <button onclick="clearLogs()">Clear Logs</button>
+        <div id="error-output" class="output"></div>
+    </div>
+
+    <script>
+        // Capture console errors
+        const originalConsoleError = console.error;
+        const originalConsoleLog = console.log;
+        const capturedLogs = [];
+        
+        console.error = function(...args) {
+            capturedLogs.push({type: 'error', message: args.join(' '), timestamp: new Date()});
+            originalConsoleError.apply(console, args);
+        };
+        
+        console.log = function(...args) {
+            capturedLogs.push({type: 'log', message: args.join(' '), timestamp: new Date()});
+            originalConsoleLog.apply(console, args);
+        };
+        
+        function log(message, type = 'log', outputId = 'app-state-output') {
+            const output = document.getElementById(outputId);
+            const timestamp = new Date().toLocaleTimeString();
+            const className = type === 'error' ? 'error' : type === 'success' ? 'success' : type === 'warning' ? 'warning' : '';
+            output.innerHTML += `<span class="${className}">[${timestamp}] ${message}</span>\n`;
+        }
+        
+        async function checkAppState() {
+            const output = document.getElementById('app-state-output');
+            output.innerHTML = '';
+            
+            log('Checking application state...');
+            
+            // Check if main app is loaded
+            try {
+                const response = await fetch('http://localhost:8000/');
+                log(`Main page status: ${response.status}`, response.ok ? 'success' : 'error');
+            } catch (e) {
+                log(`Main page error: ${e.message}`, 'error');
+            }
+            
+            // Check if characterManager exists
+            if (typeof characterManager !== 'undefined') {
+                log('✅ CharacterManager exists', 'success');
+                log(`Characters loaded: ${characterManager.characters ? characterManager.characters.length : 'N/A'}`);
+                log(`Current character: ${characterManager.currentCharacter ? characterManager.currentCharacter.name : 'None'}`);
+            } else {
+                log('❌ CharacterManager not found', 'error');
+            }
+        }
+        
+        async function checkCharacterManager() {
+            const output = document.getElementById('app-state-output');
+            
+            if (typeof characterManager === 'undefined') {
+                log('❌ CharacterManager not loaded. Check if main.js is loading properly.', 'error');
+                return;
+            }
+            
+            // Test CharacterManager methods
+            const methods = [
+                'loadCharacters', 'showCreateCharacter', 'showCharacter', 
+                'advanceSkill', 'advanceCharacteristic', 'processAwardXP',
+                'showHelp', 'showImportCharacter'
+            ];
+            
+            methods.forEach(method => {
+                if (typeof characterManager[method] === 'function') {
+                    log(`✅ ${method} method exists`, 'success');
+                } else {
+                    log(`❌ ${method} method missing`, 'error');
+                }
+            });
+        }
+        
+        async function checkAPIConnection() {
+            const output = document.getElementById('app-state-output');
+            
+            const endpoints = [
+                { url: '/api/characters', method: 'GET' },
+                { url: '/api/game-data', method: 'GET' }
+            ];
+            
+            for (const endpoint of endpoints) {
+                try {
+                    const response = await fetch(`http://localhost:8000${endpoint.url}`, {
+                        method: endpoint.method
+                    });
+                    const status = response.ok ? 'success' : 'error';
+                    log(`${endpoint.method} ${endpoint.url}: ${response.status}`, status);
+                    
+                    if (response.ok) {
+                        const data = await response.json();
+                        if (endpoint.url === '/api/characters') {
+                            log(`  Characters count: ${data.characters ? data.characters.length : 'N/A'}`);
+                        }
+                    }
+                } catch (e) {
+                    log(`${endpoint.method} ${endpoint.url}: ${e.message}`, 'error');
+                }
+            }
+        }
+        
+        async function testCharacterCreation() {
+            const output = document.getElementById('character-ops-output');
+            output.innerHTML = '';
+            
+            log('Testing character creation...', 'log', 'character-ops-output');
+            
+            const testCharacter = {
+                name: `Debug_Test_${Date.now()}`,
+                playerName: 'Debug Player',
+                species: 'Human',
+                career: 'Smuggler',
+                background: 'Debug test character'
+            };
+            
+            try {
+                const response = await fetch('http://localhost:8000/api/characters', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(testCharacter)
+                });
+                
+                if (response.ok) {
+                    const result = await response.json();
+                    log(`✅ Character created: ${result.character.name}`, 'success', 'character-ops-output');
+                    return result.character.id;
+                } else {
+                    const error = await response.json();
+                    log(`❌ Character creation failed: ${error.error}`, 'error', 'character-ops-output');
+                }
+            } catch (e) {
+                log(`❌ Character creation error: ${e.message}`, 'error', 'character-ops-output');
+            }
+            
+            return null;
+        }
+        
+        async function testXPAward() {
+            const output = document.getElementById('character-ops-output');
+            
+            // First create a test character
+            const characterId = await testCharacterCreation();
+            if (!characterId) return;
+            
+            log('Testing XP award...', 'log', 'character-ops-output');
+            
+            try {
+                const response = await fetch(`http://localhost:8000/api/characters/${encodeURIComponent(characterId)}/award-xp`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ amount: 25, reason: 'Debug test' })
+                });
+                
+                if (response.ok) {
+                    const result = await response.json();
+                    log(`✅ XP awarded: ${result.message}`, 'success', 'character-ops-output');
+                } else {
+                    const error = await response.json();
+                    log(`❌ XP award failed: ${error.error}`, 'error', 'character-ops-output');
+                }
+            } catch (e) {
+                log(`❌ XP award error: ${e.message}`, 'error', 'character-ops-output');
+            }
+        }
+        
+        async function testCharacterAdvancement() {
+            const output = document.getElementById('character-ops-output');
+            
+            // First create a test character and award XP
+            const characterId = await testCharacterCreation();
+            if (!characterId) return;
+            
+            // Award some XP first
+            await fetch(`http://localhost:8000/api/characters/${encodeURIComponent(characterId)}/award-xp`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ amount: 50, reason: 'Debug test prep' })
+            });
+            
+            log('Testing characteristic advancement...', 'log', 'character-ops-output');
+            
+            try {
+                const response = await fetch(`http://localhost:8000/api/characters/${encodeURIComponent(characterId)}/advance-characteristic`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ characteristic: 'Brawn' })
+                });
+                
+                if (response.ok) {
+                    const result = await response.json();
+                    log(`✅ Characteristic advanced: ${result.message}`, 'success', 'character-ops-output');
+                } else {
+                    const error = await response.json();
+                    log(`❌ Characteristic advancement failed: ${error.error}`, 'error', 'character-ops-output');
+                }
+            } catch (e) {
+                log(`❌ Characteristic advancement error: ${e.message}`, 'error', 'character-ops-output');
+            }
+        }
+        
+        function checkConsoleErrors() {
+            const output = document.getElementById('error-output');
+            output.innerHTML = '';
+            
+            log('Captured console logs:', 'log', 'error-output');
+            
+            if (capturedLogs.length === 0) {
+                log('No logs captured', 'success', 'error-output');
+                return;
+            }
+            
+            capturedLogs.forEach(logEntry => {
+                const type = logEntry.type === 'error' ? 'error' : 'log';
+                log(`[${logEntry.timestamp.toLocaleTimeString()}] ${logEntry.message}`, type, 'error-output');
+            });
+        }
+        
+        function clearLogs() {
+            capturedLogs.length = 0;
+            document.getElementById('error-output').innerHTML = '';
+            document.getElementById('app-state-output').innerHTML = '';
+            document.getElementById('character-ops-output').innerHTML = '';
+            log('Logs cleared', 'success', 'error-output');
+        }
+        
+        // Auto-check app state on load
+        window.addEventListener('load', () => {
+            setTimeout(checkAppState, 1000);
+        });
+    </script>
+</body>
+</html>

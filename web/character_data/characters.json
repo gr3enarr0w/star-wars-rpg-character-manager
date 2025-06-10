@@ -1,0 +1,1730 @@
+{
+  "AutoTest_1749414742": {
+    "name": "AutoTest_1749414742",
+    "player_name": "Automation Test",
+    "species": "Human",
+    "career": {
+      "name": "Smuggler",
+      "game_line": "Edge of the Empire",
+      "career_skills": [
+        "Coordination",
+        "Deception",
+        "Knowledge (Underworld)",
+        "Piloting (Space)",
+        "Skulduggery",
+        "Streetwise"
+      ],
+      "starting_wound_threshold": 11,
+      "starting_strain_threshold": 13
+    },
+    "specializations": [],
+    "characteristics": {
+      "brawn": 3,
+      "agility": 1,
+      "intellect": 3,
+      "cunning": 2,
+      "willpower": 2,
+      "presence": 2
+    },
+    "derived_attributes": {
+      "wound_threshold": 14,
+      "strain_threshold": 15
+    },
+    "experience": {
+      "total_xp": 160,
+      "available_xp": 130,
+      "spent_xp": 160
+    },
+    "skills": {
+      "Astrogation": {
+        "name": "Astrogation",
+        "characteristic": "Intellect",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Athletics": {
+        "name": "Athletics",
+        "characteristic": "Brawn",
+        "career_skill": false,
+        "ranks": 1
+      },
+      "Charm": {
+        "name": "Charm",
+        "characteristic": "Presence",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Coercion": {
+        "name": "Coercion",
+        "characteristic": "Willpower",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Computers": {
+        "name": "Computers",
+        "characteristic": "Intellect",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Cool": {
+        "name": "Cool",
+        "characteristic": "Presence",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Coordination": {
+        "name": "Coordination",
+        "characteristic": "Agility",
+        "career_skill": true,
+        "ranks": 0
+      },
+      "Deception": {
+        "name": "Deception",
+        "characteristic": "Cunning",
+        "career_skill": true,
+        "ranks": 0
+      },
+      "Discipline": {
+        "name": "Discipline",
+        "characteristic": "Willpower",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Leadership": {
+        "name": "Leadership",
+        "characteristic": "Presence",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Mechanics": {
+        "name": "Mechanics",
+        "characteristic": "Intellect",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Medicine": {
+        "name": "Medicine",
+        "characteristic": "Intellect",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Negotiation": {
+        "name": "Negotiation",
+        "characteristic": "Presence",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Perception": {
+        "name": "Perception",
+        "characteristic": "Cunning",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Piloting (Planetary)": {
+        "name": "Piloting (Planetary)",
+        "characteristic": "Agility",
+        "career_skill": false,
+        "ranks": 1
+      },
+      "Piloting (Space)": {
+        "name": "Piloting (Space)",
+        "characteristic": "Agility",
+        "career_skill": true,
+        "ranks": 0
+      },
+      "Ranged (Light)": {
+        "name": "Ranged (Light)",
+        "characteristic": "Agility",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Ranged (Heavy)": {
+        "name": "Ranged (Heavy)",
+        "characteristic": "Agility",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Resilience": {
+        "name": "Resilience",
+        "characteristic": "Brawn",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Skulduggery": {
+        "name": "Skulduggery",
+        "characteristic": "Cunning",
+        "career_skill": true,
+        "ranks": 0
+      },
+      "Stealth": {
+        "name": "Stealth",
+        "characteristic": "Agility",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Streetwise": {
+        "name": "Streetwise",
+        "characteristic": "Cunning",
+        "career_skill": true,
+        "ranks": 0
+      },
+      "Survival": {
+        "name": "Survival",
+        "characteristic": "Cunning",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Vigilance": {
+        "name": "Vigilance",
+        "characteristic": "Willpower",
+        "career_skill": false,
+        "ranks": 0
+      }
+    },
+    "talents": [],
+    "equipment": {
+      "credits": 0,
+      "items": []
+    },
+    "background": {
+      "motivation": "",
+      "background": "Automated test character"
+    }
+  },
+  "DiagTest_1749415229": {
+    "name": "DiagTest_1749415229",
+    "player_name": "Diagnostic Test",
+    "species": "Human",
+    "career": {
+      "name": "Smuggler",
+      "game_line": "Edge of the Empire",
+      "career_skills": [
+        "Coordination",
+        "Deception",
+        "Knowledge (Underworld)",
+        "Piloting (Space)",
+        "Skulduggery",
+        "Streetwise"
+      ],
+      "starting_wound_threshold": 11,
+      "starting_strain_threshold": 13
+    },
+    "specializations": [],
+    "characteristics": {
+      "brawn": 3,
+      "agility": 2,
+      "intellect": 2,
+      "cunning": 2,
+      "willpower": 2,
+      "presence": 2
+    },
+    "derived_attributes": {
+      "wound_threshold": 14,
+      "strain_threshold": 15
+    },
+    "experience": {
+      "total_xp": 135,
+      "available_xp": 105,
+      "spent_xp": 30
+    },
+    "skills": {
+      "Astrogation": {
+        "name": "Astrogation",
+        "characteristic": "Intellect",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Athletics": {
+        "name": "Athletics",
+        "characteristic": "Brawn",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Charm": {
+        "name": "Charm",
+        "characteristic": "Presence",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Coercion": {
+        "name": "Coercion",
+        "characteristic": "Willpower",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Computers": {
+        "name": "Computers",
+        "characteristic": "Intellect",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Cool": {
+        "name": "Cool",
+        "characteristic": "Presence",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Coordination": {
+        "name": "Coordination",
+        "characteristic": "Agility",
+        "career_skill": true,
+        "ranks": 0
+      },
+      "Deception": {
+        "name": "Deception",
+        "characteristic": "Cunning",
+        "career_skill": true,
+        "ranks": 0
+      },
+      "Discipline": {
+        "name": "Discipline",
+        "characteristic": "Willpower",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Leadership": {
+        "name": "Leadership",
+        "characteristic": "Presence",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Mechanics": {
+        "name": "Mechanics",
+        "characteristic": "Intellect",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Medicine": {
+        "name": "Medicine",
+        "characteristic": "Intellect",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Negotiation": {
+        "name": "Negotiation",
+        "characteristic": "Presence",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Perception": {
+        "name": "Perception",
+        "characteristic": "Cunning",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Piloting (Planetary)": {
+        "name": "Piloting (Planetary)",
+        "characteristic": "Agility",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Piloting (Space)": {
+        "name": "Piloting (Space)",
+        "characteristic": "Agility",
+        "career_skill": true,
+        "ranks": 0
+      },
+      "Ranged (Light)": {
+        "name": "Ranged (Light)",
+        "characteristic": "Agility",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Ranged (Heavy)": {
+        "name": "Ranged (Heavy)",
+        "characteristic": "Agility",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Resilience": {
+        "name": "Resilience",
+        "characteristic": "Brawn",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Skulduggery": {
+        "name": "Skulduggery",
+        "characteristic": "Cunning",
+        "career_skill": true,
+        "ranks": 0
+      },
+      "Stealth": {
+        "name": "Stealth",
+        "characteristic": "Agility",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Streetwise": {
+        "name": "Streetwise",
+        "characteristic": "Cunning",
+        "career_skill": true,
+        "ranks": 0
+      },
+      "Survival": {
+        "name": "Survival",
+        "characteristic": "Cunning",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Vigilance": {
+        "name": "Vigilance",
+        "characteristic": "Willpower",
+        "career_skill": false,
+        "ranks": 0
+      }
+    },
+    "talents": [],
+    "equipment": {
+      "credits": 0,
+      "items": []
+    },
+    "background": {
+      "motivation": "",
+      "background": "Test character"
+    }
+  },
+  "AutoTest_1749415424": {
+    "name": "AutoTest_1749415424",
+    "player_name": "Automation Test",
+    "species": "Human",
+    "career": {
+      "name": "Smuggler",
+      "game_line": "Edge of the Empire",
+      "career_skills": [
+        "Coordination",
+        "Deception",
+        "Knowledge (Underworld)",
+        "Piloting (Space)",
+        "Skulduggery",
+        "Streetwise"
+      ],
+      "starting_wound_threshold": 11,
+      "starting_strain_threshold": 13
+    },
+    "specializations": [],
+    "characteristics": {
+      "brawn": 3,
+      "agility": 2,
+      "intellect": 2,
+      "cunning": 2,
+      "willpower": 2,
+      "presence": 2
+    },
+    "derived_attributes": {
+      "wound_threshold": 14,
+      "strain_threshold": 15
+    },
+    "experience": {
+      "total_xp": 160,
+      "available_xp": 130,
+      "spent_xp": 30
+    },
+    "skills": {
+      "Astrogation": {
+        "name": "Astrogation",
+        "characteristic": "Intellect",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Athletics": {
+        "name": "Athletics",
+        "characteristic": "Brawn",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Charm": {
+        "name": "Charm",
+        "characteristic": "Presence",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Coercion": {
+        "name": "Coercion",
+        "characteristic": "Willpower",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Computers": {
+        "name": "Computers",
+        "characteristic": "Intellect",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Cool": {
+        "name": "Cool",
+        "characteristic": "Presence",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Coordination": {
+        "name": "Coordination",
+        "characteristic": "Agility",
+        "career_skill": true,
+        "ranks": 0
+      },
+      "Deception": {
+        "name": "Deception",
+        "characteristic": "Cunning",
+        "career_skill": true,
+        "ranks": 0
+      },
+      "Discipline": {
+        "name": "Discipline",
+        "characteristic": "Willpower",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Leadership": {
+        "name": "Leadership",
+        "characteristic": "Presence",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Mechanics": {
+        "name": "Mechanics",
+        "characteristic": "Intellect",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Medicine": {
+        "name": "Medicine",
+        "characteristic": "Intellect",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Negotiation": {
+        "name": "Negotiation",
+        "characteristic": "Presence",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Perception": {
+        "name": "Perception",
+        "characteristic": "Cunning",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Piloting (Planetary)": {
+        "name": "Piloting (Planetary)",
+        "characteristic": "Agility",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Piloting (Space)": {
+        "name": "Piloting (Space)",
+        "characteristic": "Agility",
+        "career_skill": true,
+        "ranks": 0
+      },
+      "Ranged (Light)": {
+        "name": "Ranged (Light)",
+        "characteristic": "Agility",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Ranged (Heavy)": {
+        "name": "Ranged (Heavy)",
+        "characteristic": "Agility",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Resilience": {
+        "name": "Resilience",
+        "characteristic": "Brawn",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Skulduggery": {
+        "name": "Skulduggery",
+        "characteristic": "Cunning",
+        "career_skill": true,
+        "ranks": 0
+      },
+      "Stealth": {
+        "name": "Stealth",
+        "characteristic": "Agility",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Streetwise": {
+        "name": "Streetwise",
+        "characteristic": "Cunning",
+        "career_skill": true,
+        "ranks": 0
+      },
+      "Survival": {
+        "name": "Survival",
+        "characteristic": "Cunning",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Vigilance": {
+        "name": "Vigilance",
+        "characteristic": "Willpower",
+        "career_skill": false,
+        "ranks": 0
+      }
+    },
+    "talents": [],
+    "equipment": {
+      "credits": 0,
+      "items": []
+    },
+    "background": {
+      "motivation": "",
+      "background": "Automated test character"
+    }
+  },
+  "DiagTest_1749415430": {
+    "name": "DiagTest_1749415430",
+    "player_name": "Diagnostic Test",
+    "species": "Human",
+    "career": {
+      "name": "Smuggler",
+      "game_line": "Edge of the Empire",
+      "career_skills": [
+        "Coordination",
+        "Deception",
+        "Knowledge (Underworld)",
+        "Piloting (Space)",
+        "Skulduggery",
+        "Streetwise"
+      ],
+      "starting_wound_threshold": 11,
+      "starting_strain_threshold": 13
+    },
+    "specializations": [],
+    "characteristics": {
+      "brawn": 3,
+      "agility": 2,
+      "intellect": 2,
+      "cunning": 2,
+      "willpower": 2,
+      "presence": 2
+    },
+    "derived_attributes": {
+      "wound_threshold": 14,
+      "strain_threshold": 15
+    },
+    "experience": {
+      "total_xp": 135,
+      "available_xp": 105,
+      "spent_xp": 30
+    },
+    "skills": {
+      "Astrogation": {
+        "name": "Astrogation",
+        "characteristic": "Intellect",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Athletics": {
+        "name": "Athletics",
+        "characteristic": "Brawn",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Charm": {
+        "name": "Charm",
+        "characteristic": "Presence",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Coercion": {
+        "name": "Coercion",
+        "characteristic": "Willpower",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Computers": {
+        "name": "Computers",
+        "characteristic": "Intellect",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Cool": {
+        "name": "Cool",
+        "characteristic": "Presence",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Coordination": {
+        "name": "Coordination",
+        "characteristic": "Agility",
+        "career_skill": true,
+        "ranks": 0
+      },
+      "Deception": {
+        "name": "Deception",
+        "characteristic": "Cunning",
+        "career_skill": true,
+        "ranks": 0
+      },
+      "Discipline": {
+        "name": "Discipline",
+        "characteristic": "Willpower",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Leadership": {
+        "name": "Leadership",
+        "characteristic": "Presence",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Mechanics": {
+        "name": "Mechanics",
+        "characteristic": "Intellect",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Medicine": {
+        "name": "Medicine",
+        "characteristic": "Intellect",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Negotiation": {
+        "name": "Negotiation",
+        "characteristic": "Presence",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Perception": {
+        "name": "Perception",
+        "characteristic": "Cunning",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Piloting (Planetary)": {
+        "name": "Piloting (Planetary)",
+        "characteristic": "Agility",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Piloting (Space)": {
+        "name": "Piloting (Space)",
+        "characteristic": "Agility",
+        "career_skill": true,
+        "ranks": 0
+      },
+      "Ranged (Light)": {
+        "name": "Ranged (Light)",
+        "characteristic": "Agility",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Ranged (Heavy)": {
+        "name": "Ranged (Heavy)",
+        "characteristic": "Agility",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Resilience": {
+        "name": "Resilience",
+        "characteristic": "Brawn",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Skulduggery": {
+        "name": "Skulduggery",
+        "characteristic": "Cunning",
+        "career_skill": true,
+        "ranks": 0
+      },
+      "Stealth": {
+        "name": "Stealth",
+        "characteristic": "Agility",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Streetwise": {
+        "name": "Streetwise",
+        "characteristic": "Cunning",
+        "career_skill": true,
+        "ranks": 0
+      },
+      "Survival": {
+        "name": "Survival",
+        "characteristic": "Cunning",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Vigilance": {
+        "name": "Vigilance",
+        "characteristic": "Willpower",
+        "career_skill": false,
+        "ranks": 0
+      }
+    },
+    "talents": [],
+    "equipment": {
+      "credits": 0,
+      "items": []
+    },
+    "background": {
+      "motivation": "",
+      "background": "Test character"
+    }
+  },
+  "AutoTest_1749415463": {
+    "name": "AutoTest_1749415463",
+    "player_name": "Automated Test",
+    "species": "Human",
+    "career": {
+      "name": "Smuggler",
+      "game_line": "Edge of the Empire",
+      "career_skills": [
+        "Coordination",
+        "Deception",
+        "Knowledge (Underworld)",
+        "Piloting (Space)",
+        "Skulduggery",
+        "Streetwise"
+      ],
+      "starting_wound_threshold": 11,
+      "starting_strain_threshold": 13
+    },
+    "specializations": [],
+    "characteristics": {
+      "brawn": 2,
+      "agility": 2,
+      "intellect": 2,
+      "cunning": 2,
+      "willpower": 2,
+      "presence": 2
+    },
+    "derived_attributes": {
+      "wound_threshold": 13,
+      "strain_threshold": 15
+    },
+    "experience": {
+      "total_xp": 135,
+      "available_xp": 135,
+      "spent_xp": 0
+    },
+    "skills": {
+      "Astrogation": {
+        "name": "Astrogation",
+        "characteristic": "Intellect",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Athletics": {
+        "name": "Athletics",
+        "characteristic": "Brawn",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Charm": {
+        "name": "Charm",
+        "characteristic": "Presence",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Coercion": {
+        "name": "Coercion",
+        "characteristic": "Willpower",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Computers": {
+        "name": "Computers",
+        "characteristic": "Intellect",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Cool": {
+        "name": "Cool",
+        "characteristic": "Presence",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Coordination": {
+        "name": "Coordination",
+        "characteristic": "Agility",
+        "career_skill": true,
+        "ranks": 0
+      },
+      "Deception": {
+        "name": "Deception",
+        "characteristic": "Cunning",
+        "career_skill": true,
+        "ranks": 0
+      },
+      "Discipline": {
+        "name": "Discipline",
+        "characteristic": "Willpower",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Leadership": {
+        "name": "Leadership",
+        "characteristic": "Presence",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Mechanics": {
+        "name": "Mechanics",
+        "characteristic": "Intellect",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Medicine": {
+        "name": "Medicine",
+        "characteristic": "Intellect",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Negotiation": {
+        "name": "Negotiation",
+        "characteristic": "Presence",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Perception": {
+        "name": "Perception",
+        "characteristic": "Cunning",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Piloting (Planetary)": {
+        "name": "Piloting (Planetary)",
+        "characteristic": "Agility",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Piloting (Space)": {
+        "name": "Piloting (Space)",
+        "characteristic": "Agility",
+        "career_skill": true,
+        "ranks": 0
+      },
+      "Ranged (Light)": {
+        "name": "Ranged (Light)",
+        "characteristic": "Agility",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Ranged (Heavy)": {
+        "name": "Ranged (Heavy)",
+        "characteristic": "Agility",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Resilience": {
+        "name": "Resilience",
+        "characteristic": "Brawn",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Skulduggery": {
+        "name": "Skulduggery",
+        "characteristic": "Cunning",
+        "career_skill": true,
+        "ranks": 0
+      },
+      "Stealth": {
+        "name": "Stealth",
+        "characteristic": "Agility",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Streetwise": {
+        "name": "Streetwise",
+        "characteristic": "Cunning",
+        "career_skill": true,
+        "ranks": 0
+      },
+      "Survival": {
+        "name": "Survival",
+        "characteristic": "Cunning",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Vigilance": {
+        "name": "Vigilance",
+        "characteristic": "Willpower",
+        "career_skill": false,
+        "ranks": 0
+      }
+    },
+    "talents": [],
+    "equipment": {
+      "credits": 0,
+      "items": []
+    },
+    "background": {
+      "motivation": "",
+      "background": ""
+    }
+  },
+  "1": {
+    "name": "1",
+    "player_name": "2",
+    "species": "Human",
+    "career": {
+      "name": "Commander",
+      "game_line": "Age of Rebellion",
+      "career_skills": [
+        "Cool",
+        "Discipline",
+        "Knowledge (Core Worlds)",
+        "Knowledge (Warfare)",
+        "Leadership",
+        "Vigilance"
+      ],
+      "starting_wound_threshold": 10,
+      "starting_strain_threshold": 14
+    },
+    "specializations": [],
+    "characteristics": {
+      "brawn": 4,
+      "agility": 3,
+      "intellect": 2,
+      "cunning": 2,
+      "willpower": 2,
+      "presence": 2
+    },
+    "derived_attributes": {
+      "wound_threshold": 14,
+      "strain_threshold": 16
+    },
+    "experience": {
+      "total_xp": 110,
+      "available_xp": 10,
+      "spent_xp": 100
+    },
+    "skills": {
+      "Astrogation": {
+        "name": "Astrogation",
+        "characteristic": "Intellect",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Athletics": {
+        "name": "Athletics",
+        "characteristic": "Brawn",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Charm": {
+        "name": "Charm",
+        "characteristic": "Presence",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Coercion": {
+        "name": "Coercion",
+        "characteristic": "Willpower",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Computers": {
+        "name": "Computers",
+        "characteristic": "Intellect",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Cool": {
+        "name": "Cool",
+        "characteristic": "Presence",
+        "career_skill": true,
+        "ranks": 0
+      },
+      "Coordination": {
+        "name": "Coordination",
+        "characteristic": "Agility",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Deception": {
+        "name": "Deception",
+        "characteristic": "Cunning",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Discipline": {
+        "name": "Discipline",
+        "characteristic": "Willpower",
+        "career_skill": true,
+        "ranks": 0
+      },
+      "Leadership": {
+        "name": "Leadership",
+        "characteristic": "Presence",
+        "career_skill": true,
+        "ranks": 0
+      },
+      "Mechanics": {
+        "name": "Mechanics",
+        "characteristic": "Intellect",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Medicine": {
+        "name": "Medicine",
+        "characteristic": "Intellect",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Negotiation": {
+        "name": "Negotiation",
+        "characteristic": "Presence",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Perception": {
+        "name": "Perception",
+        "characteristic": "Cunning",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Piloting (Planetary)": {
+        "name": "Piloting (Planetary)",
+        "characteristic": "Agility",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Piloting (Space)": {
+        "name": "Piloting (Space)",
+        "characteristic": "Agility",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Ranged (Light)": {
+        "name": "Ranged (Light)",
+        "characteristic": "Agility",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Ranged (Heavy)": {
+        "name": "Ranged (Heavy)",
+        "characteristic": "Agility",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Resilience": {
+        "name": "Resilience",
+        "characteristic": "Brawn",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Skulduggery": {
+        "name": "Skulduggery",
+        "characteristic": "Cunning",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Stealth": {
+        "name": "Stealth",
+        "characteristic": "Agility",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Streetwise": {
+        "name": "Streetwise",
+        "characteristic": "Cunning",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Survival": {
+        "name": "Survival",
+        "characteristic": "Cunning",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Vigilance": {
+        "name": "Vigilance",
+        "characteristic": "Willpower",
+        "career_skill": true,
+        "ranks": 0
+      }
+    },
+    "talents": [],
+    "equipment": {
+      "credits": 0,
+      "items": []
+    },
+    "background": {
+      "motivation": "",
+      "background": ""
+    }
+  },
+  "AutoTest_1749415781": {
+    "name": "AutoTest_1749415781",
+    "player_name": "Automation Test",
+    "species": "Human",
+    "career": {
+      "name": "Smuggler",
+      "game_line": "Edge of the Empire",
+      "career_skills": [
+        "Coordination",
+        "Deception",
+        "Knowledge (Underworld)",
+        "Piloting (Space)",
+        "Skulduggery",
+        "Streetwise"
+      ],
+      "starting_wound_threshold": 11,
+      "starting_strain_threshold": 13
+    },
+    "specializations": [],
+    "characteristics": {
+      "brawn": 3,
+      "agility": 2,
+      "intellect": 2,
+      "cunning": 2,
+      "willpower": 2,
+      "presence": 2
+    },
+    "derived_attributes": {
+      "wound_threshold": 14,
+      "strain_threshold": 15
+    },
+    "experience": {
+      "total_xp": 160,
+      "available_xp": 130,
+      "spent_xp": 30
+    },
+    "skills": {
+      "Astrogation": {
+        "name": "Astrogation",
+        "characteristic": "Intellect",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Athletics": {
+        "name": "Athletics",
+        "characteristic": "Brawn",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Charm": {
+        "name": "Charm",
+        "characteristic": "Presence",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Coercion": {
+        "name": "Coercion",
+        "characteristic": "Willpower",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Computers": {
+        "name": "Computers",
+        "characteristic": "Intellect",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Cool": {
+        "name": "Cool",
+        "characteristic": "Presence",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Coordination": {
+        "name": "Coordination",
+        "characteristic": "Agility",
+        "career_skill": true,
+        "ranks": 0
+      },
+      "Deception": {
+        "name": "Deception",
+        "characteristic": "Cunning",
+        "career_skill": true,
+        "ranks": 0
+      },
+      "Discipline": {
+        "name": "Discipline",
+        "characteristic": "Willpower",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Leadership": {
+        "name": "Leadership",
+        "characteristic": "Presence",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Mechanics": {
+        "name": "Mechanics",
+        "characteristic": "Intellect",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Medicine": {
+        "name": "Medicine",
+        "characteristic": "Intellect",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Negotiation": {
+        "name": "Negotiation",
+        "characteristic": "Presence",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Perception": {
+        "name": "Perception",
+        "characteristic": "Cunning",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Piloting (Planetary)": {
+        "name": "Piloting (Planetary)",
+        "characteristic": "Agility",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Piloting (Space)": {
+        "name": "Piloting (Space)",
+        "characteristic": "Agility",
+        "career_skill": true,
+        "ranks": 0
+      },
+      "Ranged (Light)": {
+        "name": "Ranged (Light)",
+        "characteristic": "Agility",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Ranged (Heavy)": {
+        "name": "Ranged (Heavy)",
+        "characteristic": "Agility",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Resilience": {
+        "name": "Resilience",
+        "characteristic": "Brawn",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Skulduggery": {
+        "name": "Skulduggery",
+        "characteristic": "Cunning",
+        "career_skill": true,
+        "ranks": 0
+      },
+      "Stealth": {
+        "name": "Stealth",
+        "characteristic": "Agility",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Streetwise": {
+        "name": "Streetwise",
+        "characteristic": "Cunning",
+        "career_skill": true,
+        "ranks": 0
+      },
+      "Survival": {
+        "name": "Survival",
+        "characteristic": "Cunning",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Vigilance": {
+        "name": "Vigilance",
+        "characteristic": "Willpower",
+        "career_skill": false,
+        "ranks": 0
+      }
+    },
+    "talents": [],
+    "equipment": {
+      "credits": 0,
+      "items": []
+    },
+    "background": {
+      "motivation": "",
+      "background": "Automated test character"
+    }
+  },
+  "test": {
+    "name": "test",
+    "player_name": "clark",
+    "species": "Human",
+    "career": {
+      "name": "Bounty Hunter",
+      "game_line": "Edge of the Empire",
+      "career_skills": [
+        "Athletics",
+        "Piloting (Planetary)",
+        "Piloting (Space)",
+        "Ranged (Heavy)",
+        "Streetwise",
+        "Vigilance"
+      ],
+      "starting_wound_threshold": 12,
+      "starting_strain_threshold": 12
+    },
+    "specializations": [],
+    "characteristics": {
+      "brawn": 2,
+      "agility": 3,
+      "intellect": 2,
+      "cunning": 2,
+      "willpower": 3,
+      "presence": 2
+    },
+    "derived_attributes": {
+      "wound_threshold": 14,
+      "strain_threshold": 15
+    },
+    "experience": {
+      "total_xp": 210,
+      "available_xp": 100,
+      "spent_xp": 135
+    },
+    "skills": {
+      "Astrogation": {
+        "name": "Astrogation",
+        "characteristic": "Intellect",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Athletics": {
+        "name": "Athletics",
+        "characteristic": "Brawn",
+        "career_skill": true,
+        "ranks": 0
+      },
+      "Charm": {
+        "name": "Charm",
+        "characteristic": "Presence",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Coercion": {
+        "name": "Coercion",
+        "characteristic": "Willpower",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Computers": {
+        "name": "Computers",
+        "characteristic": "Intellect",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Cool": {
+        "name": "Cool",
+        "characteristic": "Presence",
+        "career_skill": false,
+        "ranks": 1
+      },
+      "Coordination": {
+        "name": "Coordination",
+        "characteristic": "Agility",
+        "career_skill": false,
+        "ranks": 1
+      },
+      "Deception": {
+        "name": "Deception",
+        "characteristic": "Cunning",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Discipline": {
+        "name": "Discipline",
+        "characteristic": "Willpower",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Leadership": {
+        "name": "Leadership",
+        "characteristic": "Presence",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Mechanics": {
+        "name": "Mechanics",
+        "characteristic": "Intellect",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Medicine": {
+        "name": "Medicine",
+        "characteristic": "Intellect",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Negotiation": {
+        "name": "Negotiation",
+        "characteristic": "Presence",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Perception": {
+        "name": "Perception",
+        "characteristic": "Cunning",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Piloting (Planetary)": {
+        "name": "Piloting (Planetary)",
+        "characteristic": "Agility",
+        "career_skill": true,
+        "ranks": 1
+      },
+      "Piloting (Space)": {
+        "name": "Piloting (Space)",
+        "characteristic": "Agility",
+        "career_skill": true,
+        "ranks": 0
+      },
+      "Ranged (Light)": {
+        "name": "Ranged (Light)",
+        "characteristic": "Agility",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Ranged (Heavy)": {
+        "name": "Ranged (Heavy)",
+        "characteristic": "Agility",
+        "career_skill": true,
+        "ranks": 0
+      },
+      "Resilience": {
+        "name": "Resilience",
+        "characteristic": "Brawn",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Skulduggery": {
+        "name": "Skulduggery",
+        "characteristic": "Cunning",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Stealth": {
+        "name": "Stealth",
+        "characteristic": "Agility",
+        "career_skill": false,
+        "ranks": 2
+      },
+      "Streetwise": {
+        "name": "Streetwise",
+        "characteristic": "Cunning",
+        "career_skill": true,
+        "ranks": 0
+      },
+      "Survival": {
+        "name": "Survival",
+        "characteristic": "Cunning",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Vigilance": {
+        "name": "Vigilance",
+        "characteristic": "Willpower",
+        "career_skill": true,
+        "ranks": 0
+      }
+    },
+    "talents": [],
+    "equipment": {
+      "credits": 0,
+      "items": []
+    },
+    "background": {
+      "motivation": "",
+      "background": ""
+    }
+  },
+  "AutoTest_1749432784": {
+    "name": "AutoTest_1749432784",
+    "player_name": "Automation Test",
+    "species": "Human",
+    "career": {
+      "name": "Smuggler",
+      "game_line": "Edge of the Empire",
+      "career_skills": [
+        "Coordination",
+        "Deception",
+        "Knowledge (Underworld)",
+        "Piloting (Space)",
+        "Skulduggery",
+        "Streetwise"
+      ],
+      "starting_wound_threshold": 11,
+      "starting_strain_threshold": 13
+    },
+    "specializations": [],
+    "characteristics": {
+      "brawn": 3,
+      "agility": 2,
+      "intellect": 2,
+      "cunning": 2,
+      "willpower": 2,
+      "presence": 2
+    },
+    "derived_attributes": {
+      "wound_threshold": 14,
+      "strain_threshold": 15
+    },
+    "experience": {
+      "total_xp": 160,
+      "available_xp": 130,
+      "spent_xp": 30
+    },
+    "skills": {
+      "Astrogation": {
+        "name": "Astrogation",
+        "characteristic": "Intellect",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Athletics": {
+        "name": "Athletics",
+        "characteristic": "Brawn",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Charm": {
+        "name": "Charm",
+        "characteristic": "Presence",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Coercion": {
+        "name": "Coercion",
+        "characteristic": "Willpower",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Computers": {
+        "name": "Computers",
+        "characteristic": "Intellect",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Cool": {
+        "name": "Cool",
+        "characteristic": "Presence",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Coordination": {
+        "name": "Coordination",
+        "characteristic": "Agility",
+        "career_skill": true,
+        "ranks": 0
+      },
+      "Deception": {
+        "name": "Deception",
+        "characteristic": "Cunning",
+        "career_skill": true,
+        "ranks": 0
+      },
+      "Discipline": {
+        "name": "Discipline",
+        "characteristic": "Willpower",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Leadership": {
+        "name": "Leadership",
+        "characteristic": "Presence",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Mechanics": {
+        "name": "Mechanics",
+        "characteristic": "Intellect",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Medicine": {
+        "name": "Medicine",
+        "characteristic": "Intellect",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Negotiation": {
+        "name": "Negotiation",
+        "characteristic": "Presence",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Perception": {
+        "name": "Perception",
+        "characteristic": "Cunning",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Piloting (Planetary)": {
+        "name": "Piloting (Planetary)",
+        "characteristic": "Agility",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Piloting (Space)": {
+        "name": "Piloting (Space)",
+        "characteristic": "Agility",
+        "career_skill": true,
+        "ranks": 0
+      },
+      "Ranged (Light)": {
+        "name": "Ranged (Light)",
+        "characteristic": "Agility",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Ranged (Heavy)": {
+        "name": "Ranged (Heavy)",
+        "characteristic": "Agility",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Resilience": {
+        "name": "Resilience",
+        "characteristic": "Brawn",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Skulduggery": {
+        "name": "Skulduggery",
+        "characteristic": "Cunning",
+        "career_skill": true,
+        "ranks": 0
+      },
+      "Stealth": {
+        "name": "Stealth",
+        "characteristic": "Agility",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Streetwise": {
+        "name": "Streetwise",
+        "characteristic": "Cunning",
+        "career_skill": true,
+        "ranks": 0
+      },
+      "Survival": {
+        "name": "Survival",
+        "characteristic": "Cunning",
+        "career_skill": false,
+        "ranks": 0
+      },
+      "Vigilance": {
+        "name": "Vigilance",
+        "characteristic": "Willpower",
+        "career_skill": false,
+        "ranks": 0
+      }
+    },
+    "talents": [],
+    "equipment": {
+      "credits": 0,
+      "items": []
+    },
+    "background": {
+      "motivation": "",
+      "background": "Automated test character"
+    }
+  }
+}

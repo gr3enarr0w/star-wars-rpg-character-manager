@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Settings - Star Wars RPG Character Manager</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <style>
+        .profile-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        .profile-header {
+            background: #007cba;
+            color: white;
+            padding: 1rem;
+            border-radius: 4px 4px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .profile-content {
+            background: white;
+            border: 1px solid #ddd;
+            border-top: none;
+            border-radius: 0 0 4px 4px;
+            padding: 2rem;
+        }
+        .profile-section {
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid #eee;
+        }
+        .profile-section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+        .profile-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+        @media (min-width: 768px) {
+            .profile-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        .back-button {
+            text-decoration: none;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .back-button:hover {
+            color: #ccc;
+        }
+    </style>
+</head>
+<body>
+    <div class="profile-container">
+        <div class="profile-header">
+            <h1>Profile Settings</h1>
+            <a href="/" class="back-button">← Back to Dashboard</a>
+        </div>
+        
+        <div class="profile-content">
+            <!-- User Information Section -->
+            <div class="profile-section">
+                <h2>Account Information</h2>
+                <div class="profile-grid">
+                    <div class="form-group">
+                        <label class="form-label">Username</label>
+                        <input type="text" class="form-input" id="username" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Role</label>
+                        <input type="text" class="form-input" id="role" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Account Created</label>
+                        <input type="text" class="form-input" id="created_at" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Two-Factor Authentication</label>
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <span id="twofa_status" class="badge">Loading...</span>
+                            <button type="button" class="btn btn-outline btn-sm" onclick="manage2FA()">Manage</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Password Change Section -->
+            <div class="profile-section">
+                <h2>Change Password</h2>
+                <form id="password-form">
+                    <div class="profile-grid">
+                        <div class="form-group">
+                            <label class="form-label">Current Password</label>
+                            <input type="password" class="form-input" name="current_password" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">New Password</label>
+                            <input type="password" class="form-input" name="new_password" required minlength="8">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Confirm New Password</label>
+                            <input type="password" class="form-input" name="confirm_password" required minlength="8">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Change Password</button>
+                </form>
+            </div>
+            
+            <!-- Activity Log Section -->
+            <div class="profile-section">
+                <h2>Recent Activity</h2>
+                <div id="activity-log">
+                    <div class="loading">Loading activity...</div>
+                </div>
+            </div>
+            
+            <!-- Account Actions Section -->
+            <div class="profile-section">
+                <h2>Account Actions</h2>
+                <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                    <button type="button" class="btn btn-outline" onclick="downloadUserData()">
+                        Download My Data
+                    </button>
+                    <button type="button" class="btn btn-outline" onclick="exportCharacters()">
+                        Export Characters
+                    </button>
+                    <button type="button" class="btn btn-danger" onclick="deleteAccount()">
+                        Delete Account
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentUser = null;
+
+        // Load user data on page load
+        document.addEventListener('DOMContentLoaded', async () => {
+            const token = localStorage.getItem('access_token');
+            if (!token) {
+                window.location.href = '/login';
+                return;
+            }
+
+            try {
+                const response = await authenticatedFetch('/api/auth/me');
+                if (response.ok) {
+                    currentUser = await response.json();
+                    populateUserData();
+                } else {
+                    localStorage.removeItem('access_token');
+                    window.location.href = '/login';
+                }
+            } catch (error) {
+                console.error('Authentication check failed:', error);
+                window.location.href = '/login';
+            }
+        });
+
+        function populateUserData() {
+            document.getElementById('username').value = currentUser.username;
+            document.getElementById('role').value = currentUser.role;
+            
+            // Format 2FA status
+            const twoFAStatus = document.getElementById('twofa_status');
+            if (currentUser.two_factor_enabled) {
+                twoFAStatus.textContent = 'Enabled';
+                twoFAStatus.className = 'badge badge-success';
+            } else {
+                twoFAStatus.textContent = 'Disabled';
+                twoFAStatus.className = 'badge badge-warning';
+            }
+        }
+
+        // Password form handler
+        document.getElementById('password-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            const newPassword = formData.get('new_password');
+            const confirmPassword = formData.get('confirm_password');
+            
+            if (newPassword !== confirmPassword) {
+                alert('New passwords do not match.');
+                return;
+            }
+            
+            const passwordData = {
+                current_password: formData.get('current_password'),
+                new_password: newPassword
+            };
+            
+            try {
+                const response = await authenticatedFetch('/api/auth/change-password', {
+                    method: 'POST',
+                    body: JSON.stringify(passwordData)
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    alert('Password changed successfully!');
+                    e.target.reset();
+                } else {
+                    alert('Error changing password: ' + result.error);
+                }
+            } catch (error) {
+                console.error('Error changing password:', error);
+                alert('Failed to change password. Please try again.');
+            }
+        });
+
+        function manage2FA() {
+            if (currentUser.two_factor_enabled) {
+                // Show disable 2FA option
+                const confirmed = confirm('Are you sure you want to disable Two-Factor Authentication? This will make your account less secure.');
+                if (confirmed) {
+                    disable2FA();
+                }
+            } else {
+                // Redirect to setup 2FA
+                window.location.href = '/#2fa-setup';
+            }
+        }
+
+        async function disable2FA() {
+            try {
+                const response = await authenticatedFetch('/api/auth/disable-2fa', {
+                    method: 'POST'
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    alert('Two-Factor Authentication has been disabled.');
+                    currentUser.two_factor_enabled = false;
+                    populateUserData();
+                } else {
+                    alert('Error disabling 2FA: ' + result.error);
+                }
+            } catch (error) {
+                console.error('Error disabling 2FA:', error);
+                alert('Failed to disable 2FA. Please try again.');
+            }
+        }
+
+        async function downloadUserData() {
+            try {
+                const response = await authenticatedFetch('/api/user/export');
+                
+                if (response.ok) {
+                    const blob = await response.blob();
+                    const url = URL.createObjectURL(blob);
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.download = `swrpg-user-data-${currentUser.username}-${new Date().toISOString().split('T')[0]}.json`;
+                    link.click();
+                    URL.revokeObjectURL(url);
+                } else {
+                    const result = await response.json();
+                    alert('Error downloading data: ' + result.error);
+                }
+            } catch (error) {
+                console.error('Error downloading user data:', error);
+                alert('Failed to download user data. Please try again.');
+            }
+        }
+
+        async function exportCharacters() {
+            try {
+                const response = await authenticatedFetch('/api/characters/export');
+                
+                if (response.ok) {
+                    const blob = await response.blob();
+                    const url = URL.createObjectURL(blob);
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.download = `swrpg-characters-${currentUser.username}-${new Date().toISOString().split('T')[0]}.json`;
+                    link.click();
+                    URL.revokeObjectURL(url);
+                } else {
+                    const result = await response.json();
+                    alert('Error exporting characters: ' + result.error);
+                }
+            } catch (error) {
+                console.error('Error exporting characters:', error);
+                alert('Failed to export characters. Please try again.');
+            }
+        }
+
+        function deleteAccount() {
+            const username = prompt('Type your username to confirm account deletion:');
+            if (username !== currentUser.username) {
+                alert('Username does not match. Account deletion cancelled.');
+                return;
+            }
+            
+            const confirmed = confirm('Are you absolutely sure you want to delete your account? This action cannot be undone and will permanently delete all your characters and data.');
+            if (!confirmed) {
+                return;
+            }
+            
+            // TODO: Implement account deletion
+            alert('Account deletion is not yet implemented. Please contact an administrator.');
+        }
+
+        async function authenticatedFetch(url, options = {}) {
+            const token = localStorage.getItem('access_token');
+            return fetch(url, {
+                ...options,
+                headers: {
+                    ...options.headers,
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+        }
+    </script>
+    
+    <style>
+        .badge {
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+        .badge-success {
+            background: #28a745;
+            color: white;
+        }
+        .badge-warning {
+            background: #ffc107;
+            color: black;
+        }
+    </style>
+</body>
+</html>

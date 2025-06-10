@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Star Wars RPG Character Manager</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⭐</text></svg>">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    ⭐ Star Wars RPG Character Manager
+                </div>
+                <nav class="nav">
+                    <a href="#" data-action="show-dashboard" class="active">Dashboard</a>
+                    <a href="#" data-action="show-create-character">Create Character</a>
+                    <a href="#" onclick="characterManager.showHelp()">Help</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="container">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Welcome to Star Wars RPG Character Manager</h2>
+                </div>
+                <div style="text-align: center; padding: 2rem;">
+                    <p style="font-size: 1.125rem; color: var(--text-secondary); margin-bottom: 2rem;">
+                        Create, manage, and level up your Star Wars RPG characters with ease.
+                    </p>
+                    <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
+                        <button class="btn btn-primary" data-action="show-create-character" style="font-size: 1.125rem; padding: 0.75rem 2rem;">
+                            🚀 Create Your First Character
+                        </button>
+                        <button class="btn btn-outline" onclick="characterManager.showDemo()" style="font-size: 1.125rem; padding: 0.75rem 2rem;">
+                            📖 View Demo
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-3">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">🎭 Character Creation</h3>
+                    </div>
+                    <p style="color: var(--text-secondary);">
+                        Easy-to-use character creation wizard supporting all three Star Wars RPG game lines: Edge of the Empire, Age of Rebellion, and Force and Destiny.
+                    </p>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">⚡ Dynamic Leveling</h3>
+                    </div>
+                    <p style="color: var(--text-secondary);">
+                        Track experience points and advance your characters. Spend XP on characteristics, skills, and talents with automatic cost calculation.
+                    </p>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">📋 Character Sheets</h3>
+                    </div>
+                    <p style="color: var(--text-secondary);">
+                        View comprehensive character sheets with dice pool calculations, skill ranks, and all character information in an easy-to-read format.
+                    </p>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">🎲 Supported Game Lines</h3>
+                </div>
+                <div class="grid grid-3">
+                    <div style="text-align: center; padding: 1rem;">
+                        <h4 style="color: var(--accent-color); margin-bottom: 0.5rem;">Edge of the Empire</h4>
+                        <ul style="list-style: none; padding: 0; color: var(--text-secondary);">
+                            <li>Bounty Hunter</li>
+                            <li>Colonist</li>
+                            <li>Explorer</li>
+                            <li>Hired Gun</li>
+                            <li>Smuggler</li>
+                            <li>Technician</li>
+                        </ul>
+                    </div>
+                    <div style="text-align: center; padding: 1rem;">
+                        <h4 style="color: var(--accent-color); margin-bottom: 0.5rem;">Age of Rebellion</h4>
+                        <ul style="list-style: none; padding: 0; color: var(--text-secondary);">
+                            <li>Ace</li>
+                            <li>Commander</li>
+                            <li>Diplomat</li>
+                        </ul>
+                    </div>
+                    <div style="text-align: center; padding: 1rem;">
+                        <h4 style="color: var(--accent-color); margin-bottom: 0.5rem;">Force and Destiny</h4>
+                        <ul style="list-style: none; padding: 0; color: var(--text-secondary);">
+                            <li>Consular</li>
+                            <li>Guardian</li>
+                            <li>Mystic</li>
+                            <li>Seeker</li>
+                            <li>Sentinel</li>
+                            <li>Warrior</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script>
+        // Extend the CharacterManager with additional demo functionality
+        CharacterManager.prototype.showDemo = function() {
+            // Create a demo character for display
+            const demoCharacter = {
+                id: 'demo',
+                name: 'Luke Skywalker',
+                playerName: 'Demo Player',
+                species: 'Human',
+                career: 'Guardian',
+                background: 'Young farm boy from Tatooine who discovered his Force sensitivity.',
+                brawn: 2,
+                agility: 3,
+                intellect: 2,
+                cunning: 2,
+                willpower: 4,
+                presence: 3,
+                totalXP: 160,
+                availableXP: 35,
+                woundThreshold: 15,
+                strainThreshold: 17
+            };
+            
+            this.currentCharacter = demoCharacter;
+            this.showCharacter('demo');
+        };
+
+        CharacterManager.prototype.showHelp = function() {
+            const content = `
+                <div class="modal-header">
+                    <h3 class="modal-title">How to Use Star Wars RPG Character Manager</h3>
+                    <button type="button" onclick="characterManager.closeModal()" style="background: none; border: none; font-size: 1.5rem; cursor: pointer;">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <h4>Getting Started</h4>
+                    <ol style="margin-bottom: 1.5rem;">
+                        <li><strong>Create a Character:</strong> Click "Create Character" and follow the wizard to set up your character's basic information.</li>
+                        <li><strong>View Character Sheet:</strong> Click on any character from your dashboard to view their complete character sheet.</li>
+                        <li><strong>Award Experience:</strong> Use the "Award XP" button to give your character experience points for adventures.</li>
+                        <li><strong>Advance Your Character:</strong> Spend XP on characteristics and skills directly from the character sheet.</li>
+                    </ol>
+
+                    <h4>Character Creation</h4>
+                    <p style="margin-bottom: 1rem;">Choose from:</p>
+                    <ul style="margin-bottom: 1.5rem;">
+                        <li><strong>Species:</strong> Human, Twi'lek, Rodian, Wookiee, or Bothan</li>
+                        <li><strong>Careers:</strong> 15 careers across all three Star Wars RPG game lines</li>
+                        <li><strong>Starting XP:</strong> Varies by species (90-110 XP)</li>
+                    </ul>
+
+                    <h4>Advancement System</h4>
+                    <ul style="margin-bottom: 1.5rem;">
+                        <li><strong>Characteristics:</strong> Cost 30/40/50/60 XP for ranks 3/4/5/6</li>
+                        <li><strong>Skills:</strong> Cost 5×new_rank XP (career skills) or 5×new_rank + 5 XP (non-career)</li>
+                        <li><strong>Career Skills:</strong> Marked with "(Career)" and cost less to advance</li>
+                    </ul>
+
+                    <h4>Dice Pool System</h4>
+                    <p style="margin-bottom: 1rem;">The app automatically calculates dice pools:</p>
+                    <ul>
+                        <li><strong>A = Ability Die</strong> (Green d8)</li>
+                        <li><strong>P = Proficiency Die</strong> (Yellow d12)</li>
+                        <li>Ability dice convert to Proficiency dice based on skill ranks</li>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="characterManager.closeModal()">Got it!</button>
+                </div>
+            `;
+            this.showModal(content);
+        };
+
+        // Auto-advance to dashboard if there are existing characters
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                if (characterManager.characters.length > 0) {
+                    characterManager.loadDashboard();
+                }
+            }, 100);
+        });
+    </script>
+</body>
+</html>

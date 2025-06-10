@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Star Wars RPG Character Manager</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <style>
+        .admin-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        .admin-header {
+            background: #dc3545;
+            color: white;
+            padding: 1rem;
+            border-radius: 4px 4px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .admin-content {
+            background: white;
+            border: 1px solid #ddd;
+            border-top: none;
+            border-radius: 0 0 4px 4px;
+            padding: 2rem;
+        }
+        .admin-tabs {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+        .tab-button {
+            background: none;
+            border: none;
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            font-size: 1rem;
+        }
+        .tab-button.active {
+            border-bottom-color: #dc3545;
+            color: #dc3545;
+            font-weight: bold;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .admin-section {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background: #f8f9fa;
+        }
+        .user-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+        .user-table th,
+        .user-table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        .user-table th {
+            background: #e9ecef;
+            font-weight: bold;
+        }
+        .user-table tr:hover {
+            background: #f1f3f4;
+        }
+        .back-button {
+            text-decoration: none;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .back-button:hover {
+            color: #ccc;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #dc3545;
+        }
+        .stat-label {
+            color: #666;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+        }
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+        @media (min-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <div class="admin-header">
+            <h1>🔧 Admin Panel</h1>
+            <a href="/" class="back-button">← Back to Dashboard</a>
+        </div>
+        
+        <div class="admin-content">
+            <!-- System Stats -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number" id="total-users">-</div>
+                    <div class="stat-label">Total Users</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="total-campaigns">-</div>
+                    <div class="stat-label">Total Campaigns</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="total-characters">-</div>
+                    <div class="stat-label">Total Characters</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="active-sessions">-</div>
+                    <div class="stat-label">Active Sessions</div>
+                </div>
+            </div>
+            
+            <div class="admin-tabs">
+                <button class="tab-button active" onclick="showTab('user-management')">User Management</button>
+                <button class="tab-button" onclick="showTab('invite-codes')">Invite Codes</button>
+                <button class="tab-button" onclick="showTab('system-settings')">System Settings</button>
+                <button class="tab-button" onclick="showTab('audit-logs')">Audit Logs</button>
+            </div>
+            
+            <!-- User Management Tab -->
+            <div id="user-management-tab" class="tab-content active">
+                <div class="admin-section">
+                    <h2>User Management</h2>
+                    <p>Manage user accounts, roles, and permissions.</p>
+                    
+                    <div style="margin-bottom: 1rem;">
+                        <input type="text" class="form-input" id="user-search" placeholder="Search users by username or email..." style="max-width: 300px;">
+                        <button class="btn btn-outline" onclick="searchUsers()">Search</button>
+                        <button class="btn btn-secondary" onclick="loadUsers()">Show All</button>
+                    </div>
+                    
+                    <div id="users-list">
+                        <div class="loading">Loading users...</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Invite Codes Tab -->
+            <div id="invite-codes-tab" class="tab-content">
+                <div class="admin-section">
+                    <h2>Generate Invite Codes</h2>
+                    <p>Create invite codes for new users to register.</p>
+                    
+                    <form id="invite-form">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label">Role for new user *</label>
+                                <select class="form-select" name="role" required>
+                                    <option value="player">Player</option>
+                                    <option value="gamemaster">Game Master</option>
+                                    <option value="admin">Admin</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Expires in (days) *</label>
+                                <input type="number" class="form-input" name="expires_in_days" value="7" min="1" max="365" required>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary">Generate Invite Code</button>
+                    </form>
+                    
+                    <div id="invite-result" style="margin-top: 1rem; display: none;">
+                        <div class="form-group">
+                            <label class="form-label">Generated Invite Code</label>
+                            <div style="display: flex; gap: 0.5rem;">
+                                <input type="text" id="generated-code" class="form-input" readonly style="font-family: monospace; letter-spacing: 0.1rem;">
+                                <button type="button" class="btn btn-outline" onclick="copyInviteCode()">Copy</button>
+                            </div>
+                            <small class="text-secondary">Share this code with the new user for registration.</small>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="admin-section">
+                    <h2>Active Invite Codes</h2>
+                    <div id="active-invites">
+                        <div class="loading">Loading invite codes...</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- System Settings Tab -->
+            <div id="system-settings-tab" class="tab-content">
+                <div class="admin-section">
+                    <h2>System Settings</h2>
+                    <p>Configure system-wide settings and preferences.</p>
+                    
+                    <form id="settings-form">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label">Registration Mode</label>
+                                <select class="form-select" name="registration_mode">
+                                    <option value="invite_only">Invite Only</option>
+                                    <option value="public">Public Registration</option>
+                                    <option value="closed">Closed</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Default User Role</label>
+                                <select class="form-select" name="default_role">
+                                    <option value="player">Player</option>
+                                    <option value="gamemaster">Game Master</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Max Characters per User</label>
+                                <input type="number" class="form-input" name="max_characters" value="20" min="1" max="100">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Session Timeout (hours)</label>
+                                <input type="number" class="form-input" name="session_timeout" value="24" min="1" max="168">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">
+                                <input type="checkbox" name="require_2fa"> Require Two-Factor Authentication for all users
+                            </label>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">
+                                <input type="checkbox" name="allow_character_sharing"> Allow characters to be shared between campaigns
+                            </label>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary">Save Settings</button>
+                    </form>
+                </div>
+                
+                <div class="admin-section">
+                    <h2>System Maintenance</h2>
+                    <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                        <button class="btn btn-outline" onclick="backupDatabase()">Backup Database</button>
+                        <button class="btn btn-outline" onclick="cleanupSessions()">Cleanup Old Sessions</button>
+                        <button class="btn btn-outline" onclick="optimizeDatabase()">Optimize Database</button>
+                        <button class="btn btn-danger" onclick="systemRestart()">Restart System</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Audit Logs Tab -->
+            <div id="audit-logs-tab" class="tab-content">
+                <div class="admin-section">
+                    <h2>Audit Logs</h2>
+                    <p>View system activity and security logs.</p>
+                    
+                    <div style="margin-bottom: 1rem;">
+                        <select class="form-select" id="log-filter" style="max-width: 200px; display: inline-block;">
+                            <option value="">All Events</option>
+                            <option value="user_login">User Logins</option>
+                            <option value="user_creation">User Creation</option>
+                            <option value="character_creation">Character Creation</option>
+                            <option value="campaign_creation">Campaign Creation</option>
+                            <option value="security_events">Security Events</option>
+                        </select>
+                        <button class="btn btn-outline" onclick="loadAuditLogs()">Filter</button>
+                        <button class="btn btn-outline" onclick="exportLogs()">Export Logs</button>
+                    </div>
+                    
+                    <div id="audit-logs-list">
+                        <div class="loading">Loading audit logs...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentUser = null;
+
+        // Load data on page load
+        document.addEventListener('DOMContentLoaded', async () => {
+            const token = localStorage.getItem('access_token');
+            if (!token) {
+                window.location.href = '/login';
+                return;
+            }
+
+            try {
+                const response = await authenticatedFetch('/api/auth/me');
+                if (response.ok) {
+                    currentUser = await response.json();
+                    if (currentUser.role !== 'admin') {
+                        alert('Access denied. Admin privileges required.');
+                        window.location.href = '/';
+                        return;
+                    }
+                    loadSystemStats();
+                    loadUsers();
+                } else {
+                    localStorage.removeItem('access_token');
+                    window.location.href = '/login';
+                }
+            } catch (error) {
+                console.error('Authentication check failed:', error);
+                window.location.href = '/login';
+            }
+        });
+
+        function showTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected tab
+            document.getElementById(tabName + '-tab').classList.add('active');
+            event.target.classList.add('active');
+            
+            // Load data for specific tabs
+            if (tabName === 'user-management') {
+                loadUsers();
+            } else if (tabName === 'invite-codes') {
+                loadActiveInvites();
+            } else if (tabName === 'audit-logs') {
+                loadAuditLogs();
+            }
+        }
+
+        async function loadSystemStats() {
+            try {
+                const response = await authenticatedFetch('/api/admin/stats');
+                if (response.ok) {
+                    const stats = await response.json();
+                    document.getElementById('total-users').textContent = stats.total_users || 0;
+                    document.getElementById('total-campaigns').textContent = stats.total_campaigns || 0;
+                    document.getElementById('total-characters').textContent = stats.total_characters || 0;
+                    document.getElementById('active-sessions').textContent = stats.active_sessions || 0;
+                }
+            } catch (error) {
+                console.error('Error loading system stats:', error);
+            }
+        }
+
+        async function loadUsers() {
+            try {
+                const response = await authenticatedFetch('/api/admin/users');
+                if (response.ok) {
+                    const data = await response.json();
+                    displayUsers(data.users);
+                } else {
+                    document.getElementById('users-list').innerHTML = '<div class="error">Error loading users</div>';
+                }
+            } catch (error) {
+                console.error('Error loading users:', error);
+                document.getElementById('users-list').innerHTML = '<div class="error">Failed to load users</div>';
+            }
+        }
+
+        function displayUsers(users) {
+            const usersList = document.getElementById('users-list');
+            
+            if (users && users.length > 0) {
+                usersList.innerHTML = `
+                    <table class="user-table">
+                        <thead>
+                            <tr>
+                                <th>Username</th>
+                                <th>Role</th>
+                                <th>2FA</th>
+                                <th>Created</th>
+                                <th>Last Login</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${users.map(user => `
+                                <tr>
+                                    <td>${user.username}</td>
+                                    <td>
+                                        <select class="form-select" onchange="changeUserRole('${user.id}', this.value)" ${user.id === currentUser.id ? 'disabled' : ''}>
+                                            <option value="player" ${user.role === 'player' ? 'selected' : ''}>Player</option>
+                                            <option value="gamemaster" ${user.role === 'gamemaster' ? 'selected' : ''}>Game Master</option>
+                                            <option value="admin" ${user.role === 'admin' ? 'selected' : ''}>Admin</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <span class="badge ${user.two_factor_enabled ? 'badge-success' : 'badge-warning'}">
+                                            ${user.two_factor_enabled ? 'Enabled' : 'Disabled'}
+                                        </span>
+                                    </td>
+                                    <td>${new Date(user.created_at).toLocaleDateString()}</td>
+                                    <td>${user.last_login ? new Date(user.last_login).toLocaleDateString() : 'Never'}</td>
+                                    <td>
+                                        <div style="display: flex; gap: 0.25rem;">
+                                            <button class="btn btn-outline btn-sm" onclick="viewUserDetails('${user.id}')">View</button>
+                                            ${user.id !== currentUser.id ? `
+                                                <button class="btn btn-danger btn-sm" onclick="suspendUser('${user.id}')">
+                                                    ${user.is_active ? 'Suspend' : 'Activate'}
+                                                </button>
+                                            ` : ''}
+                                        </div>
+                                    </td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                `;
+            } else {
+                usersList.innerHTML = '<div class="text-center">No users found</div>';
+            }
+        }
+
+        // Form handlers
+        document.getElementById('invite-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            const requestData = {
+                role: formData.get('role'),
+                expires_in_days: parseInt(formData.get('expires_in_days'))
+            };
+            
+            try {
+                const response = await authenticatedFetch('/api/admin/invite', {
+                    method: 'POST',
+                    body: JSON.stringify(requestData)
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    document.getElementById('generated-code').value = result.invite_code;
+                    document.getElementById('invite-result').style.display = 'block';
+                    loadActiveInvites();
+                } else {
+                    alert('Error generating invite code: ' + result.error);
+                }
+            } catch (error) {
+                console.error('Error generating invite code:', error);
+                alert('Failed to generate invite code. Please try again.');
+            }
+        });
+
+        function copyInviteCode() {
+            const codeInput = document.getElementById('generated-code');
+            codeInput.select();
+            codeInput.setSelectionRange(0, 99999);
+            
+            try {
+                document.execCommand('copy');
+                alert('Invite code copied to clipboard!');
+            } catch (err) {
+                alert('Failed to copy invite code. Please select and copy manually.');
+            }
+        }
+
+        async function loadActiveInvites() {
+            // TODO: Implement loading active invite codes
+            document.getElementById('active-invites').innerHTML = '<div class="text-secondary">Active invite codes display coming soon</div>';
+        }
+
+        async function loadAuditLogs() {
+            // TODO: Implement loading audit logs
+            document.getElementById('audit-logs-list').innerHTML = '<div class="text-secondary">Audit logs display coming soon</div>';
+        }
+
+        // User management functions
+        async function changeUserRole(userId, newRole) {
+            if (userId === currentUser.id) return;
+            
+            const confirmed = confirm(`Are you sure you want to change this user's role to ${newRole}?`);
+            if (!confirmed) {
+                loadUsers(); // Reset the dropdown
+                return;
+            }
+            
+            try {
+                const response = await authenticatedFetch(`/api/admin/users/${userId}/role`, {
+                    method: 'POST',
+                    body: JSON.stringify({ role: newRole })
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    alert('User role updated successfully');
+                } else {
+                    alert('Error updating user role: ' + result.error);
+                    loadUsers(); // Reset on error
+                }
+            } catch (error) {
+                console.error('Error updating user role:', error);
+                alert('Failed to update user role');
+                loadUsers(); // Reset on error
+            }
+        }
+
+        function viewUserDetails(userId) {
+            alert('User details modal coming soon');
+        }
+
+        function suspendUser(userId) {
+            const confirmed = confirm('Are you sure you want to suspend/activate this user?');
+            if (confirmed) {
+                alert('User suspension functionality coming soon');
+            }
+        }
+
+        // System maintenance functions
+        function backupDatabase() {
+            alert('Database backup functionality coming soon');
+        }
+
+        function cleanupSessions() {
+            alert('Session cleanup functionality coming soon');
+        }
+
+        function optimizeDatabase() {
+            alert('Database optimization functionality coming soon');
+        }
+
+        function systemRestart() {
+            const confirmed = confirm('Are you sure you want to restart the system? All users will be disconnected.');
+            if (confirmed) {
+                alert('System restart functionality coming soon');
+            }
+        }
+
+        function searchUsers() {
+            const searchTerm = document.getElementById('user-search').value;
+            alert(`Search functionality coming soon. Search term: ${searchTerm}`);
+        }
+
+        function exportLogs() {
+            alert('Log export functionality coming soon');
+        }
+
+        async function authenticatedFetch(url, options = {}) {
+            const token = localStorage.getItem('access_token');
+            return fetch(url, {
+                ...options,
+                headers: {
+                    ...options.headers,
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+        }
+    </script>
+    
+    <style>
+        .badge {
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+        .badge-success {
+            background: #28a745;
+            color: white;
+        }
+        .badge-warning {
+            background: #ffc107;
+            color: black;
+        }
+    </style>
+</body>
+</html>

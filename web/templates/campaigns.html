@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campaign Management - Star Wars RPG Character Manager</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <style>
+        .campaigns-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        .campaigns-header {
+            background: #007cba;
+            color: white;
+            padding: 1rem;
+            border-radius: 4px 4px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .campaigns-content {
+            background: white;
+            border: 1px solid #ddd;
+            border-top: none;
+            border-radius: 0 0 4px 4px;
+            padding: 2rem;
+        }
+        .campaign-tabs {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+        .tab-button {
+            background: none;
+            border: none;
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            font-size: 1rem;
+        }
+        .tab-button.active {
+            border-bottom-color: #007cba;
+            color: #007cba;
+            font-weight: bold;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .campaign-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+        @media (min-width: 768px) {
+            .campaign-grid {
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            }
+        }
+        .campaign-card {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 1.5rem;
+            background: #f8f9fa;
+        }
+        .campaign-card h3 {
+            margin: 0 0 1rem 0;
+            color: #007cba;
+        }
+        .campaign-stats {
+            display: flex;
+            gap: 1rem;
+            margin: 1rem 0;
+            flex-wrap: wrap;
+        }
+        .campaign-stat {
+            font-size: 0.875rem;
+            color: #666;
+            background: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+        }
+        .campaign-actions {
+            margin-top: 1rem;
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        .back-button {
+            text-decoration: none;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .back-button:hover {
+            color: #ccc;
+        }
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+        @media (min-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="campaigns-container">
+        <div class="campaigns-header">
+            <h1>Campaign Management</h1>
+            <a href="/" class="back-button">← Back to Dashboard</a>
+        </div>
+        
+        <div class="campaigns-content">
+            <div class="campaign-tabs">
+                <button class="tab-button active" onclick="showTab('my-campaigns')">My Campaigns</button>
+                <button class="tab-button" onclick="showTab('create-campaign')">Create Campaign</button>
+                <button class="tab-button" onclick="showTab('join-campaign')">Join Campaign</button>
+            </div>
+            
+            <!-- My Campaigns Tab -->
+            <div id="my-campaigns-tab" class="tab-content active">
+                <div class="campaign-section">
+                    <h2>My Campaigns</h2>
+                    <div id="campaigns-list">
+                        <div class="loading">Loading campaigns...</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Create Campaign Tab -->
+            <div id="create-campaign-tab" class="tab-content">
+                <div class="campaign-section">
+                    <h2>Create New Campaign</h2>
+                    <form id="create-campaign-form">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label">Campaign Name *</label>
+                                <input type="text" class="form-input" name="name" required placeholder="Enter campaign name">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Game System *</label>
+                                <select class="form-select" name="game_system" required>
+                                    <option value="">Select Game System</option>
+                                    <option value="Edge of the Empire">Edge of the Empire</option>
+                                    <option value="Age of Rebellion">Age of Rebellion</option>
+                                    <option value="Force and Destiny">Force and Destiny</option>
+                                    <option value="Mixed/All Systems">Mixed/All Systems</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Max Players</label>
+                                <input type="number" class="form-input" name="max_players" min="1" max="8" value="4">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Campaign Setting</label>
+                                <select class="form-select" name="setting">
+                                    <option value="">Select Setting (Optional)</option>
+                                    <option value="Original Trilogy">Original Trilogy Era</option>
+                                    <option value="Prequel Trilogy">Prequel Trilogy Era</option>
+                                    <option value="Sequel Trilogy">Sequel Trilogy Era</option>
+                                    <option value="Old Republic">Old Republic Era</option>
+                                    <option value="Custom">Custom Setting</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Description</label>
+                            <textarea class="form-input" name="description" rows="4" placeholder="Describe your campaign, setting, tone, and expectations..."></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">
+                                <input type="checkbox" name="allow_public_discovery"> Allow players to discover this campaign publicly
+                            </label>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary">Create Campaign</button>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Join Campaign Tab -->
+            <div id="join-campaign-tab" class="tab-content">
+                <div class="campaign-section">
+                    <h2>Join Campaign</h2>
+                    <form id="join-campaign-form">
+                        <div class="form-group">
+                            <label class="form-label">Campaign Invite Code *</label>
+                            <input type="text" class="form-input" name="invite_code" required placeholder="Enter campaign invite code" style="font-family: monospace; letter-spacing: 0.1rem;">
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary">Join Campaign</button>
+                    </form>
+                    
+                    <div style="margin-top: 2rem; padding: 1rem; background: #e3f2fd; border-radius: 4px;">
+                        <h4>How to Join a Campaign</h4>
+                        <ol>
+                            <li>Ask your Game Master for a campaign invite code</li>
+                            <li>Enter the code in the field above and click "Join Campaign"</li>
+                            <li>Once joined, you can assign your characters to the campaign</li>
+                            <li>Your Game Master will be able to see and manage your characters</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentUser = null;
+        let campaigns = [];
+
+        // Load user data on page load
+        document.addEventListener('DOMContentLoaded', async () => {
+            const token = localStorage.getItem('access_token');
+            if (!token) {
+                window.location.href = '/login';
+                return;
+            }
+
+            try {
+                const response = await authenticatedFetch('/api/auth/me');
+                if (response.ok) {
+                    currentUser = await response.json();
+                    loadCampaigns();
+                } else {
+                    localStorage.removeItem('access_token');
+                    window.location.href = '/login';
+                }
+            } catch (error) {
+                console.error('Authentication check failed:', error);
+                window.location.href = '/login';
+            }
+        });
+
+        function showTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected tab
+            document.getElementById(tabName + '-tab').classList.add('active');
+            event.target.classList.add('active');
+            
+            // Load campaigns when switching to my-campaigns tab
+            if (tabName === 'my-campaigns') {
+                loadCampaigns();
+            }
+        }
+
+        async function loadCampaigns() {
+            try {
+                const response = await authenticatedFetch('/api/campaigns');
+                const data = await response.json();
+                
+                if (response.ok) {
+                    campaigns = data.campaigns;
+                    displayCampaigns();
+                } else {
+                    document.getElementById('campaigns-list').innerHTML = `
+                        <div class="error">Error loading campaigns: ${data.error}</div>
+                    `;
+                }
+            } catch (error) {
+                console.error('Error loading campaigns:', error);
+                document.getElementById('campaigns-list').innerHTML = `
+                    <div class="error">Failed to load campaigns. Please try again.</div>
+                `;
+            }
+        }
+
+        function displayCampaigns() {
+            const campaignsList = document.getElementById('campaigns-list');
+            
+            if (campaigns && campaigns.length > 0) {
+                campaignsList.innerHTML = `
+                    <div class="campaign-grid">
+                        ${campaigns.map(campaign => `
+                            <div class="campaign-card">
+                                <h3>${campaign.name}</h3>
+                                <p>${campaign.description || 'No description provided'}</p>
+                                
+                                <div class="campaign-stats">
+                                    <span class="campaign-stat">Role: ${campaign.is_game_master ? 'Game Master' : 'Player'}</span>
+                                    <span class="campaign-stat">Players: ${campaign.player_count || 0}</span>
+                                    <span class="campaign-stat">Characters: ${campaign.character_count || 0}</span>
+                                    <span class="campaign-stat">Created: ${new Date(campaign.created_at).toLocaleDateString()}</span>
+                                </div>
+                                
+                                ${campaign.is_game_master ? `
+                                    <div class="campaign-actions">
+                                        <button class="btn btn-primary btn-sm" onclick="generateInviteCode('${campaign.id}')">
+                                            Generate Invite
+                                        </button>
+                                        <button class="btn btn-outline btn-sm" onclick="managePlayers('${campaign.id}')">
+                                            Manage Players
+                                        </button>
+                                        <button class="btn btn-outline btn-sm" onclick="editCampaign('${campaign.id}')">
+                                            Edit Campaign
+                                        </button>
+                                    </div>
+                                ` : `
+                                    <div class="campaign-actions">
+                                        <button class="btn btn-outline btn-sm" onclick="viewCampaignDetails('${campaign.id}')">
+                                            View Details
+                                        </button>
+                                        <button class="btn btn-danger btn-sm" onclick="leaveCampaign('${campaign.id}')">
+                                            Leave Campaign
+                                        </button>
+                                    </div>
+                                `}
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            } else {
+                campaignsList.innerHTML = `
+                    <div style="text-align: center; padding: 3rem; color: #666;">
+                        <h3>No Campaigns Yet</h3>
+                        <p>Create a new campaign or join an existing one to get started!</p>
+                        <div style="margin-top: 1rem;">
+                            <button class="btn btn-primary" onclick="showTab('create-campaign')">Create Campaign</button>
+                            <button class="btn btn-outline" onclick="showTab('join-campaign')">Join Campaign</button>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        // Form handlers
+        document.getElementById('create-campaign-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            const campaignData = {
+                name: formData.get('name'),
+                description: formData.get('description'),
+                game_system: formData.get('game_system'),
+                max_players: parseInt(formData.get('max_players')) || 4,
+                setting: formData.get('setting'),
+                allow_public_discovery: formData.has('allow_public_discovery')
+            };
+            
+            try {
+                const response = await authenticatedFetch('/api/campaigns', {
+                    method: 'POST',
+                    body: JSON.stringify(campaignData)
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    alert('Campaign created successfully!');
+                    e.target.reset();
+                    showTab('my-campaigns');
+                    loadCampaigns();
+                } else {
+                    alert('Error creating campaign: ' + result.error);
+                }
+            } catch (error) {
+                console.error('Error creating campaign:', error);
+                alert('Failed to create campaign. Please try again.');
+            }
+        });
+
+        document.getElementById('join-campaign-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            const inviteCode = formData.get('invite_code');
+            
+            if (!inviteCode) {
+                alert('Please enter a campaign invite code.');
+                return;
+            }
+            
+            try {
+                const response = await authenticatedFetch('/api/campaigns/join', {
+                    method: 'POST',
+                    body: JSON.stringify({ invite_code: inviteCode })
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    alert('Successfully joined campaign!');
+                    e.target.reset();
+                    showTab('my-campaigns');
+                    loadCampaigns();
+                } else {
+                    alert('Error joining campaign: ' + result.error);
+                }
+            } catch (error) {
+                console.error('Error joining campaign:', error);
+                alert('Failed to join campaign. Please try again.');
+            }
+        });
+
+        // Campaign management functions
+        async function generateInviteCode(campaignId) {
+            try {
+                const response = await authenticatedFetch(`/api/campaigns/${campaignId}/invite`, {
+                    method: 'POST'
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    const inviteCode = result.invite_code;
+                    
+                    // Show invite code modal
+                    const modal = `
+                        <div class="modal-overlay" onclick="closeModal()">
+                            <div class="modal" onclick="event.stopPropagation()">
+                                <div class="modal-header">
+                                    <h3>Campaign Invite Code</h3>
+                                    <button onclick="closeModal()">&times;</button>
+                                </div>
+                                <div class="modal-body">
+                                    <p>Share this code with players to invite them to your campaign:</p>
+                                    <div style="background: #f8f9fa; padding: 1rem; border-radius: 4px; font-family: monospace; font-size: 1.2rem; text-align: center; letter-spacing: 0.2rem; margin: 1rem 0;">
+                                        ${inviteCode}
+                                    </div>
+                                    <p class="text-secondary">This code will expire in 7 days.</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-primary" onclick="copyToClipboard('${inviteCode}')">Copy Code</button>
+                                    <button class="btn btn-secondary" onclick="closeModal()">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    
+                    document.body.insertAdjacentHTML('beforeend', modal);
+                } else {
+                    alert('Error generating invite code: ' + result.error);
+                }
+            } catch (error) {
+                console.error('Error generating invite code:', error);
+                alert('Failed to generate invite code. Please try again.');
+            }
+        }
+
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Invite code copied to clipboard!');
+                closeModal();
+            }).catch(() => {
+                alert('Could not copy to clipboard. Please copy manually: ' + text);
+            });
+        }
+
+        function closeModal() {
+            const modal = document.querySelector('.modal-overlay');
+            if (modal) {
+                modal.remove();
+            }
+        }
+
+        function managePlayers(campaignId) {
+            alert('Player management interface coming soon!');
+        }
+
+        function editCampaign(campaignId) {
+            alert('Campaign editing interface coming soon!');
+        }
+
+        function viewCampaignDetails(campaignId) {
+            alert('Campaign details interface coming soon!');
+        }
+
+        function leaveCampaign(campaignId) {
+            const confirmed = confirm('Are you sure you want to leave this campaign? Your characters will be unassigned from the campaign.');
+            if (confirmed) {
+                alert('Leave campaign functionality coming soon!');
+            }
+        }
+
+        async function authenticatedFetch(url, options = {}) {
+            const token = localStorage.getItem('access_token');
+            return fetch(url, {
+                ...options,
+                headers: {
+                    ...options.headers,
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+        }
+    </script>
+</body>
+</html>

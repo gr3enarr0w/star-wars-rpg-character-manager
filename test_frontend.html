@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frontend Test - Star Wars RPG Character Manager</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .test-section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; background: #f9f9f9; }
+        button { margin: 5px; padding: 10px 15px; background: #007cba; color: white; border: none; cursor: pointer; }
+        button:hover { background: #005a87; }
+        .console-output { background: #000; color: #00ff00; padding: 10px; margin: 10px 0; font-family: monospace; max-height: 300px; overflow-y: auto; }
+        .success { color: #28a745; }
+        .error { color: #dc3545; }
+        .warning { color: #ffc107; }
+    </style>
+</head>
+<body>
+    <h1>Star Wars RPG Character Manager - Frontend Test</h1>
+    <p>This page tests the frontend functionality. Open browser console (F12) to see debug output.</p>
+    
+    <div class="test-section">
+        <h3>Character Manager Status</h3>
+        <button onclick="checkCharacterManager()">Check CharacterManager</button>
+        <button onclick="loadCharacters()">Load Characters</button>
+        <button onclick="showCurrentCharacter()">Show Current Character</button>
+        <div id="status-output" class="console-output"></div>
+    </div>
+    
+    <div class="test-section">
+        <h3>API Tests</h3>
+        <button onclick="testGetCharacters()">Test GET Characters</button>
+        <button onclick="testCreateCharacter()">Test Create Character</button>
+        <button onclick="testAdvanceCharacteristic()">Test Advance Characteristic</button>
+        <div id="api-output" class="console-output"></div>
+    </div>
+    
+    <div class="test-section">
+        <h3>Frontend Tests</h3>
+        <button onclick="testAdvancementButtons()">Test Advancement Buttons</button>
+        <button onclick="testCharacterSelection()">Test Character Selection</button>
+        <button onclick="openMainApp()">Open Main App</button>
+        <div id="frontend-output" class="console-output"></div>
+    </div>
+
+    <script>
+        function log(message, type = 'info', outputId = 'status-output') {
+            const output = document.getElementById(outputId);
+            const timestamp = new Date().toLocaleTimeString();
+            const className = type === 'error' ? 'error' : type === 'success' ? 'success' : type === 'warning' ? 'warning' : '';
+            output.innerHTML += `<div class="${className}">[${timestamp}] ${message}</div>`;
+            output.scrollTop = output.scrollHeight;
+            
+            // Also log to browser console
+            console.log(`[${timestamp}] ${message}`);
+        }
+
+        function checkCharacterManager() {
+            const output = document.getElementById('status-output');
+            output.innerHTML = '';
+            
+            // Try to access the main app's characterManager
+            try {
+                const mainWindow = window.open('http://localhost:8000', '_blank', 'width=1200,height=800');
+                
+                setTimeout(() => {
+                    try {
+                        const cm = mainWindow.characterManager;
+                        if (cm) {
+                            log('✅ CharacterManager found in main window', 'success');
+                            log(`Characters loaded: ${cm.characters ? cm.characters.length : 'N/A'}`);
+                            log(`Current character: ${cm.currentCharacter ? cm.currentCharacter.name : 'None'}`);
+                            
+                            // Store reference for testing
+                            window.testCharacterManager = cm;
+                        } else {
+                            log('❌ CharacterManager not found in main window', 'error');
+                        }
+                    } catch (e) {
+                        log(`❌ Error accessing main window: ${e.message}`, 'error');
+                    }
+                }, 2000);
+                
+            } catch (e) {
+                log(`❌ Error opening main window: ${e.message}`, 'error');
+            }
+        }
+
+        async function testGetCharacters() {
+            const output = document.getElementById('api-output');
+            output.innerHTML = '';
+            
+            log('Testing GET /api/characters...', 'info', 'api-output');
+            
+            try {
+                const response = await fetch('http://localhost:8000/api/characters');
+                if (response.ok) {
+                    const data = await response.json();
+                    log(`✅ Success: Found ${data.characters.length} characters`, 'success', 'api-output');
+                    data.characters.forEach(char => {
+                        log(`  - ${char.name} (${char.species} ${char.career}) - ${char.availableXP} XP`, 'info', 'api-output');
+                    });
+                    window.testCharacters = data.characters;
+                } else {
+                    log(`❌ Failed: ${response.status} ${response.statusText}`, 'error', 'api-output');
+                }
+            } catch (e) {
+                log(`❌ Error: ${e.message}`, 'error', 'api-output');
+            }
+        }
+
+        async function testCreateCharacter() {
+            const output = document.getElementById('api-output');
+            
+            const testChar = {
+                name: `Test_Frontend_${Date.now()}`,
+                playerName: 'Frontend Test',
+                species: 'Human',
+                career: 'Smuggler',
+                background: 'Frontend test character'
+            };
+            
+            log(`Creating test character: ${testChar.name}`, 'info', 'api-output');
+            
+            try {
+                const response = await fetch('http://localhost:8000/api/characters', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(testChar)
+                });
+                
+                if (response.ok) {
+                    const result = await response.json();
+                    log(`✅ Character created: ${result.character.name}`, 'success', 'api-output');
+                    window.testCharacterId = result.character.id;
+                } else {
+                    const error = await response.json();
+                    log(`❌ Creation failed: ${error.error}`, 'error', 'api-output');
+                }
+            } catch (e) {
+                log(`❌ Error: ${e.message}`, 'error', 'api-output');
+            }
+        }
+
+        async function testAdvanceCharacteristic() {
+            const output = document.getElementById('api-output');
+            
+            if (!window.testCharacterId) {
+                log('❌ No test character ID. Create a character first.', 'error', 'api-output');
+                return;
+            }
+            
+            // First award some XP
+            log('Awarding XP for advancement test...', 'info', 'api-output');
+            try {
+                await fetch(`http://localhost:8000/api/characters/${encodeURIComponent(window.testCharacterId)}/award-xp`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ amount: 50, reason: 'Frontend test' })
+                });
+                
+                // Now test characteristic advancement
+                log('Testing characteristic advancement...', 'info', 'api-output');
+                const response = await fetch(`http://localhost:8000/api/characters/${encodeURIComponent(window.testCharacterId)}/advance-characteristic`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ characteristic: 'Brawn' })
+                });
+                
+                if (response.ok) {
+                    const result = await response.json();
+                    log(`✅ Characteristic advanced: ${result.message}`, 'success', 'api-output');
+                } else {
+                    const error = await response.json();
+                    log(`❌ Advancement failed: ${error.error}`, 'error', 'api-output');
+                }
+            } catch (e) {
+                log(`❌ Error: ${e.message}`, 'error', 'api-output');
+            }
+        }
+
+        function testAdvancementButtons() {
+            const output = document.getElementById('frontend-output');
+            output.innerHTML = '';
+            
+            if (!window.testCharacterManager) {
+                log('❌ No CharacterManager reference. Check CharacterManager first.', 'error', 'frontend-output');
+                return;
+            }
+            
+            const cm = window.testCharacterManager;
+            
+            log('Testing advancement button functionality...', 'info', 'frontend-output');
+            
+            if (cm.characters && cm.characters.length > 0) {
+                const testChar = cm.characters[0];
+                log(`Setting current character to: ${testChar.name}`, 'info', 'frontend-output');
+                cm.currentCharacter = testChar;
+                
+                // Test characteristic advancement
+                log('Testing advanceCharacteristic method...', 'info', 'frontend-output');
+                if (typeof cm.advanceCharacteristic === 'function') {
+                    log('✅ advanceCharacteristic method exists', 'success', 'frontend-output');
+                    // Don't actually call it, just verify it exists
+                } else {
+                    log('❌ advanceCharacteristic method missing', 'error', 'frontend-output');
+                }
+                
+                // Test skill advancement
+                log('Testing advanceSkill method...', 'info', 'frontend-output');
+                if (typeof cm.advanceSkill === 'function') {
+                    log('✅ advanceSkill method exists', 'success', 'frontend-output');
+                } else {
+                    log('❌ advanceSkill method missing', 'error', 'frontend-output');
+                }
+                
+            } else {
+                log('❌ No characters available for testing', 'error', 'frontend-output');
+            }
+        }
+
+        function openMainApp() {
+            window.open('http://localhost:8000', '_blank', 'width=1200,height=800');
+            log('Main app opened in new window', 'info', 'frontend-output');
+        }
+
+        // Auto-load characters on page load
+        window.addEventListener('load', () => {
+            setTimeout(testGetCharacters, 1000);
+        });
+    </script>
+</body>
+</html>

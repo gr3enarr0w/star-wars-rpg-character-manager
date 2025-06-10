@@ -1,0 +1,100 @@
+{
+  "test_results": {
+    "initial_load": {
+      "status": "PASS",
+      "title": "Star Wars RPG Character Manager",
+      "has_header": true,
+      "has_main_content": true,
+      "loading_elements": 0,
+      "page_source_length": 27911,
+      "screenshot": "test_screenshots/browser_test_01_initial_load_20250609_233353.png"
+    },
+    "character_creation_button": {
+      "status": "PASS",
+      "button_found": true,
+      "button_text": "Create Character",
+      "is_visible": true,
+      "is_enabled": true,
+      "clicked_successfully": true
+    },
+    "navigation": {
+      "status": "PASS",
+      "nav_elements_count": 3,
+      "navigation_info": [
+        {
+          "text": "Dashboard",
+          "href": "http://127.0.0.1:5000/#",
+          "data_action": "show-dashboard",
+          "is_visible": true,
+          "is_enabled": true
+        },
+        {
+          "text": "Create Character",
+          "href": "http://127.0.0.1:5000/#",
+          "data_action": "show-create-character",
+          "is_visible": true,
+          "is_enabled": true
+        },
+        {
+          "text": "Help",
+          "href": "http://127.0.0.1:5000/#",
+          "data_action": null,
+          "is_visible": true,
+          "is_enabled": true
+        }
+      ],
+      "has_dashboard_nav": true,
+      "has_create_nav": true,
+      "has_help_nav": true
+    },
+    "interactive_elements": {
+      "status": "PASS",
+      "buttons_count": 2,
+      "button_info": [
+        {
+          "text": "Cancel",
+          "data_action": "show-dashboard",
+          "onclick": null,
+          "is_visible": true,
+          "is_enabled": true,
+          "classes": "btn btn-secondary"
+        },
+        {
+          "text": "Create Character",
+          "data_action": null,
+          "onclick": null,
+          "is_visible": true,
+          "is_enabled": true,
+          "classes": "btn btn-primary"
+        }
+      ],
+      "action_links_count": 3,
+      "js_errors": [],
+      "js_errors_count": 0
+    },
+    "character_form": {
+      "status": "PASS",
+      "create_button_clicked": true,
+      "forms_found": 1,
+      "inputs_found": 2,
+      "selects_found": 2,
+      "textareas_found": 1,
+      "character_inputs_found": 0
+    },
+    "help_functionality": {
+      "status": "PASS",
+      "help_element_found": true,
+      "onclick_attribute": "characterManager.showHelp()",
+      "help_clicked": true,
+      "help_content_shown": true,
+      "modals_found": 1
+    }
+  },
+  "console_logs": [],
+  "summary": {
+    "passed": 6,
+    "total": 6,
+    "pass_rate": 1.0,
+    "timestamp": "2025-06-09T23:34:16.433378"
+  }
+}

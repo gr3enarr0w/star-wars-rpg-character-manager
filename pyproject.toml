@@ -1,0 +1,32 @@
+[project]
+name = "swrpg-character-manager"
+version = "0.1.0"
+description = "Dynamic character leveling system for Star Wars RPG"
+requires-python = ">=3.8"
+dependencies = [
+    "flask>=3.0.0",
+    "pymongo>=4.6.1",
+    "flask-pymongo>=2.3.0",
+    "flask-bcrypt>=1.0.1",
+    "flask-jwt-extended>=4.6.0",
+    "python-dotenv>=1.0.0",
+    "pyotp>=2.9.0",
+    "qrcode>=7.4.2",
+    "Pillow>=10.2.0",
+    "requests>=2.32.3",
+    "passlib>=1.7.4",
+    "cryptography>=41.0.8",
+    "authlib>=1.3.0",
+    "requests-oauthlib>=1.3.1",
+    "playwright>=1.40.0",
+    "pytest>=7.4.0",
+    "pytest-playwright>=0.4.3",
+    "pytest-asyncio>=0.21.0",
+]
+
+[project.scripts]
+swrpg = "swrpg_character_manager.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

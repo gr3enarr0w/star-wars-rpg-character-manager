@@ -1,0 +1,66 @@
+[2025-06-08 16:44:19] [INFO] 🚀 Starting Complete Automated Diagnosis
+[2025-06-08 16:44:19] [INFO] ============================================================
+[2025-06-08 16:44:19] [INFO] Setting up Chrome browser...
+[2025-06-08 16:44:21] [SUCCESS] ✅ Browser setup successful
+[2025-06-08 16:44:21] [INFO] 
+📋 Running: Page Loading
+[2025-06-08 16:44:21] [INFO] Testing page loading...
+[2025-06-08 16:44:21] [INFO] Page title: Star Wars RPG Character Manager
+[2025-06-08 16:44:21] [SUCCESS] ✅ Page loaded successfully
+[2025-06-08 16:44:21] [INFO] 
+📋 Running: JavaScript Loading
+[2025-06-08 16:44:21] [INFO] Testing JavaScript loading...
+[2025-06-08 16:44:21] [SUCCESS] ✅ main.js loads correctly
+[2025-06-08 16:44:21] [INFO] 
+📋 Running: CharacterManager Init
+[2025-06-08 16:44:21] [INFO] Testing CharacterManager initialization...
+[2025-06-08 16:44:23] [SUCCESS] ✅ CharacterManager object exists
+[2025-06-08 16:44:23] [INFO] CharacterManager type: object
+[2025-06-08 16:44:23] [INFO] Characters loaded: 6
+[2025-06-08 16:44:23] [INFO] 
+📋 Running: Console Errors
+[2025-06-08 16:44:23] [INFO] Checking console errors...
+[2025-06-08 16:44:23] [SUCCESS] ✅ No console errors found
+[2025-06-08 16:44:23] [INFO] 
+📋 Running: Character Creation
+[2025-06-08 16:44:23] [INFO] Testing character creation workflow...
+[2025-06-08 16:44:23] [INFO] ✅ Create character button clicked
+[2025-06-08 16:44:23] [INFO] ✅ Character creation form submitted
+[2025-06-08 16:44:23] [SUCCESS] ✅ Character sheet loaded successfully
+[2025-06-08 16:44:23] [INFO] 
+📋 Running: Current Character State
+[2025-06-08 16:44:23] [INFO] Testing currentCharacter state...
+[2025-06-08 16:44:23] [SUCCESS] ✅ currentCharacter set: AutoTest_1749415463 (ID: AutoTest_1749415463)
+[2025-06-08 16:44:23] [INFO] 
+📋 Running: Advancement Buttons
+[2025-06-08 16:44:23] [INFO] Testing advancement buttons...
+[2025-06-08 16:44:23] [INFO] Testing currentCharacter state...
+[2025-06-08 16:44:23] [SUCCESS] ✅ currentCharacter set: AutoTest_1749415463 (ID: AutoTest_1749415463)
+[2025-06-08 16:44:23] [INFO] ✅ Award XP button found
+[2025-06-08 16:44:25] [SUCCESS] ✅ Award XP functionality works
+[2025-06-08 16:44:25] [ERROR] ❌ Advancement button test error: Alert Text: Awarded 25 XP to AutoTest_1749415463
+Message: unexpected alert open: {Alert text : Awarded 25 XP to AutoTest_1749415463}
+  (Session info: chrome=137.0.7151.69)
+Stacktrace:
+0   chromedriver                        0x0000000100d2e654 cxxbridge1$str$ptr + 2723108
+1   chromedriver                        0x0000000100d268c8 cxxbridge1$str$ptr + 2690968
+2   chromedriver                        0x000000010087a714 cxxbridge1$string$len + 90428
+3   chromedriver                        0x00000001009035f0 cxxbridge1$string$len + 651288
+4   chromedriver                        0x00000001008b59c8 cxxbridge1$string$len + 332784
+5   chromedriver                        0x0000000100cf2278 cxxbridge1$str$ptr + 2476360
+6   chromedriver                        0x0000000100cf550c cxxbridge1$str$ptr + 2489308
+7   chromedriver                        0x0000000100cd3a64 cxxbridge1$str$ptr + 2351412
+8   chromedriver                        0x0000000100cf5d94 cxxbridge1$str$ptr + 2491492
+9   chromedriver                        0x0000000100cc4d58 cxxbridge1$str$ptr + 2290728
+10  chromedriver                        0x0000000100d15d60 cxxbridge1$str$ptr + 2622512
+11  chromedriver                        0x0000000100d15eec cxxbridge1$str$ptr + 2622908
+12  chromedriver                        0x0000000100d26514 cxxbridge1$str$ptr + 2690020
+13  libsystem_pthread.dylib             0x0000000185f9ec0c _pthread_start + 136
+14  libsystem_pthread.dylib             0x0000000185f99b80 thread_start + 8
+
+[2025-06-08 16:44:25] [INFO] ⚠️ Advancement Buttons failed, attempting fixes...
+[2025-06-08 16:44:25] [INFO] Applying automatic fixes...
+[2025-06-08 16:44:25] [SUCCESS] ✅ Applied 0 fixes
+[2025-06-08 16:44:25] [INFO] Generating diagnostic report...
+[2025-06-08 16:44:25] [INFO] 📄 Report saved to: diagnostic_report_20250608_164425.txt
+[2025-06-08 16:44:26] [INFO] 🔄 Browser session closed

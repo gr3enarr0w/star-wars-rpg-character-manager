@@ -1,0 +1,247 @@
+name: Documentation Issue
+description: Report issues with documentation or request documentation improvements
+title: "[DOCS] "
+labels: ["documentation", "needs-review"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping improve our documentation! Clear documentation is essential for project success.
+
+  - type: dropdown
+    id: doc-type
+    attributes:
+      label: Documentation Type
+      description: What type of documentation is this about?
+      options:
+        - User Guide/Tutorial
+        - API Documentation
+        - Installation/Setup Guide
+        - Development/Contributing Guide
+        - README
+        - Code Comments
+        - Deployment Guide
+        - Troubleshooting Guide
+        - Other
+    validations:
+      required: true
+
+  - type: dropdown
+    id: issue-type
+    attributes:
+      label: Issue Type
+      description: What kind of documentation issue is this?
+      options:
+        - Missing Documentation
+        - Incorrect Information
+        - Outdated Content
+        - Unclear Instructions
+        - Typo/Grammar Error
+        - Broken Links
+        - Missing Examples
+        - Poor Organization
+        - Translation Request
+        - Other
+    validations:
+      required: true
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority Level
+      description: How important is this documentation issue?
+      options:
+        - High (Blocks user onboarding/development)
+        - Medium (Causes confusion but workarounds exist)
+        - Low (Minor improvement)
+    validations:
+      required: true
+
+  - type: input
+    id: doc-location
+    attributes:
+      label: Documentation Location
+      description: Where is the documentation located?
+      placeholder: e.g., README.md line 45, API_DOCUMENTATION.md section "Authentication", docs/user-guide/character-creation.md
+    validations:
+      required: true
+
+  - type: textarea
+    id: current-content
+    attributes:
+      label: Current Content (if applicable)
+      description: Quote the current documentation content that needs to be changed
+      placeholder: |
+        Current text:
+        ```
+        [paste current content here]
+        ```
+
+  - type: textarea
+    id: issue-description
+    attributes:
+      label: Issue Description
+      description: Describe the documentation problem in detail
+      placeholder: |
+        What is wrong with the current documentation?
+        What confusion does it cause?
+        What information is missing?
+    validations:
+      required: true
+
+  - type: textarea
+    id: suggested-improvement
+    attributes:
+      label: Suggested Improvement
+      description: How should the documentation be improved?
+      placeholder: |
+        Proposed new content:
+        ```
+        [suggested improved content]
+        ```
+        
+        Or describe what should be added/changed...
+    validations:
+      required: true
+
+  - type: dropdown
+    id: audience
+    attributes:
+      label: Target Audience
+      description: Who is the primary audience for this documentation?
+      options:
+        - New Users/Players
+        - Game Masters
+        - Administrators
+        - Developers
+        - API Users
+        - System Administrators
+        - All Users
+    validations:
+      required: true
+
+  - type: dropdown
+    id: user-experience
+    attributes:
+      label: User Experience Level
+      description: What experience level should this documentation target?
+      options:
+        - Beginner (No prior knowledge)
+        - Intermediate (Some experience with similar systems)
+        - Advanced (Expert users)
+        - All Levels
+
+  - type: textarea
+    id: use-case
+    attributes:
+      label: Use Case/Context
+      description: When and why would someone need this documentation?
+      placeholder: |
+        Describe the scenario where users would reference this documentation:
+        - What task are they trying to accomplish?
+        - What information do they need?
+        - What challenges are they facing?
+
+  - type: textarea
+    id: examples-needed
+    attributes:
+      label: Examples Needed
+      description: What examples would help illustrate this documentation?
+      placeholder: |
+        - Code examples
+        - Screenshots
+        - Step-by-step walkthroughs
+        - Common use cases
+        - Error scenarios
+
+  - type: input
+    id: related-docs
+    attributes:
+      label: Related Documentation
+      description: Are there other documentation sections that relate to this issue?
+      placeholder: e.g., "This relates to the API auth docs and the user setup guide"
+
+  - type: textarea
+    id: user-feedback
+    attributes:
+      label: User Feedback
+      description: Have users reported confusion about this topic?
+      placeholder: |
+        - Common questions from users
+        - Support requests related to this topic
+        - Community discussion references
+
+  - type: dropdown
+    id: format-preference
+    attributes:
+      label: Format Preference
+      description: What format would work best for this documentation?
+      options:
+        - Text/Markdown
+        - Screenshots/Images
+        - Video Tutorial
+        - Interactive Guide
+        - Code Examples
+        - Diagrams/Flowcharts
+        - FAQ Format
+        - No Preference
+
+  - type: textarea
+    id: technical-details
+    attributes:
+      label: Technical Details
+      description: Any technical information that should be included?
+      placeholder: |
+        - API endpoints involved
+        - Configuration options
+        - System requirements
+        - Dependencies
+        - Error codes/messages
+
+  - type: textarea
+    id: current-workaround
+    attributes:
+      label: Current Workaround
+      description: How are users currently solving this without proper documentation?
+      placeholder: Describe any unofficial solutions or workarounds users are using...
+
+  - type: checkboxes
+    id: research
+    attributes:
+      label: Research Checklist
+      description: Please confirm you have done the following
+      options:
+        - label: I have searched existing documentation issues
+          required: true
+        - label: I have checked if this is covered elsewhere in the documentation
+          required: true
+        - label: I have verified this is not already in progress
+          required: true
+
+  - type: checkboxes
+    id: contribution
+    attributes:
+      label: Contribution Interest
+      description: Would you be interested in helping with this documentation?
+      options:
+        - label: I would be willing to write the initial draft
+          required: false
+        - label: I could provide examples or screenshots
+          required: false
+        - label: I would be willing to review/test the updated documentation
+          required: false
+        - label: I could help with translation if needed
+          required: false
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional Context
+      description: Any other context that would help improve this documentation
+      placeholder: |
+        - References to similar documentation in other projects
+        - User experience research
+        - Accessibility considerations
+        - Localization needs

@@ -1,0 +1,92 @@
+{
+  "homepage": {
+    "status": "PASS",
+    "status_code": 200,
+    "response_time": 0.000777,
+    "content_length": 9859,
+    "content_type": "text/html; charset=utf-8",
+    "has_html": true,
+    "has_title": true,
+    "has_form": false,
+    "has_character_content": true
+  },
+  "api_endpoints": {
+    "status": "PASS",
+    "accessible_endpoints": 4,
+    "total_endpoints": 4,
+    "endpoints": {
+      "/api/characters": {
+        "status_code": 200,
+        "accessible": true,
+        "response_time": 0.001918,
+        "content_type": "application/json",
+        "is_json": true,
+        "data_type": "dict"
+      },
+      "/api/careers": {
+        "status_code": 404,
+        "accessible": true,
+        "response_time": 0.00065,
+        "content_type": "text/html; charset=utf-8"
+      },
+      "/api/species": {
+        "status_code": 404,
+        "accessible": true,
+        "response_time": 0.000632,
+        "content_type": "text/html; charset=utf-8"
+      },
+      "/api/skills": {
+        "status_code": 404,
+        "accessible": true,
+        "response_time": 0.000602,
+        "content_type": "text/html; charset=utf-8"
+      }
+    }
+  },
+  "static_resources": {
+    "status": "PASS",
+    "available_resources": 3,
+    "total_resources": 3,
+    "resources": {
+      "/static/css/main.css": {
+        "status_code": 200,
+        "available": true,
+        "size": 9511,
+        "content_type": "text/css; charset=utf-8"
+      },
+      "/static/js/main.js": {
+        "status_code": 200,
+        "available": true,
+        "size": 69976,
+        "content_type": "text/javascript; charset=utf-8"
+      },
+      "/static/js/auth.js": {
+        "status_code": 200,
+        "available": true,
+        "size": 5674,
+        "content_type": "text/javascript; charset=utf-8"
+      }
+    }
+  },
+  "content_analysis": {
+    "status": "PASS",
+    "analysis": {
+      "loading_text": 0,
+      "create_character_mentions": 3,
+      "button_elements": 4,
+      "form_elements": 0,
+      "input_elements": 0,
+      "javascript_files": 1,
+      "css_files": 1,
+      "error_messages": 0
+    },
+    "fixes_indicators": {
+      "has_character_creation": true,
+      "has_interactive_elements": true,
+      "loading_not_persistent": true,
+      "has_forms": false
+    },
+    "health_score": 0.75,
+    "content_length": 9836
+  }
+}

@@ -1,0 +1,25 @@
+[2025-06-08 16:38:54] [INFO] 🚀 Starting Complete Automated Diagnosis
+[2025-06-08 16:38:54] [INFO] ============================================================
+[2025-06-08 16:38:54] [INFO] Setting up Chrome browser...
+[2025-06-08 16:38:55] [ERROR] ❌ Browser setup failed: Message: unknown error: cannot find Chrome binary
+Stacktrace:
+0   chromedriver                        0x0000000104e37f48 chromedriver + 4226888
+1   chromedriver                        0x0000000104e304f4 chromedriver + 4195572
+2   chromedriver                        0x0000000104a74d68 chromedriver + 281960
+3   chromedriver                        0x0000000104a9bc24 chromedriver + 441380
+4   chromedriver                        0x0000000104a9a150 chromedriver + 434512
+5   chromedriver                        0x0000000104ad793c chromedriver + 686396
+6   chromedriver                        0x0000000104ad7164 chromedriver + 684388
+7   chromedriver                        0x0000000104aa3f1c chromedriver + 474908
+8   chromedriver                        0x0000000104aa4ef4 chromedriver + 478964
+9   chromedriver                        0x0000000104df959c chromedriver + 3970460
+10  chromedriver                        0x0000000104dfd6f0 chromedriver + 3987184
+11  chromedriver                        0x0000000104e035b4 chromedriver + 4011444
+12  chromedriver                        0x0000000104dfe2fc chromedriver + 3990268
+13  chromedriver                        0x0000000104dd61c0 chromedriver + 3826112
+14  chromedriver                        0x0000000104e1a088 chromedriver + 4104328
+15  chromedriver                        0x0000000104e1a1e0 chromedriver + 4104672
+16  chromedriver                        0x0000000104e29f28 chromedriver + 4169512
+17  libsystem_pthread.dylib             0x0000000185f9ec0c _pthread_start + 136
+18  libsystem_pthread.dylib             0x0000000185f99b80 thread_start + 8
+

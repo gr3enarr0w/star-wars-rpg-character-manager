@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frontend Diagnostic Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; background: #f5f5f5; }
+        .test-result { margin: 10px 0; padding: 10px; border-radius: 5px; }
+        .success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .warning { background: #fff3cd; color: #856404; border: 1px solid #ffeeba; }
+        .test-section { margin: 20px 0; padding: 15px; background: white; border-radius: 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        button { margin: 5px; padding: 8px 15px; background: #007cba; color: white; border: none; border-radius: 3px; cursor: pointer; }
+        button:hover { background: #005a87; }
+        #console-output { background: #000; color: #00ff00; padding: 10px; font-family: monospace; max-height: 200px; overflow-y: auto; margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <h1>🔍 Frontend Diagnostic Test</h1>
+    <p>This page will automatically test frontend functionality and report issues.</p>
+    
+    <div class="test-section">
+        <h3>Test Results</h3>
+        <div id="test-results"></div>
+        <button onclick="runAllTests()">Run All Tests</button>
+        <button onclick="clearResults()">Clear Results</button>
+    </div>
+    
+    <div class="test-section">
+        <h3>Console Output</h3>
+        <div id="console-output"></div>
+    </div>
+    
+    <script>
+        function logResult(message, type = 'info') {
+            const resultsDiv = document.getElementById('test-results');
+            const resultDiv = document.createElement('div');
+            resultDiv.className = `test-result ${type}`;
+            resultDiv.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            resultsDiv.appendChild(resultDiv);
+            
+            // Also log to console output
+            const consoleDiv = document.getElementById('console-output');
+            consoleDiv.innerHTML += `<div>[${new Date().toLocaleTimeString()}] ${message}</div>`;
+            consoleDiv.scrollTop = consoleDiv.scrollHeight;
+        }
+        
+        function testCharacterManagerExists() {
+            try {
+                // Try to access the main app
+                const mainWindow = window.opener || window.parent;
+                if (mainWindow && mainWindow !== window) {
+                    if (typeof mainWindow.characterManager !== 'undefined') {
+                        logResult('✅ CharacterManager found in parent window', 'success');
+                        return mainWindow.characterManager;
+                    }
+                }
+                
+                // Try in current window
+                if (typeof characterManager !== 'undefined') {
+                    logResult('✅ CharacterManager found in current window', 'success');
+                    return characterManager;
+                }
+                
+                logResult('❌ CharacterManager not found', 'error');
+                return null;
+            } catch (e) {
+                logResult(`❌ Error accessing CharacterManager: ${e.message}`, 'error');
+                return null;
+            }
+        }
+        
+        async function testAPI() {
+            logResult('Testing API endpoints...', 'info');
+            
+            try {
+                const response = await fetch('http://localhost:8000/api/characters');
+                if (response.ok) {
+                    const data = await response.json();
+                    logResult(`✅ API working: ${data.characters.length} characters found`, 'success');
+                    return true;
+                } else {
+                    logResult(`❌ API error: ${response.status}`, 'error');
+                    return false;
+                }
+            } catch (e) {
+                logResult(`❌ API connection failed: ${e.message}`, 'error');
+                return false;
+            }
+        }
+        
+        function testMainAppConnectivity() {
+            logResult('Testing main app connectivity...', 'info');
+            
+            try {
+                // Open main app and test
+                const mainApp = window.open('http://localhost:8000', 'mainApp', 'width=1200,height=800');
+                
+                setTimeout(() => {
+                    try {
+                        if (mainApp.characterManager) {
+                            logResult('✅ Main app loads and CharacterManager initializes', 'success');
+                            
+                            // Test character loading
+                            const charCount = mainApp.characterManager.characters.length;
+                            logResult(`✅ Characters loaded: ${charCount}`, 'success');
+                            
+                            // Test current character
+                            if (mainApp.characterManager.currentCharacter) {
+                                logResult(`✅ Current character: ${mainApp.characterManager.currentCharacter.name}`, 'success');
+                            } else {
+                                logResult('⚠️ No current character selected', 'warning');
+                            }
+                            
+                        } else {
+                            logResult('❌ CharacterManager not initialized in main app', 'error');
+                        }
+                    } catch (e) {
+                        logResult(`❌ Error testing main app: ${e.message}`, 'error');
+                    }
+                }, 3000);
+                
+            } catch (e) {
+                logResult(`❌ Failed to open main app: ${e.message}`, 'error');
+            }
+        }
+        
+        async function runAllTests() {
+            logResult('🚀 Starting automated frontend tests...', 'info');
+            
+            // Test 1: API connectivity
+            await testAPI();
+            
+            // Test 2: CharacterManager
+            testCharacterManagerExists();
+            
+            // Test 3: Main app connectivity
+            testMainAppConnectivity();
+            
+            logResult('✅ All tests completed', 'success');
+        }
+        
+        function clearResults() {
+            document.getElementById('test-results').innerHTML = '';
+            document.getElementById('console-output').innerHTML = '';
+        }
+        
+        // Auto-run tests on page load
+        window.addEventListener('load', () => {
+            setTimeout(runAllTests, 1000);
+        });
+    </script>
+</body>
+</html>
