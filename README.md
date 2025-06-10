@@ -250,10 +250,6 @@ For support and questions:
 - **Mobile compatibility** (responsive design optimization)
 - **Foundry VTT integration** (maybe - if feasible)
 - **AI-powered game assistance** features
-- Advanced reporting and analytics
-- Multi-system RPG support (D&D, Pathfinder, etc.)
-- Community sharing and campaign marketplace
-- Extended VTT platform integrations
 
 ### v1.2 - Future Development
 - TBD (To Be Determined based on community feedback and project evolution)
