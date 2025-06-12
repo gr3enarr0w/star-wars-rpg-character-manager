@@ -69,6 +69,41 @@ def register():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+@app.route('/api/debug/create-admin', methods=['POST'])
+def create_admin_debug():
+    """DEBUG: Create admin user using Flask app's context."""
+    try:
+        # Delete all existing users first
+        db_manager.users.delete_many({})
+        
+        # Create admin user using the same encryption context as Flask app
+        from swrpg_character_manager.database import User
+        from datetime import datetime
+        
+        admin_user = User(
+            username="admin",
+            email="admin@swrpg.local",
+            password_hash=auth_manager.hash_password("admin123"),
+            role="admin",
+            is_active=True,
+            created_at=datetime.now()
+        )
+        
+        admin_id = db_manager.create_user(admin_user)
+        
+        # Test that we can find the user immediately
+        test_user = db_manager.get_user_by_email("admin@swrpg.local")
+        
+        return jsonify({
+            'message': 'Admin created successfully',
+            'admin_id': str(admin_id),
+            'test_lookup': test_user is not None,
+            'test_username': test_user.username if test_user else None
+        }), 200
+        
+    except Exception as e:
+        return jsonify({'error': f'Failed to create admin: {str(e)}'}), 500
+
 @app.route('/api/auth/login', methods=['POST'])
 def login():
     """Login user."""
@@ -78,10 +113,31 @@ def login():
         password = data.get('password')
         two_factor_token = data.get('two_factor_token')
 
+        # DEBUG: Add logging with flush
+        print(f"🔍 LOGIN DEBUG: email={email}, password_len={len(password) if password else 0}", flush=True)
+
         if not email or not password:
             return jsonify({'error': 'Email and password are required'}), 400
 
+        # DEBUG: Test user lookup
+        try:
+            # Debug encryption setup
+            from swrpg_character_manager.security import data_encryption
+            import os as debug_os
+            key_file = debug_os.path.join(debug_os.path.dirname(__file__), '..', 'src', 'swrpg_character_manager', '../../.encryption_key')
+            key_file = debug_os.path.abspath(key_file)
+            print(f"🔍 LOGIN DEBUG: encryption_key_path={key_file}, exists={debug_os.path.exists(key_file)}", flush=True)
+            print(f"🔍 LOGIN DEBUG: working_dir={debug_os.getcwd()}", flush=True)
+            
+            user = db_manager.get_user_by_email(email)
+            print(f"🔍 LOGIN DEBUG: user_found={user is not None}", flush=True)
+            if user:
+                print(f"🔍 LOGIN DEBUG: user_username={user.username}, user_active={user.is_active}", flush=True)
+        except Exception as e:
+            print(f"🔍 LOGIN DEBUG: user_lookup_error={e}", flush=True)
+
         success, message, user = auth_manager.authenticate_user(email, password)
+        print(f"🔍 LOGIN DEBUG: auth_success={success}, auth_message={message}", flush=True)
 
         if not success:
             return jsonify({'error': message}), 401
@@ -164,6 +220,43 @@ def verify_2fa_setup():
         else:
             return jsonify({'error': 'Invalid token'}), 400
 
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/auth/change-password', methods=['POST'])
+@auth_manager.require_auth
+def change_password():
+    """Change user password."""
+    try:
+        current_user_id = ObjectId(get_jwt_identity())
+        data = request.get_json()
+        
+        current_password = data.get('current_password')
+        new_password = data.get('new_password')
+        
+        if not current_password or not new_password:
+            return jsonify({'error': 'Current password and new password are required'}), 400
+        
+        # Get current user
+        user = db_manager.get_user_by_id(current_user_id)
+        if not user:
+            return jsonify({'error': 'User not found'}), 404
+        
+        # Verify current password
+        if not auth_manager.verify_password(current_password, user.password_hash):
+            return jsonify({'error': 'Current password is incorrect'}), 400
+        
+        # Hash new password
+        new_password_hash = auth_manager.hash_password(new_password)
+        
+        # Update password
+        success = db_manager.update_user(current_user_id, {'password_hash': new_password_hash})
+        
+        if success:
+            return jsonify({'message': 'Password changed successfully'}), 200
+        else:
+            return jsonify({'error': 'Failed to update password'}), 500
+    
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
@@ -1319,12 +1412,18 @@ def calculate_level(character):
     spent_xp = character.spent_xp
     return max(1, spent_xp // 25 + 1)
 
-# Main routes
+# Main routes - Dashboard and Landing
 @app.route('/')
 def index():
-    """Main application page."""
+    """Main dashboard page with client-side authentication."""
     return render_template('index_with_auth.html')
 
+@app.route('/welcome')
+def welcome():
+    """Welcome/landing page for unauthenticated users."""
+    return render_template('index_with_auth.html')
+
+# Authentication Pages
 @app.route('/login')
 def login_page():
     """Login page."""
@@ -1335,29 +1434,80 @@ def register_page():
     """Registration page."""
     return render_template('register.html')
 
-@app.route('/docs')
+# Character Management Pages
+@app.route('/create')
 @auth_manager.require_auth
-def documentation_page():
-    """Documentation page with role-based access."""
-    return render_template('documentation.html')
+def create_character_page():
+    """Character creation page."""
+    current_user_id = ObjectId(get_jwt_identity())
+    current_user = db_manager.get_user_by_id(current_user_id)
+    return render_template('create_character.html', current_user=current_user)
 
-@app.route('/profile')
+@app.route('/character/<character_id>')
 @auth_manager.require_auth
-def profile_page():
-    """User profile settings page."""
-    return render_template('profile.html')
+def character_sheet_page(character_id):
+    """Character sheet page."""
+    current_user_id = ObjectId(get_jwt_identity())
+    current_user = db_manager.get_user_by_id(current_user_id)
+    
+    # Verify access to character
+    character = db_manager.get_character_by_id(ObjectId(character_id))
+    if not character:
+        return render_template('error.html', error_message='Character not found', current_user=current_user), 404
+    
+    # Check permissions
+    if character.user_id != current_user_id:
+        if character.campaign_id:
+            campaign = db_manager.get_campaign_by_id(character.campaign_id)
+            if not campaign or campaign.game_master_id != current_user_id:
+                return render_template('error.html', error_message='Access denied', current_user=current_user), 403
+        else:
+            return render_template('error.html', error_message='Access denied', current_user=current_user), 403
+    
+    return render_template('character_sheet.html', character_id=character_id, current_user=current_user)
 
+# Campaign Management
 @app.route('/campaigns')
 @auth_manager.require_auth
 def campaigns_page():
     """Campaign management page."""
-    return render_template('campaigns.html')
+    current_user_id = ObjectId(get_jwt_identity())
+    current_user = db_manager.get_user_by_id(current_user_id)
+    return render_template('campaigns.html', current_user=current_user)
 
+# Documentation
+@app.route('/docs')
+@auth_manager.require_auth
+def documentation_page():
+    """Documentation page with role-based access."""
+    current_user_id = ObjectId(get_jwt_identity())
+    current_user = db_manager.get_user_by_id(current_user_id)
+    return render_template('documentation.html', current_user=current_user)
+
+# User Profile
+@app.route('/profile')
+@auth_manager.require_auth
+def profile_page():
+    """User profile settings page."""
+    current_user_id = ObjectId(get_jwt_identity())
+    current_user = db_manager.get_user_by_id(current_user_id)
+    return render_template('profile.html', current_user=current_user)
+
+# Admin Panel
 @app.route('/admin')
 @auth_manager.require_role('admin')
 def admin_page():
     """Admin panel page."""
-    return render_template('admin.html')
+    current_user_id = ObjectId(get_jwt_identity())
+    current_user = db_manager.get_user_by_id(current_user_id)
+    return render_template('admin.html', current_user=current_user)
+
+# Legacy route for compatibility
+@app.route('/main')
+@auth_manager.require_auth
+def main_dashboard():
+    """Legacy main dashboard route - redirects to new dashboard."""
+    return redirect(url_for('index'))
 
 if __name__ == '__main__':
     # Create character data directory if it doesn't exist

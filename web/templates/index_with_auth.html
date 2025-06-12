@@ -16,6 +16,36 @@
             align-items: center;
             border-bottom: 2px solid #ffd700;
             box-shadow: 0 2px 10px rgba(255, 215, 0, 0.3);
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .main-nav {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+        
+        .nav-link {
+            color: #ffd700;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+            font-weight: 500;
+        }
+        
+        .nav-link:hover {
+            background: rgba(255, 215, 0, 0.1);
+            border-color: #ffd700;
+        }
+        
+        .nav-link.active {
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            color: #000;
+            font-weight: bold;
+            text-shadow: none;
         }
 
         .auth-header h1 {
@@ -95,47 +125,20 @@
         }
 
         .main-container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
-            padding: 0 1rem;
-        }
-
-        .dashboard-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 1rem;
-            margin: 1rem;
-        }
-
-        @media (min-width: 768px) {
-            .dashboard-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-        }
-
-        @media (min-width: 1024px) {
-            .dashboard-grid {
-                grid-template-columns: 300px 1fr;
-            }
-        }
-
-        .sidebar {
-            background: linear-gradient(145deg, #1a1a2e, #16213e);
-            border-radius: 8px;
             padding: 1rem;
-            height: fit-content;
-            border: 1px solid #333;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
         }
 
         .main-content {
             background: linear-gradient(145deg, #0f0f23, #1a1a2e);
             border-radius: 8px;
-            padding: 1rem;
-            min-height: 500px;
+            padding: 2rem;
+            min-height: 70vh;
             border: 1px solid #333;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
             color: #e0e0e0;
+            width: 100%;
         }
 
         .nav a {
@@ -193,14 +196,23 @@
     <!-- Authentication Header -->
     <div class="auth-header">
         <h1>⭐ Star Wars RPG Character Manager ⭐</h1>
+        
+        <!-- Main Navigation -->
+        <nav class="main-nav auth-required" style="display: none;">
+            <a href="#" data-page="characters" class="nav-link active">Characters</a>
+            <a href="#" data-page="campaigns" class="nav-link">Campaigns</a>
+            <a href="#" data-page="documentation" class="nav-link">Documentation</a>
+        </nav>
+        
         <div class="user-info">
             <span id="userDisplay">Loading...</span>
             <div class="user-menu">
                 <button class="user-menu-toggle" id="userMenuToggle">⚙️</button>
                 <div class="user-menu-dropdown" id="userMenuDropdown">
+                    <a href="#" class="user-menu-item" onclick="toggleTheme()">🌙 Toggle Dark Mode</a>
                     <a href="#" class="user-menu-item" onclick="showProfileSettings()">Profile Settings</a>
                     <a href="#" class="user-menu-item" onclick="showCampaignManagement()">Campaign Management</a>
-                    <a href="/admin" class="user-menu-item admin-only" style="display: none;">Admin Panel</a>
+                    <a href="#" class="user-menu-item admin-only" style="display: none;" onclick="showAdminPanel()">Admin Panel</a>
                     <a href="#" class="user-menu-item" onclick="setup2FA()">Two-Factor Authentication</a>
                     <a href="#" class="user-menu-item" onclick="logout()">Logout</a>
                 </div>
@@ -210,39 +222,19 @@
 
     <!-- Main Container -->
     <div class="main-container auth-required">
-        <div class="dashboard-grid">
-            <!-- Sidebar -->
-            <div class="sidebar">
-                <!-- Navigation -->
-                <nav class="nav" style="margin-bottom: 1rem;">
-                    <a href="#" data-action="show-create-character" class="active">Create Character</a>
-                    <a href="#" data-action="show-documentation">Documentation</a>
-                </nav>
-
-                <!-- Campaign Selector -->
-                <div class="campaign-selector">
-                    <h3>Select Campaign</h3>
-                    <p>Choose a campaign to view characters, or select "All Characters" to see all your characters.</p>
-                    <div class="campaign-list" id="campaignList">
-                        <div class="campaign-tag active" data-campaign="" onclick="selectCampaign('')">All Characters</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Main Content -->
-            <main class="main-content" id="mainContent">
-                <div class="loading">Loading...</div>
-            </main>
-        </div>
+        <!-- Full-width Main Content -->
+        <main class="main-content" id="mainContent">
+            <div class="loading">Loading...</div>
+        </main>
     </div>
 
     <!-- Login Prompt (shown when not authenticated) -->
     <div id="loginPrompt" style="text-align: center; padding: 4rem;">
         <h1>Welcome to Star Wars RPG Character Manager</h1>
         <p>Please login to access your characters and campaigns.</p>
-        <div style="margin-top: 2rem;">
-            <a href="/login" class="btn btn-primary" style="margin-right: 1rem;">Login</a>
-            <a href="/register" class="btn btn-outline">Register</a>
+        <div class="login-actions" style="margin-top: 2rem; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+            <a href="/login" class="btn btn-primary" style="min-height: 44px;">Login</a>
+            <a href="/register" class="btn btn-outline" style="min-height: 44px;">Register</a>
         </div>
     </div>
 
@@ -257,6 +249,7 @@
         document.addEventListener('DOMContentLoaded', async () => {
             const token = localStorage.getItem('access_token');
             if (!token) {
+                console.log('No access token found, showing login prompt');
                 showLoginPrompt();
                 return;
             }
@@ -267,7 +260,7 @@
                 if (userResponse.ok) {
                     currentUser = await userResponse.json();
                     await loadUserData();
-                    showAuthenticatedApp();
+                    await showAuthenticatedApp();
                 } else {
                     // Token invalid, remove and show login
                     localStorage.removeItem('access_token');
@@ -281,11 +274,14 @@
         });
 
         function showLoginPrompt() {
+            console.log('Showing login prompt, hiding auth required elements');
             document.getElementById('loginPrompt').style.display = 'block';
             document.querySelectorAll('.auth-required').forEach(el => el.style.display = 'none');
+            // Clear the loading text
+            document.getElementById('userDisplay').textContent = 'Not logged in';
         }
 
-        function showAuthenticatedApp() {
+        async function showAuthenticatedApp() {
             document.getElementById('loginPrompt').style.display = 'none';
             document.querySelectorAll('.auth-required').forEach(el => el.style.display = 'block');
 
@@ -297,16 +293,8 @@
                 document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'block');
             }
 
-            // Initialize character manager
-            console.log('Checking CharacterManager availability...');
-            if (typeof CharacterManager !== 'undefined') {
-                console.log('CharacterManager found, initializing...');
-                window.characterManager = new CharacterManager();
-            } else {
-                console.log('CharacterManager not found, using fallback...');
-                // Fallback: Load character dashboard manually
-                loadCharacterDashboard();
-            }
+            // Load initial page (characters by default)
+            await loadCharactersPage();
         }
 
         // Fallback character dashboard function
@@ -381,12 +369,14 @@
 
             if (characters && characters.length > 0) {
                 mainContent.innerHTML = `
-                    <div class="character-dashboard">
+                    <div class="character-dashboard dashboard-section my-characters">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
                             <h1>🌟 My Characters</h1>
-                            <button class="btn btn-primary" onclick="showCreateCharacterForm()">
-                                ➕ Create New Character
-                            </button>
+                            <div style="display: flex; gap: 1rem;">
+                                <button class="btn btn-secondary" onclick="showCampaignManagement()">
+                                    🎲 Manage Campaigns
+                                </button>
+                            </div>
                         </div>
 
                         <div class="character-grid">
@@ -479,12 +469,17 @@
                 `;
             } else {
                 mainContent.innerHTML = `
-                    <div class="empty-state">
+                    <div class="empty-state dashboard-section my-characters">
                         <h1>🌟 Welcome to the Galaxy!</h1>
                         <p>You don't have any characters yet. Ready to begin your adventure?</p>
-                        <button class="btn btn-primary" onclick="showCreateCharacterForm()">
-                            🚀 Create Your First Character
-                        </button>
+                        <div style="display: flex; gap: 1rem; justify-content: center; margin: 1.5rem 0;">
+                            <button class="btn btn-primary" onclick="showCreateCharacterForm()">
+                                🚀 Create Your First Character
+                            </button>
+                            <button class="btn btn-secondary" onclick="showCampaignManagement()">
+                                🎲 Create Campaign
+                            </button>
+                        </div>
 
                         <div class="getting-started" style="margin-top: 2rem; padding: 1rem; background: rgba(255, 215, 0, 0.1); border: 1px solid #ffd700; border-radius: 8px;">
                             <h3>Getting Started</h3>
@@ -608,7 +603,7 @@
                             <h3 class="modal-title">Profile Settings</h3>
                             <button type="button" onclick="closeProfileModal()" style="background: none; border: none; font-size: 1.5rem; cursor: pointer;">&times;</button>
                         </div>
-                        <div class="modal-body">
+                        <div class="modal-body profile-page settings-menu">
                             <div class="profile-section">
                                 <h4>Account Information</h4>
                                 <div class="profile-info">
@@ -630,6 +625,30 @@
                                         ` : ''}
                                     </div>
                                 </div>
+                            </div>
+
+                            <div class="profile-section">
+                                <h4>Change Password</h4>
+                                <form id="change-password-form">
+                                    <div class="form-group">
+                                        <label class="form-label">Current Password</label>
+                                        <input type="password" class="form-input" name="current_password" required>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="form-label">New Password</label>
+                                        <input type="password" class="form-input" name="new_password" required>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="form-label">Confirm New Password</label>
+                                        <input type="password" class="form-input" name="confirm_password" required>
+                                    </div>
+
+                                    <button type="button" class="btn btn-primary" onclick="changePassword()">
+                                        Change Password
+                                    </button>
+                                </form>
                             </div>
 
                             <div class="profile-section">
@@ -720,6 +739,50 @@
             // For now, just show a success message since this is primarily UI
             alert('Settings saved successfully!');
             closeProfileModal();
+        }
+
+        async function changePassword() {
+            const form = document.getElementById('change-password-form');
+            const formData = new FormData(form);
+
+            const currentPassword = formData.get('current_password');
+            const newPassword = formData.get('new_password');
+            const confirmPassword = formData.get('confirm_password');
+
+            // Validate passwords match
+            if (newPassword !== confirmPassword) {
+                alert('New passwords do not match. Please try again.');
+                return;
+            }
+
+            // Validate password strength (basic check)
+            if (newPassword.length < 8) {
+                alert('New password must be at least 8 characters long.');
+                return;
+            }
+
+            try {
+                const response = await authenticatedFetch('/api/auth/change-password', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        current_password: currentPassword,
+                        new_password: newPassword
+                    })
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    alert('Password changed successfully!');
+                    form.reset();
+                    closeProfileModal();
+                } else {
+                    alert('Error changing password: ' + result.error);
+                }
+            } catch (error) {
+                console.error('Error changing password:', error);
+                alert('Failed to change password. Please try again.');
+            }
         }
 
         function showCampaignManagement() {
@@ -1972,29 +2035,201 @@
             }
         }
 
+        // Navigation functions
+        async function loadCharactersPage() {
+            setActiveNavigation('characters');
+            await loadCharacterDashboard();
+        }
+
+        async function loadCampaignsPage() {
+            setActiveNavigation('campaigns');
+            await loadCampaignManagementPage();
+        }
+
+        async function loadDocumentationPage() {
+            setActiveNavigation('documentation');
+            await showDocumentation();
+        }
+
+        function setActiveNavigation(page) {
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            document.querySelector(`[data-page="${page}"]`).classList.add('active');
+        }
+
+        async function loadCampaignManagementPage() {
+            const mainContent = document.getElementById('mainContent');
+            
+            try {
+                const response = await authenticatedFetch('/api/campaigns');
+                const data = await response.json();
+
+                if (response.ok) {
+                    displayCampaignsPage(data.campaigns || []);
+                } else {
+                    mainContent.innerHTML = `
+                        <div class="error-state">
+                            <h1>⚠️ Error Loading Campaigns</h1>
+                            <p>Error: ${data.error}</p>
+                            <button class="btn btn-primary" onclick="loadCampaignsPage()">Try Again</button>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error('Error loading campaigns:', error);
+                mainContent.innerHTML = `
+                    <div class="error-state">
+                        <h1>⚠️ Connection Error</h1>
+                        <p>Failed to load campaigns. Please check your connection and try again.</p>
+                        <button class="btn btn-primary" onclick="loadCampaignsPage()">Try Again</button>
+                    </div>
+                `;
+            }
+        }
+
+        function displayCampaignsPage(campaigns) {
+            const mainContent = document.getElementById('mainContent');
+
+            if (campaigns && campaigns.length > 0) {
+                mainContent.innerHTML = `
+                    <div class="campaigns-page">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                            <h1>🎲 My Campaigns</h1>
+                            <button class="btn btn-primary" onclick="showCampaignManagement()">
+                                ➕ Create New Campaign
+                            </button>
+                        </div>
+
+                        <div class="campaigns-grid">
+                            ${campaigns.map(campaign => `
+                                <div class="campaign-card">
+                                    <h3>${campaign.name}</h3>
+                                    <p class="campaign-description">${campaign.description || 'No description'}</p>
+                                    <div class="campaign-stats">
+                                        <span class="campaign-stat">
+                                            <strong>${campaign.is_game_master ? 'Game Master' : 'Player'}</strong>
+                                        </span>
+                                        <span class="campaign-stat">Players: ${campaign.player_count}</span>
+                                        <span class="campaign-stat">Characters: ${campaign.character_count}</span>
+                                    </div>
+                                    <div class="campaign-actions">
+                                        <button class="btn btn-outline" onclick="viewCampaign('${campaign.id}')">
+                                            View Details
+                                        </button>
+                                        ${campaign.is_game_master ? `
+                                            <button class="btn btn-secondary" onclick="generateCampaignInvite('${campaign.id}')">
+                                                Invite Players
+                                            </button>
+                                        ` : ''}
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    <style>
+                    .campaigns-page h1 {
+                        color: #ffd700;
+                        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+                    }
+                    .campaigns-grid {
+                        display: grid;
+                        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+                        gap: 1.5rem;
+                    }
+                    .campaign-card {
+                        background: linear-gradient(145deg, #1a1a2e, #16213e);
+                        border: 1px solid #ffd700;
+                        border-radius: 8px;
+                        padding: 1.5rem;
+                        transition: all 0.3s ease;
+                        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+                    }
+                    .campaign-card:hover {
+                        transform: translateY(-2px);
+                        box-shadow: 0 6px 16px rgba(255, 215, 0, 0.3);
+                        border-color: #ffed4e;
+                    }
+                    .campaign-card h3 {
+                        color: #ffd700;
+                        margin: 0 0 1rem 0;
+                        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+                    }
+                    .campaign-description {
+                        color: #e0e0e0;
+                        margin: 0 0 1rem 0;
+                        line-height: 1.4;
+                    }
+                    .campaign-stats {
+                        display: flex;
+                        flex-direction: column;
+                        gap: 0.5rem;
+                        margin: 1rem 0;
+                    }
+                    .campaign-stat {
+                        color: #b0b0b0;
+                        font-size: 0.9rem;
+                    }
+                    .campaign-actions {
+                        display: flex;
+                        gap: 0.5rem;
+                        flex-wrap: wrap;
+                    }
+                    </style>
+                `;
+            } else {
+                mainContent.innerHTML = `
+                    <div class="empty-state">
+                        <h1>🎲 Campaign Management</h1>
+                        <p>You haven't joined any campaigns yet. Create a new campaign as a Game Master or join an existing one as a player.</p>
+                        <div style="display: flex; gap: 1rem; justify-content: center; margin: 1.5rem 0;">
+                            <button class="btn btn-primary" onclick="showCampaignManagement()">
+                                🚀 Create Campaign
+                            </button>
+                            <button class="btn btn-secondary" onclick="showJoinCampaignForm()">
+                                🎯 Join Campaign
+                            </button>
+                        </div>
+
+                        <div class="getting-started" style="margin-top: 2rem; padding: 1rem; background: rgba(255, 215, 0, 0.1); border: 1px solid #ffd700; border-radius: 8px;">
+                            <h3>Getting Started with Campaigns</h3>
+                            <ul style="text-align: left; color: #e0e0e0;">
+                                <li>📝 Create campaigns to organize your RPG sessions</li>
+                                <li>👥 Invite players with unique campaign codes</li>
+                                <li>📊 Track characters and campaign progress</li>
+                                <li>🎭 Manage multiple campaigns as GM or player</li>
+                            </ul>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        function showJoinCampaignForm() {
+            showCampaignManagement();
+            // Switch to join tab after modal opens
+            setTimeout(() => {
+                showCampaignTab('join-campaign');
+            }, 100);
+        }
+
+        function viewCampaign(campaignId) {
+            // TODO: Implement campaign detail view
+            alert(`Campaign details for ${campaignId} - Coming soon!`);
+        }
+
         // Handle navigation clicks
         document.addEventListener('click', (e) => {
-            if (e.target.matches('[data-action="show-documentation"]')) {
+            if (e.target.matches('[data-page="characters"]')) {
                 e.preventDefault();
-
-                // Update nav active state
-                document.querySelectorAll('.nav a').forEach(link => link.classList.remove('active'));
-                e.target.classList.add('active');
-
-                showDocumentation();
-            } else if (e.target.matches('[data-action="show-create-character"]')) {
+                loadCharactersPage();
+            } else if (e.target.matches('[data-page="campaigns"]')) {
                 e.preventDefault();
-
-                // Update nav active state
-                document.querySelectorAll('.nav a').forEach(link => link.classList.remove('active'));
-                e.target.classList.add('active');
-
-                // Load character dashboard or creation form
-                if (typeof characterManager !== 'undefined') {
-                    characterManager.loadDashboard();
-                } else {
-                    loadCharacterDashboard();
-                }
+                loadCampaignsPage();
+            } else if (e.target.matches('[data-page="documentation"]')) {
+                e.preventDefault();
+                loadDocumentationPage();
             }
         });
 
@@ -2050,6 +2285,182 @@
                 }
             };
         }
+
+        // Dark Mode Toggle Functionality
+        function initTheme() {
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            updateThemeToggleText();
+        }
+
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeToggleText();
+        }
+
+        function updateThemeToggleText() {
+            const themeToggle = document.querySelector('.user-menu-item[onclick="toggleTheme()"]');
+            if (themeToggle) {
+                const currentTheme = document.documentElement.getAttribute('data-theme');
+                themeToggle.innerHTML = currentTheme === 'dark' ? '☀️ Light Mode' : '🌙 Dark Mode';
+            }
+        }
+
+        // Initialize theme on page load
+        initTheme();
     </script>
+    
+    <style>
+        /* Mobile responsive navigation */
+        @media (max-width: 768px) {
+            .auth-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+            
+            .main-nav {
+                width: 100%;
+                justify-content: space-around;
+                gap: 0.5rem;
+            }
+            
+            .nav-link {
+                flex: 1;
+                text-align: center;
+                padding: 0.75rem 0.5rem;
+                font-size: 0.9rem;
+            }
+            
+            .main-content {
+                padding: 1rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .auth-header h1 {
+                font-size: 1.2rem;
+                text-align: center;
+                width: 100%;
+            }
+            
+            .main-nav {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .nav-link {
+                width: 100%;
+            }
+        }
+
+        /* Additional mobile-specific improvements */
+        @media (max-width: 767px) {
+            .login-actions {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .login-actions .btn {
+                width: 100%;
+                max-width: 200px;
+                margin-bottom: 0.5rem;
+            }
+            
+            .profile-section {
+                padding: 0.75rem;
+            }
+            
+            .profile-info {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .info-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.25rem;
+            }
+            
+            .info-item label {
+                min-width: auto;
+                font-weight: bold;
+            }
+            
+            .campaign-tabs {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+            
+            .tab-button {
+                white-space: nowrap;
+                min-height: 44px;
+                padding: 0.75rem 1rem;
+                flex-shrink: 0;
+            }
+            
+            .twofa-step {
+                padding: 0.5rem;
+            }
+            
+            .qr-code-container {
+                padding: 1rem;
+            }
+            
+            .backup-codes-grid {
+                grid-template-columns: 1fr;
+                gap: 0.25rem;
+                font-size: 0.9rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .modal-header {
+                padding: 0.75rem;
+            }
+            
+            .modal-footer {
+                padding: 0.75rem;
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .modal-footer .btn {
+                width: 100%;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .stat-card {
+                padding: 0.75rem;
+            }
+            
+            .stat-number {
+                font-size: 1.25rem;
+            }
+        }
+        
+        /* Touch-friendly improvements */
+        .campaign-tag:active,
+        .btn:active,
+        .tab-button:active {
+            transform: translateY(1px);
+        }
+        
+        /* Form improvements for mobile */
+        @media (max-width: 767px) {
+            .form-input:focus,
+            .form-select:focus {
+                outline: 2px solid #007cba;
+                outline-offset: 2px;
+            }
+        }
+    </style>
 </body>
 </html>
