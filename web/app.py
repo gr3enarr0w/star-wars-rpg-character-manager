@@ -31,6 +31,36 @@ def index():
     return render_template('index_with_auth.html')
 
 
+@app.route('/create-character')
+def create_character_page():
+    """Character creation wizard page."""
+    return render_template('create_character_wizard.html')
+
+
+@app.route('/campaigns')
+def campaigns_page():
+    """Campaigns management page."""
+    return render_template('campaigns.html')
+
+
+@app.route('/admin')
+def admin_page():
+    """Admin management page."""
+    return render_template('admin.html')
+
+
+@app.route('/profile')
+def profile_page():
+    """User profile page."""
+    return render_template('profile.html')
+
+
+@app.route('/documentation')
+def documentation_page():
+    """Documentation page."""
+    return render_template('documentation.html')
+
+
 @app.route('/api/characters', methods=['GET'])
 def get_characters():
     """Get all characters."""
@@ -84,17 +114,69 @@ def create_character():
         if data['name'] in existing_names:
             return jsonify({'error': 'Character name already exists'}), 400
         
-        # Create character using the character creator
+        # Get species info to calculate starting characteristics
+        species_info = creator.get_species_info(data['species'])
+        if not species_info:
+            return jsonify({'error': f'Unknown species: {data["species"]}'}), 400
+        
+        # Calculate final characteristics (species base + any additional points)
+        final_characteristics = species_info['characteristics'].copy()
+        if data.get('characteristics'):
+            for char, value in data['characteristics'].items():
+                if char in final_characteristics:
+                    final_characteristics[char] = value
+        
+        # Create character with custom characteristics
         character = creator.create_character(
             name=data['name'],
             player_name=data['playerName'],
             species=data['species'],
-            career_name=data['career']
+            career_name=data['career'],
+            characteristic_points={}  # Will be set directly below
         )
         
-        # Add optional background
+        # Set final characteristics
+        character.brawn = final_characteristics.get('brawn', 2)
+        character.agility = final_characteristics.get('agility', 2)
+        character.intellect = final_characteristics.get('intellect', 2)
+        character.cunning = final_characteristics.get('cunning', 2)
+        character.willpower = final_characteristics.get('willpower', 2)
+        character.presence = final_characteristics.get('presence', 2)
+        
+        # Apply custom skills if provided
+        if data.get('skills'):
+            for skill_name, ranks in data['skills'].items():
+                if skill_name in character.skills and ranks > 0:
+                    character.skills[skill_name].ranks = ranks
+        
+        # Calculate remaining XP based on characteristic and skill investments
+        spent_xp = 0
+        
+        # Calculate XP spent on characteristics (above species base)
+        for char, final_value in final_characteristics.items():
+            base_value = species_info['characteristics'][char]
+            for level in range(base_value + 1, final_value + 1):
+                spent_xp += advancement.calculate_characteristic_cost(character, Characteristic(char.upper()))
+        
+        # Calculate XP spent on skills
+        if data.get('skills'):
+            for skill_name, ranks in data['skills'].items():
+                if ranks > 0:
+                    for rank in range(1, ranks + 1):
+                        spent_xp += advancement.calculate_skill_cost(character, skill_name)
+        
+        # Set available XP
+        character.available_xp = character.total_xp - spent_xp
+        character.spent_xp = spent_xp
+        
+        # Add optional fields
         if data.get('background'):
             character.background = data['background']
+        if data.get('obligation'):
+            # Store obligation in character notes for now
+            character.background += f"\n\nObligation/Duty: {data['obligation']}"
+        if data.get('notes'):
+            character.background += f"\n\nNotes: {data['notes']}"
         
         # Save character
         if database.save_character(character):
@@ -458,13 +540,40 @@ def delete_character(character_name):
 def get_game_data():
     """Get available species, careers, and other game data."""
     try:
+        # Get detailed species information
+        species_list = []
+        for species_name in creator.get_available_species():
+            species_info = creator.get_species_info(species_name)
+            if species_info:
+                species_list.append({
+                    'name': species_name,
+                    'characteristics': species_info['characteristics'],
+                    'wound_threshold': species_info['wound_threshold'],
+                    'strain_threshold': species_info['strain_threshold'],
+                    'starting_xp': species_info['starting_xp'],
+                    'special_abilities': species_info['special_abilities']
+                })
+        
+        # Get detailed career information
+        careers_list = []
+        for career_name in creator.get_available_careers():
+            career_info = creator.get_career_info(career_name)
+            if career_info:
+                careers_list.append({
+                    'name': career_info.name,
+                    'game_line': career_info.game_line.value,
+                    'career_skills': career_info.career_skills,
+                    'starting_wound_threshold': career_info.starting_wound_threshold,
+                    'starting_strain_threshold': career_info.starting_strain_threshold
+                })
+
         return jsonify({
-            'species': creator.get_available_species(),
+            'species': species_list,
             'careers': {
-                'all': creator.get_available_careers(),
-                'edge_of_empire': creator.get_available_careers(creator.careers['Bounty Hunter'].game_line),
-                'age_of_rebellion': creator.get_available_careers(creator.careers['Ace'].game_line),
-                'force_and_destiny': creator.get_available_careers(creator.careers['Guardian'].game_line)
+                'all': careers_list,
+                'edge_of_empire': [c for c in careers_list if c['game_line'] == 'Edge of the Empire'],
+                'age_of_rebellion': [c for c in careers_list if c['game_line'] == 'Age of Rebellion'],
+                'force_and_destiny': [c for c in careers_list if c['game_line'] == 'Force and Destiny']
             }
         })
     except Exception as e:

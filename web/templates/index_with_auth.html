@@ -1,713 +1,195 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Star Wars RPG Character Manager</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
-    <style>
-        .auth-header {
-            background: linear-gradient(135deg, #000000 0%, #1a1a2e 50%, #000000 100%);
-            color: #ffd700;
-            padding: 1rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 2px solid #ffd700;
-            box-shadow: 0 2px 10px rgba(255, 215, 0, 0.3);
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-        
-        .main-nav {
-            display: flex;
-            gap: 2rem;
-            align-items: center;
-        }
-        
-        .nav-link {
-            color: #ffd700;
-            text-decoration: none;
-            padding: 0.5rem 1rem;
-            border-radius: 4px;
-            transition: all 0.3s ease;
-            border: 1px solid transparent;
-            font-weight: 500;
-        }
-        
-        .nav-link:hover {
-            background: rgba(255, 215, 0, 0.1);
-            border-color: #ffd700;
-        }
-        
-        .nav-link.active {
-            background: linear-gradient(135deg, #ffd700, #ffed4e);
-            color: #000;
-            font-weight: bold;
-            text-shadow: none;
-        }
+{% extends "base.html" %}
 
-        .auth-header h1 {
-            font-family: 'Georgia', serif;
-            font-size: 1.5rem;
-            margin: 0;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
-        }
+{% block title %}Star Wars RPG Character Manager{% endblock %}
 
-        body {
-            background: radial-gradient(ellipse at center, #0f0f23 0%, #000000 70%);
-            color: #e0e0e0;
-            min-height: 100vh;
-            font-family: 'Arial', sans-serif;
+{% block layout %}
+<!-- Full width layout without sidebar -->
+<div style="max-width: 1200px; margin: 0 auto; padding: 2rem 1rem;">
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
+    <div>
+        <h1 style="color: #ffd700; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); margin: 0 0 0.5rem 0;">⭐ My Characters</h1>
+        <p style="color: #e0e0e0; margin: 0;">Manage your Star Wars RPG characters</p>
+    </div>
+    <div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
+        <input type="text" id="characterFilter" placeholder="Search characters..." 
+               style="padding: 0.5rem 1rem; background: rgba(255, 255, 255, 0.1); border: 1px solid #ffd700; border-radius: 4px; color: #e0e0e0; min-width: 200px;">
+        <a href="{{ url_for('create_character_page') }}" class="btn">+ Create Character</a>
+    </div>
+</div>
+
+<!-- Characters Grid -->
+<div id="charactersGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1rem;">
+    <!-- Characters will be loaded here -->
+</div>
+
+<!-- Empty State -->
+<div id="emptyState" style="display: none; text-align: center; padding: 3rem 1rem; color: #a0aec0;">
+    <div style="font-size: 3rem; margin-bottom: 1rem;">🌟</div>
+    <h2 style="color: #ffd700; margin: 0 0 1rem 0;">No Characters Yet</h2>
+    <p style="margin-bottom: 2rem;">Create your first Star Wars RPG character to get started!</p>
+    <a href="{{ url_for('create_character_page') }}" class="btn btn-lg">+ Create Character</a>
+</div>
+
+<!-- Loading State -->
+<div id="loadingState" style="text-align: center; padding: 3rem 1rem; color: #a0aec0;">
+    <div style="font-size: 2rem; margin-bottom: 1rem;">Loading characters...</div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Characters management
+let allCharacters = [];
+
+// Load characters on page load
+document.addEventListener('DOMContentLoaded', async () => {
+    await loadCharacters();
+    setupCharacterFilter();
+});
+
+async function loadCharacters() {
+    try {
+        const response = await fetch('/api/characters');
+        if (response.ok) {
+            const data = await response.json();
+            allCharacters = data.characters || [];
+            displayCharacters(allCharacters);
+            updateCharacterStats();
+        } else {
+            throw new Error('Failed to load characters');
         }
-        
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-        
-        .user-menu {
-            position: relative;
-        }
-        
-        .user-menu-toggle {
-            background: none;
-            border: none;
-            color: white;
-            cursor: pointer;
-            padding: 0.5rem;
-            border-radius: 4px;
-        }
-        
-        .user-menu-toggle:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
-        
-        .user-menu-dropdown {
-            position: absolute;
-            top: 100%;
-            right: 0;
-            background: linear-gradient(145deg, #1a1a2e, #16213e);
-            color: #e0e0e0;
-            border: 1px solid #ffd700;
-            border-radius: 4px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-            min-width: 200px;
-            z-index: 1000;
-            display: none;
-            margin-top: 0.5rem;
-        }
-        
-        .user-menu-dropdown.show {
-            display: block;
-        }
-        
-        .user-menu-item {
-            display: block;
-            padding: 0.75rem 1rem;
-            text-decoration: none;
-            color: #e0e0e0;
-            border-bottom: 1px solid rgba(255, 215, 0, 0.2);
-            transition: all 0.2s;
-            cursor: pointer;
-        }
-        
-        .user-menu-item:hover {
-            background-color: rgba(255, 215, 0, 0.1);
-            color: #ffd700;
-        }
-        
-        .user-menu-item:last-child {
-            border-bottom: none;
-        }
-        
-        .main-container {
-            display: flex;
-            flex-direction: column;
-            min-height: calc(100vh - 80px);
-        }
-        
-        .main-content {
-            flex: 1;
-            padding: 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-            width: 100%;
-        }
-        
-        .loading {
-            text-align: center;
-            padding: 3rem;
-            color: #ffd700;
-            font-size: 1.2rem;
-        }
-        
-        .character-dashboard {
-            padding: 2rem 0;
-        }
-        
-        .character-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 1.5rem;
-            margin-top: 2rem;
-        }
-        
-        .character-card {
-            background: linear-gradient(145deg, #1a1a2e, #16213e);
-            border: 1px solid #ffd700;
-            border-radius: 8px;
-            padding: 1.5rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-        }
-        
-        .character-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(255, 215, 0, 0.2);
-        }
-        
-        .character-card h3 {
-            color: #ffd700;
-            margin: 0 0 1rem 0;
-            font-size: 1.2rem;
-        }
-        
-        .character-details {
-            color: #e0e0e0;
-            margin: 0 0 1rem 0;
-            line-height: 1.4;
-        }
-        
-        .character-actions {
-            display: flex;
-            gap: 0.5rem;
-            margin-top: 1rem;
-        }
-        
-        .btn {
-            padding: 0.5rem 1rem;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            text-decoration: none;
-            display: inline-block;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            text-align: center;
-        }
-        
-        .btn-primary {
-            background: linear-gradient(135deg, #ffd700, #ffed4e);
-            color: #000;
-        }
-        
-        .btn-secondary {
-            background: linear-gradient(135deg, #4a5568, #2d3748);
-            color: #e0e0e0;
-        }
-        
-        .btn-outline {
-            background: transparent;
-            color: #ffd700;
-            border: 1px solid #ffd700;
-        }
-        
-        .btn-sm {
-            padding: 0.25rem 0.5rem;
-            font-size: 0.875rem;
-        }
-        
-        .btn:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-        }
-        
-        .loading-state, .error-state {
-            text-align: center;
-            padding: 3rem 1rem;
-            color: #e0e0e0;
-        }
-        
-        .loading-state h1, .error-state h1 {
-            color: #ffd700;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
-            margin-bottom: 1rem;
-        }
-        
-        .spinner {
-            border: 4px solid #333;
-            border-top: 4px solid #ffd700;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 1rem auto;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-    </style>
-</head>
-<body>
-    <!-- Top Navigation Header -->
-    <div class="auth-header auth-required" style="display: none;">
-        <h1>🌟 Star Wars RPG Character Manager</h1>
-        
-        <!-- Main Navigation -->
-        <nav class="main-nav auth-required" style="display: none;">
-            <a href="#" data-page="characters" class="nav-link active">Characters</a>
-            <a href="#" data-page="campaigns" class="nav-link">Campaigns</a>
-            <a href="#" data-page="documentation" class="nav-link">Documentation</a>
-        </nav>
-        
-        <div class="user-info">
-            <span id="userDisplay">Loading...</span>
-            <div class="user-menu">
-                <button class="user-menu-toggle" id="userMenuToggle">⚙️</button>
-                <div class="user-menu-dropdown" id="userMenuDropdown">
-                    <a href="#" class="user-menu-item" onclick="toggleTheme()">🌙 Toggle Dark Mode</a>
-                    <a href="#" class="user-menu-item" onclick="showProfileSettings()">Profile Settings</a>
-                    <a href="#" class="user-menu-item" onclick="showCampaignManagement()">Campaign Management</a>
-                    <a href="#" class="user-menu-item admin-only" style="display: none;" onclick="showAdminPanel()">Admin Panel</a>
-                    <a href="#" class="user-menu-item" onclick="setup2FA()">Two-Factor Authentication</a>
-                    <a href="#" class="user-menu-item" onclick="logout()">Logout</a>
+    } catch (error) {
+        console.error('Error loading characters:', error);
+        document.getElementById('loadingState').style.display = 'none';
+        document.getElementById('emptyState').style.display = 'block';
+    }
+}
+
+function displayCharacters(characters) {
+    const grid = document.getElementById('charactersGrid');
+    const emptyState = document.getElementById('emptyState');
+    const loadingState = document.getElementById('loadingState');
+    
+    loadingState.style.display = 'none';
+    
+    if (characters.length === 0) {
+        grid.style.display = 'none';
+        emptyState.style.display = 'block';
+        return;
+    }
+    
+    emptyState.style.display = 'none';
+    grid.style.display = 'grid';
+    
+    grid.innerHTML = characters.map(character => `
+        <div class="character-card" style="background: linear-gradient(145deg, #1a1a2e, #16213e); border: 1px solid #333; border-radius: 12px; padding: 2rem; transition: all 0.3s ease; min-width: 0; overflow: hidden;">
+            <!-- Character Header -->
+            <div style="text-align: center; margin-bottom: 1.5rem;">
+                <h3 style="color: #ffd700; margin: 0 0 0.5rem 0; font-size: 1.4rem; font-weight: bold;">${character.name}</h3>
+                <div style="color: #a0aec0; font-size: 1rem;">${character.species} ${character.career}</div>
+                <div style="color: #e0e0e0; font-size: 0.875rem; margin-top: 0.25rem;">Player: ${character.playerName}</div>
+            </div>
+            
+            <!-- XP Display -->
+            <div style="margin-bottom: 1.5rem; padding: 1rem; background: rgba(255, 215, 0, 0.15); border-radius: 8px; text-align: center;">
+                <div style="color: #ffd700; font-size: 1.1rem; font-weight: bold;">Experience Points</div>
+                <div style="color: #ffd700; font-size: 1.3rem; font-weight: bold; margin-top: 0.25rem;">${character.availableXP} / ${character.totalXP}</div>
+            </div>
+            
+            <!-- Top 3 Characteristics Only -->
+            <div style="margin-bottom: 1.5rem;">
+                <div style="color: #ffd700; font-size: 1rem; font-weight: bold; text-align: center; margin-bottom: 0.75rem;">Top Characteristics</div>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem;">
+                    <div style="text-align: center; padding: 0.75rem; background: rgba(255, 215, 0, 0.1); border-radius: 6px;">
+                        <div style="color: #a0aec0; font-size: 0.8rem; margin-bottom: 0.25rem;">BRA</div>
+                        <div style="color: #ffd700; font-weight: bold; font-size: 1.4rem;">${character.characteristics.brawn}</div>
+                    </div>
+                    <div style="text-align: center; padding: 0.75rem; background: rgba(255, 215, 0, 0.1); border-radius: 6px;">
+                        <div style="color: #a0aec0; font-size: 0.8rem; margin-bottom: 0.25rem;">AGI</div>
+                        <div style="color: #ffd700; font-weight: bold; font-size: 1.4rem;">${character.characteristics.agility}</div>
+                    </div>
+                    <div style="text-align: center; padding: 0.75rem; background: rgba(255, 215, 0, 0.1); border-radius: 6px;">
+                        <div style="color: #a0aec0; font-size: 0.8rem; margin-bottom: 0.25rem;">INT</div>
+                        <div style="color: #ffd700; font-weight: bold; font-size: 1.4rem;">${character.characteristics.intellect}</div>
+                    </div>
                 </div>
             </div>
+            
+            <!-- Action Buttons -->
+            <div style="display: flex; gap: 0.75rem; justify-content: center;">
+                <button onclick="editCharacter('${character.id}')" class="btn" style="padding: 0.75rem 1.5rem; font-size: 0.9rem; flex: 1; max-width: 120px;">Edit</button>
+                <button onclick="awardXP('${character.id}')" class="btn btn-outline" style="padding: 0.75rem 1.5rem; font-size: 0.9rem; flex: 1; max-width: 120px;">Award XP</button>
+            </div>
         </div>
-    </div>
+    `).join('');
+}
 
-    <!-- Main Container -->
-    <div class="main-container auth-required">
-        <!-- Full-width Main Content -->
-        <main class="main-content" id="mainContent">
-            <div class="loading">Loading...</div>
-        </main>
-    </div>
+function setupCharacterFilter() {
+    const filterInput = document.getElementById('characterFilter');
+    filterInput.addEventListener('input', (e) => {
+        const query = e.target.value.toLowerCase();
+        const filteredCharacters = allCharacters.filter(character => 
+            character.name.toLowerCase().includes(query) ||
+            character.species.toLowerCase().includes(query) ||
+            character.career.toLowerCase().includes(query) ||
+            character.playerName.toLowerCase().includes(query)
+        );
+        displayCharacters(filteredCharacters);
+    });
+}
 
-    <!-- Login Prompt (shown when not authenticated) -->
-    <div id="loginPrompt" style="text-align: center; padding: 4rem;">
-        <h1>Welcome to Star Wars RPG Character Manager</h1>
-        <p>Please login to access your characters and campaigns.</p>
-        <div class="login-actions" style="margin-top: 2rem; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-            <a href="/login" class="btn btn-primary" style="min-height: 44px;">Login</a>
-            <a href="/register" class="btn btn-outline" style="min-height: 44px;">Register</a>
-        </div>
-    </div>
+function updateCharacterStats() {
+    document.getElementById('totalCharacters').textContent = allCharacters.length;
+    document.getElementById('activeCharacters').textContent = allCharacters.length; // For now, all are active
+}
 
-    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/auth.js') }}"></script>
-    <script>
-        let currentUser = null;
-        let currentCampaign = null;
-        let campaigns = [];
+function editCharacter(characterId) {
+    window.location.href = `/character/${characterId}`;
+}
 
-        // Check authentication on page load
-        document.addEventListener('DOMContentLoaded', async () => {
-            const token = localStorage.getItem('access_token');
-            if (!token) {
-                console.log('No access token found, showing login prompt');
-                showLoginPrompt();
-                return;
-            }
-
-            try {
-                // Verify token and load user data
-                const userResponse = await authenticatedFetch('/api/auth/me');
-                if (userResponse.ok) {
-                    currentUser = await userResponse.json();
-                    await loadUserData();
-                    await showAuthenticatedApp();
-                } else {
-                    // Token invalid, remove and show login
-                    localStorage.removeItem('access_token');
-                    localStorage.removeItem('user');
-                    showLoginPrompt();
-                }
-            } catch (error) {
-                console.error('Authentication check failed:', error);
-                showLoginPrompt();
-            }
+async function awardXP(characterId) {
+    const amount = prompt('Enter XP amount to award:');
+    if (!amount || isNaN(amount) || parseInt(amount) <= 0) return;
+    
+    const reason = prompt('Reason for XP award (optional):') || 'Manual award';
+    
+    try {
+        const response = await fetch(`/api/characters/${characterId}/award-xp`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                amount: parseInt(amount),
+                reason: reason
+            })
         });
-
-        function showLoginPrompt() {
-            console.log('Showing login prompt, hiding auth required elements');
-            document.getElementById('loginPrompt').style.display = 'block';
-            document.querySelectorAll('.auth-required').forEach(el => el.style.display = 'none');
-            // Clear the loading text
-            document.getElementById('userDisplay').textContent = 'Not logged in';
-        }
-
-        async function showAuthenticatedApp() {
-            document.getElementById('loginPrompt').style.display = 'none';
-            document.querySelectorAll('.auth-required').forEach(el => el.style.display = 'block');
-
-            // Update user display
-            document.getElementById('userDisplay').textContent = currentUser.username + ' (' + currentUser.role + ')';
-
-            // Show admin options if user is admin
-            if (currentUser.role === 'admin') {
-                document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'block');
-            }
-
-            // Load initial page (characters by default)
-            await loadCharactersPage();
-        }
-
-        // Fallback character dashboard function
-        async function loadCharacterDashboard() {
-            console.log('Loading character dashboard...');
-            try {
-                // First, show a proper loading state
-                document.getElementById('mainContent').innerHTML = '<div class="loading-state"><h1>🌟 Loading Characters...</h1><div class="spinner"></div></div>';
-
-                const response = await authenticatedFetch('/api/characters');
-                const data = await response.json();
-
-                console.log('Characters API response:', response.ok, data);
-
-                if (response.ok) {
-                    displayCharacterDashboard(data.characters || []);
-                } else {
-                    console.error('API error:', data.error);
-                    document.getElementById('mainContent').innerHTML = '<div class="error-state"><h1>⚠️ Error Loading Characters</h1><p>Error: ' + (data.error || 'Unknown error') + '</p><button class="btn btn-primary" onclick="loadCharacterDashboard()">Try Again</button></div>';
-                }
-            } catch (error) {
-                console.error('Error loading characters:', error);
-                document.getElementById('mainContent').innerHTML = '<div class="error-state"><h1>⚠️ Connection Error</h1><p>Failed to load characters. Please check your connection and try again.</p><button class="btn btn-primary" onclick="loadCharacterDashboard()">Try Again</button></div>';
-            }
-        }
-
-        function displayCharacterDashboard(characters) {
-            const mainContent = document.getElementById('mainContent');
-
-            if (characters && characters.length > 0) {
-                let characterCardsHTML = '';
-                characters.forEach(character => {
-                    characterCardsHTML += '<div class="character-card" onclick="viewCharacter(\'' + character.id + '\')">';
-                    characterCardsHTML += '<h3>' + character.name + '</h3>';
-                    characterCardsHTML += '<p class="character-details">';
-                    characterCardsHTML += '<strong>' + character.species + ' ' + character.career + '</strong><br>';
-                    characterCardsHTML += 'Player: ' + character.playerName + '<br>';
-                    characterCardsHTML += 'XP: ' + character.availableXP + '/' + character.totalXP;
-                    characterCardsHTML += '</p>';
-                    characterCardsHTML += '<div class="character-actions">';
-                    characterCardsHTML += '<button class="btn btn-sm btn-outline" onclick="event.stopPropagation(); editCharacter(\'' + character.id + '\')">Edit</button>';
-                    characterCardsHTML += '<button class="btn btn-sm btn-secondary" onclick="event.stopPropagation(); awardXP(\'' + character.id + '\')">Award XP</button>';
-                    characterCardsHTML += '</div>';
-                    characterCardsHTML += '</div>';
-                });
-
-                mainContent.innerHTML = '<div class="character-dashboard dashboard-section my-characters">' +
-                    '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">' +
-                    '<h1>🌟 My Characters</h1>' +
-                    '<div style="display: flex; gap: 1rem;">' +
-                    '<button class="btn btn-secondary" onclick="showCampaignManagement()">🎲 Manage Campaigns</button>' +
-                    '</div>' +
-                    '</div>' +
-                    '<div class="character-grid">' + characterCardsHTML + '</div>' +
-                    '</div>';
-            } else {
-                mainContent.innerHTML = '<div class="character-dashboard dashboard-section my-characters">' +
-                    '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">' +
-                    '<h1>🌟 My Characters</h1>' +
-                    '<div style="display: flex; gap: 1rem;">' +
-                    '<button class="btn btn-secondary" onclick="showCampaignManagement()">🎲 Manage Campaigns</button>' +
-                    '</div>' +
-                    '</div>' +
-                    '<div style="text-align: center; padding: 3rem;">' +
-                    '<h2>No characters found</h2>' +
-                    '<p>You haven\'t created any characters yet.</p>' +
-                    '<button class="btn btn-primary" onclick="showCreateCharacterForm()">Create Your First Character</button>' +
-                    '</div>' +
-                    '</div>';
-            }
-        }
-
-        // Navigation handling
-        document.addEventListener('DOMContentLoaded', () => {
-            document.addEventListener('click', (e) => {
-                if (e.target.classList.contains('nav-link')) {
-                    e.preventDefault();
-                    const page = e.target.dataset.page;
-                    
-                    // Update active nav link
-                    document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
-                    e.target.classList.add('active');
-                    
-                    // Load the appropriate page
-                    switch(page) {
-                        case 'characters':
-                            loadCharactersPage();
-                            break;
-                        case 'campaigns':
-                            loadCampaignsPage();
-                            break;
-                        case 'documentation':
-                            loadDocumentationPage();
-                            break;
-                    }
-                }
-            });
-        });
-
-        // Load different pages
-        async function loadCharactersPage() {
-            await loadCharacterDashboard();
-        }
-
-        async function loadCampaignsPage() {
-            document.getElementById('mainContent').innerHTML = '<div class="loading-state"><h1>🎲 Loading Campaigns...</h1><div class="spinner"></div></div>';
-            
-            try {
-                const response = await authenticatedFetch('/api/campaigns');
-                const data = await response.json();
-                
-                if (response.ok) {
-                    displayCampaignsPage(data.campaigns || []);
-                } else {
-                    document.getElementById('mainContent').innerHTML = '<div class="error-state"><h1>⚠️ Error Loading Campaigns</h1><p>Error: ' + (data.error || 'Unknown error') + '</p><button class="btn btn-primary" onclick="loadCampaignsPage()">Try Again</button></div>';
-                }
-            } catch (error) {
-                console.error('Error loading campaigns:', error);
-                document.getElementById('mainContent').innerHTML = '<div class="error-state"><h1>⚠️ Connection Error</h1><p>Failed to load campaigns. Please check your connection and try again.</p><button class="btn btn-primary" onclick="loadCampaignsPage()">Try Again</button></div>';
-            }
-        }
-
-        function displayCampaignsPage(campaigns) {
-            const mainContent = document.getElementById('mainContent');
-
-            if (campaigns && campaigns.length > 0) {
-                let campaignCardsHTML = '';
-                campaigns.forEach(campaign => {
-                    campaignCardsHTML += '<div class="campaign-card">';
-                    campaignCardsHTML += '<h3>' + campaign.name + '</h3>';
-                    campaignCardsHTML += '<p class="campaign-description">' + (campaign.description || 'No description') + '</p>';
-                    campaignCardsHTML += '<div class="campaign-stats">';
-                    campaignCardsHTML += '<span class="campaign-stat"><strong>' + (campaign.is_game_master ? 'Game Master' : 'Player') + '</strong></span>';
-                    campaignCardsHTML += '<span class="campaign-stat">Players: ' + campaign.player_count + '</span>';
-                    campaignCardsHTML += '<span class="campaign-stat">Characters: ' + campaign.character_count + '</span>';
-                    campaignCardsHTML += '</div>';
-                    campaignCardsHTML += '<div class="campaign-actions">';
-                    campaignCardsHTML += '<button class="btn btn-outline" onclick="viewCampaign(\'' + campaign.id + '\')">View Details</button>';
-                    if (campaign.is_game_master) {
-                        campaignCardsHTML += '<button class="btn btn-secondary" onclick="generateCampaignInvite(\'' + campaign.id + '\')">Invite Players</button>';
-                    }
-                    campaignCardsHTML += '</div>';
-                    campaignCardsHTML += '</div>';
-                });
-
-                mainContent.innerHTML = '<div class="campaigns-page">' +
-                    '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">' +
-                    '<h1>🎲 My Campaigns</h1>' +
-                    '<button class="btn btn-primary" onclick="showCreateCampaignForm()">➕ Create New Campaign</button>' +
-                    '</div>' +
-                    '<div class="campaigns-grid">' + campaignCardsHTML + '</div>' +
-                    '</div>';
-            } else {
-                mainContent.innerHTML = '<div class="campaigns-page">' +
-                    '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">' +
-                    '<h1>🎲 My Campaigns</h1>' +
-                    '<button class="btn btn-primary" onclick="showCreateCampaignForm()">➕ Create New Campaign</button>' +
-                    '</div>' +
-                    '<div style="text-align: center; padding: 3rem;">' +
-                    '<h2>No campaigns found</h2>' +
-                    '<p>You haven\'t joined or created any campaigns yet.</p>' +
-                    '<button class="btn btn-primary" onclick="showCreateCampaignForm()">Create Your First Campaign</button>' +
-                    '</div>' +
-                    '</div>';
-            }
-        }
-
-        async function loadDocumentationPage() {
-            document.getElementById('mainContent').innerHTML = '<div class="loading-state"><h1>📚 Loading Documentation...</h1><div class="spinner"></div></div>';
-            
-            // Simplified documentation page for now
-            document.getElementById('mainContent').innerHTML = 
-                '<div class="documentation-page">' +
-                '<h1>📚 Star Wars RPG Documentation</h1>' +
-                '<div style="max-width: 800px; margin: 0 auto; line-height: 1.6;">' +
-                '<h2>Getting Started</h2>' +
-                '<p>Welcome to the Star Wars RPG Character Manager! This application helps you create, manage, and advance your Star Wars RPG characters.</p>' +
-                '<h2>Features</h2>' +
-                '<ul>' +
-                '<li><strong>Character Creation:</strong> Create characters with species, careers, and starting attributes</li>' +
-                '<li><strong>Campaign Management:</strong> Join campaigns and manage your characters within them</li>' +
-                '<li><strong>Character Advancement:</strong> Spend XP to improve skills and characteristics</li>' +
-                '<li><strong>Role-Based Access:</strong> Different features for Players, Game Masters, and Admins</li>' +
-                '</ul>' +
-                '<h2>User Roles</h2>' +
-                '<ul>' +
-                '<li><strong>Player:</strong> Create and manage characters, join campaigns</li>' +
-                '<li><strong>Game Master:</strong> Create campaigns, invite players, oversee characters</li>' +
-                '<li><strong>Admin:</strong> Manage users, generate invite codes, system oversight</li>' +
-                '</ul>' +
-                '</div>' +
-                '</div>';
-        }
-
-        // Utility functions
-        async function loadUserData() {
-            // Load user-specific data like campaigns
-            try {
-                const campaignsResponse = await authenticatedFetch('/api/campaigns');
-                if (campaignsResponse.ok) {
-                    const data = await campaignsResponse.json();
-                    campaigns = data.campaigns || [];
-                }
-            } catch (error) {
-                console.error('Error loading user data:', error);
-            }
-        }
-
-        // User menu toggle
-        document.addEventListener('DOMContentLoaded', () => {
-            const userMenuToggle = document.getElementById('userMenuToggle');
-            const userMenuDropdown = document.getElementById('userMenuDropdown');
-            
-            if (userMenuToggle && userMenuDropdown) {
-                userMenuToggle.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    userMenuDropdown.classList.toggle('show');
-                });
-                
-                document.addEventListener('click', () => {
-                    userMenuDropdown.classList.remove('show');
-                });
-            }
-        });
-
-        // Placeholder functions for menu items
-        function toggleTheme() {
-            console.log('Toggle theme functionality not implemented yet');
-        }
-
-        function showProfileSettings() {
-            document.getElementById('mainContent').innerHTML = 
-                '<div class="profile-settings">' +
-                '<h1>⚙️ Profile Settings</h1>' +
-                '<div style="max-width: 600px; margin: 0 auto;">' +
-                '<div style="background: linear-gradient(145deg, #1a1a2e, #16213e); border: 1px solid #ffd700; border-radius: 8px; padding: 2rem; margin-bottom: 1rem;">' +
-                '<h2>Account Information</h2>' +
-                '<p><strong>Username:</strong> ' + (currentUser ? currentUser.username : 'N/A') + '</p>' +
-                '<p><strong>Email:</strong> ' + (currentUser ? currentUser.email : 'N/A') + '</p>' +
-                '<p><strong>Role:</strong> ' + (currentUser ? currentUser.role : 'N/A') + '</p>' +
-                '</div>' +
-                '<div style="background: linear-gradient(145deg, #1a1a2e, #16213e); border: 1px solid #ffd700; border-radius: 8px; padding: 2rem;">' +
-                '<h2>Security Settings</h2>' +
-                '<button class="btn btn-secondary" onclick="changePassword()">Change Password</button>' +
-                '</div>' +
-                '</div>' +
-                '</div>';
-        }
         
-        function changePassword() {
-            alert('Password change functionality coming soon!');
+        if (response.ok) {
+            alert(`Successfully awarded ${amount} XP!`);
+            await loadCharacters(); // Reload to show updated XP
+        } else {
+            throw new Error('Failed to award XP');
         }
+    } catch (error) {
+        console.error('Error awarding XP:', error);
+        alert('Failed to award XP. Please try again.');
+    }
+}
 
-        function showCampaignManagement() {
-            loadCampaignsPage();
+// Add hover effects to character cards
+document.addEventListener('DOMContentLoaded', () => {
+    const style = document.createElement('style');
+    style.textContent = `
+        .character-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 215, 0, 0.3);
+            border-color: #ffd700;
         }
+    `;
+    document.head.appendChild(style);
+});
+</script>
 
-        function showAdminPanel() {
-            document.getElementById('mainContent').innerHTML = 
-                '<div class="admin-panel">' +
-                '<h1>🛡️ Admin Panel</h1>' +
-                '<div style="max-width: 800px; margin: 0 auto;">' +
-                '<div style="background: linear-gradient(145deg, #1a1a2e, #16213e); border: 1px solid #ffd700; border-radius: 8px; padding: 2rem; margin-bottom: 1rem;">' +
-                '<h2>User Management</h2>' +
-                '<button class="btn btn-primary" onclick="generateInviteCode()">Generate Invite Code</button>' +
-                '</div>' +
-                '<div style="background: linear-gradient(145deg, #1a1a2e, #16213e); border: 1px solid #ffd700; border-radius: 8px; padding: 2rem;">' +
-                '<h2>System Statistics</h2>' +
-                '<p>Admin functionality coming soon...</p>' +
-                '</div>' +
-                '</div>' +
-                '</div>';
-        }
-        
-        function generateInviteCode() {
-            alert('Invite code generation coming soon!');
-        }
-
-        function setup2FA() {
-            document.getElementById('mainContent').innerHTML = 
-                '<div class="twofa-setup">' +
-                '<h1>🔐 Two-Factor Authentication</h1>' +
-                '<div style="max-width: 600px; margin: 0 auto; background: linear-gradient(145deg, #1a1a2e, #16213e); border: 1px solid #ffd700; border-radius: 8px; padding: 2rem;">' +
-                '<p>Two-Factor Authentication adds an extra layer of security to your account.</p>' +
-                '<button class="btn btn-primary" onclick="alert(\'2FA setup coming soon!\')">Enable 2FA</button>' +
-                '</div>' +
-                '</div>';
-        }
-
-        function logout() {
-            localStorage.removeItem('access_token');
-            localStorage.removeItem('user');
-            window.location.href = '/login';
-        }
-
-        // Character management functions
-        function viewCharacter(characterId) {
-            console.log('View character:', characterId);
-        }
-
-        function editCharacter(characterId) {
-            console.log('Edit character:', characterId);
-        }
-
-        function awardXP(characterId) {
-            console.log('Award XP to character:', characterId);
-        }
-
-        function showCreateCharacterForm() {
-            document.getElementById('mainContent').innerHTML = 
-                '<div class="character-creation-form">' +
-                '<h1>🌟 Create Character</h1>' +
-                '<p>Character creation form coming soon...</p>' +
-                '<button class="btn btn-secondary" onclick="loadCharactersPage()">← Back to Characters</button>' +
-                '</div>';
-        }
-
-        function viewCampaign(campaignId) {
-            console.log('View campaign:', campaignId);
-        }
-
-        function generateCampaignInvite(campaignId) {
-            document.getElementById('mainContent').innerHTML = 
-                '<div class="invite-generation">' +
-                '<h1>🎲 Generate Campaign Invite</h1>' +
-                '<p>Campaign invite generation coming soon...</p>' +
-                '<button class="btn btn-secondary" onclick="loadCampaignsPage()">← Back to Campaigns</button>' +
-                '</div>';
-        }
-        
-        function showCreateCampaignForm() {
-            document.getElementById('mainContent').innerHTML = 
-                '<div class="campaign-creation-form">' +
-                '<h1>🎲 Create New Campaign</h1>' +
-                '<div style="max-width: 600px; margin: 0 auto; background: linear-gradient(145deg, #1a1a2e, #16213e); border: 1px solid #ffd700; border-radius: 8px; padding: 2rem;">' +
-                '<form>' +
-                '<div style="margin-bottom: 1rem;">' +
-                '<label style="color: #ffd700; display: block; margin-bottom: 0.5rem;">Campaign Name:</label>' +
-                '<input type="text" style="width: 100%; padding: 0.75rem; border: 1px solid #ffd700; border-radius: 4px; background: rgba(0,0,0,0.3); color: #e0e0e0;" placeholder="Enter campaign name">' +
-                '</div>' +
-                '<div style="margin-bottom: 1rem;">' +
-                '<label style="color: #ffd700; display: block; margin-bottom: 0.5rem;">Description:</label>' +
-                '<textarea style="width: 100%; padding: 0.75rem; border: 1px solid #ffd700; border-radius: 4px; background: rgba(0,0,0,0.3); color: #e0e0e0; height: 100px;" placeholder="Describe your campaign"></textarea>' +
-                '</div>' +
-                '<div style="display: flex; gap: 1rem;">' +
-                '<button type="button" class="btn btn-primary" onclick="alert(\'Campaign creation coming soon!\')">Create Campaign</button>' +
-                '<button type="button" class="btn btn-secondary" onclick="loadCampaignsPage()">Cancel</button>' +
-                '</div>' +
-                '</form>' +
-                '</div>' +
-                '</div>';
-        }
-    </script>
-</body>
-</html>
+</div>
+{% endblock %}
