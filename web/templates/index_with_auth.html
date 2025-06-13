@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -61,14 +60,17 @@
             min-height: 100vh;
             font-family: 'Arial', sans-serif;
         }
+        
         .user-info {
             display: flex;
             align-items: center;
             gap: 1rem;
         }
+        
         .user-menu {
             position: relative;
         }
+        
         .user-menu-toggle {
             background: none;
             border: none;
@@ -77,125 +79,184 @@
             padding: 0.5rem;
             border-radius: 4px;
         }
+        
         .user-menu-toggle:hover {
             background: rgba(255, 255, 255, 0.1);
         }
+        
         .user-menu-dropdown {
             position: absolute;
             top: 100%;
             right: 0;
-            background: white;
-            color: black;
-            border: 1px solid #ddd;
+            background: linear-gradient(145deg, #1a1a2e, #16213e);
+            color: #e0e0e0;
+            border: 1px solid #ffd700;
             border-radius: 4px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
             min-width: 200px;
             z-index: 1000;
             display: none;
+            margin-top: 0.5rem;
         }
+        
         .user-menu-dropdown.show {
             display: block;
         }
+        
         .user-menu-item {
             display: block;
             padding: 0.75rem 1rem;
             text-decoration: none;
-            color: black;
-            border-bottom: 1px solid #eee;
+            color: #e0e0e0;
+            border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+            transition: all 0.2s;
+            cursor: pointer;
         }
+        
         .user-menu-item:hover {
-            background: #f8f9fa;
+            background-color: rgba(255, 215, 0, 0.1);
+            color: #ffd700;
         }
+        
         .user-menu-item:last-child {
             border-bottom: none;
         }
-        .campaign-selector {
-            margin: 1rem;
-            padding: 1rem;
-            background: linear-gradient(145deg, #1a1a2e, #16213e);
-            border-radius: 8px;
-            border: 1px solid #ffd700;
-            box-shadow: 0 4px 8px rgba(255, 215, 0, 0.2);
-        }
-
-        .campaign-selector h3 {
-            color: #ffd700;
-            margin-top: 0;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
-        }
-
+        
         .main-container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            min-height: calc(100vh - 80px);
         }
-
+        
         .main-content {
-            background: linear-gradient(145deg, #0f0f23, #1a1a2e);
-            border-radius: 8px;
+            flex: 1;
             padding: 2rem;
-            min-height: 70vh;
-            border: 1px solid #333;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-            color: #e0e0e0;
+            max-width: 1200px;
+            margin: 0 auto;
             width: 100%;
         }
-
-        .nav a {
-            color: #ffd700;
-            text-decoration: none;
-            padding: 0.75rem 1rem;
-            display: block;
-            border-radius: 4px;
-            margin-bottom: 0.5rem;
-            transition: all 0.3s ease;
-            border: 1px solid transparent;
-        }
-
-        .nav a:hover {
-            background: rgba(255, 215, 0, 0.1);
-            border-color: #ffd700;
-        }
-
-        .nav a.active {
-            background: linear-gradient(135deg, #ffd700, #ffed4e);
-            color: #000;
-            font-weight: bold;
-            text-shadow: none;
-        }
-        .campaign-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-top: 0.5rem;
-        }
-        .campaign-tag {
-            background: #007cba;
-            color: white;
-            padding: 0.25rem 0.5rem;
-            border-radius: 4px;
-            font-size: 0.875rem;
-            cursor: pointer;
-        }
-        .campaign-tag:hover {
-            background: #005a87;
-        }
-        .campaign-tag.active {
-            background: #28a745;
-        }
-        .auth-required {
-            display: none;
-        }
+        
         .loading {
             text-align: center;
-            padding: 2rem;
+            padding: 3rem;
+            color: #ffd700;
+            font-size: 1.2rem;
+        }
+        
+        .character-dashboard {
+            padding: 2rem 0;
+        }
+        
+        .character-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .character-card {
+            background: linear-gradient(145deg, #1a1a2e, #16213e);
+            border: 1px solid #ffd700;
+            border-radius: 8px;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+        
+        .character-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(255, 215, 0, 0.2);
+        }
+        
+        .character-card h3 {
+            color: #ffd700;
+            margin: 0 0 1rem 0;
+            font-size: 1.2rem;
+        }
+        
+        .character-details {
+            color: #e0e0e0;
+            margin: 0 0 1rem 0;
+            line-height: 1.4;
+        }
+        
+        .character-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        
+        .btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            color: #000;
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(135deg, #4a5568, #2d3748);
+            color: #e0e0e0;
+        }
+        
+        .btn-outline {
+            background: transparent;
+            color: #ffd700;
+            border: 1px solid #ffd700;
+        }
+        
+        .btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+        }
+        
+        .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        .loading-state, .error-state {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: #e0e0e0;
+        }
+        
+        .loading-state h1, .error-state h1 {
+            color: #ffd700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+            margin-bottom: 1rem;
+        }
+        
+        .spinner {
+            border: 4px solid #333;
+            border-top: 4px solid #ffd700;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 1rem auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
     </style>
 </head>
 <body>
-    <!-- Authentication Header -->
-    <div class="auth-header">
-        <h1>⭐ Star Wars RPG Character Manager ⭐</h1>
+    <!-- Top Navigation Header -->
+    <div class="auth-header auth-required" style="display: none;">
+        <h1>🌟 Star Wars RPG Character Manager</h1>
         
         <!-- Main Navigation -->
         <nav class="main-nav auth-required" style="display: none;">
@@ -286,7 +347,7 @@
             document.querySelectorAll('.auth-required').forEach(el => el.style.display = 'block');
 
             // Update user display
-            document.getElementById('userDisplay').textContent = `${currentUser.username} (${currentUser.role})`;
+            document.getElementById('userDisplay').textContent = currentUser.username + ' (' + currentUser.role + ')';
 
             // Show admin options if user is admin
             if (currentUser.role === 'admin') {
@@ -302,12 +363,7 @@
             console.log('Loading character dashboard...');
             try {
                 // First, show a proper loading state
-                document.getElementById('mainContent').innerHTML = `
-                    <div class="loading-state">
-                        <h1>🌟 Loading Characters...</h1>
-                        <div class="spinner"></div>
-                    </div>
-                `;
+                document.getElementById('mainContent').innerHTML = '<div class="loading-state"><h1>🌟 Loading Characters...</h1><div class="spinner"></div></div>';
 
                 const response = await authenticatedFetch('/api/characters');
                 const data = await response.json();
@@ -318,49 +374,11 @@
                     displayCharacterDashboard(data.characters || []);
                 } else {
                     console.error('API error:', data.error);
-                    document.getElementById('mainContent').innerHTML = `
-                        <div class="error-state">
-                            <h1>⚠️ Error Loading Characters</h1>
-                            <p>Error: ${data.error}</p>
-                            <button class="btn btn-primary" onclick="loadCharacterDashboard()">Try Again</button>
-                        </div>
-                    `;
+                    document.getElementById('mainContent').innerHTML = '<div class="error-state"><h1>⚠️ Error Loading Characters</h1><p>Error: ' + (data.error || 'Unknown error') + '</p><button class="btn btn-primary" onclick="loadCharacterDashboard()">Try Again</button></div>';
                 }
             } catch (error) {
                 console.error('Error loading characters:', error);
-                document.getElementById('mainContent').innerHTML = `
-                    <div class="error-state">
-                        <h1>⚠️ Connection Error</h1>
-                        <p>Failed to load characters. Please check your connection and try again.</p>
-                        <button class="btn btn-primary" onclick="loadCharacterDashboard()">Try Again</button>
-                    </div>
-
-                    <style>
-                    .loading-state, .error-state {
-                        text-align: center;
-                        padding: 3rem 1rem;
-                        color: #e0e0e0;
-                    }
-                    .loading-state h1, .error-state h1 {
-                        color: #ffd700;
-                        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
-                        margin-bottom: 1rem;
-                    }
-                    .spinner {
-                        border: 4px solid #333;
-                        border-top: 4px solid #ffd700;
-                        border-radius: 50%;
-                        width: 40px;
-                        height: 40px;
-                        animation: spin 1s linear infinite;
-                        margin: 1rem auto;
-                    }
-                    @keyframes spin {
-                        0% { transform: rotate(0deg); }
-                        100% { transform: rotate(360deg); }
-                    }
-                    </style>
-                `;
+                document.getElementById('mainContent').innerHTML = '<div class="error-state"><h1>⚠️ Connection Error</h1><p>Failed to load characters. Please check your connection and try again.</p><button class="btn btn-primary" onclick="loadCharacterDashboard()">Try Again</button></div>';
             }
         }
 
@@ -368,1723 +386,95 @@
             const mainContent = document.getElementById('mainContent');
 
             if (characters && characters.length > 0) {
-                mainContent.innerHTML = `
-                    <div class="character-dashboard dashboard-section my-characters">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
-                            <h1>🌟 My Characters</h1>
-                            <div style="display: flex; gap: 1rem;">
-                                <button class="btn btn-secondary" onclick="showCampaignManagement()">
-                                    🎲 Manage Campaigns
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="character-grid">
-                            ${characters.map(character => `
-                                <div class="character-card" onclick="viewCharacter('${character.id}')">
-                                    <h3>${character.name}</h3>
-                                    <p class="character-details">
-                                        <strong>${character.species} ${character.career}</strong><br>
-                                        Player: ${character.playerName}<br>
-                                        XP: ${character.availableXP}/${character.totalXP}
-                                    </p>
-                                    <div class="character-actions">
-                                        <button class="btn btn-sm btn-outline" onclick="event.stopPropagation(); editCharacter('${character.id}')">Edit</button>
-                                        <button class="btn btn-sm btn-secondary" onclick="event.stopPropagation(); awardXP('${character.id}')">Award XP</button>
-                                    </div>
-                                </div>
-                            `).join('')}
-                        </div>
-                    </div>
-
-                    <style>
-                    .character-dashboard h1 {
-                        color: #ffd700;
-                        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
-                    }
-                    .character-grid {
-                        display: grid;
-                        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-                        gap: 1rem;
-                    }
-                    .character-card {
-                        background: linear-gradient(145deg, #1a1a2e, #16213e);
-                        border: 1px solid #ffd700;
-                        border-radius: 8px;
-                        padding: 1.5rem;
-                        cursor: pointer;
-                        transition: all 0.3s ease;
-                        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-                    }
-                    .character-card:hover {
-                        transform: translateY(-2px);
-                        box-shadow: 0 6px 16px rgba(255, 215, 0, 0.3);
-                        border-color: #ffed4e;
-                    }
-                    .character-card h3 {
-                        color: #ffd700;
-                        margin: 0 0 1rem 0;
-                        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
-                    }
-                    .character-details {
-                        color: #e0e0e0;
-                        margin: 0 0 1rem 0;
-                        line-height: 1.4;
-                    }
-                    .character-actions {
-                        display: flex;
-                        gap: 0.5rem;
-                    }
-                    .btn {
-                        background: linear-gradient(135deg, #ffd700, #ffed4e);
-                        color: #000;
-                        border: none;
-                        padding: 0.5rem 1rem;
-                        border-radius: 4px;
-                        cursor: pointer;
-                        font-weight: bold;
-                        transition: all 0.3s ease;
-                    }
-                    .btn:hover {
-                        background: linear-gradient(135deg, #ffed4e, #ffd700);
-                        transform: translateY(-1px);
-                    }
-                    .btn-outline {
-                        background: transparent;
-                        color: #ffd700;
-                        border: 1px solid #ffd700;
-                    }
-                    .btn-outline:hover {
-                        background: rgba(255, 215, 0, 0.1);
-                    }
-                    .btn-secondary {
-                        background: linear-gradient(135deg, #666, #888);
-                        color: white;
-                    }
-                    .btn-sm {
-                        padding: 0.25rem 0.5rem;
-                        font-size: 0.875rem;
-                    }
-                    </style>
-                `;
-            } else {
-                mainContent.innerHTML = `
-                    <div class="empty-state dashboard-section my-characters">
-                        <h1>🌟 Welcome to the Galaxy!</h1>
-                        <p>You don't have any characters yet. Ready to begin your adventure?</p>
-                        <div style="display: flex; gap: 1rem; justify-content: center; margin: 1.5rem 0;">
-                            <button class="btn btn-primary" onclick="showCreateCharacterForm()">
-                                🚀 Create Your First Character
-                            </button>
-                            <button class="btn btn-secondary" onclick="showCampaignManagement()">
-                                🎲 Create Campaign
-                            </button>
-                        </div>
-
-                        <div class="getting-started" style="margin-top: 2rem; padding: 1rem; background: rgba(255, 215, 0, 0.1); border: 1px solid #ffd700; border-radius: 8px;">
-                            <h3>Getting Started</h3>
-                            <ul style="text-align: left; color: #e0e0e0;">
-                                <li>🎭 Choose from multiple Star Wars species</li>
-                                <li>⚔️ Select your career path</li>
-                                <li>📜 Define your character's obligations</li>
-                                <li>🎲 Roll into adventure!</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <style>
-                    .empty-state {
-                        text-align: center;
-                        padding: 3rem 1rem;
-                        color: #e0e0e0;
-                    }
-                    .empty-state h1 {
-                        color: #ffd700;
-                        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
-                        margin-bottom: 1rem;
-                    }
-                    .empty-state h3 {
-                        color: #ffd700;
-                        margin: 0 0 1rem 0;
-                    }
-                    </style>
-                `;
-            }
-        }
-
-        async function loadUserData() {
-            try {
-                // Load campaigns
-                const campaignsResponse = await authenticatedFetch('/api/campaigns');
-                if (campaignsResponse.ok) {
-                    const data = await campaignsResponse.json();
-                    campaigns = data.campaigns;
-                    updateCampaignList();
-                }
-            } catch (error) {
-                console.error('Failed to load user data:', error);
-            }
-        }
-
-        function updateCampaignList() {
-            const campaignList = document.getElementById('campaignList');
-            const allCharactersTag = campaignList.querySelector('[data-campaign=""]');
-
-            // Remove existing campaign tags (except "All Characters")
-            campaignList.querySelectorAll('[data-campaign]:not([data-campaign=""])').forEach(el => el.remove());
-
-            // Add campaign tags
-            campaigns.forEach(campaign => {
-                const tag = document.createElement('div');
-                tag.className = 'campaign-tag';
-                tag.setAttribute('data-campaign', campaign.id);
-                tag.onclick = () => selectCampaign(campaign.id);
-                tag.textContent = `${campaign.name} ${campaign.is_game_master ? '(GM)' : ''}`;
-                campaignList.appendChild(tag);
-            });
-        }
-
-        function selectCampaign(campaignId) {
-            currentCampaign = campaignId;
-
-            // Update active state
-            document.querySelectorAll('.campaign-tag').forEach(tag => {
-                tag.classList.remove('active');
-            });
-            document.querySelector(`[data-campaign="${campaignId}"]`).classList.add('active');
-
-            // Reload character list with campaign filter
-            if (typeof characterManager !== 'undefined') {
-                characterManager.loadCharactersFromAPI().then(() => {
-                    characterManager.loadDashboard();
-                }).catch(error => {
-                    console.error('Error loading characters:', error);
+                let characterCardsHTML = '';
+                characters.forEach(character => {
+                    characterCardsHTML += '<div class="character-card" onclick="viewCharacter(\'' + character.id + '\')">';
+                    characterCardsHTML += '<h3>' + character.name + '</h3>';
+                    characterCardsHTML += '<p class="character-details">';
+                    characterCardsHTML += '<strong>' + character.species + ' ' + character.career + '</strong><br>';
+                    characterCardsHTML += 'Player: ' + character.playerName + '<br>';
+                    characterCardsHTML += 'XP: ' + character.availableXP + '/' + character.totalXP;
+                    characterCardsHTML += '</p>';
+                    characterCardsHTML += '<div class="character-actions">';
+                    characterCardsHTML += '<button class="btn btn-sm btn-outline" onclick="event.stopPropagation(); editCharacter(\'' + character.id + '\')">Edit</button>';
+                    characterCardsHTML += '<button class="btn btn-sm btn-secondary" onclick="event.stopPropagation(); awardXP(\'' + character.id + '\')">Award XP</button>';
+                    characterCardsHTML += '</div>';
+                    characterCardsHTML += '</div>';
                 });
+
+                mainContent.innerHTML = '<div class="character-dashboard dashboard-section my-characters">' +
+                    '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">' +
+                    '<h1>🌟 My Characters</h1>' +
+                    '<div style="display: flex; gap: 1rem;">' +
+                    '<button class="btn btn-secondary" onclick="showCampaignManagement()">🎲 Manage Campaigns</button>' +
+                    '</div>' +
+                    '</div>' +
+                    '<div class="character-grid">' + characterCardsHTML + '</div>' +
+                    '</div>';
+            } else {
+                mainContent.innerHTML = '<div class="character-dashboard dashboard-section my-characters">' +
+                    '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">' +
+                    '<h1>🌟 My Characters</h1>' +
+                    '<div style="display: flex; gap: 1rem;">' +
+                    '<button class="btn btn-secondary" onclick="showCampaignManagement()">🎲 Manage Campaigns</button>' +
+                    '</div>' +
+                    '</div>' +
+                    '<div style="text-align: center; padding: 3rem;">' +
+                    '<h2>No characters found</h2>' +
+                    '<p>You haven\'t created any characters yet.</p>' +
+                    '<button class="btn btn-primary" onclick="showCreateCharacterForm()">Create Your First Character</button>' +
+                    '</div>' +
+                    '</div>';
             }
         }
 
-        // User menu toggle
-        document.getElementById('userMenuToggle').addEventListener('click', () => {
-            const dropdown = document.getElementById('userMenuDropdown');
-            dropdown.classList.toggle('show');
+        // Navigation handling
+        document.addEventListener('DOMContentLoaded', () => {
+            document.addEventListener('click', (e) => {
+                if (e.target.classList.contains('nav-link')) {
+                    e.preventDefault();
+                    const page = e.target.dataset.page;
+                    
+                    // Update active nav link
+                    document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+                    e.target.classList.add('active');
+                    
+                    // Load the appropriate page
+                    switch(page) {
+                        case 'characters':
+                            loadCharactersPage();
+                            break;
+                        case 'campaigns':
+                            loadCampaignsPage();
+                            break;
+                        case 'documentation':
+                            loadDocumentationPage();
+                            break;
+                    }
+                }
+            });
         });
 
-        // Close dropdown when clicking outside
-        document.addEventListener('click', (e) => {
-            if (!e.target.closest('.user-menu')) {
-                document.getElementById('userMenuDropdown').classList.remove('show');
-            }
-        });
-
-        async function authenticatedFetch(url, options = {}) {
-            const token = localStorage.getItem('access_token');
-            return fetch(url, {
-                ...options,
-                headers: {
-                    ...options.headers,
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json'
-                }
-            });
-        }
-
-        function logout() {
-            localStorage.removeItem('access_token');
-            localStorage.removeItem('user');
-            window.location.reload();
-        }
-
-        function showProfileSettings() {
-            // Show profile settings modal
-            const content = `
-                <div class="modal-overlay">
-                    <div class="modal">
-                        <div class="modal-header">
-                            <h3 class="modal-title">Profile Settings</h3>
-                            <button type="button" onclick="closeProfileModal()" style="background: none; border: none; font-size: 1.5rem; cursor: pointer;">&times;</button>
-                        </div>
-                        <div class="modal-body profile-page settings-menu">
-                            <div class="profile-section">
-                                <h4>Account Information</h4>
-                                <div class="profile-info">
-                                    <div class="info-item">
-                                        <label>Username:</label>
-                                        <span id="profile-username">${currentUser.username}</span>
-                                    </div>
-                                    <div class="info-item">
-                                        <label>Role:</label>
-                                        <span id="profile-role">${currentUser.role}</span>
-                                    </div>
-                                    <div class="info-item">
-                                        <label>Two-Factor Authentication:</label>
-                                        <span id="profile-2fa">${currentUser.two_factor_enabled ? 'Enabled' : 'Disabled'}</span>
-                                        ${!currentUser.two_factor_enabled ? `
-                                            <button class="btn btn-outline btn-sm" onclick="setup2FA()" style="margin-left: 1rem;">
-                                                Enable 2FA
-                                            </button>
-                                        ` : ''}
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="profile-section">
-                                <h4>Change Password</h4>
-                                <form id="change-password-form">
-                                    <div class="form-group">
-                                        <label class="form-label">Current Password</label>
-                                        <input type="password" class="form-input" name="current_password" required>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label class="form-label">New Password</label>
-                                        <input type="password" class="form-input" name="new_password" required>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label class="form-label">Confirm New Password</label>
-                                        <input type="password" class="form-input" name="confirm_password" required>
-                                    </div>
-
-                                    <button type="button" class="btn btn-primary" onclick="changePassword()">
-                                        Change Password
-                                    </button>
-                                </form>
-                            </div>
-
-                            <div class="profile-section">
-                                <h4>User Preferences</h4>
-                                <form id="preferences-form">
-                                    <div class="form-group">
-                                        <label class="form-label">Theme</label>
-                                        <select class="form-select" name="theme">
-                                            <option value="dark" selected>Dark (Star Wars)</option>
-                                            <option value="light">Light</option>
-                                        </select>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label class="form-label">Default Campaign View</label>
-                                        <select class="form-select" name="default_view">
-                                            <option value="all" selected>All Characters</option>
-                                            <option value="recent">Recent Campaign</option>
-                                        </select>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label class="form-label">
-                                            <input type="checkbox" name="show_advanced" checked> Show advanced character options
-                                        </label>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label class="form-label">
-                                            <input type="checkbox" name="auto_save" checked> Auto-save character changes
-                                        </label>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" onclick="closeProfileModal()">Close</button>
-                            <button type="button" class="btn btn-primary" onclick="saveProfileSettings()">Save Settings</button>
-                        </div>
-                    </div>
-                </div>
-
-                <style>
-                .profile-section {
-                    margin-bottom: 2rem;
-                    padding: 1rem;
-                    border: 1px solid #333;
-                    border-radius: 4px;
-                    background: rgba(255, 215, 0, 0.05);
-                }
-                .profile-section h4 {
-                    color: #ffd700;
-                    margin: 0 0 1rem 0;
-                    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
-                }
-                .profile-info {
-                    display: flex;
-                    flex-direction: column;
-                    gap: 0.75rem;
-                }
-                .info-item {
-                    display: flex;
-                    align-items: center;
-                    gap: 1rem;
-                }
-                .info-item label {
-                    font-weight: bold;
-                    color: #e0e0e0;
-                    min-width: 120px;
-                }
-                .info-item span {
-                    color: #ffd700;
-                }
-                </style>
-            `;
-
-            document.body.insertAdjacentHTML('beforeend', content);
-        }
-
-        function closeProfileModal() {
-            const modal = document.querySelector('.modal-overlay');
-            if (modal) {
-                modal.remove();
-            }
-        }
-
-        function saveProfileSettings() {
-            // For now, just show a success message since this is primarily UI
-            alert('Settings saved successfully!');
-            closeProfileModal();
-        }
-
-        async function changePassword() {
-            const form = document.getElementById('change-password-form');
-            const formData = new FormData(form);
-
-            const currentPassword = formData.get('current_password');
-            const newPassword = formData.get('new_password');
-            const confirmPassword = formData.get('confirm_password');
-
-            // Validate passwords match
-            if (newPassword !== confirmPassword) {
-                alert('New passwords do not match. Please try again.');
-                return;
-            }
-
-            // Validate password strength (basic check)
-            if (newPassword.length < 8) {
-                alert('New password must be at least 8 characters long.');
-                return;
-            }
-
-            try {
-                const response = await authenticatedFetch('/api/auth/change-password', {
-                    method: 'POST',
-                    body: JSON.stringify({
-                        current_password: currentPassword,
-                        new_password: newPassword
-                    })
-                });
-
-                const result = await response.json();
-
-                if (response.ok) {
-                    alert('Password changed successfully!');
-                    form.reset();
-                    closeProfileModal();
-                } else {
-                    alert('Error changing password: ' + result.error);
-                }
-            } catch (error) {
-                console.error('Error changing password:', error);
-                alert('Failed to change password. Please try again.');
-            }
-        }
-
-        function showCampaignManagement() {
-            // Show campaign management modal
-            const content = `
-                <div class="modal-overlay">
-                    <div class="modal">
-                        <div class="modal-header">
-                            <h3 class="modal-title">Campaign Management</h3>
-                            <button type="button" onclick="closeCampaignModal()" style="background: none; border: none; font-size: 1.5rem; cursor: pointer;">&times;</button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="campaign-tabs">
-                                <button class="tab-button active" onclick="showCampaignTab('my-campaigns')">My Campaigns</button>
-                                <button class="tab-button" onclick="showCampaignTab('create-campaign')">Create Campaign</button>
-                                <button class="tab-button" onclick="showCampaignTab('join-campaign')">Join Campaign</button>
-                            </div>
-
-                            <div id="my-campaigns-tab" class="tab-content active">
-                                <div class="campaign-section">
-                                    <h4>My Campaigns</h4>
-                                    <div id="campaigns-list">
-                                        <div class="loading">Loading campaigns...</div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div id="create-campaign-tab" class="tab-content" style="display: none;">
-                                <div class="campaign-section">
-                                    <h4>Create New Campaign</h4>
-                                    <form id="create-campaign-form" style="margin-top: 1rem;">
-                                        <div class="form-group">
-                                            <label class="form-label">Campaign Name</label>
-                                            <input type="text" class="form-input" name="name" required placeholder="Enter campaign name">
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label class="form-label">Description</label>
-                                            <textarea class="form-input" name="description" rows="3" placeholder="Describe your campaign..."></textarea>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label class="form-label">Game System</label>
-                                            <select class="form-select" name="game_system" required>
-                                                <option value="">Select Game System</option>
-                                                <option value="Edge of the Empire">Edge of the Empire</option>
-                                                <option value="Age of Rebellion">Age of Rebellion</option>
-                                                <option value="Force and Destiny">Force and Destiny</option>
-                                                <option value="Mixed/All Systems">Mixed/All Systems</option>
-                                            </select>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label class="form-label">Max Players</label>
-                                            <input type="number" class="form-input" name="max_players" min="1" max="8" value="4" required>
-                                        </div>
-
-                                        <button type="button" class="btn btn-primary" onclick="createCampaign()">
-                                            Create Campaign
-                                        </button>
-                                    </form>
-                                </div>
-                            </div>
-
-                            <div id="join-campaign-tab" class="tab-content" style="display: none;">
-                                <div class="campaign-section">
-                                    <h4>Join Campaign</h4>
-                                    <form id="join-campaign-form" style="margin-top: 1rem;">
-                                        <div class="form-group">
-                                            <label class="form-label">Campaign Invite Code</label>
-                                            <input type="text" class="form-input" name="invite_code" required placeholder="Enter campaign invite code">
-                                        </div>
-
-                                        <button type="button" class="btn btn-primary" onclick="joinCampaign()">
-                                            Join Campaign
-                                        </button>
-                                    </form>
-
-                                    <div style="margin-top: 2rem;">
-                                        <h5>How to Join</h5>
-                                        <p class="text-secondary">Ask your Game Master for a campaign invite code. Once you join, you can assign your characters to the campaign.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" onclick="closeCampaignModal()">Close</button>
-                        </div>
-                    </div>
-                </div>
-
-                <style>
-                .campaign-tabs {
-                    display: flex;
-                    border-bottom: 1px solid #ddd;
-                    margin-bottom: 1rem;
-                }
-                .tab-button {
-                    background: none;
-                    border: none;
-                    padding: 0.75rem 1rem;
-                    cursor: pointer;
-                    border-bottom: 2px solid transparent;
-                }
-                .tab-button.active {
-                    border-bottom-color: #007cba;
-                    color: #007cba;
-                }
-                .tab-content {
-                    display: none;
-                }
-                .tab-content.active {
-                    display: block;
-                }
-                .campaign-card {
-                    border: 1px solid #ddd;
-                    border-radius: 4px;
-                    padding: 1rem;
-                    margin-bottom: 1rem;
-                }
-                .campaign-card h5 {
-                    margin: 0 0 0.5rem 0;
-                    color: #007cba;
-                }
-                .campaign-stats {
-                    display: flex;
-                    gap: 1rem;
-                    margin-top: 0.5rem;
-                }
-                .campaign-stat {
-                    font-size: 0.875rem;
-                    color: #666;
-                }
-                </style>
-            `;
-
-            document.body.insertAdjacentHTML('beforeend', content);
-            loadCampaigns();
-        }
-
-        function setup2FA() {
-            // Show 2FA setup modal
-            const content = `
-                <div class="modal-overlay">
-                    <div class="modal">
-                        <div class="modal-header">
-                            <h3 class="modal-title">Two-Factor Authentication Setup</h3>
-                            <button type="button" onclick="close2FAModal()" style="background: none; border: none; font-size: 1.5rem; cursor: pointer;">&times;</button>
-                        </div>
-                        <div class="modal-body">
-                            <div id="twofa-step1" class="twofa-step">
-                                <div class="twofa-section">
-                                    <h4>Step 1: Install Authenticator App</h4>
-                                    <p>Install an authenticator app on your phone such as:</p>
-                                    <ul>
-                                        <li>Google Authenticator</li>
-                                        <li>Microsoft Authenticator</li>
-                                        <li>Authy</li>
-                                        <li>1Password</li>
-                                    </ul>
-
-                                    <button type="button" class="btn btn-primary" onclick="start2FASetup()">
-                                        Generate Setup Code
-                                    </button>
-                                </div>
-                            </div>
-
-                            <div id="twofa-step2" class="twofa-step" style="display: none;">
-                                <div class="twofa-section">
-                                    <h4>Step 2: Scan QR Code</h4>
-                                    <p>Scan this QR code with your authenticator app:</p>
-
-                                    <div class="qr-code-container" style="text-align: center; margin: 1rem 0;">
-                                        <div id="qr-code-placeholder" style="background: #f8f9fa; padding: 2rem; border: 1px solid #ddd;">
-                                            <div class="loading">Generating QR code...</div>
-                                        </div>
-                                    </div>
-
-                                    <div class="backup-codes" style="margin-top: 1rem;">
-                                        <h5>Backup Codes</h5>
-                                        <p class="text-secondary">Save these backup codes in a safe place. Each can only be used once:</p>
-                                        <div id="backup-codes-list" class="backup-codes-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; font-family: monospace; background: #f8f9fa; padding: 1rem; border: 1px solid #ddd; border-radius: 4px;">
-                                        </div>
-                                        <button type="button" class="btn btn-outline btn-sm" onclick="downloadBackupCodes()" style="margin-top: 0.5rem;">
-                                            Download Backup Codes
-                                        </button>
-                                    </div>
-
-                                    <button type="button" class="btn btn-primary" onclick="show2FAVerification()">
-                                        Continue to Verification
-                                    </button>
-                                </div>
-                            </div>
-
-                            <div id="twofa-step3" class="twofa-step" style="display: none;">
-                                <div class="twofa-section">
-                                    <h4>Step 3: Verify Setup</h4>
-                                    <p>Enter the 6-digit code from your authenticator app:</p>
-
-                                    <form id="twofa-verify-form" style="margin-top: 1rem;">
-                                        <div class="form-group">
-                                            <label class="form-label">Verification Code</label>
-                                            <input type="text" class="form-input" name="token" maxlength="6" placeholder="123456" required style="text-align: center; font-size: 1.2rem; letter-spacing: 0.2rem;">
-                                        </div>
-
-                                        <button type="button" class="btn btn-primary" onclick="verify2FASetup()">
-                                            Verify and Enable 2FA
-                                        </button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" onclick="close2FAModal()">Cancel</button>
-                        </div>
-                    </div>
-                </div>
-            `;
-
-            document.body.insertAdjacentHTML('beforeend', content);
-        }
-
-        function showAdminPanel() {
-            // Show admin panel modal
-            const content = `
-                <div class="modal-overlay">
-                    <div class="modal">
-                        <div class="modal-header">
-                            <h3 class="modal-title">Admin Panel</h3>
-                            <button type="button" onclick="closeAdminModal()" style="background: none; border: none; font-size: 1.5rem; cursor: pointer;">&times;</button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="admin-section">
-                                <h4>Invite Code Management</h4>
-                                <p>Generate invite codes for new users to register.</p>
-
-                                <form id="invite-form" style="margin-top: 1rem;">
-                                    <div class="form-group">
-                                        <label class="form-label">Role for new user</label>
-                                        <select class="form-select" name="role" required>
-                                            <option value="player">Player</option>
-                                            <option value="gamemaster">Game Master</option>
-                                            <option value="admin">Admin</option>
-                                        </select>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label class="form-label">Expires in (days)</label>
-                                        <input type="number" class="form-input" name="expires_in_days" value="7" min="1" max="365" required>
-                                    </div>
-
-                                    <button type="button" class="btn btn-primary" onclick="generateInviteCode()">
-                                        Generate Invite Code
-                                    </button>
-                                </form>
-
-                                <div id="invite-result" style="margin-top: 1rem; display: none;">
-                                    <div class="form-group">
-                                        <label class="form-label">Generated Invite Code</label>
-                                        <div style="display: flex; gap: 0.5rem;">
-                                            <input type="text" id="generated-code" class="form-input" readonly>
-                                            <button type="button" class="btn btn-outline" onclick="copyInviteCode()">Copy</button>
-                                        </div>
-                                        <small class="text-secondary">Share this code with the new user for registration.</small>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" onclick="closeAdminModal()">Close</button>
-                        </div>
-                    </div>
-                </div>
-            `;
-
-            document.body.insertAdjacentHTML('beforeend', content);
-        }
-
-        function closeAdminModal() {
-            const modal = document.querySelector('.modal-overlay');
-            if (modal) {
-                modal.remove();
-            }
-        }
-
-        async function generateInviteCode() {
-            const form = document.getElementById('invite-form');
-            const formData = new FormData(form);
-
-            const requestData = {
-                role: formData.get('role'),
-                expires_in_days: parseInt(formData.get('expires_in_days'))
-            };
-
-            try {
-                const response = await authenticatedFetch('/api/admin/invite', {
-                    method: 'POST',
-                    body: JSON.stringify(requestData)
-                });
-
-                const result = await response.json();
-
-                if (response.ok) {
-                    // Show the generated code
-                    document.getElementById('generated-code').value = result.invite_code;
-                    document.getElementById('invite-result').style.display = 'block';
-                } else {
-                    alert('Error generating invite code: ' + result.error);
-                }
-            } catch (error) {
-                console.error('Error generating invite code:', error);
-                alert('Failed to generate invite code. Please try again.');
-            }
-        }
-
-        function copyInviteCode() {
-            const codeInput = document.getElementById('generated-code');
-            codeInput.select();
-            codeInput.setSelectionRange(0, 99999); // For mobile devices
-
-            try {
-                document.execCommand('copy');
-                alert('Invite code copied to clipboard!');
-            } catch (err) {
-                alert('Failed to copy invite code. Please select and copy manually.');
-            }
-        }
-
-        // 2FA Functions
-        let twofaData = null;
-
-        function close2FAModal() {
-            const modal = document.querySelector('.modal-overlay');
-            if (modal) {
-                modal.remove();
-            }
-            twofaData = null;
-        }
-
-        async function start2FASetup() {
-            try {
-                const response = await authenticatedFetch('/api/auth/setup-2fa', {
-                    method: 'POST'
-                });
-
-                const result = await response.json();
-
-                if (response.ok) {
-                    twofaData = result;
-
-                    // Show step 2
-                    document.getElementById('twofa-step1').style.display = 'none';
-                    document.getElementById('twofa-step2').style.display = 'block';
-
-                    // Display QR code
-                    document.getElementById('qr-code-placeholder').innerHTML = `<img src="${result.qr_code}" alt="QR Code" style="max-width: 100%; height: auto;">`;
-
-                    // Display backup codes
-                    const backupCodesList = document.getElementById('backup-codes-list');
-                    backupCodesList.innerHTML = result.backup_codes.map(code => `<div>${code}</div>`).join('');
-                } else {
-                    alert('Error setting up 2FA: ' + result.error);
-                }
-            } catch (error) {
-                console.error('Error setting up 2FA:', error);
-                alert('Failed to set up 2FA. Please try again.');
-            }
-        }
-
-        function show2FAVerification() {
-            document.getElementById('twofa-step2').style.display = 'none';
-            document.getElementById('twofa-step3').style.display = 'block';
-        }
-
-        async function verify2FASetup() {
-            const form = document.getElementById('twofa-verify-form');
-            const token = form.token.value.trim();
-
-            if (!token || token.length !== 6) {
-                alert('Please enter a valid 6-digit code.');
-                return;
-            }
-
-            try {
-                const response = await authenticatedFetch('/api/auth/verify-2fa-setup', {
-                    method: 'POST',
-                    body: JSON.stringify({ token: token })
-                });
-
-                const result = await response.json();
-
-                if (response.ok) {
-                    alert('Two-Factor Authentication has been successfully enabled!');
-                    close2FAModal();
-
-                    // Update user display to show 2FA is enabled
-                    location.reload();
-                } else {
-                    alert('Error verifying 2FA: ' + result.error);
-                }
-            } catch (error) {
-                console.error('Error verifying 2FA:', error);
-                alert('Failed to verify 2FA. Please try again.');
-            }
-        }
-
-        function downloadBackupCodes() {
-            if (!twofaData || !twofaData.backup_codes) {
-                alert('No backup codes available. Please start the 2FA setup process again.');
-                return;
-            }
-
-            const codes = twofaData.backup_codes.join('\n');
-            const blob = new Blob([`Star Wars RPG Manager - 2FA Backup Codes\n\nSave these codes in a safe place. Each can only be used once.\n\n${codes}\n\nGenerated: ${new Date().toLocaleString()}`], { type: 'text/plain' });
-            const url = URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = 'swrpg-2fa-backup-codes.txt';
-            link.click();
-            URL.revokeObjectURL(url);
-        }
-
-        // Campaign Management Functions
-        function closeCampaignModal() {
-            const modal = document.querySelector('.modal-overlay');
-            if (modal) {
-                modal.remove();
-            }
-        }
-
-        function showCampaignTab(tabName) {
-            // Hide all tabs
-            document.querySelectorAll('.tab-content').forEach(tab => {
-                tab.classList.remove('active');
-                tab.style.display = 'none';
-            });
-            document.querySelectorAll('.tab-button').forEach(btn => {
-                btn.classList.remove('active');
-            });
-
-            // Show selected tab
-            document.getElementById(tabName + '-tab').classList.add('active');
-            document.getElementById(tabName + '-tab').style.display = 'block';
-            event.target.classList.add('active');
-
-            // Load campaigns when switching to my-campaigns tab
-            if (tabName === 'my-campaigns') {
-                loadCampaigns();
-            }
-        }
-
-        async function loadCampaigns() {
-            try {
-                const response = await authenticatedFetch('/api/campaigns');
-                const data = await response.json();
-
-                if (response.ok) {
-                    const campaignsList = document.getElementById('campaigns-list');
-                    if (data.campaigns && data.campaigns.length > 0) {
-                        campaignsList.innerHTML = data.campaigns.map(campaign => `
-                            <div class="campaign-card">
-                                <h5>${campaign.name} ${campaign.is_game_master ? '(Game Master)' : '(Player)'}</h5>
-                                <p>${campaign.description || 'No description'}</p>
-                                <div class="campaign-stats">
-                                    <span class="campaign-stat">Players: ${campaign.player_count}</span>
-                                    <span class="campaign-stat">Characters: ${campaign.character_count}</span>
-                                    <span class="campaign-stat">Created: ${new Date(campaign.created_at).toLocaleDateString()}</span>
-                                </div>
-                                ${campaign.is_game_master ? `
-                                    <div style="margin-top: 1rem;">
-                                        <button class="btn btn-sm btn-outline" onclick="generateCampaignInvite('${campaign.id}')">
-                                            Generate Invite Code
-                                        </button>
-                                        <button class="btn btn-sm btn-secondary" onclick="manageCampaignPlayers('${campaign.id}')">
-                                            Manage Players
-                                        </button>
-                                    </div>
-                                ` : ''}
-                            </div>
-                        `).join('');
-                    } else {
-                        campaignsList.innerHTML = `
-                            <div style="text-align: center; padding: 2rem; color: #666;">
-                                <p>No campaigns yet. Create or join a campaign to get started!</p>
-                            </div>
-                        `;
-                    }
-                } else {
-                    document.getElementById('campaigns-list').innerHTML = `
-                        <div class="error">Error loading campaigns: ${data.error}</div>
-                    `;
-                }
-            } catch (error) {
-                console.error('Error loading campaigns:', error);
-                document.getElementById('campaigns-list').innerHTML = `
-                    <div class="error">Failed to load campaigns. Please try again.</div>
-                `;
-            }
-        }
-
-        async function createCampaign() {
-            const form = document.getElementById('create-campaign-form');
-            const formData = new FormData(form);
-
-            const campaignData = {
-                name: formData.get('name'),
-                description: formData.get('description'),
-                game_system: formData.get('game_system'),
-                max_players: parseInt(formData.get('max_players'))
-            };
-
-            try {
-                const response = await authenticatedFetch('/api/campaigns', {
-                    method: 'POST',
-                    body: JSON.stringify(campaignData)
-                });
-
-                const result = await response.json();
-
-                if (response.ok) {
-                    alert('Campaign created successfully!');
-                    form.reset();
-                    showCampaignTab('my-campaigns');
-                    loadCampaigns();
-                } else {
-                    alert('Error creating campaign: ' + result.error);
-                }
-            } catch (error) {
-                console.error('Error creating campaign:', error);
-                alert('Failed to create campaign. Please try again.');
-            }
-        }
-
-        async function joinCampaign() {
-            const form = document.getElementById('join-campaign-form');
-            const formData = new FormData(form);
-
-            const inviteCode = formData.get('invite_code');
-
-            if (!inviteCode) {
-                alert('Please enter a campaign invite code.');
-                return;
-            }
-
-            try {
-                const response = await authenticatedFetch('/api/campaigns/join', {
-                    method: 'POST',
-                    body: JSON.stringify({ invite_code: inviteCode })
-                });
-
-                const result = await response.json();
-
-                if (response.ok) {
-                    alert('Successfully joined campaign!');
-                    form.reset();
-                    showCampaignTab('my-campaigns');
-                    loadCampaigns();
-                } else {
-                    alert('Error joining campaign: ' + result.error);
-                }
-            } catch (error) {
-                console.error('Error joining campaign:', error);
-                alert('Failed to join campaign. Please try again.');
-            }
-        }
-
-        async function generateCampaignInvite(campaignId) {
-            try {
-                const response = await authenticatedFetch(`/api/campaigns/${campaignId}/invite`, {
-                    method: 'POST'
-                });
-
-                const result = await response.json();
-
-                if (response.ok) {
-                    const inviteCode = result.invite_code;
-
-                    // Show invite code in a modal or copy to clipboard
-                    const confirmed = confirm(`Campaign invite code generated: ${inviteCode}\n\nClick OK to copy to clipboard, or Cancel to close.`);
-                    if (confirmed) {
-                        navigator.clipboard.writeText(inviteCode).then(() => {
-                            alert('Invite code copied to clipboard!');
-                        }).catch(() => {
-                            alert('Could not copy to clipboard. Please copy manually: ' + inviteCode);
-                        });
-                    }
-                } else {
-                    alert('Error generating invite code: ' + result.error);
-                }
-            } catch (error) {
-                console.error('Error generating invite code:', error);
-                alert('Failed to generate invite code. Please try again.');
-            }
-        }
-
-        function manageCampaignPlayers(campaignId) {
-            // TODO: Implement player management modal
-            alert('Player management - Coming soon!');
-        }
-
-        // Documentation functionality
-        async function showDocumentation() {
-            try {
-                const response = await authenticatedFetch('/api/docs/sections');
-                const data = await response.json();
-
-                if (response.ok) {
-                    displayDocumentation(data);
-                } else {
-                    document.getElementById('mainContent').innerHTML = `
-                        <div class="error">Error loading documentation: ${data.error}</div>
-                    `;
-                }
-            } catch (error) {
-                console.error('Error loading documentation:', error);
-                document.getElementById('mainContent').innerHTML = `
-                    <div class="error">Failed to load documentation. Please try again.</div>
-                `;
-            }
-        }
-
-        function displayDocumentation(docData) {
-            const mainContent = document.getElementById('mainContent');
-
-            const sectionsHtml = Object.keys(docData.sections).map(roleKey => {
-                const roleSections = docData.sections[roleKey];
-                const roleTitle = roleKey.charAt(0).toUpperCase() + roleKey.slice(1);
-
-                return `
-                    <div class="documentation-role-section">
-                        <h2>${roleTitle} Documentation</h2>
-                        ${roleSections.map(section => `
-                            <div class="documentation-section">
-                                <h3>${section.title}</h3>
-                                <p>${section.description}</p>
-                                <div class="documentation-subsections">
-                                    ${section.sections.map(subsection => `
-                                        <button class="doc-link btn btn-outline"
-                                                onclick="loadDocumentationContent('${section.sections[0].content_type}', '${subsection.id}')"
-                                                style="margin: 0.25rem;">
-                                            ${subsection.title}
-                                        </button>
-                                    `).join('')}
-                                </div>
-                            </div>
-                        `).join('')}
-                    </div>
-                `;
-            }).join('');
-
-            mainContent.innerHTML = `
-                <div class="documentation-container">
-                    <h1>Star Wars RPG Documentation</h1>
-                    <p>Role-based documentation for players, game masters, and administrators.</p>
-
-                    <div class="user-access-info" style="background: #e3f2fd; padding: 1rem; border-radius: 4px; margin-bottom: 2rem;">
-                        <strong>Your Access Level:</strong> ${docData.user_role}
-                        (Access to: ${docData.access_levels.join(', ')})
-                    </div>
-
-                    <div id="documentation-content">
-                        ${sectionsHtml}
-                    </div>
-                </div>
-
-                <style>
-                .documentation-role-section {
-                    margin-bottom: 2rem;
-                    border: 1px solid #ddd;
-                    border-radius: 4px;
-                    padding: 1rem;
-                }
-                .documentation-section {
-                    margin-bottom: 1.5rem;
-                }
-                .documentation-subsections {
-                    margin-top: 0.5rem;
-                }
-                .doc-content {
-                    background: #f8f9fa;
-                    padding: 1rem;
-                    border-radius: 4px;
-                    margin-top: 1rem;
-                    white-space: pre-wrap;
-                }
-                </style>
-            `;
-        }
-
-        async function loadDocumentationContent(sectionId, contentId) {
-            try {
-                const response = await authenticatedFetch(`/api/docs/content/${sectionId}/${contentId}`);
-                const data = await response.json();
-
-                if (response.ok) {
-                    // Show content in a modal or replace main content
-                    const contentHtml = `
-                        <div class="modal-overlay">
-                            <div class="modal" style="max-width: 800px;">
-                                <div class="modal-header">
-                                    <h3 class="modal-title">${data.content.title}</h3>
-                                    <button type="button" onclick="closeDocModal()" style="background: none; border: none; font-size: 1.5rem; cursor: pointer;">&times;</button>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="doc-content">${data.content.content}</div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" onclick="closeDocModal()">Close</button>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-
-                    document.body.insertAdjacentHTML('beforeend', contentHtml);
-                } else {
-                    alert('Error loading content: ' + data.error);
-                }
-            } catch (error) {
-                console.error('Error loading documentation content:', error);
-                alert('Failed to load documentation content. Please try again.');
-            }
-        }
-
-        function closeDocModal() {
-            const modal = document.querySelector('.modal-overlay');
-            if (modal) {
-                modal.remove();
-            }
-        }
-
-        // Missing character management functions that are referenced in the dashboard
-        function showCreateCharacterForm() {
-            if (typeof characterManager !== 'undefined') {
-                characterManager.showCreateCharacter();
-            } else {
-                // Fallback: Load character creation form manually
-                loadCharacterCreationForm();
-            }
-        }
-
-        function viewCharacter(characterId) {
-            if (typeof characterManager !== 'undefined') {
-                characterManager.showCharacter(characterId);
-            } else {
-                // Fallback: Show character details manually
-                loadCharacterDetails(characterId);
-            }
-        }
-
-        function editCharacter(characterId) {
-            if (typeof characterManager !== 'undefined') {
-                characterManager.editCharacter(characterId);
-            } else {
-                alert('Character editing functionality is being loaded. Please try again.');
-            }
-        }
-
-        function awardXP(characterId) {
-            if (typeof characterManager !== 'undefined') {
-                // Find the character and set it as current
-                const character = characterManager.characters.find(c => c.id === characterId);
-                if (character) {
-                    characterManager.currentCharacter = character;
-                    characterManager.showAwardXP();
-                }
-            } else {
-                alert('XP award functionality is being loaded. Please try again.');
-            }
-        }
-
-        // Fallback character creation form
-        async function loadCharacterCreationForm() {
-            const content = `
-                <div class="character-creation-form">
-                    <h1>🌟 Create New Character</h1>
-                    <form id="create-character-form">
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
-                            <div class="form-group">
-                                <label class="form-label">Character Name *</label>
-                                <input type="text" class="form-input" name="name" required placeholder="Enter character name">
-                            </div>
-
-                            <div class="form-group">
-                                <label class="form-label">Player Name *</label>
-                                <input type="text" class="form-input" name="playerName" required placeholder="Enter player name">
-                            </div>
-
-                            <div class="form-group">
-                                <label class="form-label">Species *</label>
-                                <select class="form-select" name="species" required>
-                                    <option value="">Select Species</option>
-                                    <optgroup label="Core Species">
-                                        <option value="Human">Human</option>
-                                        <option value="Twi'lek">Twi'lek</option>
-                                        <option value="Rodian">Rodian</option>
-                                        <option value="Wookiee">Wookiee</option>
-                                        <option value="Bothan">Bothan</option>
-                                    </optgroup>
-                                    <optgroup label="Additional Species">
-                                        <option value="Duros">Duros</option>
-                                        <option value="Gand">Gand</option>
-                                        <option value="Trandoshan">Trandoshan</option>
-                                        <option value="Cerean">Cerean</option>
-                                        <option value="Kel Dor">Kel Dor</option>
-                                        <option value="Nautolan">Nautolan</option>
-                                        <option value="Zabrak">Zabrak</option>
-                                        <option value="Mon Calamari">Mon Calamari</option>
-                                        <option value="Sullustan">Sullustan</option>
-                                        <option value="Chiss">Chiss</option>
-                                    </optgroup>
-                                    <optgroup label="Variant Humans">
-                                        <option value="Corellian Human">Corellian Human</option>
-                                        <option value="Mandalorian Human">Mandalorian Human</option>
-                                    </optgroup>
-                                    <optgroup label="Unique Species">
-                                        <option value="Jawa">Jawa</option>
-                                        <option value="Ewok">Ewok</option>
-                                        <option value="Devaronian">Devaronian</option>
-                                    </optgroup>
-                                </select>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="form-label">Career *</label>
-                                <select class="form-select" name="career" required>
-                                    <option value="">Select Career</option>
-                                    <optgroup label="Edge of the Empire">
-                                        <option value="Bounty Hunter">Bounty Hunter</option>
-                                        <option value="Colonist">Colonist</option>
-                                        <option value="Explorer">Explorer</option>
-                                        <option value="Hired Gun">Hired Gun</option>
-                                        <option value="Smuggler">Smuggler</option>
-                                        <option value="Technician">Technician</option>
-                                    </optgroup>
-                                    <optgroup label="Age of Rebellion">
-                                        <option value="Ace">Ace</option>
-                                        <option value="Commander">Commander</option>
-                                        <option value="Diplomat">Diplomat</option>
-                                    </optgroup>
-                                    <optgroup label="Force and Destiny">
-                                        <option value="Consular">Consular</option>
-                                        <option value="Guardian">Guardian</option>
-                                        <option value="Mystic">Mystic</option>
-                                        <option value="Seeker">Seeker</option>
-                                        <option value="Sentinel">Sentinel</option>
-                                        <option value="Warrior">Warrior</option>
-                                    </optgroup>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-label">Background (Optional)</label>
-                            <textarea class="form-input" name="background" rows="3" placeholder="Character background and motivation..."></textarea>
-                        </div>
-
-                        <div style="display: flex; gap: 1rem; margin-top: 2rem;">
-                            <button type="button" class="btn btn-secondary" onclick="loadCharacterDashboard()">Cancel</button>
-                            <button type="submit" class="btn btn-primary">Create Character</button>
-                        </div>
-                    </form>
-                </div>
-
-                <style>
-                .character-creation-form {
-                    padding: 2rem;
-                }
-                .character-creation-form h1 {
-                    color: #ffd700;
-                    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
-                    margin-bottom: 2rem;
-                    text-align: center;
-                }
-                .form-group {
-                    margin-bottom: 1rem;
-                }
-                .form-label {
-                    display: block;
-                    margin-bottom: 0.5rem;
-                    color: #ffd700;
-                    font-weight: bold;
-                }
-                .form-input, .form-select {
-                    width: 100%;
-                    padding: 0.75rem;
-                    border: 1px solid #ffd700;
-                    border-radius: 4px;
-                    background: rgba(255, 255, 255, 0.1);
-                    color: #e0e0e0;
-                    font-size: 1rem;
-                }
-                .form-input:focus, .form-select:focus {
-                    outline: none;
-                    border-color: #ffed4e;
-                    box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.2);
-                }
-                .form-input::placeholder {
-                    color: rgba(224, 224, 224, 0.5);
-                }
-                </style>
-            `;
-
-            document.getElementById('mainContent').innerHTML = content;
-
-            // Add form submission handler
-            document.getElementById('create-character-form').addEventListener('submit', async (e) => {
-                e.preventDefault();
-                await handleCharacterCreation(e.target);
-            });
-        }
-
-        async function handleCharacterCreation(form) {
-            const formData = new FormData(form);
-            const characterData = {
-                name: formData.get('name'),
-                playerName: formData.get('playerName'),
-                species: formData.get('species'),
-                career: formData.get('career'),
-                background: formData.get('background') || ''
-            };
-
-            try {
-                const response = await authenticatedFetch('/api/characters', {
-                    method: 'POST',
-                    body: JSON.stringify(characterData)
-                });
-
-                const result = await response.json();
-
-                if (response.ok) {
-                    alert('Character created successfully!');
-                    loadCharacterDashboard();
-                } else {
-                    alert('Error creating character: ' + result.error);
-                }
-            } catch (error) {
-                console.error('Error creating character:', error);
-                alert('Failed to create character. Please try again.');
-            }
-        }
-
-        // Fallback character details viewer
-        async function loadCharacterDetails(characterId) {
-            try {
-                const response = await authenticatedFetch(`/api/characters/${encodeURIComponent(characterId)}`);
-                const data = await response.json();
-
-                if (response.ok) {
-                    displayCharacterDetails(data.character);
-                } else {
-                    document.getElementById('mainContent').innerHTML = `
-                        <div class="error">Error loading character: ${data.error}</div>
-                    `;
-                }
-            } catch (error) {
-                console.error('Error loading character details:', error);
-                document.getElementById('mainContent').innerHTML = `
-                    <div class="error">Failed to load character details. Please try again.</div>
-                `;
-            }
-        }
-
-        function displayCharacterDetails(character) {
-            const content = `
-                <div class="character-details">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
-                        <h1>⭐ ${character.name}</h1>
-                        <div style="display: flex; gap: 1rem;">
-                            <button class="btn btn-primary" onclick="showAwardXPModal('${character.id}')">Award XP</button>
-                            <button class="btn btn-secondary" onclick="editCharacter('${character.id}')">Edit Character</button>
-                            <button class="btn btn-outline" onclick="loadCharacterDashboard()">← Back to Dashboard</button>
-                        </div>
-                    </div>
-
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
-                        <div class="stat-card">
-                            <div class="stat-value">${character.species}</div>
-                            <div class="stat-label">Species</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-value">${character.career}</div>
-                            <div class="stat-label">Career</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-value">${character.availableXP}</div>
-                            <div class="stat-label">Available XP</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-value">${character.totalXP}</div>
-                            <div class="stat-label">Total XP</div>
-                        </div>
-                    </div>
-
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
-                        <div class="character-section">
-                            <h2>🏋️ Characteristics</h2>
-                            <div class="characteristics-grid">
-                                <div class="characteristic-item">
-                                    <span class="characteristic-name">Brawn</span>
-                                    <span class="characteristic-value">${character.characteristics.brawn}</span>
-                                </div>
-                                <div class="characteristic-item">
-                                    <span class="characteristic-name">Agility</span>
-                                    <span class="characteristic-value">${character.characteristics.agility}</span>
-                                </div>
-                                <div class="characteristic-item">
-                                    <span class="characteristic-name">Intellect</span>
-                                    <span class="characteristic-value">${character.characteristics.intellect}</span>
-                                </div>
-                                <div class="characteristic-item">
-                                    <span class="characteristic-name">Cunning</span>
-                                    <span class="characteristic-value">${character.characteristics.cunning}</span>
-                                </div>
-                                <div class="characteristic-item">
-                                    <span class="characteristic-name">Willpower</span>
-                                    <span class="characteristic-value">${character.characteristics.willpower}</span>
-                                </div>
-                                <div class="characteristic-item">
-                                    <span class="characteristic-name">Presence</span>
-                                    <span class="characteristic-value">${character.characteristics.presence}</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="character-section">
-                            <h2>⚔️ Skills</h2>
-                            <div class="skills-list">
-                                ${Object.entries(character.skills || {}).map(([skillName, skillData]) => `
-                                    <div class="skill-item">
-                                        <span class="skill-name">${skillName}</span>
-                                        <span class="skill-level">Level ${skillData.level || 0}</span>
-                                    </div>
-                                `).join('')}
-                                ${Object.keys(character.skills || {}).length === 0 ? '<div class="text-secondary">No skills trained yet</div>' : ''}
-                            </div>
-                        </div>
-                    </div>
-
-                    ${character.background ? `
-                        <div class="character-section" style="margin-top: 2rem;">
-                            <h2>📖 Background</h2>
-                            <p class="character-background">${character.background}</p>
-                        </div>
-                    ` : ''}
-                </div>
-
-                <style>
-                .character-details {
-                    padding: 2rem;
-                }
-                .character-details h1 {
-                    color: #ffd700;
-                    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
-                }
-                .stat-card {
-                    background: linear-gradient(145deg, #1a1a2e, #16213e);
-                    border: 1px solid #ffd700;
-                    border-radius: 8px;
-                    padding: 1rem;
-                    text-align: center;
-                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-                }
-                .stat-value {
-                    font-size: 1.5rem;
-                    font-weight: bold;
-                    color: #ffd700;
-                }
-                .stat-label {
-                    color: #e0e0e0;
-                    font-size: 0.875rem;
-                    margin-top: 0.5rem;
-                }
-                .character-section {
-                    background: linear-gradient(145deg, #1a1a2e, #16213e);
-                    border: 1px solid #333;
-                    border-radius: 8px;
-                    padding: 1.5rem;
-                }
-                .character-section h2 {
-                    color: #ffd700;
-                    margin: 0 0 1rem 0;
-                    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
-                }
-                .characteristics-grid {
-                    display: grid;
-                    grid-template-columns: 1fr 1fr;
-                    gap: 0.5rem;
-                }
-                .characteristic-item {
-                    display: flex;
-                    justify-content: space-between;
-                    padding: 0.5rem;
-                    background: rgba(255, 215, 0, 0.1);
-                    border-radius: 4px;
-                }
-                .characteristic-name {
-                    color: #e0e0e0;
-                }
-                .characteristic-value {
-                    color: #ffd700;
-                    font-weight: bold;
-                }
-                .skills-list {
-                    max-height: 300px;
-                    overflow-y: auto;
-                }
-                .skill-item {
-                    display: flex;
-                    justify-content: space-between;
-                    padding: 0.5rem;
-                    margin-bottom: 0.25rem;
-                    background: rgba(255, 215, 0, 0.1);
-                    border-radius: 4px;
-                }
-                .skill-name {
-                    color: #e0e0e0;
-                }
-                .skill-level {
-                    color: #ffd700;
-                    font-weight: bold;
-                }
-                .character-background {
-                    color: #e0e0e0;
-                    line-height: 1.6;
-                    margin: 0;
-                }
-                </style>
-            `;
-
-            document.getElementById('mainContent').innerHTML = content;
-        }
-
-        // Award XP modal
-        function showAwardXPModal(characterId) {
-            const content = `
-                <div class="modal-overlay">
-                    <div class="modal">
-                        <div class="modal-header">
-                            <h3 class="modal-title">Award Experience Points</h3>
-                            <button type="button" onclick="closeModal()" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #666;">&times;</button>
-                        </div>
-                        <div class="modal-body">
-                            <form id="award-xp-form">
-                                <div class="form-group">
-                                    <label class="form-label">XP Amount</label>
-                                    <input type="number" class="form-input" name="amount" min="1" value="5" required>
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">Reason (Optional)</label>
-                                    <input type="text" class="form-input" name="reason" placeholder="Completed adventure, good roleplay, etc.">
-                                </div>
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
-                            <button type="button" class="btn btn-primary" onclick="processAwardXP('${characterId}')">Award XP</button>
-                        </div>
-                    </div>
-                </div>
-
-                <style>
-                .modal-overlay {
-                    position: fixed;
-                    top: 0;
-                    left: 0;
-                    right: 0;
-                    bottom: 0;
-                    background: rgba(0, 0, 0, 0.8);
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    z-index: 1000;
-                }
-                .modal {
-                    background: linear-gradient(145deg, #1a1a2e, #16213e);
-                    border: 2px solid #ffd700;
-                    border-radius: 8px;
-                    min-width: 400px;
-                    max-width: 90vw;
-                    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.7);
-                }
-                .modal-header {
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                    padding: 1rem 1.5rem;
-                    border-bottom: 1px solid #333;
-                }
-                .modal-title {
-                    color: #ffd700;
-                    margin: 0;
-                    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
-                }
-                .modal-body {
-                    padding: 1.5rem;
-                }
-                .modal-footer {
-                    display: flex;
-                    gap: 1rem;
-                    justify-content: flex-end;
-                    padding: 1rem 1.5rem;
-                    border-top: 1px solid #333;
-                }
-                </style>
-            `;
-
-            document.body.insertAdjacentHTML('beforeend', content);
-        }
-
-        async function processAwardXP(characterId) {
-            const form = document.getElementById('award-xp-form');
-            const formData = new FormData(form);
-            const amount = parseInt(formData.get('amount'));
-            const reason = formData.get('reason');
-
-            if (amount <= 0) {
-                alert('Please enter a valid XP amount.');
-                return;
-            }
-
-            try {
-                const response = await authenticatedFetch(`/api/characters/${encodeURIComponent(characterId)}/award-xp`, {
-                    method: 'POST',
-                    body: JSON.stringify({
-                        amount: amount,
-                        reason: reason
-                    })
-                });
-
-                const result = await response.json();
-
-                if (response.ok) {
-                    closeModal();
-                    alert(result.message);
-                    // Refresh the character view
-                    loadCharacterDetails(characterId);
-                } else {
-                    alert('Error awarding XP: ' + result.error);
-                }
-            } catch (error) {
-                console.error('Error awarding XP:', error);
-                alert('Failed to award XP. Please try again.');
-            }
-        }
-
-        function closeModal() {
-            const modal = document.querySelector('.modal-overlay');
-            if (modal) {
-                modal.remove();
-            }
-        }
-
-        // Navigation functions
+        // Load different pages
         async function loadCharactersPage() {
-            setActiveNavigation('characters');
             await loadCharacterDashboard();
         }
 
         async function loadCampaignsPage() {
-            setActiveNavigation('campaigns');
-            await loadCampaignManagementPage();
-        }
-
-        async function loadDocumentationPage() {
-            setActiveNavigation('documentation');
-            await showDocumentation();
-        }
-
-        function setActiveNavigation(page) {
-            document.querySelectorAll('.nav-link').forEach(link => {
-                link.classList.remove('active');
-            });
-            document.querySelector(`[data-page="${page}"]`).classList.add('active');
-        }
-
-        async function loadCampaignManagementPage() {
-            const mainContent = document.getElementById('mainContent');
+            document.getElementById('mainContent').innerHTML = '<div class="loading-state"><h1>🎲 Loading Campaigns...</h1><div class="spinner"></div></div>';
             
             try {
                 const response = await authenticatedFetch('/api/campaigns');
                 const data = await response.json();
-
+                
                 if (response.ok) {
                     displayCampaignsPage(data.campaigns || []);
                 } else {
-                    mainContent.innerHTML = `
-                        <div class="error-state">
-                            <h1>⚠️ Error Loading Campaigns</h1>
-                            <p>Error: ${data.error}</p>
-                            <button class="btn btn-primary" onclick="loadCampaignsPage()">Try Again</button>
-                        </div>
-                    `;
+                    document.getElementById('mainContent').innerHTML = '<div class="error-state"><h1>⚠️ Error Loading Campaigns</h1><p>Error: ' + (data.error || 'Unknown error') + '</p><button class="btn btn-primary" onclick="loadCampaignsPage()">Try Again</button></div>';
                 }
             } catch (error) {
                 console.error('Error loading campaigns:', error);
-                mainContent.innerHTML = `
-                    <div class="error-state">
-                        <h1>⚠️ Connection Error</h1>
-                        <p>Failed to load campaigns. Please check your connection and try again.</p>
-                        <button class="btn btn-primary" onclick="loadCampaignsPage()">Try Again</button>
-                    </div>
-                `;
+                document.getElementById('mainContent').innerHTML = '<div class="error-state"><h1>⚠️ Connection Error</h1><p>Failed to load campaigns. Please check your connection and try again.</p><button class="btn btn-primary" onclick="loadCampaignsPage()">Try Again</button></div>';
             }
         }
 
@@ -2092,375 +482,232 @@
             const mainContent = document.getElementById('mainContent');
 
             if (campaigns && campaigns.length > 0) {
-                mainContent.innerHTML = `
-                    <div class="campaigns-page">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
-                            <h1>🎲 My Campaigns</h1>
-                            <button class="btn btn-primary" onclick="showCampaignManagement()">
-                                ➕ Create New Campaign
-                            </button>
-                        </div>
+                let campaignCardsHTML = '';
+                campaigns.forEach(campaign => {
+                    campaignCardsHTML += '<div class="campaign-card">';
+                    campaignCardsHTML += '<h3>' + campaign.name + '</h3>';
+                    campaignCardsHTML += '<p class="campaign-description">' + (campaign.description || 'No description') + '</p>';
+                    campaignCardsHTML += '<div class="campaign-stats">';
+                    campaignCardsHTML += '<span class="campaign-stat"><strong>' + (campaign.is_game_master ? 'Game Master' : 'Player') + '</strong></span>';
+                    campaignCardsHTML += '<span class="campaign-stat">Players: ' + campaign.player_count + '</span>';
+                    campaignCardsHTML += '<span class="campaign-stat">Characters: ' + campaign.character_count + '</span>';
+                    campaignCardsHTML += '</div>';
+                    campaignCardsHTML += '<div class="campaign-actions">';
+                    campaignCardsHTML += '<button class="btn btn-outline" onclick="viewCampaign(\'' + campaign.id + '\')">View Details</button>';
+                    if (campaign.is_game_master) {
+                        campaignCardsHTML += '<button class="btn btn-secondary" onclick="generateCampaignInvite(\'' + campaign.id + '\')">Invite Players</button>';
+                    }
+                    campaignCardsHTML += '</div>';
+                    campaignCardsHTML += '</div>';
+                });
 
-                        <div class="campaigns-grid">
-                            ${campaigns.map(campaign => `
-                                <div class="campaign-card">
-                                    <h3>${campaign.name}</h3>
-                                    <p class="campaign-description">${campaign.description || 'No description'}</p>
-                                    <div class="campaign-stats">
-                                        <span class="campaign-stat">
-                                            <strong>${campaign.is_game_master ? 'Game Master' : 'Player'}</strong>
-                                        </span>
-                                        <span class="campaign-stat">Players: ${campaign.player_count}</span>
-                                        <span class="campaign-stat">Characters: ${campaign.character_count}</span>
-                                    </div>
-                                    <div class="campaign-actions">
-                                        <button class="btn btn-outline" onclick="viewCampaign('${campaign.id}')">
-                                            View Details
-                                        </button>
-                                        ${campaign.is_game_master ? `
-                                            <button class="btn btn-secondary" onclick="generateCampaignInvite('${campaign.id}')">
-                                                Invite Players
-                                            </button>
-                                        ` : ''}
-                                    </div>
-                                </div>
-                            `).join('')}
-                        </div>
-                    </div>
-
-                    <style>
-                    .campaigns-page h1 {
-                        color: #ffd700;
-                        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
-                    }
-                    .campaigns-grid {
-                        display: grid;
-                        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-                        gap: 1.5rem;
-                    }
-                    .campaign-card {
-                        background: linear-gradient(145deg, #1a1a2e, #16213e);
-                        border: 1px solid #ffd700;
-                        border-radius: 8px;
-                        padding: 1.5rem;
-                        transition: all 0.3s ease;
-                        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-                    }
-                    .campaign-card:hover {
-                        transform: translateY(-2px);
-                        box-shadow: 0 6px 16px rgba(255, 215, 0, 0.3);
-                        border-color: #ffed4e;
-                    }
-                    .campaign-card h3 {
-                        color: #ffd700;
-                        margin: 0 0 1rem 0;
-                        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
-                    }
-                    .campaign-description {
-                        color: #e0e0e0;
-                        margin: 0 0 1rem 0;
-                        line-height: 1.4;
-                    }
-                    .campaign-stats {
-                        display: flex;
-                        flex-direction: column;
-                        gap: 0.5rem;
-                        margin: 1rem 0;
-                    }
-                    .campaign-stat {
-                        color: #b0b0b0;
-                        font-size: 0.9rem;
-                    }
-                    .campaign-actions {
-                        display: flex;
-                        gap: 0.5rem;
-                        flex-wrap: wrap;
-                    }
-                    </style>
-                `;
+                mainContent.innerHTML = '<div class="campaigns-page">' +
+                    '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">' +
+                    '<h1>🎲 My Campaigns</h1>' +
+                    '<button class="btn btn-primary" onclick="showCreateCampaignForm()">➕ Create New Campaign</button>' +
+                    '</div>' +
+                    '<div class="campaigns-grid">' + campaignCardsHTML + '</div>' +
+                    '</div>';
             } else {
-                mainContent.innerHTML = `
-                    <div class="empty-state">
-                        <h1>🎲 Campaign Management</h1>
-                        <p>You haven't joined any campaigns yet. Create a new campaign as a Game Master or join an existing one as a player.</p>
-                        <div style="display: flex; gap: 1rem; justify-content: center; margin: 1.5rem 0;">
-                            <button class="btn btn-primary" onclick="showCampaignManagement()">
-                                🚀 Create Campaign
-                            </button>
-                            <button class="btn btn-secondary" onclick="showJoinCampaignForm()">
-                                🎯 Join Campaign
-                            </button>
-                        </div>
-
-                        <div class="getting-started" style="margin-top: 2rem; padding: 1rem; background: rgba(255, 215, 0, 0.1); border: 1px solid #ffd700; border-radius: 8px;">
-                            <h3>Getting Started with Campaigns</h3>
-                            <ul style="text-align: left; color: #e0e0e0;">
-                                <li>📝 Create campaigns to organize your RPG sessions</li>
-                                <li>👥 Invite players with unique campaign codes</li>
-                                <li>📊 Track characters and campaign progress</li>
-                                <li>🎭 Manage multiple campaigns as GM or player</li>
-                            </ul>
-                        </div>
-                    </div>
-                `;
+                mainContent.innerHTML = '<div class="campaigns-page">' +
+                    '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">' +
+                    '<h1>🎲 My Campaigns</h1>' +
+                    '<button class="btn btn-primary" onclick="showCreateCampaignForm()">➕ Create New Campaign</button>' +
+                    '</div>' +
+                    '<div style="text-align: center; padding: 3rem;">' +
+                    '<h2>No campaigns found</h2>' +
+                    '<p>You haven\'t joined or created any campaigns yet.</p>' +
+                    '<button class="btn btn-primary" onclick="showCreateCampaignForm()">Create Your First Campaign</button>' +
+                    '</div>' +
+                    '</div>';
             }
         }
 
-        function showJoinCampaignForm() {
-            showCampaignManagement();
-            // Switch to join tab after modal opens
-            setTimeout(() => {
-                showCampaignTab('join-campaign');
-            }, 100);
+        async function loadDocumentationPage() {
+            document.getElementById('mainContent').innerHTML = '<div class="loading-state"><h1>📚 Loading Documentation...</h1><div class="spinner"></div></div>';
+            
+            // Simplified documentation page for now
+            document.getElementById('mainContent').innerHTML = 
+                '<div class="documentation-page">' +
+                '<h1>📚 Star Wars RPG Documentation</h1>' +
+                '<div style="max-width: 800px; margin: 0 auto; line-height: 1.6;">' +
+                '<h2>Getting Started</h2>' +
+                '<p>Welcome to the Star Wars RPG Character Manager! This application helps you create, manage, and advance your Star Wars RPG characters.</p>' +
+                '<h2>Features</h2>' +
+                '<ul>' +
+                '<li><strong>Character Creation:</strong> Create characters with species, careers, and starting attributes</li>' +
+                '<li><strong>Campaign Management:</strong> Join campaigns and manage your characters within them</li>' +
+                '<li><strong>Character Advancement:</strong> Spend XP to improve skills and characteristics</li>' +
+                '<li><strong>Role-Based Access:</strong> Different features for Players, Game Masters, and Admins</li>' +
+                '</ul>' +
+                '<h2>User Roles</h2>' +
+                '<ul>' +
+                '<li><strong>Player:</strong> Create and manage characters, join campaigns</li>' +
+                '<li><strong>Game Master:</strong> Create campaigns, invite players, oversee characters</li>' +
+                '<li><strong>Admin:</strong> Manage users, generate invite codes, system oversight</li>' +
+                '</ul>' +
+                '</div>' +
+                '</div>';
         }
 
-        function viewCampaign(campaignId) {
-            // TODO: Implement campaign detail view
-            alert(`Campaign details for ${campaignId} - Coming soon!`);
+        // Utility functions
+        async function loadUserData() {
+            // Load user-specific data like campaigns
+            try {
+                const campaignsResponse = await authenticatedFetch('/api/campaigns');
+                if (campaignsResponse.ok) {
+                    const data = await campaignsResponse.json();
+                    campaigns = data.campaigns || [];
+                }
+            } catch (error) {
+                console.error('Error loading user data:', error);
+            }
         }
 
-        // Handle navigation clicks
-        document.addEventListener('click', (e) => {
-            if (e.target.matches('[data-page="characters"]')) {
-                e.preventDefault();
-                loadCharactersPage();
-            } else if (e.target.matches('[data-page="campaigns"]')) {
-                e.preventDefault();
-                loadCampaignsPage();
-            } else if (e.target.matches('[data-page="documentation"]')) {
-                e.preventDefault();
-                loadDocumentationPage();
+        // User menu toggle
+        document.addEventListener('DOMContentLoaded', () => {
+            const userMenuToggle = document.getElementById('userMenuToggle');
+            const userMenuDropdown = document.getElementById('userMenuDropdown');
+            
+            if (userMenuToggle && userMenuDropdown) {
+                userMenuToggle.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    userMenuDropdown.classList.toggle('show');
+                });
+                
+                document.addEventListener('click', () => {
+                    userMenuDropdown.classList.remove('show');
+                });
             }
         });
 
-        // Override character manager methods to include authentication
-        if (typeof CharacterManager !== 'undefined') {
-            const originalHandleCharacterForm = CharacterManager.prototype.handleCharacterForm;
-            CharacterManager.prototype.handleCharacterForm = async function(form) {
-                const formData = new FormData(form);
-                const characterData = {
-                    name: formData.get('name'),
-                    playerName: formData.get('playerName'),
-                    species: formData.get('species'),
-                    career: formData.get('career'),
-                    background: formData.get('background') || '',
-                    campaign_id: currentCampaign || null
-                };
-
-                try {
-                    const response = await authenticatedFetch('/api/characters', {
-                        method: 'POST',
-                        body: JSON.stringify(characterData)
-                    });
-
-                    const result = await response.json();
-
-                    if (response.ok) {
-                        await this.loadCharactersFromAPI();
-                        await this.showCharacter(result.character.id);
-                    } else {
-                        alert('Error creating character: ' + result.error);
-                    }
-                } catch (error) {
-                    console.error('Error creating character:', error);
-                    alert('Failed to create character. Please try again.');
-                }
-            };
-
-            const originalLoadCharactersFromAPI = CharacterManager.prototype.loadCharactersFromAPI;
-            CharacterManager.prototype.loadCharactersFromAPI = async function() {
-                try {
-                    const url = currentCampaign ? `/api/characters?campaign_id=${currentCampaign}` : '/api/characters';
-                    const response = await authenticatedFetch(url);
-                    const data = await response.json();
-                    if (response.ok) {
-                        this.characters = data.characters;
-                        return this.characters;
-                    } else {
-                        throw new Error(data.error || 'Failed to load characters');
-                    }
-                } catch (error) {
-                    console.error('Error loading characters from API:', error);
-                    throw error;
-                }
-            };
-        }
-
-        // Dark Mode Toggle Functionality
-        function initTheme() {
-            const savedTheme = localStorage.getItem('theme') || 'dark';
-            document.documentElement.setAttribute('data-theme', savedTheme);
-            updateThemeToggleText();
-        }
-
+        // Placeholder functions for menu items
         function toggleTheme() {
-            const currentTheme = document.documentElement.getAttribute('data-theme');
-            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-            
-            document.documentElement.setAttribute('data-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
-            updateThemeToggleText();
+            console.log('Toggle theme functionality not implemented yet');
         }
 
-        function updateThemeToggleText() {
-            const themeToggle = document.querySelector('.user-menu-item[onclick="toggleTheme()"]');
-            if (themeToggle) {
-                const currentTheme = document.documentElement.getAttribute('data-theme');
-                themeToggle.innerHTML = currentTheme === 'dark' ? '☀️ Light Mode' : '🌙 Dark Mode';
-            }
+        function showProfileSettings() {
+            document.getElementById('mainContent').innerHTML = 
+                '<div class="profile-settings">' +
+                '<h1>⚙️ Profile Settings</h1>' +
+                '<div style="max-width: 600px; margin: 0 auto;">' +
+                '<div style="background: linear-gradient(145deg, #1a1a2e, #16213e); border: 1px solid #ffd700; border-radius: 8px; padding: 2rem; margin-bottom: 1rem;">' +
+                '<h2>Account Information</h2>' +
+                '<p><strong>Username:</strong> ' + (currentUser ? currentUser.username : 'N/A') + '</p>' +
+                '<p><strong>Email:</strong> ' + (currentUser ? currentUser.email : 'N/A') + '</p>' +
+                '<p><strong>Role:</strong> ' + (currentUser ? currentUser.role : 'N/A') + '</p>' +
+                '</div>' +
+                '<div style="background: linear-gradient(145deg, #1a1a2e, #16213e); border: 1px solid #ffd700; border-radius: 8px; padding: 2rem;">' +
+                '<h2>Security Settings</h2>' +
+                '<button class="btn btn-secondary" onclick="changePassword()">Change Password</button>' +
+                '</div>' +
+                '</div>' +
+                '</div>';
+        }
+        
+        function changePassword() {
+            alert('Password change functionality coming soon!');
         }
 
-        // Initialize theme on page load
-        initTheme();
+        function showCampaignManagement() {
+            loadCampaignsPage();
+        }
+
+        function showAdminPanel() {
+            document.getElementById('mainContent').innerHTML = 
+                '<div class="admin-panel">' +
+                '<h1>🛡️ Admin Panel</h1>' +
+                '<div style="max-width: 800px; margin: 0 auto;">' +
+                '<div style="background: linear-gradient(145deg, #1a1a2e, #16213e); border: 1px solid #ffd700; border-radius: 8px; padding: 2rem; margin-bottom: 1rem;">' +
+                '<h2>User Management</h2>' +
+                '<button class="btn btn-primary" onclick="generateInviteCode()">Generate Invite Code</button>' +
+                '</div>' +
+                '<div style="background: linear-gradient(145deg, #1a1a2e, #16213e); border: 1px solid #ffd700; border-radius: 8px; padding: 2rem;">' +
+                '<h2>System Statistics</h2>' +
+                '<p>Admin functionality coming soon...</p>' +
+                '</div>' +
+                '</div>' +
+                '</div>';
+        }
+        
+        function generateInviteCode() {
+            alert('Invite code generation coming soon!');
+        }
+
+        function setup2FA() {
+            document.getElementById('mainContent').innerHTML = 
+                '<div class="twofa-setup">' +
+                '<h1>🔐 Two-Factor Authentication</h1>' +
+                '<div style="max-width: 600px; margin: 0 auto; background: linear-gradient(145deg, #1a1a2e, #16213e); border: 1px solid #ffd700; border-radius: 8px; padding: 2rem;">' +
+                '<p>Two-Factor Authentication adds an extra layer of security to your account.</p>' +
+                '<button class="btn btn-primary" onclick="alert(\'2FA setup coming soon!\')">Enable 2FA</button>' +
+                '</div>' +
+                '</div>';
+        }
+
+        function logout() {
+            localStorage.removeItem('access_token');
+            localStorage.removeItem('user');
+            window.location.href = '/login';
+        }
+
+        // Character management functions
+        function viewCharacter(characterId) {
+            console.log('View character:', characterId);
+        }
+
+        function editCharacter(characterId) {
+            console.log('Edit character:', characterId);
+        }
+
+        function awardXP(characterId) {
+            console.log('Award XP to character:', characterId);
+        }
+
+        function showCreateCharacterForm() {
+            document.getElementById('mainContent').innerHTML = 
+                '<div class="character-creation-form">' +
+                '<h1>🌟 Create Character</h1>' +
+                '<p>Character creation form coming soon...</p>' +
+                '<button class="btn btn-secondary" onclick="loadCharactersPage()">← Back to Characters</button>' +
+                '</div>';
+        }
+
+        function viewCampaign(campaignId) {
+            console.log('View campaign:', campaignId);
+        }
+
+        function generateCampaignInvite(campaignId) {
+            document.getElementById('mainContent').innerHTML = 
+                '<div class="invite-generation">' +
+                '<h1>🎲 Generate Campaign Invite</h1>' +
+                '<p>Campaign invite generation coming soon...</p>' +
+                '<button class="btn btn-secondary" onclick="loadCampaignsPage()">← Back to Campaigns</button>' +
+                '</div>';
+        }
+        
+        function showCreateCampaignForm() {
+            document.getElementById('mainContent').innerHTML = 
+                '<div class="campaign-creation-form">' +
+                '<h1>🎲 Create New Campaign</h1>' +
+                '<div style="max-width: 600px; margin: 0 auto; background: linear-gradient(145deg, #1a1a2e, #16213e); border: 1px solid #ffd700; border-radius: 8px; padding: 2rem;">' +
+                '<form>' +
+                '<div style="margin-bottom: 1rem;">' +
+                '<label style="color: #ffd700; display: block; margin-bottom: 0.5rem;">Campaign Name:</label>' +
+                '<input type="text" style="width: 100%; padding: 0.75rem; border: 1px solid #ffd700; border-radius: 4px; background: rgba(0,0,0,0.3); color: #e0e0e0;" placeholder="Enter campaign name">' +
+                '</div>' +
+                '<div style="margin-bottom: 1rem;">' +
+                '<label style="color: #ffd700; display: block; margin-bottom: 0.5rem;">Description:</label>' +
+                '<textarea style="width: 100%; padding: 0.75rem; border: 1px solid #ffd700; border-radius: 4px; background: rgba(0,0,0,0.3); color: #e0e0e0; height: 100px;" placeholder="Describe your campaign"></textarea>' +
+                '</div>' +
+                '<div style="display: flex; gap: 1rem;">' +
+                '<button type="button" class="btn btn-primary" onclick="alert(\'Campaign creation coming soon!\')">Create Campaign</button>' +
+                '<button type="button" class="btn btn-secondary" onclick="loadCampaignsPage()">Cancel</button>' +
+                '</div>' +
+                '</form>' +
+                '</div>' +
+                '</div>';
+        }
     </script>
-    
-    <style>
-        /* Mobile responsive navigation */
-        @media (max-width: 768px) {
-            .auth-header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 1rem;
-            }
-            
-            .main-nav {
-                width: 100%;
-                justify-content: space-around;
-                gap: 0.5rem;
-            }
-            
-            .nav-link {
-                flex: 1;
-                text-align: center;
-                padding: 0.75rem 0.5rem;
-                font-size: 0.9rem;
-            }
-            
-            .main-content {
-                padding: 1rem;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .auth-header h1 {
-                font-size: 1.2rem;
-                text-align: center;
-                width: 100%;
-            }
-            
-            .main-nav {
-                flex-direction: column;
-                gap: 0.5rem;
-            }
-            
-            .nav-link {
-                width: 100%;
-            }
-        }
-
-        /* Additional mobile-specific improvements */
-        @media (max-width: 767px) {
-            .login-actions {
-                flex-direction: column;
-                align-items: center;
-            }
-            
-            .login-actions .btn {
-                width: 100%;
-                max-width: 200px;
-                margin-bottom: 0.5rem;
-            }
-            
-            .profile-section {
-                padding: 0.75rem;
-            }
-            
-            .profile-info {
-                flex-direction: column;
-                gap: 0.5rem;
-            }
-            
-            .info-item {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 0.25rem;
-            }
-            
-            .info-item label {
-                min-width: auto;
-                font-weight: bold;
-            }
-            
-            .campaign-tabs {
-                overflow-x: auto;
-                -webkit-overflow-scrolling: touch;
-            }
-            
-            .tab-button {
-                white-space: nowrap;
-                min-height: 44px;
-                padding: 0.75rem 1rem;
-                flex-shrink: 0;
-            }
-            
-            .twofa-step {
-                padding: 0.5rem;
-            }
-            
-            .qr-code-container {
-                padding: 1rem;
-            }
-            
-            .backup-codes-grid {
-                grid-template-columns: 1fr;
-                gap: 0.25rem;
-                font-size: 0.9rem;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .modal-header {
-                padding: 0.75rem;
-            }
-            
-            .modal-footer {
-                padding: 0.75rem;
-                flex-direction: column;
-                gap: 0.5rem;
-            }
-            
-            .modal-footer .btn {
-                width: 100%;
-            }
-            
-            .stats-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-            
-            .stat-card {
-                padding: 0.75rem;
-            }
-            
-            .stat-number {
-                font-size: 1.25rem;
-            }
-        }
-        
-        /* Touch-friendly improvements */
-        .campaign-tag:active,
-        .btn:active,
-        .tab-button:active {
-            transform: translateY(1px);
-        }
-        
-        /* Form improvements for mobile */
-        @media (max-width: 767px) {
-            .form-input:focus,
-            .form-select:focus {
-                outline: 2px solid #007cba;
-                outline-offset: 2px;
-            }
-        }
-    </style>
 </body>
 </html>

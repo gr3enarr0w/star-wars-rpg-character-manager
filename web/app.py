@@ -28,7 +28,7 @@ database = CharacterDatabase(data_dir='character_data')
 @app.route('/')
 def index():
     """Main application page."""
-    return render_template('index.html')
+    return render_template('index_with_auth.html')
 
 
 @app.route('/api/characters', methods=['GET'])

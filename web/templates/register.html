@@ -6,17 +6,33 @@
     <title>Register - Star Wars RPG Character Manager</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
     <style>
+        body {
+            background: radial-gradient(ellipse at center, #0f0f23 0%, #000000 70%);
+            color: #e0e0e0;
+            min-height: 100vh;
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
         .auth-container {
             max-width: 500px;
             margin: 2rem auto;
             padding: 2rem;
-            background: white;
+            background: linear-gradient(145deg, #1a1a2e, #16213e);
+            border: 1px solid #ffd700;
             border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
         }
         .auth-header {
             text-align: center;
             margin-bottom: 2rem;
+        }
+        .auth-header h1 {
+            color: #ffd700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+        }
+        .auth-header p {
+            color: #e0e0e0;
         }
         .auth-form {
             display: flex;
@@ -30,24 +46,34 @@
         .form-label {
             margin-bottom: 0.5rem;
             font-weight: 500;
+            color: #ffd700;
         }
         .form-input {
             padding: 0.75rem;
-            border: 1px solid #ddd;
+            border: 1px solid #ffd700;
             border-radius: 4px;
             font-size: 1rem;
+            background: rgba(0, 0, 0, 0.3);
+            color: #e0e0e0;
+        }
+        .form-input:focus {
+            outline: none;
+            border-color: #ffed4e;
+            box-shadow: 0 0 5px rgba(255, 215, 0, 0.3);
         }
         .btn {
             padding: 0.75rem;
-            background: #007cba;
-            color: white;
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            color: #000;
             border: none;
             border-radius: 4px;
             font-size: 1rem;
             cursor: pointer;
+            font-weight: bold;
         }
         .btn:hover {
-            background: #005a87;
+            background: linear-gradient(135deg, #ffed4e, #ffd700);
+            transform: translateY(-1px);
         }
         .btn:disabled {
             background: #ccc;

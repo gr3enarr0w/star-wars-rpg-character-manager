@@ -69,6 +69,37 @@ def register():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+@app.route('/api/debug/test-login', methods=['POST'])
+def test_login_debug():
+    """DEBUG: Simple test login that bypasses encryption."""
+    try:
+        data = request.get_json()
+        email = data.get('email', '').strip().lower()
+        password = data.get('password', '')
+        
+        print(f"🔍 TEST LOGIN: email={email}, password={password}")
+        
+        # Simple test credentials
+        if email == 'admin@test.com' and password == 'AdminTest123!':
+            # Create fake JWT token for testing
+            from flask_jwt_extended import create_access_token
+            access_token = create_access_token(identity='684b6bdafbc051235c4b58d3')
+            return jsonify({
+                'access_token': access_token,
+                'user': {
+                    'id': '684b6bdafbc051235c4b58d3',
+                    'username': 'admin',
+                    'email': 'admin@test.com',
+                    'role': 'admin'
+                }
+            }), 200
+        else:
+            return jsonify({'error': 'Invalid test credentials'}), 401
+            
+    except Exception as e:
+        print(f"Test login error: {e}")
+        return jsonify({'error': str(e)}), 500
+
 @app.route('/api/debug/create-admin', methods=['POST'])
 def create_admin_debug():
     """DEBUG: Create admin user using Flask app's context."""
