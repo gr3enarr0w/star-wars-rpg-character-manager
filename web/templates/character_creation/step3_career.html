@@ -1,0 +1,457 @@
+{% extends "base.html" %}
+
+{% block title %}Choose Career - Star Wars RPG Character Manager{% endblock %}
+
+{% block layout %}
+<div style="max-width: 1200px; margin: 0 auto; padding: 2rem 1rem;">
+    <!-- Header -->
+    <div style="margin-bottom: 2rem; text-align: center;">
+        <h1 style="color: #ffd700; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); margin: 0 0 0.5rem 0;">🌟 Character Creation</h1>
+        <p style="color: #e0e0e0; margin: 0;">Step 3 of 7: Choose Your Career</p>
+    </div>
+
+    <!-- Progress Bar -->
+    <div style="background: #333; border-radius: 10px; margin-bottom: 2rem; overflow: hidden;">
+        <div style="background: linear-gradient(90deg, #ffd700, #ffed4e); height: 8px; width: 42.9%; transition: width 0.3s ease;"></div>
+    </div>
+
+    <!-- Career Selection -->
+    <div style="background: linear-gradient(145deg, #1a1a2e, #16213e); padding: 2rem; border-radius: 8px; border: 1px solid #333;">
+        <h2 style="color: #ffd700; margin: 0 0 1.5rem 0; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);">Choose Your Career</h2>
+        
+        <div style="margin-bottom: 1.5rem; padding: 1rem; background: rgba(255, 215, 0, 0.1); border-radius: 4px;">
+            <p style="color: #e0e0e0; margin: 0; font-size: 0.95rem;">
+                Your career determines your career skills, starting wound/strain thresholds, and available specializations.
+                Careers are organized by game line. Click on a career to select it.
+            </p>
+        </div>
+
+        <!-- Game Line Filter -->
+        <div style="margin-bottom: 1.5rem;">
+            <label style="color: #ffd700; font-weight: bold; margin-bottom: 0.5rem; display: block;">Game Line</label>
+            <select id="game-line-filter" style="background: #0f0f23; color: #e0e0e0; border: 1px solid #333; padding: 0.75rem; border-radius: 4px; width: 100%; max-width: 300px;">
+                <option value="all">All Game Lines</option>
+                <option value="edge_of_empire">Edge of the Empire</option>
+                <option value="age_of_rebellion">Age of Rebellion</option>
+                <option value="force_and_destiny">Force and Destiny</option>
+            </select>
+        </div>
+
+        <!-- Career Grid -->
+        <div id="career-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+            <!-- Career cards will be populated by JavaScript -->
+        </div>
+
+        <!-- Selected Career Info -->
+        <div id="selected-career-info" style="display: none; margin-bottom: 2rem; padding: 1rem; background: rgba(255, 215, 0, 0.05); border: 1px solid #ffd700; border-radius: 4px;">
+            <h3 style="color: #ffd700; margin: 0 0 1rem 0;">Selected Career: <span id="selected-career-name"></span></h3>
+            <div id="selected-career-details"></div>
+        </div>
+
+        <!-- Navigation -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 2rem;">
+            <a href="/create-character/species" class="btn btn-secondary" style="background: #333; color: #e0e0e0; text-decoration: none; padding: 0.75rem 1.5rem; border-radius: 4px; border: 1px solid #555;">
+                ← Previous: Species
+            </a>
+            
+            <button id="next-button" type="button" class="btn btn-primary" disabled 
+                    style="background: #666; color: #999; padding: 0.75rem 1.5rem; border: none; border-radius: 4px; font-weight: bold; cursor: not-allowed;">
+                Next: Assign Characteristics →
+            </button>
+        </div>
+    </div>
+</div>
+
+<style>
+.career-card {
+    background: linear-gradient(145deg, #1a1a2e, #16213e);
+    border: 2px solid #333;
+    border-radius: 8px;
+    padding: 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    color: #e0e0e0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.career-card:hover {
+    border-color: #ffd700;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 215, 0, 0.3);
+    color: #ffffff;
+}
+
+.career-card.selected {
+    border-color: #ffd700;
+    background: linear-gradient(145deg, #1a1a2e, #16213e);
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
+}
+
+.career-card.selected::after {
+    content: "✓";
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    background: #ffd700;
+    color: #1a1a2e;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+.card-title {
+    color: #ffd700;
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin: 0 0 0.5rem 0;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+}
+
+.card-subtitle {
+    color: #a0aec0;
+    font-size: 0.875rem;
+    margin: 0 0 1rem 0;
+}
+
+.card-stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.stat-item {
+    text-align: center;
+    padding: 0.5rem;
+    background: rgba(255, 215, 0, 0.1);
+    border-radius: 4px;
+}
+
+.stat-label {
+    color: #a0aec0;
+    font-size: 0.75rem;
+    margin-bottom: 0.25rem;
+}
+
+.stat-value {
+    color: #ffd700;
+    font-weight: bold;
+}
+</style>
+
+<script>
+let selectedCareer = null;
+let allCareers = [];
+
+// Career data
+const careerData = {
+    "Bounty Hunter": {
+        "game_line": "edge_of_empire",
+        "game_line_name": "Edge of the Empire",
+        "career_skills": ["Athletics", "Piloting (Planetary)", "Piloting (Space)", "Ranged (Heavy)", "Streetwise", "Vigilance"],
+        "starting_wound_threshold": 12,
+        "starting_strain_threshold": 12,
+        "description": "Hunters of sentient beings for credits and reputation"
+    },
+    "Colonist": {
+        "game_line": "edge_of_empire",
+        "game_line_name": "Edge of the Empire",
+        "career_skills": ["Charm", "Deception", "Leadership", "Negotiation", "Streetwise", "Survival"],
+        "starting_wound_threshold": 10,
+        "starting_strain_threshold": 14,
+        "description": "Settlers and pioneers of the galactic frontier"
+    },
+    "Explorer": {
+        "game_line": "edge_of_empire",
+        "game_line_name": "Edge of the Empire",
+        "career_skills": ["Astrogation", "Cool", "Perception", "Piloting (Space)", "Survival", "Xenology"],
+        "starting_wound_threshold": 11,
+        "starting_strain_threshold": 13,
+        "description": "Seekers of the unknown reaches of space"
+    },
+    "Hired Gun": {
+        "game_line": "edge_of_empire",
+        "game_line_name": "Edge of the Empire",
+        "career_skills": ["Athletics", "Discipline", "Melee", "Ranged (Light)", "Ranged (Heavy)", "Resilience"],
+        "starting_wound_threshold": 13,
+        "starting_strain_threshold": 11,
+        "description": "Professional soldiers and mercenaries for hire"
+    },
+    "Smuggler": {
+        "game_line": "edge_of_empire",
+        "game_line_name": "Edge of the Empire",
+        "career_skills": ["Coordination", "Deception", "Knowledge (Underworld)", "Piloting (Space)", "Skulduggery", "Streetwise"],
+        "starting_wound_threshold": 11,
+        "starting_strain_threshold": 13,
+        "description": "Masters of moving cargo through dangerous space"
+    },
+    "Technician": {
+        "game_line": "edge_of_empire",
+        "game_line_name": "Edge of the Empire",
+        "career_skills": ["Astrogation", "Computers", "Coordination", "Discipline", "Knowledge (Outer Rim)", "Mechanics"],
+        "starting_wound_threshold": 11,
+        "starting_strain_threshold": 13,
+        "description": "Engineers and mechanics keeping the galaxy running"
+    },
+    "Ace": {
+        "game_line": "age_of_rebellion",
+        "game_line_name": "Age of Rebellion",
+        "career_skills": ["Cool", "Coordination", "Mechanics", "Piloting (Planetary)", "Piloting (Space)", "Ranged (Light)"],
+        "starting_wound_threshold": 11,
+        "starting_strain_threshold": 13,
+        "description": "Elite pilots of the Rebel Alliance"
+    },
+    "Commander": {
+        "game_line": "age_of_rebellion",
+        "game_line_name": "Age of Rebellion",
+        "career_skills": ["Cool", "Discipline", "Knowledge (Core Worlds)", "Knowledge (Warfare)", "Leadership", "Vigilance"],
+        "starting_wound_threshold": 10,
+        "starting_strain_threshold": 14,
+        "description": "Military leaders of the Rebellion"
+    },
+    "Diplomat": {
+        "game_line": "age_of_rebellion",
+        "game_line_name": "Age of Rebellion",
+        "career_skills": ["Charm", "Deception", "Knowledge (Core Worlds)", "Knowledge (Lore)", "Leadership", "Negotiation"],
+        "starting_wound_threshold": 10,
+        "starting_strain_threshold": 14,
+        "description": "Political operatives fighting tyranny with words"
+    },
+    "Guardian": {
+        "game_line": "force_and_destiny",
+        "game_line_name": "Force and Destiny",
+        "career_skills": ["Brawl", "Discipline", "Melee", "Resilience", "Vigilance", "Cool"],
+        "starting_wound_threshold": 13,
+        "starting_strain_threshold": 11,
+        "description": "Force-sensitive protectors and defenders"
+    },
+    "Consular": {
+        "game_line": "force_and_destiny",
+        "game_line_name": "Force and Destiny",
+        "career_skills": ["Cool", "Discipline", "Leadership", "Negotiation", "Knowledge (Education)", "Knowledge (Lore)"],
+        "starting_wound_threshold": 10,
+        "starting_strain_threshold": 14,
+        "description": "Force-sensitive diplomats and healers"
+    },
+    "Mystic": {
+        "game_line": "force_and_destiny",
+        "game_line_name": "Force and Destiny",
+        "career_skills": ["Charm", "Coercion", "Deception", "Knowledge (Lore)", "Perception", "Vigilance"],
+        "starting_wound_threshold": 11,
+        "starting_strain_threshold": 13,
+        "description": "Force-sensitive seers and mystics"
+    }
+};
+
+// Authentication check
+async function checkAuthentication() {
+    const token = localStorage.getItem('access_token');
+    const userStr = localStorage.getItem('user');
+    
+    if (!token || !userStr) {
+        // Set up demo authentication for testing
+        localStorage.setItem('access_token', 'demo_token_12345');
+        localStorage.setItem('user', JSON.stringify({
+            id: '1',
+            username: 'demo_user',
+            email: 'test@example.com',
+            role: 'user'
+        }));
+    }
+}
+
+// Load character creation data
+function loadCharacterData() {
+    const characterData = JSON.parse(sessionStorage.getItem('characterCreation'));
+    if (!characterData || !characterData.data.selectedSpecies) {
+        // Redirect back to species if no species selected
+        window.location.href = '/create-character/species';
+        return;
+    }
+    
+    // Load previously selected career if any
+    if (characterData.data.selectedCareer) {
+        // Handle both old format (string) and new format (object)
+        selectedCareer = typeof characterData.data.selectedCareer === 'string' 
+                        ? characterData.data.selectedCareer 
+                        : characterData.data.selectedCareer.name;
+        updateSelectedCareerInfo();
+        updateNextButton();
+    }
+}
+
+// Save step data
+function saveStepData() {
+    const characterData = JSON.parse(sessionStorage.getItem('characterCreation'));
+    // Save both the career name and full career data
+    characterData.data.selectedCareer = {
+        name: selectedCareer,
+        ...careerData[selectedCareer]
+    };
+    characterData.step = 3;
+    sessionStorage.setItem('characterCreation', JSON.stringify(characterData));
+}
+
+// Create career card
+function createCareerCard(careerName, data) {
+    const card = document.createElement('div');
+    card.className = 'career-card';
+    card.dataset.career = careerName;
+    card.dataset.gameLine = data.game_line;
+    
+    if (selectedCareer === careerName) {
+        card.classList.add('selected');
+    }
+    
+    card.innerHTML = `
+        <div class="card-title">${careerName}</div>
+        <div class="card-subtitle">${data.game_line_name}</div>
+        <div class="card-stats">
+            <div class="stat-item">
+                <div class="stat-label">WOUND</div>
+                <div class="stat-value">${data.starting_wound_threshold}</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-label">STRAIN</div>
+                <div class="stat-value">${data.starting_strain_threshold}</div>
+            </div>
+        </div>
+        <div style="color: #e0e0e0; font-size: 0.875rem; margin-bottom: 1rem;">
+            ${data.description}
+        </div>
+        <div style="color: #a0aec0; font-size: 0.8rem;">
+            <strong>Career Skills:</strong><br>
+            ${data.career_skills.slice(0, 3).join(', ')}${data.career_skills.length > 3 ? '...' : ''}
+        </div>
+    `;
+    
+    card.addEventListener('click', () => selectCareer(careerName));
+    return card;
+}
+
+// Select career
+function selectCareer(careerName) {
+    // Remove previous selection
+    document.querySelectorAll('.career-card').forEach(card => {
+        card.classList.remove('selected');
+    });
+    
+    // Add selection to clicked card
+    const selectedCard = document.querySelector(`[data-career="${careerName}"]`);
+    if (selectedCard) {
+        selectedCard.classList.add('selected');
+    }
+    
+    selectedCareer = careerName;
+    updateSelectedCareerInfo();
+    updateNextButton();
+    saveStepData();
+}
+
+// Update selected career info
+function updateSelectedCareerInfo() {
+    const infoDiv = document.getElementById('selected-career-info');
+    const nameSpan = document.getElementById('selected-career-name');
+    const detailsDiv = document.getElementById('selected-career-details');
+    
+    if (selectedCareer && careerData[selectedCareer]) {
+        const data = careerData[selectedCareer];
+        nameSpan.textContent = selectedCareer;
+        
+        detailsDiv.innerHTML = `
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin-bottom: 1rem;">
+                <div>
+                    <strong style="color: #ffd700;">Game Line:</strong><br>
+                    ${data.game_line_name}<br><br>
+                    <strong style="color: #ffd700;">Starting Thresholds:</strong><br>
+                    Wound: ${data.starting_wound_threshold}<br>
+                    Strain: ${data.starting_strain_threshold}
+                </div>
+                <div>
+                    <strong style="color: #ffd700;">Career Skills:</strong><br>
+                    ${data.career_skills.map(skill => `• ${skill}`).join('<br>')}
+                </div>
+            </div>
+            <div>
+                <strong style="color: #ffd700;">Description:</strong><br>
+                ${data.description}
+            </div>
+        `;
+        
+        infoDiv.style.display = 'block';
+    } else {
+        infoDiv.style.display = 'none';
+    }
+}
+
+// Update next button
+function updateNextButton() {
+    const nextButton = document.getElementById('next-button');
+    if (selectedCareer) {
+        nextButton.disabled = false;
+        nextButton.style.background = '#ffd700';
+        nextButton.style.color = '#1a1a2e';
+        nextButton.style.cursor = 'pointer';
+    } else {
+        nextButton.disabled = true;
+        nextButton.style.background = '#666';
+        nextButton.style.color = '#999';
+        nextButton.style.cursor = 'not-allowed';
+    }
+}
+
+// Filter careers by game line
+function filterCareers(gameLineFilter) {
+    const cards = document.querySelectorAll('.career-card');
+    
+    cards.forEach(card => {
+        const cardGameLine = card.dataset.gameLine;
+        if (gameLineFilter === 'all' || cardGameLine === gameLineFilter) {
+            card.style.display = 'block';
+        } else {
+            card.style.display = 'none';
+        }
+    });
+}
+
+// Setup game line filter
+function setupGameLineFilter() {
+    const filterSelect = document.getElementById('game-line-filter');
+    filterSelect.addEventListener('change', function() {
+        filterCareers(this.value);
+    });
+}
+
+// Populate career grid
+function populateCareerGrid() {
+    const grid = document.getElementById('career-grid');
+    grid.innerHTML = '';
+    
+    Object.entries(careerData).forEach(([name, data]) => {
+        const card = createCareerCard(name, data);
+        grid.appendChild(card);
+    });
+    
+    allCareers = Object.keys(careerData);
+}
+
+// Next button click
+document.getElementById('next-button').addEventListener('click', function() {
+    if (selectedCareer) {
+        saveStepData();
+        window.location.href = '/create-character/characteristics';
+    }
+});
+
+// Initialize
+checkAuthentication();
+loadCharacterData();
+populateCareerGrid();
+setupGameLineFilter();
+</script>
+{% endblock %}

@@ -4,7 +4,25 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a Python application called "swrpg-character-manager" for dynamic character leveling in Star Wars RPG systems (Edge of the Empire, Age of Rebellion, Force and Destiny). The project provides both a modern web interface (similar to D&D Beyond/Demiplane) and a CLI interface for character management. Built with Flask backend and vanilla JavaScript frontend.
+This is a Python application called "star-wars-rpg-character-manager" for dynamic character leveling in Star Wars RPG systems (Edge of the Empire, Age of Rebellion, Force and Destiny). The project provides both a modern web interface (similar to D&D Beyond/Demiplane) and a CLI interface for character management. Built with Flask backend and vanilla JavaScript frontend.
+
+## SWRPG Content Reference
+
+**IMPORTANT**: For all Star Wars RPG game mechanics, rules, species data, careers, talents, equipment, and other content verification, refer to the extracted SWRPG reference materials located in:
+
+- **Extracted PDFs**: `/Users/ceverson/Development/star-wars-rpg-character-manager/swrpg_complete_extraction/`
+  - `text/` - Clean text versions of all SWRPG sourcebooks
+  - `json/` - Structured data from sourcebooks
+  - `markdown/` - Markdown formatted content for easy reading
+- **Clean Species Data**: `/Users/ceverson/Development/star-wars-rpg-character-manager/swrpg_extracted_data/json/clean_species_data.json`
+
+This extracted content includes:
+- **All Species**: Human, Twi'lek, Wookiee, Clone, Dathomirian, Harch, Karkarodon, Togruta, Weequay, Quarren, Ithorian, etc.
+- **All Careers**: Bounty Hunter, Smuggler, Jedi, Diplomat, Ace, Guardian, etc.
+- **Game Mechanics**: Characteristics, wound/strain thresholds, starting XP, special abilities
+- **Rules Reference**: Combat, Force powers, talents, equipment stats
+
+**Data Verification Protocol**: Always cross-reference character creation data, species stats, career information, and game mechanics against these extracted sources to ensure accuracy and completeness. The application currently has 28+ species available in the character creation wizard.
 
 ## Development Commands
 

@@ -1,0 +1,955 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Star Wars RPG Character Manager{% endblock %}
+
+{% block sidebar_content %}
+<!-- Quick Stats -->
+<div style="margin-bottom: 1rem; padding: 1rem; background: rgba(255, 215, 0, 0.1); border: 1px solid #ffd700; border-radius: 4px;">
+    <h4 style="color: #ffd700; margin: 0 0 0.5rem 0;">Quick Stats</h4>
+    <div style="display: flex; flex-direction: column; gap: 0.25rem;">
+        <span style="color: #e0e0e0; font-size: 0.875rem;">Total Characters: <strong id="total-characters">0</strong></span>
+        <span style="color: #e0e0e0; font-size: 0.875rem;">Active Campaigns: <strong id="total-campaigns">0</strong></span>
+    </div>
+</div>
+
+<!-- Actions -->
+<div style="margin-bottom: 1rem;">
+    <h4 style="color: #ffd700; margin: 0 0 1rem 0;">Quick Actions</h4>
+    <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+        <a href="{{ url_for('create_character_start') }}" class="btn btn-primary" style="text-align: center;">
+            🚀 Create Character
+        </a>
+        <a href="{{ url_for('campaigns_page') }}" class="btn btn-secondary" style="text-align: center;">
+            🎲 Manage Campaigns
+        </a>
+    </div>
+</div>
+
+<!-- Campaign Selector -->
+<div style="padding: 1rem; background: rgba(255, 215, 0, 0.05); border: 1px solid #333; border-radius: 4px;">
+    <h4 style="color: #ffd700; margin: 0 0 1rem 0;">Campaign Filter</h4>
+    <div id="campaign-filter">
+        <div class="campaign-tag active" data-campaign="" onclick="filterByCampaign('')" style="background: #28a745; color: white; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.875rem; cursor: pointer; margin-bottom: 0.5rem; display: block; text-align: center;">
+            All Characters
+        </div>
+        <div id="user-campaigns"></div>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div id="dashboard-content">
+    <!-- Header -->
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+        <h1 style="color: #ffd700; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); margin: 0;">🌟 My Characters</h1>
+        <div style="display: flex; gap: 1rem;">
+            <a href="{{ url_for('create_character_start') }}" class="btn btn-primary">
+                Create New Character
+            </a>
+            <button class="btn btn-secondary" onclick="refreshDashboard()">
+                Refresh
+            </button>
+        </div>
+    </div>
+
+    <!-- Characters Grid -->
+    <div id="characters-grid">
+        <div class="loading-state">
+            <!-- Skeleton Screen for Character Cards -->
+            <div class="character-grid">
+                <div class="character-card skeleton-card">
+                    <div class="skeleton skeleton-title"></div>
+                    <div class="skeleton skeleton-text"></div>
+                    <div class="skeleton skeleton-text short"></div>
+                    <div class="skeleton-actions">
+                        <div class="skeleton skeleton-button"></div>
+                        <div class="skeleton skeleton-button"></div>
+                        <div class="skeleton skeleton-button"></div>
+                    </div>
+                </div>
+                <div class="character-card skeleton-card">
+                    <div class="skeleton skeleton-title"></div>
+                    <div class="skeleton skeleton-text"></div>
+                    <div class="skeleton skeleton-text short"></div>
+                    <div class="skeleton-actions">
+                        <div class="skeleton skeleton-button"></div>
+                        <div class="skeleton skeleton-button"></div>
+                        <div class="skeleton skeleton-button"></div>
+                    </div>
+                </div>
+                <div class="character-card skeleton-card">
+                    <div class="skeleton skeleton-title"></div>
+                    <div class="skeleton skeleton-text"></div>
+                    <div class="skeleton skeleton-text short"></div>
+                    <div class="skeleton-actions">
+                        <div class="skeleton skeleton-button"></div>
+                        <div class="skeleton skeleton-button"></div>
+                        <div class="skeleton skeleton-button"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.character-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1rem;
+}
+
+.character-card {
+    background: linear-gradient(145deg, #1a1a2e, #16213e);
+    border: 1px solid #ffd700;
+    border-radius: 8px;
+    padding: 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.character-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(255, 215, 0, 0.3);
+    border-color: #ffed4e;
+}
+
+.character-card h3 {
+    color: #ffd700;
+    margin: 0 0 1rem 0;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+}
+
+.character-details {
+    color: #e0e0e0;
+    margin: 0 0 1rem 0;
+    line-height: 1.4;
+}
+
+.character-actions {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.btn-sm {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: #e0e0e0;
+}
+
+.empty-state h2 {
+    color: #ffd700;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+    margin-bottom: 1rem;
+}
+
+.empty-state .getting-started {
+    margin-top: 2rem;
+    padding: 1rem;
+    background: rgba(255, 215, 0, 0.1);
+    border: 1px solid #ffd700;
+    border-radius: 8px;
+}
+
+.empty-state .getting-started h3 {
+    color: #ffd700;
+    margin: 0 0 1rem 0;
+}
+
+.empty-state .getting-started ul {
+    text-align: left;
+    color: #e0e0e0;
+}
+
+.campaign-tag {
+    background: #007cba;
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.875rem;
+    cursor: pointer;
+    margin-bottom: 0.25rem;
+    display: block;
+    text-align: center;
+    transition: background-color 0.2s;
+}
+
+.campaign-tag:hover {
+    background: #005a87;
+}
+
+.campaign-tag.active {
+    background: #28a745;
+}
+
+.text-secondary {
+    color: #a0aec0;
+}
+
+/* Enhanced Loading States - Skeleton Screens */
+.skeleton-card {
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+.skeleton {
+    background: linear-gradient(90deg, #2a2a3e 25%, #3a3a4e 50%, #2a2a3e 75%);
+    background-size: 200% 100%;
+    animation: skeleton-loading 1.5s infinite;
+    border-radius: 4px;
+    margin-bottom: 0.75rem;
+}
+
+.skeleton-title {
+    height: 1.5rem;
+    width: 70%;
+}
+
+.skeleton-text {
+    height: 1rem;
+    width: 100%;
+}
+
+.skeleton-text.short {
+    width: 60%;
+}
+
+.skeleton-button {
+    height: 2rem;
+    width: 4rem;
+    border-radius: 4px;
+}
+
+.skeleton-actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+@keyframes skeleton-loading {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+/* Loading State Improvements */
+.loading-state {
+    padding: 1rem;
+}
+
+/* Performance optimizations for skeleton screens */
+.skeleton-card .character-actions {
+    pointer-events: none;
+}
+
+/* Enhanced Empty State Styling */
+.empty-state {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: #e0e0e0;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.empty-state-header {
+    margin-bottom: 2.5rem;
+}
+
+.empty-state-icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+}
+
+.empty-state h2 {
+    color: #ffd700;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+    margin-bottom: 1rem;
+    font-size: 2rem;
+}
+
+.empty-state-subtitle {
+    font-size: 1.1rem;
+    color: #b0b0b0;
+    line-height: 1.6;
+    margin-bottom: 0;
+}
+
+.empty-state-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 3rem;
+}
+
+.btn-hero {
+    font-size: 1.1rem;
+    padding: 0.75rem 2rem;
+    font-weight: 600;
+    text-transform: none;
+    box-shadow: 0 4px 12px rgba(255, 215, 0, 0.3);
+    transition: all 0.3s ease;
+}
+
+.btn-hero:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 215, 0, 0.4);
+}
+
+.getting-started {
+    margin: 3rem 0;
+    padding: 2rem;
+    background: rgba(255, 215, 0, 0.1);
+    border: 1px solid #ffd700;
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+}
+
+.getting-started h3 {
+    color: #ffd700;
+    margin: 0 0 2rem 0;
+    font-size: 1.5rem;
+}
+
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.feature-item {
+    text-align: center;
+    padding: 1.5rem 1rem;
+    background: rgba(26, 26, 46, 0.8);
+    border-radius: 8px;
+    border: 1px solid rgba(255, 215, 0, 0.2);
+    transition: all 0.3s ease;
+}
+
+.feature-item:hover {
+    transform: translateY(-4px);
+    border-color: rgba(255, 215, 0, 0.4);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.feature-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.feature-item h4 {
+    color: #ffd700;
+    margin: 0 0 0.5rem 0;
+    font-size: 1.1rem;
+}
+
+.feature-item p {
+    color: #b0b0b0;
+    margin: 0;
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+.empty-state-tips {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background: rgba(26, 26, 46, 0.6);
+    border-radius: 8px;
+    border: 1px solid rgba(255, 215, 0, 0.15);
+}
+
+.empty-state-tips h4 {
+    color: #ffd700;
+    margin: 0 0 1rem 0;
+    font-size: 1.2rem;
+}
+
+.empty-state-tips ul {
+    text-align: left;
+    color: #e0e0e0;
+    margin: 0;
+    padding-left: 1.5rem;
+}
+
+.empty-state-tips li {
+    margin-bottom: 0.5rem;
+    line-height: 1.5;
+}
+
+/* Enhanced Mobile Responsive Design */
+
+/* Small mobile adjustments */
+@media (max-width: 480px) {
+    .character-grid {
+        grid-template-columns: 1fr; /* Single column on small screens */
+        gap: 0.75rem;
+        padding: 0.5rem;
+    }
+    
+    .character-card {
+        padding: 1rem;
+        margin-bottom: 0.75rem;
+    }
+    
+    .character-card h3 {
+        font-size: 1.1rem;
+    }
+    
+    .character-actions {
+        flex-direction: column;
+        gap: 0.75rem;
+        margin-top: 1rem;
+    }
+    
+    .character-actions .btn {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .empty-state {
+        padding: 1.5rem 0.75rem;
+    }
+    
+    .empty-state h2 {
+        font-size: 1.3rem;
+    }
+    
+    .feature-item {
+        padding: 1rem 0.75rem;
+    }
+}
+
+/* Standard mobile (up to 768px) */
+@media (max-width: 768px) {
+    .character-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        padding: 0.5rem;
+    }
+    
+    .character-card {
+        flex-direction: column;
+        text-align: center;
+        padding: 1.25rem;
+    }
+    
+    .character-actions {
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-top: 1rem;
+    }
+    
+    .character-actions .btn {
+        flex: 1;
+        min-width: calc(50% - 0.25rem); /* Two buttons per row */
+    }
+    
+    .empty-state {
+        padding: 2rem 1rem;
+    }
+    
+    .empty-state h2 {
+        font-size: 1.5rem;
+        line-height: 1.3;
+    }
+    
+    .empty-state-subtitle {
+        font-size: 1rem;
+        line-height: 1.5;
+    }
+    
+    .empty-state-actions {
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+    }
+    
+    .btn-hero {
+        width: 100%;
+        max-width: 300px;
+        padding: 1rem 1.5rem;
+    }
+    
+    .feature-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .feature-item {
+        padding: 1.25rem;
+    }
+    
+    .getting-started {
+        padding: 1.5rem;
+        margin: 2rem 0;
+    }
+    
+    .empty-state-tips {
+        padding: 1.25rem;
+        margin-top: 1.5rem;
+    }
+    
+    /* Better skeleton loading for mobile */
+    .skeleton-card {
+        margin-bottom: 1rem;
+    }
+    
+    .skeleton-actions {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+    
+    .skeleton-button {
+        width: 100%;
+        height: 2.5rem;
+    }
+}
+
+/* Tablet responsiveness (768px to 1024px) */
+@media (min-width: 768px) and (max-width: 1024px) {
+    .character-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.25rem;
+    }
+    
+    .feature-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .character-actions .btn {
+        flex: none;
+        min-width: auto;
+    }
+}
+
+/* Large screen optimizations */
+@media (min-width: 1024px) {
+    .character-grid {
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 1.5rem;
+    }
+    
+    .empty-state {
+        padding: 4rem 2rem;
+    }
+    
+    .feature-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+let currentCampaignFilter = '';
+let characters = [];
+let campaigns = [];
+
+// Initialize dashboard on page load
+document.addEventListener('DOMContentLoaded', async () => {
+    await loadDashboardData();
+});
+
+async function loadDashboardData() {
+    try {
+        // Load characters and campaigns in parallel
+        const [charactersResponse, campaignsResponse] = await Promise.all([
+            authenticatedFetch('/api/characters'),
+            authenticatedFetch('/api/campaigns')
+        ]);
+        
+        if (charactersResponse.ok) {
+            const charactersData = await charactersResponse.json();
+            characters = charactersData.characters || [];
+        }
+        
+        if (campaignsResponse.ok) {
+            const campaignsData = await campaignsResponse.json();
+            campaigns = campaignsData.campaigns || [];
+        }
+        
+        // Update UI
+        updateQuickStats();
+        updateCampaignFilter();
+        renderCharacters();
+        
+    } catch (error) {
+        console.error('Error loading dashboard data:', error);
+        showError('Failed to load dashboard data. Please refresh the page.');
+    }
+}
+
+function updateQuickStats() {
+    document.getElementById('total-characters').textContent = characters.length;
+    document.getElementById('total-campaigns').textContent = campaigns.length;
+}
+
+function updateCampaignFilter() {
+    const campaignsContainer = document.getElementById('user-campaigns');
+    campaignsContainer.innerHTML = '';
+    
+    campaigns.forEach(campaign => {
+        const campaignTag = document.createElement('div');
+        campaignTag.className = 'campaign-tag';
+        campaignTag.setAttribute('data-campaign', campaign.id);
+        campaignTag.onclick = () => filterByCampaign(campaign.id);
+        campaignTag.textContent = `${campaign.name} ${campaign.is_game_master ? '(GM)' : ''}`;
+        campaignsContainer.appendChild(campaignTag);
+    });
+}
+
+function filterByCampaign(campaignId) {
+    currentCampaignFilter = campaignId;
+    
+    // Update active state
+    document.querySelectorAll('.campaign-tag').forEach(tag => {
+        tag.classList.remove('active');
+    });
+    document.querySelector(`[data-campaign="${campaignId}"]`).classList.add('active');
+    
+    // Re-render characters
+    renderCharacters();
+}
+
+function renderCharacters() {
+    const container = document.getElementById('characters-grid');
+    
+    // Filter characters by campaign if filter is active
+    let filteredCharacters = characters;
+    if (currentCampaignFilter) {
+        filteredCharacters = characters.filter(char => char.campaign_id === currentCampaignFilter);
+    }
+    
+    if (filteredCharacters.length === 0) {
+        const emptyStateHtml = [
+            '<div class="empty-state">',
+            '    <!-- Engaging Header with Animation -->',
+            '    <div class="empty-state-header">',
+            '        <div class="empty-state-icon">',
+            '            ' + (currentCampaignFilter ? '🎲' : '🌟'),
+            '        </div>',
+            '        <h2>' + (currentCampaignFilter ? 'No Characters in This Campaign' : 'Welcome to the Galaxy!') + '</h2>',
+            '        <p class="empty-state-subtitle">',
+            '            ' + (currentCampaignFilter 
+                            ? 'This campaign is ready for characters to join the adventure.' 
+                            : 'Your journey in the Star Wars universe begins here. Create your first character and start your legendary story!'),
+            '        </p>',
+            '    </div>',
+            '    ',
+            '    <!-- Primary Action -->',
+            '    <div class="empty-state-actions">',
+            '        <a href="/create" class="btn btn-primary btn-hero">',
+            '            🚀 ' + (currentCampaignFilter ? 'Add Character to Campaign' : 'Create Your First Character'),
+            '        </a>',
+            '        <a href="/campaigns" class="btn btn-secondary">',
+            '            🎲 ' + (currentCampaignFilter ? 'Campaign Settings' : 'Manage Campaigns'),
+            '        </a>',
+            '    </div>'
+        ];
+        
+        // Add getting started section only if no campaign filter
+        if (!currentCampaignFilter) {
+            emptyStateHtml.push(
+                '    ',
+                '    <div class="getting-started">',
+                '        <h3>🗺️ Your Adventure Awaits</h3>',
+                '        <div class="feature-grid">',
+                '            <div class="feature-item">',
+                '                <div class="feature-icon">🎭</div>',
+                '                <h4>Choose Your Species</h4>',
+                '                <p>Human, Twi\'lek, Wookiee, and many more</p>',
+                '            </div>',
+                '            <div class="feature-item">',
+                '                <div class="feature-icon">⚔️</div>',
+                '                <h4>Select Your Path</h4>',
+                '                <p>Smuggler, Jedi, Bounty Hunter, or Explorer</p>',
+                '            </div>',
+                '            <div class="feature-item">',
+                '                <div class="feature-icon">📜</div>',
+                '                <h4>Define Your Story</h4>',
+                '                <p>Obligations, motivations, and background</p>',
+                '            </div>',
+                '            <div class="feature-item">',
+                '                <div class="feature-icon">🎲</div>',
+                '                <h4>Roll Into Adventure</h4>',
+                '                <p>Join campaigns and start playing</p>',
+                '            </div>',
+                '        </div>',
+                '    </div>'
+            );
+        }
+        
+        emptyStateHtml.push(
+            '    ',
+            '    <!-- Quick Tips -->',
+            '    <div class="empty-state-tips">',
+            '        <h4>💡 Quick Tips</h4>',
+            '        <ul>',
+            '            <li>Start with a Human character if you\'re new to Star Wars RPG</li>',
+            '            <li>Consider your character\'s backstory and motivations</li>',
+            '            <li>Join a campaign or create one to play with friends</li>',
+            '        </ul>',
+            '    </div>',
+            '</div>'
+        );
+        
+        container.innerHTML = emptyStateHtml.join('\n');
+        return;
+    }
+    
+    container.innerHTML = `
+        <div class="character-grid">
+            ${filteredCharacters.map(character => `
+                <div class="character-card" onclick="viewCharacter('${character.id}')">
+                    <h3>${character.name}</h3>
+                    <div class="character-details">
+                        <strong>${character.species} ${character.career}</strong><br>
+                        Player: ${character.playerName}<br>
+                        XP: ${character.availableXP}/${character.totalXP}
+                    </div>
+                    <div class="character-actions">
+                        <button class="btn btn-sm btn-outline" onclick="event.stopPropagation(); editCharacter('${character.id}')">Edit</button>
+                        <button class="btn btn-sm btn-secondary" onclick="event.stopPropagation(); awardXP('${character.id}')">Award XP</button>
+                        <button class="btn btn-sm btn-outline" onclick="event.stopPropagation(); assignCampaign('${character.id}')">Campaign</button>
+                        <button class="btn btn-sm btn-danger" onclick="event.stopPropagation(); deleteCharacter('${character.id}')">Delete</button>
+                    </div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+}
+
+// Character action functions
+function viewCharacter(characterId) {
+    // Use proper navigation that maintains browser history
+    window.location.href = `/character/${characterId}`;
+}
+
+function editCharacter(characterId) {
+    // Navigate to character edit page
+    window.location.href = `/character/${characterId}`;
+}
+
+async function awardXP(characterId) {
+    const amount = prompt('Enter XP amount to award:', '5');
+    if (!amount || isNaN(amount) || parseInt(amount) <= 0) return;
+    
+    try {
+        const response = await authenticatedFetch(`/api/characters/${characterId}/award-xp`, {
+            method: 'POST',
+            body: JSON.stringify({
+                amount: parseInt(amount),
+                reason: 'Awarded from dashboard'
+            })
+        });
+        
+        if (response.ok) {
+            const result = await response.json();
+            alert(result.message);
+            await loadDashboardData(); // Refresh data
+        } else {
+            const error = await response.json();
+            alert('Error awarding XP: ' + error.error);
+        }
+    } catch (error) {
+        console.error('Error awarding XP:', error);
+        alert('Failed to award XP. Please try again.');
+    }
+}
+
+async function assignCampaign(characterId) {
+    const character = characters.find(c => c.id === characterId);
+    if (!character) return;
+    
+    const availableCampaigns = campaigns.filter(c => !c.is_game_master || c.id === character.campaign_id);
+    
+    if (availableCampaigns.length === 0) {
+        alert('No available campaigns to assign. Create a campaign first or ask a GM to invite you.');
+        return;
+    }
+    
+    // Create modal for campaign assignment
+    const modalHTML = `
+        <div id="assignCampaignModal" class="modal-overlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); z-index: 2000; display: flex; justify-content: center; align-items: center;">
+            <div class="modal-content" style="background: linear-gradient(145deg, #1a1a2e, #16213e); border: 1px solid #ffd700; border-radius: 8px; width: 90%; max-width: 500px; color: #e0e0e0;">
+                <div class="modal-header" style="display: flex; justify-content: space-between; align-items: center; padding: 1rem; border-bottom: 1px solid #333;">
+                    <h3 style="color: #ffd700; margin: 0;">Assign Campaign - ${character.name}</h3>
+                    <button onclick="closeAssignModal()" style="background: none; border: none; color: #ffd700; font-size: 1.5rem; cursor: pointer; padding: 0.25rem 0.5rem; border-radius: 4px;">&times;</button>
+                </div>
+                <div style="padding: 1rem;">
+                    <div style="margin-bottom: 1rem;">
+                        <label style="color: #e0e0e0; margin-bottom: 0.5rem; display: block; font-weight: 500;">Select Campaign</label>
+                        <select id="campaignSelect" style="width: 100%; padding: 0.75rem; background: rgba(255, 255, 255, 0.1); border: 1px solid #333; border-radius: 4px; color: #e0e0e0; font-size: 1rem;">
+                            <option value="">None (Remove from campaign)</option>
+                            ${availableCampaigns.map(campaign => `
+                                <option value="${campaign.id}" ${character.campaign_id === campaign.id ? 'selected' : ''}>
+                                    ${campaign.name} ${campaign.is_game_master ? '(GM)' : '(Player)'}
+                                </option>
+                            `).join('')}
+                        </select>
+                    </div>
+                    <div style="display: flex; gap: 1rem; justify-content: flex-end;">
+                        <button onclick="closeAssignModal()" class="btn btn-outline">Cancel</button>
+                        <button onclick="confirmCampaignAssignment('${characterId}')" class="btn">Assign</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    document.body.insertAdjacentHTML('beforeend', modalHTML);
+    
+    // Close modal when clicking outside
+    document.getElementById('assignCampaignModal').addEventListener('click', (e) => {
+        if (e.target.id === 'assignCampaignModal') {
+            closeAssignModal();
+        }
+    });
+}
+
+function closeAssignModal() {
+    const modal = document.getElementById('assignCampaignModal');
+    if (modal) {
+        modal.remove();
+    }
+}
+
+async function confirmCampaignAssignment(characterId) {
+    const campaignId = document.getElementById('campaignSelect').value;
+    
+    try {
+        const response = await authenticatedFetch(`/api/characters/${characterId}/assign-campaign`, {
+            method: 'POST',
+            body: JSON.stringify({
+                campaign_id: campaignId || null
+            })
+        });
+        
+        if (response.ok) {
+            alert(campaignId ? 'Character assigned to campaign successfully!' : 'Character removed from campaign.');
+            closeAssignModal();
+            await loadDashboardData(); // Refresh data
+        } else {
+            const error = await response.json();
+            alert('Error assigning campaign: ' + error.error);
+        }
+    } catch (error) {
+        console.error('Error assigning campaign:', error);
+        alert('Failed to assign campaign. Please try again.');
+    }
+}
+
+async function deleteCharacter(characterId) {
+    if (!confirm('Are you sure you want to delete this character? This action cannot be undone.')) {
+        return;
+    }
+    
+    try {
+        const response = await authenticatedFetch(`/api/characters/${characterId}`, {
+            method: 'DELETE'
+        });
+        
+        if (response.ok) {
+            alert('Character deleted successfully.');
+            await loadDashboardData(); // Refresh data
+        } else {
+            const error = await response.json();
+            alert('Error deleting character: ' + error.error);
+        }
+    } catch (error) {
+        console.error('Error deleting character:', error);
+        alert('Failed to delete character. Please try again.');
+    }
+}
+
+async function refreshDashboard() {
+    // Show skeleton screen while refreshing
+    document.getElementById('characters-grid').innerHTML = `
+        <div class="loading-state">
+            <div class="character-grid">
+                <div class="character-card skeleton-card">
+                    <div class="skeleton skeleton-title"></div>
+                    <div class="skeleton skeleton-text"></div>
+                    <div class="skeleton skeleton-text short"></div>
+                    <div class="skeleton-actions">
+                        <div class="skeleton skeleton-button"></div>
+                        <div class="skeleton skeleton-button"></div>
+                        <div class="skeleton skeleton-button"></div>
+                    </div>
+                </div>
+                <div class="character-card skeleton-card">
+                    <div class="skeleton skeleton-title"></div>
+                    <div class="skeleton skeleton-text"></div>
+                    <div class="skeleton skeleton-text short"></div>
+                    <div class="skeleton-actions">
+                        <div class="skeleton skeleton-button"></div>
+                        <div class="skeleton skeleton-button"></div>
+                        <div class="skeleton skeleton-button"></div>
+                    </div>
+                </div>
+                <div class="character-card skeleton-card">
+                    <div class="skeleton skeleton-title"></div>
+                    <div class="skeleton skeleton-text"></div>
+                    <div class="skeleton skeleton-text short"></div>
+                    <div class="skeleton-actions">
+                        <div class="skeleton skeleton-button"></div>
+                        <div class="skeleton skeleton-button"></div>
+                        <div class="skeleton skeleton-button"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    await loadDashboardData();
+}
+
+function showError(message) {
+    const container = document.getElementById('characters-grid');
+    container.innerHTML = `
+        <div class="error-state" style="text-align: center; padding: 3rem 1rem; color: #e0e0e0;">
+            <h2 style="color: #ff6b6b;">⚠️ Error</h2>
+            <p>${message}</p>
+            <button class="btn btn-primary" onclick="refreshDashboard()">Try Again</button>
+        </div>
+    `;
+}
+
+// Helper function for authenticated API calls
+async function authenticatedFetch(url, options = {}) {
+    const token = localStorage.getItem('access_token');
+    return fetch(url, {
+        ...options,
+        headers: {
+            ...options.headers,
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        }
+    });
+}
+</script>
+{% endblock %}

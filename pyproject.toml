@@ -1,5 +1,5 @@
 [project]
-name = "swrpg-character-manager"
+name = "star-wars-rpg-character-manager"
 version = "0.1.0"
 description = "Dynamic character leveling system for Star Wars RPG"
 requires-python = ">=3.8"

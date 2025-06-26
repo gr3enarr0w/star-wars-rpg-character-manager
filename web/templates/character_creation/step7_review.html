@@ -1,0 +1,229 @@
+{% extends "base.html" %}
+
+{% block title %}Review Character - Star Wars RPG Character Manager{% endblock %}
+
+{% block layout %}
+<div style="max-width: 1000px; margin: 0 auto; padding: 2rem 1rem;">
+    <!-- Header -->
+    <div style="margin-bottom: 2rem; text-align: center;">
+        <h1 style="color: #ffd700; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); margin: 0 0 0.5rem 0;">🌟 Character Creation</h1>
+        <p style="color: #e0e0e0; margin: 0;">Step 7 of 7: Review & Finalize</p>
+    </div>
+
+    <!-- Progress Bar -->
+    <div style="background: #333; border-radius: 10px; margin-bottom: 2rem; overflow: hidden;">
+        <div style="background: linear-gradient(90deg, #ffd700, #ffed4e); height: 8px; width: 100%; transition: width 0.3s ease;"></div>
+    </div>
+
+    <!-- Character Review -->
+    <div style="background: linear-gradient(145deg, #1a1a2e, #16213e); padding: 2rem; border-radius: 8px; border: 1px solid #333;">
+        <h2 style="color: #ffd700; margin: 0 0 1.5rem 0;">Character Summary</h2>
+        
+        <div id="character-summary" style="margin-bottom: 2rem;">
+            <!-- Will be populated by JavaScript -->
+        </div>
+
+        <div style="margin-bottom: 2rem; padding: 1rem; background: rgba(255, 215, 0, 0.1); border-radius: 4px;">
+            <h3 style="color: #ffd700; margin: 0 0 1rem 0;">🎉 Congratulations!</h3>
+            <p style="color: #e0e0e0; margin: 0;">
+                Your character is ready to begin their journey in the Star Wars galaxy! 
+                Review the information above and click "Create Character" to finalize your character.
+            </p>
+        </div>
+
+        <!-- Navigation -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 2rem;">
+            <a href="/create-character/talents" class="btn btn-secondary" style="background: #333; color: #e0e0e0; text-decoration: none; padding: 0.75rem 1.5rem; border-radius: 4px; border: 1px solid #555;">
+                ← Previous: Talents
+            </a>
+            
+            <button id="create-button" type="button" class="btn btn-primary"
+                    style="background: #ffd700; color: #1a1a2e; padding: 0.75rem 2rem; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; font-size: 1.1rem;">
+                🌟 Create Character
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+let characterData = {};
+
+// Load all character creation data
+function loadCharacterData() {
+    const savedData = JSON.parse(sessionStorage.getItem('characterCreation'));
+    if (!savedData) {
+        window.location.href = '/create-character/basics';
+        return;
+    }
+    
+    characterData = savedData.data;
+    displayCharacterSummary();
+}
+
+// Display character summary
+function displayCharacterSummary() {
+    const summaryDiv = document.getElementById('character-summary');
+    
+    summaryDiv.innerHTML = `
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+            <!-- Basic Info -->
+            <div style="background: rgba(255, 215, 0, 0.05); padding: 1rem; border-radius: 4px;">
+                <h4 style="color: #ffd700; margin: 0 0 1rem 0;">Basic Information</h4>
+                <div style="color: #e0e0e0;">
+                    <strong>Character Name:</strong> ${characterData.characterName || 'Not Set'}<br>
+                    <strong>Player Name:</strong> ${characterData.playerName || 'Not Set'}<br>
+                    <strong>Species:</strong> ${characterData.selectedSpecies || 'Not Selected'}<br>
+                    <strong>Career:</strong> ${characterData.selectedCareer || 'Not Selected'}
+                </div>
+            </div>
+
+            <!-- Obligation -->
+            <div style="background: rgba(255, 215, 0, 0.05); padding: 1rem; border-radius: 4px;">
+                <h4 style="color: #ffd700; margin: 0 0 1rem 0;">Obligation</h4>
+                <div style="color: #e0e0e0;">
+                    ${characterData.obligationType ? 
+                        `<strong>Type:</strong> ${characterData.obligationType}<br>
+                         <strong>Magnitude:</strong> ${characterData.obligationMagnitude || 10}<br>
+                         ${characterData.obligationDetails ? 
+                            `<strong>Details:</strong> ${characterData.obligationDetails}` : 
+                            '<em>No details provided</em>'
+                         }` :
+                        '<em>No obligation selected</em>'
+                    }
+                </div>
+            </div>
+
+            <!-- Characteristics -->
+            <div style="background: rgba(255, 215, 0, 0.05); padding: 1rem; border-radius: 4px;">
+                <h4 style="color: #ffd700; margin: 0 0 1rem 0;">Characteristics</h4>
+                <div style="color: #e0e0e0; display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.5rem;">
+                    ${characterData.characteristics ? Object.entries(characterData.characteristics).map(([name, value]) => 
+                        `<div><strong>${name.charAt(0).toUpperCase() + name.slice(1)}:</strong> ${value}</div>`
+                    ).join('') : 'Not assigned'}
+                </div>
+                ${characterData.availableXP !== undefined ? 
+                    `<div style="margin-top: 1rem; color: #ffd700;"><strong>Remaining XP:</strong> ${characterData.availableXP}</div>` : 
+                    ''
+                }
+            </div>
+
+            <!-- Status -->
+            <div style="background: rgba(255, 215, 0, 0.05); padding: 1rem; border-radius: 4px;">
+                <h4 style="color: #ffd700; margin: 0 0 1rem 0;">Character Status</h4>
+                <div style="color: #e0e0e0;">
+                    ${getCompletionStatus()}
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+// Get completion status
+function getCompletionStatus() {
+    const required = ['characterName', 'playerName', 'selectedSpecies', 'selectedCareer'];
+    const completed = required.filter(field => characterData[field]);
+    
+    let status = `<div style="margin-bottom: 1rem;">`;
+    status += `<div style="color: #ffd700; font-weight: bold;">Completion: ${completed.length}/${required.length}</div>`;
+    
+    if (characterData.characterName) status += `<div style="color: #4ade80;">✓ Basic info complete</div>`;
+    if (characterData.selectedSpecies) status += `<div style="color: #4ade80;">✓ Species selected</div>`;
+    if (characterData.selectedCareer) status += `<div style="color: #4ade80;">✓ Career selected</div>`;
+    if (characterData.characteristics) status += `<div style="color: #4ade80;">✓ Characteristics assigned</div>`;
+    
+    status += `</div>`;
+    
+    if (completed.length < required.length) {
+        status += `<div style="color: #fbbf24;">⚠️ Some steps incomplete</div>`;
+    } else {
+        status += `<div style="color: #4ade80;">🎉 Ready to create!</div>`;
+    }
+    
+    return status;
+}
+
+// Create character
+async function createCharacter() {
+    const required = ['characterName', 'playerName', 'selectedSpecies', 'selectedCareer'];
+    const missing = required.filter(field => !characterData[field]);
+    
+    if (missing.length > 0) {
+        alert(`Please complete all required steps first:\n${missing.join(', ')}`);
+        return;
+    }
+    
+    // Disable create button during creation
+    const createButton = document.getElementById('create-button');
+    createButton.disabled = true;
+    createButton.textContent = 'Creating Character...';
+    createButton.style.background = '#666';
+    
+    try {
+        // Prepare character data for API
+        const characterPayload = {
+            name: characterData.characterName,
+            playerName: characterData.playerName,
+            species: typeof characterData.selectedSpecies === 'string' ? 
+                     characterData.selectedSpecies : 
+                     characterData.selectedSpecies.name || characterData.selectedSpecies,
+            career: typeof characterData.selectedCareer === 'string' ? 
+                   characterData.selectedCareer : 
+                   characterData.selectedCareer.name || characterData.selectedCareer,
+            characteristics: characterData.characteristics || {},
+            skills: characterData.selectedSkills || {},
+            talents: characterData.selectedTalents || {},
+            obligation: {
+                type: characterData.obligationType || '',
+                magnitude: characterData.obligationMagnitude || 10,
+                details: characterData.obligationDetails || ''
+            }
+        };
+        
+        // Get token for authentication
+        const token = localStorage.getItem('access_token');
+        if (!token) {
+            throw new Error('Not authenticated');
+        }
+        
+        // Send to backend API
+        const response = await fetch('/api/characters', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(characterPayload)
+        });
+        
+        const result = await response.json();
+        
+        if (response.ok) {
+            alert('Character created successfully!');
+            
+            // Clear session storage
+            sessionStorage.removeItem('characterCreation');
+            
+            // Redirect to characters page
+            window.location.href = '/';
+        } else {
+            throw new Error(result.error || 'Failed to create character');
+        }
+        
+    } catch (error) {
+        console.error('Error creating character:', error);
+        alert(`Failed to create character: ${error.message}`);
+        
+        // Re-enable create button
+        createButton.disabled = false;
+        createButton.textContent = '🌟 Create Character';
+        createButton.style.background = '#ffd700';
+    }
+}
+
+// Create button click
+document.getElementById('create-button').addEventListener('click', createCharacter);
+
+// Initialize
+loadCharacterData();
+</script>
+{% endblock %}

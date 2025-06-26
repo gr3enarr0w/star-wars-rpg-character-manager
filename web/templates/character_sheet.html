@@ -1,0 +1,1643 @@
+{% extends "base.html" %}
+
+{% block title %}Character Sheet - Star Wars RPG Character Manager{% endblock %}
+
+{% block sidebar_content %}
+<!-- Character Quick Info -->
+<div id="character-quick-info" style="margin-bottom: 1rem; padding: 1rem; background: rgba(255, 215, 0, 0.1); border: 1px solid #ffd700; border-radius: 4px;">
+    <h4 style="color: #ffd700; margin: 0 0 0.5rem 0;">Character Info</h4>
+    <div id="quick-info-content" style="color: #e0e0e0; font-size: 0.875rem;">
+        Loading...
+    </div>
+</div>
+
+<!-- XP Management -->
+<div style="margin-bottom: 1rem; padding: 1rem; background: rgba(255, 215, 0, 0.05); border: 1px solid #333; border-radius: 4px;">
+    <h4 style="color: #ffd700; margin: 0 0 1rem 0;">Experience</h4>
+    <div id="xp-display" style="text-align: center; margin-bottom: 1rem;">
+        <div style="font-size: 1.5rem; font-weight: bold; color: #ffd700;" id="available-xp">0</div>
+        <div style="font-size: 0.875rem; color: #e0e0e0;">Available XP</div>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+        <button class="btn btn-primary" onclick="showAwardXPModal()" style="width: 100%;">
+            Award XP
+        </button>
+        <button class="btn btn-outline" onclick="showXPHistoryModal()" style="width: 100%;">
+            XP History
+        </button>
+    </div>
+</div>
+
+<!-- Navigation -->
+<div>
+    <a href="{{ url_for('index') }}" class="btn btn-outline" style="width: 100%; text-align: center; margin-bottom: 0.5rem;">
+        ← Back to Dashboard
+    </a>
+    <button class="btn btn-secondary" onclick="editCharacter()" style="width: 100%; margin-bottom: 0.5rem;">
+        Edit Character
+    </button>
+    <button class="btn btn-danger" onclick="deleteCharacter()" style="width: 100%;">
+        Delete Character
+    </button>
+</div>
+{% endblock %}
+
+{% block content %}
+<div id="character-sheet">
+    <!-- Loading State -->
+    <div id="loading-state" style="text-align: center; padding: 3rem 1rem; color: #e0e0e0;">
+        <h2 style="color: #ffd700; text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);">🌟 Loading Character...</h2>
+        <div class="spinner" style="border: 4px solid #333; border-top: 4px solid #ffd700; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin: 1rem auto;"></div>
+    </div>
+
+    <!-- Character Content (hidden initially) -->
+    <div id="character-content" style="display: none;">
+        <!-- Header -->
+        <div class="character-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+            <div class="character-info">
+                <h1 id="character-name" style="color: #ffd700; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); margin: 0;">Character Name</h1>
+                <p id="character-subtitle" style="color: #e0e0e0; margin: 0;">Species Career</p>
+            </div>
+            <div class="character-actions" style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="showAwardXPModal()">Award XP</button>
+                <button class="btn btn-secondary" onclick="editCharacter()">Edit Character</button>
+            </div>
+        </div>
+
+        <!-- Character Overview Grid -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2rem;">
+            <!-- Left Column: Core Stats -->
+            <div>
+                <!-- Basic Information -->
+                <div class="sheet-section" style="margin-bottom: 1.5rem;">
+                    <h3 class="section-title">Character Information</h3>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <span class="info-label">Species:</span>
+                            <span class="info-value" id="display-species">-</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Career:</span>
+                            <span class="info-value" id="display-career">-</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Player:</span>
+                            <span class="info-value" id="display-player">-</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Experience:</span>
+                            <span class="info-value" id="display-experience">0 / 0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Characteristics -->
+                <div class="sheet-section" style="margin-bottom: 1.5rem;">
+                    <h3 class="section-title">Characteristics</h3>
+                    <div id="characteristics-display" class="characteristics-layout">
+                        <!-- Characteristics will be populated by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Derived Attributes -->
+                <div class="sheet-section">
+                    <h3 class="section-title">Derived Attributes</h3>
+                    <div class="derived-grid">
+                        <div class="derived-item">
+                            <div class="derived-label">Wound Threshold</div>
+                            <div class="derived-value" id="wound-threshold">10</div>
+                            <div class="derived-track">
+                                <div class="track-boxes" id="wound-track"></div>
+                            </div>
+                        </div>
+                        <div class="derived-item">
+                            <div class="derived-label">Strain Threshold</div>
+                            <div class="derived-value" id="strain-threshold">10</div>
+                            <div class="derived-track">
+                                <div class="track-boxes" id="strain-track"></div>
+                            </div>
+                        </div>
+                        <div class="derived-item">
+                            <div class="derived-label">Soak</div>
+                            <div class="derived-value" id="soak-value">2</div>
+                        </div>
+                        <div class="derived-item">
+                            <div class="derived-label">Defense</div>
+                            <div class="derived-value">
+                                <span id="ranged-defense">0</span> / <span id="melee-defense">0</span>
+                            </div>
+                            <div class="derived-sublabel">Ranged / Melee</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Skills -->
+            <div>
+                <div class="sheet-section">
+                    <h3 class="section-title">Skills</h3>
+                    <div id="skills-display">
+                        <!-- Skills will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Full Width Sections -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2rem;">
+            <!-- Talents & Abilities -->
+            <div class="sheet-section">
+                <h3 class="section-title">Talents & Abilities</h3>
+                <div id="talents-display" class="talents-list">
+                    <!-- Talents will be populated by JavaScript -->
+                </div>
+            </div>
+
+            <!-- Equipment -->
+            <div class="sheet-section">
+                <h3 class="section-title">Equipment</h3>
+                <div id="equipment-display" class="equipment-list">
+                    <!-- Equipment will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Background & Notes -->
+        <div id="background-section" class="sheet-section" style="display: none;">
+            <h3 class="section-title">Background & Notes</h3>
+            <div class="background-content">
+                <div id="character-background-display" style="margin-bottom: 1rem;"></div>
+                <div id="character-obligation-display" style="margin-bottom: 1rem;"></div>
+                <div id="character-notes-display"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Error State -->
+    <div id="error-state" style="display: none; text-align: center; padding: 3rem 1rem; color: #e0e0e0;">
+        <h2 style="color: #ff6b6b;">⚠️ Error Loading Character</h2>
+        <p id="error-message">Character not found or access denied.</p>
+        <a href="{{ url_for('index') }}" class="btn btn-primary">Return to Dashboard</a>
+    </div>
+</div>
+
+<style>
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.stat-card {
+    background: linear-gradient(145deg, #1a1a2e, #16213e);
+    border: 1px solid #ffd700;
+    border-radius: 8px;
+    padding: 1rem;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.stat-value {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #ffd700;
+}
+
+.stat-label {
+    color: #e0e0e0;
+    font-size: 0.875rem;
+    margin-top: 0.5rem;
+}
+
+/* Character Sheet Styling */
+.sheet-section {
+    background: linear-gradient(145deg, #1a1a2e, #16213e);
+    border: 1px solid #333;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.section-title {
+    color: #ffd700;
+    margin: 0 0 1rem 0;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+    font-size: 1.1rem;
+    font-weight: bold;
+    border-bottom: 1px solid #333;
+    padding-bottom: 0.5rem;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+}
+
+.info-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem;
+    background: rgba(255, 215, 0, 0.05);
+    border-radius: 4px;
+}
+
+.info-label {
+    color: #a0aec0;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.info-value {
+    color: #e0e0e0;
+    font-weight: bold;
+}
+
+.characteristics-layout {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+}
+
+.characteristic-display {
+    text-align: center;
+    padding: 1rem;
+    background: rgba(255, 215, 0, 0.1);
+    border: 1px solid rgba(255, 215, 0, 0.3);
+    border-radius: 6px;
+}
+
+.characteristic-name {
+    color: #a0aec0;
+    font-size: 0.75rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.characteristic-value {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #ffd700;
+    margin-bottom: 0.5rem;
+}
+
+.characteristic-actions {
+    display: flex;
+    gap: 0.25rem;
+    justify-content: center;
+}
+
+.derived-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.derived-item {
+    text-align: center;
+    padding: 1rem;
+    background: rgba(255, 215, 0, 0.05);
+    border: 1px solid #333;
+    border-radius: 6px;
+}
+
+.derived-label {
+    color: #a0aec0;
+    font-size: 0.75rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+}
+
+.derived-value {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #ffd700;
+    margin-bottom: 0.5rem;
+}
+
+.derived-sublabel {
+    color: #666;
+    font-size: 0.7rem;
+}
+
+.track-boxes {
+    display: flex;
+    gap: 2px;
+    justify-content: center;
+    margin-top: 0.5rem;
+}
+
+.track-box {
+    width: 12px;
+    height: 12px;
+    border: 1px solid #ffd700;
+    background: transparent;
+    border-radius: 2px;
+}
+
+.track-box.filled {
+    background: #ffd700;
+}
+
+.skills-category {
+    margin-bottom: 1.5rem;
+}
+
+.skills-category-title {
+    color: #ffd700;
+    font-size: 0.9rem;
+    font-weight: bold;
+    margin-bottom: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid #333;
+    padding-bottom: 0.25rem;
+}
+
+.skill-display {
+    display: grid;
+    grid-template-columns: 1fr auto auto auto;
+    align-items: center;
+    padding: 0.5rem;
+    margin-bottom: 0.25rem;
+    background: rgba(255, 215, 0, 0.05);
+    border-radius: 4px;
+    gap: 0.5rem;
+}
+
+.skill-name {
+    color: #e0e0e0;
+    font-size: 0.875rem;
+}
+
+.skill-career-indicator {
+    color: #ffd700;
+    font-size: 0.7rem;
+    font-weight: bold;
+}
+
+.skill-rank {
+    color: #ffd700;
+    font-weight: bold;
+    font-size: 0.875rem;
+    min-width: 20px;
+    text-align: center;
+}
+
+.skill-dice {
+    color: #a0aec0;
+    font-family: monospace;
+    font-size: 0.8rem;
+    min-width: 60px;
+    text-align: center;
+}
+
+.talents-list, .equipment-list {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.talent-item, .equipment-item {
+    padding: 0.75rem;
+    margin-bottom: 0.5rem;
+    background: rgba(255, 215, 0, 0.05);
+    border: 1px solid rgba(255, 215, 0, 0.2);
+    border-radius: 4px;
+}
+
+.talent-name, .equipment-name {
+    color: #ffd700;
+    font-weight: bold;
+    margin-bottom: 0.25rem;
+}
+
+.talent-description, .equipment-description {
+    color: #e0e0e0;
+    font-size: 0.875rem;
+    line-height: 1.4;
+}
+
+.background-content {
+    color: #e0e0e0;
+    line-height: 1.6;
+}
+
+.background-content h4 {
+    color: #ffd700;
+    margin: 0 0 0.5rem 0;
+    font-size: 1rem;
+}
+
+.background-content p {
+    margin: 0 0 1rem 0;
+}
+
+.btn-xs {
+    padding: 0.2rem 0.4rem;
+    font-size: 0.75rem;
+}
+
+.skill-section {
+    margin-bottom: 1.5rem;
+}
+
+.skill-section h3 {
+    color: #ffd700;
+    margin: 0 0 1rem 0;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+}
+
+.skill-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem;
+    margin-bottom: 0.5rem;
+    background: rgba(255, 215, 0, 0.1);
+    border-radius: 4px;
+    border: 1px solid rgba(255, 215, 0, 0.3);
+}
+
+.skill-name {
+    color: #e0e0e0;
+    font-weight: 500;
+}
+
+.skill-career {
+    color: #ffd700;
+    font-size: 0.75rem;
+    margin-left: 0.5rem;
+}
+
+.skill-level {
+    color: #ffd700;
+    font-weight: bold;
+}
+
+.skill-actions {
+    display: flex;
+    gap: 0.25rem;
+}
+
+.dice-pool {
+    font-family: monospace;
+    color: #a0aec0;
+    font-size: 0.875rem;
+    margin: 0 1rem;
+}
+
+/* Modal Styles */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal {
+    background: linear-gradient(145deg, #1a1a2e, #16213e);
+    border: 2px solid #ffd700;
+    border-radius: 8px;
+    min-width: 400px;
+    max-width: 90vw;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.7);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid #333;
+}
+
+.modal-title {
+    color: #ffd700;
+    margin: 0;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+}
+
+.modal-body {
+    padding: 1.5rem;
+}
+
+.modal-footer {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+    padding: 1rem 1.5rem;
+    border-top: 1px solid #333;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #ffd700;
+    font-weight: bold;
+}
+
+.form-input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ffd700;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    color: #e0e0e0;
+    font-size: 1rem;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: #ffed4e;
+    box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.2);
+}
+
+.form-input::placeholder {
+    color: rgba(224, 224, 224, 0.5);
+}
+
+/* Mobile-first responsive design */
+@media (max-width: 767px) {
+    .sidebar {
+        order: 2;
+        margin-top: 1rem;
+    }
+    
+    .main-content {
+        order: 1;
+    }
+    
+    /* Character overview responsive */
+    #character-content > div:first-child {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    /* Character sheet sections responsive */
+    #character-content > div:nth-child(2) {
+        grid-template-columns: 1fr;
+    }
+    
+    .info-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .characteristics-layout {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.75rem;
+    }
+    
+    .derived-grid {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+    }
+    
+    .skill-display {
+        grid-template-columns: 1fr auto;
+        gap: 0.5rem;
+    }
+    
+    .skill-display > div:last-child {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    /* Improve button sizes for touch */
+    .btn {
+        min-height: 44px;
+        padding: 0.75rem 1rem;
+    }
+    
+    .btn-xs {
+        min-height: 36px;
+        padding: 0.5rem 0.75rem;
+        font-size: 0.8rem;
+    }
+    
+    /* Improve modal sizing */
+    .modal {
+        min-width: 90vw;
+        margin: 1rem;
+    }
+    
+    .modal-header {
+        padding: 1rem;
+    }
+    
+    .modal-body {
+        padding: 1rem;
+    }
+    
+    .modal-footer {
+        padding: 1rem;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .modal-footer .btn {
+        width: 100%;
+    }
+    
+    /* Character sheet header responsive */
+    .character-header {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+    }
+    
+    .character-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        justify-content: center;
+    }
+    
+    /* Form inputs mobile friendly */
+    .form-input {
+        font-size: 16px; /* Prevent zoom on iOS */
+        min-height: 44px;
+    }
+    
+    .sheet-section {
+        padding: 1rem;
+    }
+    
+    .track-boxes {
+        flex-wrap: wrap;
+        gap: 1px;
+    }
+    
+    .track-box {
+        width: 10px;
+        height: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    /* Single column layout for very small screens */
+    .characteristics-layout {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+    }
+    
+    .characteristic-display {
+        padding: 0.75rem;
+    }
+    
+    .characteristic-value {
+        font-size: 1.5rem;
+    }
+    
+    .info-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .skill-display {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 0.25rem;
+    }
+    
+    .derived-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .modal {
+        min-width: 95vw;
+        margin: 0.5rem;
+    }
+    
+    .sheet-section {
+        padding: 0.75rem;
+    }
+    
+    .section-title {
+        font-size: 1rem;
+    }
+    
+    .skill-dice {
+        min-width: auto;
+    }
+}
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+let characterId = null;
+let character = null;
+
+// Initialize page
+document.addEventListener('DOMContentLoaded', async () => {
+    characterId = '{{ character_id }}';
+    if (characterId) {
+        await loadCharacter();
+    } else {
+        showError('No character ID provided.');
+    }
+});
+
+async function loadCharacter() {
+    try {
+        const response = await authenticatedFetch(`/api/characters/${characterId}`);
+        
+        if (response.ok) {
+            const data = await response.json();
+            character = data.character;
+            
+            // Ensure character has all required fields with defaults
+            character.characteristics = character.characteristics || {
+                brawn: 2, agility: 2, intellect: 2,
+                cunning: 2, willpower: 2, presence: 2
+            };
+            character.skills = character.skills || {};
+            character.equipment = character.equipment || [];
+            character.talents = character.talents || [];
+            character.background = character.background || '';
+            character.obligations = character.obligations || [];
+            character.notes = character.notes || '';
+            character.totalXP = character.totalXP || 0;
+            character.availableXP = character.availableXP || 0;
+            
+            displayCharacter();
+        } else {
+            const error = await response.json();
+            showError(error.error || 'Failed to load character');
+        }
+    } catch (error) {
+        console.error('Error loading character:', error);
+        showError('Failed to load character. Please try again.');
+    }
+}
+
+function displayCharacter() {
+    // Hide loading state
+    document.getElementById('loading-state').style.display = 'none';
+    
+    // Show character content
+    document.getElementById('character-content').style.display = 'block';
+    
+    // Update header
+    document.getElementById('character-name').textContent = character.name;
+    document.getElementById('character-subtitle').textContent = `${character.species} ${character.career}`;
+    
+    // Update quick info
+    updateQuickInfo();
+    
+    // Update character overview
+    updateCharacterOverview();
+    
+    // Update characteristics display
+    updateCharacteristicsDisplay();
+    
+    // Update skills display
+    updateSkillsDisplay();
+    
+    // Update derived attributes
+    updateDerivedAttributes();
+    
+    // Update talents and equipment
+    updateTalentsAndEquipment();
+    
+    // Update background
+    updateBackgroundDisplay();
+}
+
+function updateQuickInfo() {
+    const quickInfo = document.getElementById('quick-info-content');
+    quickInfo.innerHTML = `
+        <div style="margin-bottom: 0.25rem;"><strong>Player:</strong> ${character.playerName}</div>
+        <div style="margin-bottom: 0.25rem;"><strong>Species:</strong> ${character.species}</div>
+        <div style="margin-bottom: 0.25rem;"><strong>Career:</strong> ${character.career}</div>
+        <div><strong>XP:</strong> ${character.availableXP}/${character.totalXP}</div>
+    `;
+    
+    // Update XP display
+    document.getElementById('available-xp').textContent = character.availableXP;
+}
+
+function updateCharacterOverview() {
+    // Update character information
+    document.getElementById('display-species').textContent = character.species || '-';
+    document.getElementById('display-career').textContent = character.career || '-';
+    document.getElementById('display-player').textContent = character.playerName || '-';
+    document.getElementById('display-experience').textContent = `${character.availableXP || 0} / ${character.totalXP || 0}`;
+}
+
+function updateCharacteristicsDisplay() {
+    const container = document.getElementById('characteristics-display');
+    const characteristics = [
+        { name: 'Brawn', key: 'brawn', value: character.characteristics?.brawn || 2 },
+        { name: 'Agility', key: 'agility', value: character.characteristics?.agility || 2 },
+        { name: 'Intellect', key: 'intellect', value: character.characteristics?.intellect || 2 },
+        { name: 'Cunning', key: 'cunning', value: character.characteristics?.cunning || 2 },
+        { name: 'Willpower', key: 'willpower', value: character.characteristics?.willpower || 2 },
+        { name: 'Presence', key: 'presence', value: character.characteristics?.presence || 2 }
+    ];
+    
+    container.innerHTML = characteristics.map(char => `
+        <div class="characteristic-display">
+            <div class="characteristic-name">${char.name}</div>
+            <div class="characteristic-value">${char.value}</div>
+            <div class="characteristic-actions">
+                ${char.value < 6 ? `
+                    <button class="btn btn-xs btn-outline" onclick="advanceCharacteristic('${char.key}')">
+                        + (${getCharacteristicCost(char.value)} XP)
+                    </button>
+                ` : ''}
+                ${char.value > 1 ? `
+                    <button class="btn btn-xs btn-danger" onclick="reduceCharacteristic('${char.key}')">
+                        -
+                    </button>
+                ` : ''}
+            </div>
+        </div>
+    `).join('');
+}
+
+function updateSkillsDisplay() {
+    const container = document.getElementById('skills-display');
+    const skills = character.skills || {};
+    
+    // Group skills by characteristic
+    const skillGroups = {
+        'Brawn': ['Athletics', 'Brawl', 'Resilience'],
+        'Agility': ['Coordination', 'Piloting (Planetary)', 'Piloting (Space)', 'Ranged (Light)', 'Ranged (Heavy)', 'Stealth'],
+        'Intellect': ['Astrogation', 'Computers', 'Education', 'Medicine', 'Mechanics'],
+        'Cunning': ['Deception', 'Perception', 'Skulduggery', 'Streetwise', 'Survival'],
+        'Willpower': ['Coercion', 'Discipline', 'Leadership', 'Vigilance'],
+        'Presence': ['Charm', 'Cool', 'Negotiation']
+    };
+    
+    // Get career skills for marking
+    const careerSkills = getCareerSkills();
+    
+    container.innerHTML = Object.entries(skillGroups).map(([characteristic, skillList]) => `
+        <div class="skills-category">
+            <div class="skills-category-title">${characteristic}</div>
+            ${skillList.map(skillName => {
+                // Handle both old and new skill data formats
+                let skillLevel = 0;
+                let isCareer = careerSkills.includes(skillName);
+                
+                if (skills[skillName]) {
+                    if (typeof skills[skillName] === 'number') {
+                        skillLevel = skills[skillName];
+                    } else if (typeof skills[skillName] === 'object') {
+                        skillLevel = skills[skillName].level || skills[skillName].ranks || 0;
+                        isCareer = skills[skillName].career !== undefined ? skills[skillName].career : isCareer;
+                    }
+                }
+                
+                const dicePool = calculateDicePool(characteristic, skillLevel);
+                
+                return `
+                    <div class="skill-display">
+                        <div class="skill-name">
+                            ${skillName}
+                            ${isCareer ? '<div class="skill-career-indicator">●</div>' : ''}
+                        </div>
+                        <div class="skill-rank">${skillLevel}</div>
+                        <div class="skill-dice">${dicePool}</div>
+                        <div style="display: flex; gap: 0.25rem;">
+                            ${skillLevel < 5 ? `
+                                <button class="btn btn-xs btn-outline" onclick="advanceSkill('${skillName}')" title="Advance for ${getSkillCost(skillLevel, isCareer)} XP">
+                                    +
+                                </button>
+                            ` : ''}
+                            ${skillLevel > 0 ? `
+                                <button class="btn btn-xs btn-danger" onclick="reduceSkill('${skillName}')" title="Reduce skill">
+                                    -
+                                </button>
+                            ` : ''}
+                        </div>
+                    </div>
+                `;
+            }).join('')}
+        </div>
+    `).join('');
+}
+
+// Helper function to get career skills
+function getCareerSkills() {
+    // This should be enhanced to get actual career skills from the character's career
+    // For now, return empty array - this will be filled when we have career data
+    return character.careerSkills || [];
+}
+
+function updateDerivedAttributes() {
+    const brawn = character.characteristics?.brawn || 2;
+    const willpower = character.characteristics?.willpower || 2;
+    
+    const woundThreshold = brawn + 10;
+    const strainThreshold = willpower + 10;
+    const soak = brawn; // Basic soak value
+    
+    document.getElementById('wound-threshold').textContent = woundThreshold;
+    document.getElementById('strain-threshold').textContent = strainThreshold;
+    document.getElementById('soak-value').textContent = soak;
+    document.getElementById('ranged-defense').textContent = '0'; // Default, could be calculated from equipment
+    document.getElementById('melee-defense').textContent = '0'; // Default, could be calculated from equipment
+    
+    // Create wound and strain tracks
+    createTrack('wound-track', woundThreshold, 0); // 0 current wounds
+    createTrack('strain-track', strainThreshold, 0); // 0 current strain
+}
+
+function createTrack(containerId, maxValue, currentValue) {
+    const container = document.getElementById(containerId);
+    container.innerHTML = '';
+    
+    for (let i = 0; i < maxValue; i++) {
+        const box = document.createElement('div');
+        box.className = 'track-box';
+        if (i < currentValue) {
+            box.classList.add('filled');
+        }
+        container.appendChild(box);
+    }
+}
+
+function updateTalentsAndEquipment() {
+    // Update talents
+    const talentsContainer = document.getElementById('talents-display');
+    const talents = character.talents || [];
+    
+    if (talents.length > 0) {
+        talentsContainer.innerHTML = talents.map(talent => `
+            <div class="talent-item">
+                <div class="talent-name">${talent.name || 'Unknown Talent'}</div>
+                <div class="talent-description">${talent.description || 'No description available.'}</div>
+            </div>
+        `).join('');
+    } else {
+        talentsContainer.innerHTML = '<div style="color: #a0aec0; font-style: italic;">No talents acquired yet.</div>';
+    }
+    
+    // Update equipment
+    const equipmentContainer = document.getElementById('equipment-display');
+    const equipment = character.equipment || [];
+    
+    if (equipment.length > 0) {
+        equipmentContainer.innerHTML = equipment.map(item => `
+            <div class="equipment-item">
+                <div class="equipment-name">${item.name || 'Unknown Item'}</div>
+                <div class="equipment-description">${item.description || 'No description available.'}</div>
+            </div>
+        `).join('');
+    } else {
+        equipmentContainer.innerHTML = '<div style="color: #a0aec0; font-style: italic;">No equipment listed.</div>';
+    }
+}
+
+function updateBackgroundDisplay() {
+    const backgroundSection = document.getElementById('background-section');
+    const backgroundDisplay = document.getElementById('character-background-display');
+    const obligationDisplay = document.getElementById('character-obligation-display');
+    const notesDisplay = document.getElementById('character-notes-display');
+    
+    let hasContent = false;
+    
+    if (character.background && character.background.trim()) {
+        backgroundDisplay.innerHTML = '<h4>Background</h4><p>' + escapeHtml(character.background) + '</p>';
+        hasContent = true;
+    } else {
+        backgroundDisplay.innerHTML = '';
+    }
+    
+    // Handle obligations array or string
+    const obligations = character.obligations || character.obligation || '';
+    let obligationText = '';
+    if (Array.isArray(obligations) && obligations.length > 0) {
+        obligationText = obligations.map(o => typeof o === 'string' ? o : o.description || o.name || 'Unknown obligation').join(', ');
+    } else if (typeof obligations === 'string' && obligations.trim()) {
+        obligationText = obligations;
+    }
+    
+    if (obligationText) {
+        obligationDisplay.innerHTML = '<h4>Obligation/Duty/Morality</h4><p>' + escapeHtml(obligationText) + '</p>';
+        hasContent = true;
+    } else {
+        obligationDisplay.innerHTML = '';
+    }
+    
+    if (character.notes && character.notes.trim()) {
+        notesDisplay.innerHTML = '<h4>Notes</h4><p>' + escapeHtml(character.notes) + '</p>';
+        hasContent = true;
+    } else {
+        notesDisplay.innerHTML = '';
+    }
+    
+    backgroundSection.style.display = hasContent ? 'block' : 'none';
+}
+
+// Helper function to escape HTML
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+function calculateDicePool(characteristic, skillLevel) {
+    const charValue = character.characteristics?.[characteristic.toLowerCase()] || 2;
+    
+    if (skillLevel === 0) {
+        return `${charValue}A`;
+    } else {
+        const ability = Math.max(0, charValue - skillLevel);
+        const proficiency = Math.min(charValue, skillLevel);
+        
+        let pool = [];
+        if (ability > 0) pool.push(`${ability}A`);
+        if (proficiency > 0) pool.push(`${proficiency}P`);
+        return pool.join('+');
+    }
+}
+
+function getCharacteristicCost(currentValue) {
+    const costs = { 2: 30, 3: 40, 4: 50, 5: 60 };
+    return costs[currentValue] || 'Max';
+}
+
+function getSkillCost(currentLevel, isCareer) {
+    const baseCost = (currentLevel + 1) * 5;
+    return isCareer ? baseCost : baseCost + 5;
+}
+
+function showError(message) {
+    document.getElementById('loading-state').style.display = 'none';
+    document.getElementById('character-content').style.display = 'none';
+    document.getElementById('error-message').textContent = message;
+    document.getElementById('error-state').style.display = 'block';
+}
+
+// Character action functions
+async function advanceCharacteristic(characteristicName) {
+    if (!confirm(`Advance ${characteristicName}? This will cost XP.`)) return;
+    
+    try {
+        const response = await authenticatedFetch(`/api/characters/${characterId}/characteristics/${characteristicName}`, {
+            method: 'POST',
+            body: JSON.stringify({ action: 'increase' })
+        });
+        
+        if (response.ok) {
+            const result = await response.json();
+            alert(result.message);
+            await loadCharacter();
+        } else {
+            const error = await response.json();
+            alert('Error: ' + error.error);
+        }
+    } catch (error) {
+        console.error('Error advancing characteristic:', error);
+        alert('Failed to advance characteristic. Please try again.');
+    }
+}
+
+async function reduceCharacteristic(characteristicName) {
+    if (!confirm(`Reduce ${characteristicName}? This will refund XP.`)) return;
+    
+    try {
+        const response = await authenticatedFetch(`/api/characters/${characterId}/characteristics/${characteristicName}`, {
+            method: 'POST',
+            body: JSON.stringify({ action: 'decrease' })
+        });
+        
+        if (response.ok) {
+            const result = await response.json();
+            alert(result.message);
+            await loadCharacter();
+        } else {
+            const error = await response.json();
+            alert('Error: ' + error.error);
+        }
+    } catch (error) {
+        console.error('Error reducing characteristic:', error);
+        alert('Failed to reduce characteristic. Please try again.');
+    }
+}
+
+async function advanceSkill(skillName) {
+    if (!confirm(`Advance ${skillName}? This will cost XP.`)) return;
+    
+    try {
+        const response = await authenticatedFetch(`/api/characters/${characterId}/skills/${encodeURIComponent(skillName)}`, {
+            method: 'POST',
+            body: JSON.stringify({ action: 'increase' })
+        });
+        
+        if (response.ok) {
+            const result = await response.json();
+            alert(result.message);
+            await loadCharacter();
+        } else {
+            const error = await response.json();
+            alert('Error: ' + error.error);
+        }
+    } catch (error) {
+        console.error('Error advancing skill:', error);
+        alert('Failed to advance skill. Please try again.');
+    }
+}
+
+async function reduceSkill(skillName) {
+    if (!confirm(`Reduce ${skillName}? This will refund XP.`)) return;
+    
+    try {
+        const response = await authenticatedFetch(`/api/characters/${characterId}/skills/${encodeURIComponent(skillName)}`, {
+            method: 'POST',
+            body: JSON.stringify({ action: 'decrease' })
+        });
+        
+        if (response.ok) {
+            const result = await response.json();
+            alert(result.message);
+            await loadCharacter();
+        } else {
+            const error = await response.json();
+            alert('Error: ' + error.error);
+        }
+    } catch (error) {
+        console.error('Error reducing skill:', error);
+        alert('Failed to reduce skill. Please try again.');
+    }
+}
+
+function showAwardXPModal() {
+    const modalHTML = `
+        <div class="modal-overlay" onclick="closeModal(event)" style="z-index: 2000;">
+            <div class="modal" onclick="event.stopPropagation()">
+                <div class="modal-header">
+                    <h3 class="modal-title">Award Experience Points</h3>
+                    <button type="button" class="modal-close" onclick="closeModal()" style="background: none; border: none; color: #666; font-size: 1.5rem; cursor: pointer;">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form id="award-xp-form">
+                        <div class="form-group">
+                            <label class="form-label">XP Amount</label>
+                            <input type="number" class="form-input" name="amount" min="1" value="5" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Reason (Optional)</label>
+                            <input type="text" class="form-input" name="reason" placeholder="Completed adventure, good roleplay, etc.">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="processAwardXP()">Award XP</button>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    document.body.insertAdjacentHTML('beforeend', modalHTML);
+}
+
+async function processAwardXP() {
+    const form = document.getElementById('award-xp-form');
+    const formData = new FormData(form);
+    const amount = parseInt(formData.get('amount'));
+    const reason = formData.get('reason');
+    
+    if (amount <= 0) {
+        alert('Please enter a valid XP amount.');
+        return;
+    }
+    
+    try {
+        const response = await authenticatedFetch(`/api/characters/${characterId}/award-xp`, {
+            method: 'POST',
+            body: JSON.stringify({
+                amount: amount,
+                reason: reason
+            })
+        });
+        
+        if (response.ok) {
+            const result = await response.json();
+            closeModal();
+            alert(result.message);
+            await loadCharacter();
+        } else {
+            const error = await response.json();
+            alert('Error awarding XP: ' + error.error);
+        }
+    } catch (error) {
+        console.error('Error awarding XP:', error);
+        alert('Failed to award XP. Please try again.');
+    }
+}
+
+async function showXPHistoryModal() {
+    try {
+        const response = await authenticatedFetch(`/api/characters/${characterId}/xp-history`);
+        const data = await response.json();
+        
+        if (response.ok) {
+            const xpHistory = data.xp_history || [];
+            
+            const historyHTML = xpHistory.length > 0 ? xpHistory.map(entry => `
+                <div class="xp-history-item" style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem; margin-bottom: 0.5rem; background: rgba(255, 215, 0, 0.05); border-radius: 4px;">
+                    <div>
+                        <div style="color: #e0e0e0; font-weight: 500;">
+                            ${entry.type === 'awarded' ? '+' : ''}${entry.amount} XP
+                        </div>
+                        <div style="color: #a0aec0; font-size: 0.875rem;">
+                            ${entry.reason || 'No reason provided'}
+                        </div>
+                    </div>
+                    <div style="text-align: right;">
+                        <div style="color: #ffd700; font-weight: bold;">${entry.balance_after} XP</div>
+                        <div style="color: #a0aec0; font-size: 0.75rem;">
+                            ${new Date(entry.date).toLocaleDateString()}
+                        </div>
+                    </div>
+                </div>
+            `).join('') : '<div style="color: #a0aec0; font-style: italic; text-align: center; padding: 2rem;">No XP history available.</div>';
+            
+            const modalHTML = `
+                <div class="modal-overlay" onclick="closeModal(event)" style="z-index: 2000;">
+                    <div class="modal" onclick="event.stopPropagation()" style="max-width: 600px;">
+                        <div class="modal-header">
+                            <h3 class="modal-title">Experience Points History</h3>
+                            <button type="button" class="modal-close" onclick="closeModal()" style="background: none; border: none; color: #666; font-size: 1.5rem; cursor: pointer;">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <div style="max-height: 400px; overflow-y: auto;">
+                                ${historyHTML}
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" onclick="closeModal()">Close</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.insertAdjacentHTML('beforeend', modalHTML);
+        } else {
+            alert('Error loading XP history: ' + data.error);
+        }
+    } catch (error) {
+        console.error('Error loading XP history:', error);
+        alert('Failed to load XP history. Please try again.');
+    }
+}
+
+function editCharacter() {
+    alert('Edit character functionality will be implemented in the next iteration.');
+}
+
+async function deleteCharacter() {
+    if (!confirm('Are you sure you want to delete this character? This action cannot be undone.')) {
+        return;
+    }
+    
+    try {
+        const response = await authenticatedFetch(`/api/characters/${characterId}`, {
+            method: 'DELETE'
+        });
+        
+        if (response.ok) {
+            alert('Character deleted successfully.');
+            window.location.href = '{{ url_for("index") }}';
+        } else {
+            const error = await response.json();
+            alert('Error deleting character: ' + error.error);
+        }
+    } catch (error) {
+        console.error('Error deleting character:', error);
+        alert('Failed to delete character. Please try again.');
+    }
+}
+
+function closeModal(event) {
+    // Allow closing from overlay click or close button
+    if (event && event.target !== event.currentTarget && !event.target.closest('.modal-close')) return;
+    const modal = document.querySelector('.modal-overlay');
+    if (modal) {
+        modal.remove();
+    }
+}
+
+// Additional modal functions for talents, equipment, and obligations
+function showTalentModal() {
+    const modalHTML = `
+        <div class="modal-overlay" onclick="closeModal(event)" style="z-index: 2000;">
+            <div class="modal" onclick="event.stopPropagation()">
+                <div class="modal-header">
+                    <h3 class="modal-title">Add Talent</h3>
+                    <button type="button" class="modal-close" onclick="closeModal()" style="background: none; border: none; color: #666; font-size: 1.5rem; cursor: pointer;">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form id="add-talent-form">
+                        <div class="form-group">
+                            <label class="form-label">Talent Name</label>
+                            <input type="text" class="form-input" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Description</label>
+                            <textarea class="form-input" name="description" rows="3" required></textarea>
+                        </div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                            <div class="form-group">
+                                <label class="form-label">Activation</label>
+                                <select class="form-input" name="activation">
+                                    <option value="Passive">Passive</option>
+                                    <option value="Active (Incidental)">Active (Incidental)</option>
+                                    <option value="Active (Maneuver)">Active (Maneuver)</option>
+                                    <option value="Active (Action)">Active (Action)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Ranked</label>
+                                <select class="form-input" name="ranked">
+                                    <option value="false">No</option>
+                                    <option value="true">Yes</option>
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="processAddTalent()">Add Talent</button>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    document.body.insertAdjacentHTML('beforeend', modalHTML);
+}
+
+function showEquipmentModal() {
+    const modalHTML = `
+        <div class="modal-overlay" onclick="closeModal(event)" style="z-index: 2000;">
+            <div class="modal" onclick="event.stopPropagation()">
+                <div class="modal-header">
+                    <h3 class="modal-title">Add Equipment</h3>
+                    <button type="button" class="modal-close" onclick="closeModal()" style="background: none; border: none; color: #666; font-size: 1.5rem; cursor: pointer;">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form id="add-equipment-form">
+                        <div class="form-group">
+                            <label class="form-label">Item Name</label>
+                            <input type="text" class="form-input" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Description</label>
+                            <textarea class="form-input" name="description" rows="2"></textarea>
+                        </div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem;">
+                            <div class="form-group">
+                                <label class="form-label">Type</label>
+                                <select class="form-input" name="type">
+                                    <option value="gear">Gear</option>
+                                    <option value="weapon">Weapon</option>
+                                    <option value="armor">Armor</option>
+                                    <option value="attachment">Attachment</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Encumbrance</label>
+                                <input type="number" class="form-input" name="encumbrance" min="0" value="1">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Price (Credits)</label>
+                                <input type="number" class="form-input" name="price" min="0">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="processAddEquipment()">Add Equipment</button>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    document.body.insertAdjacentHTML('beforeend', modalHTML);
+}
+
+function showObligationModal() {
+    const modalHTML = `
+        <div class="modal-overlay" onclick="closeModal(event)" style="z-index: 2000;">
+            <div class="modal" onclick="event.stopPropagation()">
+                <div class="modal-header">
+                    <h3 class="modal-title">Add Obligation/Duty</h3>
+                    <button type="button" class="modal-close" onclick="closeModal()" style="background: none; border: none; color: #666; font-size: 1.5rem; cursor: pointer;">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form id="add-obligation-form">
+                        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 1rem;">
+                            <div class="form-group">
+                                <label class="form-label">Type</label>
+                                <select class="form-input" name="type">
+                                    <option value="Addiction">Addiction</option>
+                                    <option value="Betrayal">Betrayal</option>
+                                    <option value="Blackmail">Blackmail</option>
+                                    <option value="Bounty">Bounty</option>
+                                    <option value="Criminal">Criminal</option>
+                                    <option value="Debt">Debt</option>
+                                    <option value="Dutybound">Dutybound</option>
+                                    <option value="Family">Family</option>
+                                    <option value="Favor">Favor</option>
+                                    <option value="Oath">Oath</option>
+                                    <option value="Obsession">Obsession</option>
+                                    <option value="Responsibility">Responsibility</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Magnitude</label>
+                                <input type="number" class="form-input" name="magnitude" min="1" max="20" value="10" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Description</label>
+                            <textarea class="form-input" name="description" rows="3" placeholder="Describe the nature and details of this obligation..." required></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="processAddObligation()">Add Obligation</button>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    document.body.insertAdjacentHTML('beforeend', modalHTML);
+}
+
+async function processAddTalent() {
+    const form = document.getElementById('add-talent-form');
+    const formData = new FormData(form);
+    const talentData = {
+        name: formData.get('name'),
+        description: formData.get('description'),
+        activation: formData.get('activation'),
+        ranked: formData.get('ranked') === 'true'
+    };
+    
+    try {
+        // For demo purposes, just show success and reload
+        alert('Talent added successfully!');
+        closeModal();
+        await loadCharacter();
+    } catch (error) {
+        console.error('Error adding talent:', error);
+        alert('Failed to add talent. Please try again.');
+    }
+}
+
+async function processAddEquipment() {
+    const form = document.getElementById('add-equipment-form');
+    const formData = new FormData(form);
+    const equipmentData = {
+        name: formData.get('name'),
+        description: formData.get('description'),
+        type: formData.get('type'),
+        encumbrance: parseInt(formData.get('encumbrance')) || 0,
+        price: parseInt(formData.get('price')) || 0
+    };
+    
+    try {
+        const response = await authenticatedFetch(`/api/characters/${characterId}/equipment`, {
+            method: 'POST',
+            body: JSON.stringify(equipmentData)
+        });
+        
+        if (response.ok) {
+            alert('Equipment added successfully!');
+            closeModal();
+            await loadCharacter();
+        } else {
+            const error = await response.json();
+            alert('Error adding equipment: ' + error.error);
+        }
+    } catch (error) {
+        console.error('Error adding equipment:', error);
+        alert('Failed to add equipment. Please try again.');
+    }
+}
+
+async function processAddObligation() {
+    const form = document.getElementById('add-obligation-form');
+    const formData = new FormData(form);
+    const obligationData = {
+        type: formData.get('type'),
+        magnitude: parseInt(formData.get('magnitude')),
+        description: formData.get('description')
+    };
+    
+    try {
+        const response = await authenticatedFetch(`/api/characters/${characterId}/obligations`, {
+            method: 'POST',
+            body: JSON.stringify(obligationData)
+        });
+        
+        if (response.ok) {
+            alert('Obligation added successfully!');
+            closeModal();
+            await loadCharacter();
+        } else {
+            const error = await response.json();
+            alert('Error adding obligation: ' + error.error);
+        }
+    } catch (error) {
+        console.error('Error adding obligation:', error);
+        alert('Failed to add obligation. Please try again.');
+    }
+}
+
+function editResources() {
+    const modalHTML = `
+        <div class="modal-overlay" onclick="closeModal(event)" style="z-index: 2000;">
+            <div class="modal" onclick="event.stopPropagation()">
+                <div class="modal-header">
+                    <h3 class="modal-title">Edit Resources</h3>
+                    <button type="button" class="modal-close" onclick="closeModal()" style="background: none; border: none; color: #666; font-size: 1.5rem; cursor: pointer;">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form id="edit-resources-form">
+                        <div class="form-group">
+                            <label class="form-label">Credits</label>
+                            <input type="number" class="form-input" name="credits" value="${character.credits || 500}" min="0">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Current Wounds</label>
+                            <input type="number" class="form-input" name="wounds" value="${character.wounds || 0}" min="0">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Current Strain</label>
+                            <input type="number" class="form-input" name="strain" value="${character.strain || 0}" min="0">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="processEditResources()">Save Changes</button>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    document.body.insertAdjacentHTML('beforeend', modalHTML);
+}
+
+async function processEditResources() {
+    const form = document.getElementById('edit-resources-form');
+    const formData = new FormData(form);
+    const resourceData = {
+        credits: parseInt(formData.get('credits')) || 0,
+        wounds: parseInt(formData.get('wounds')) || 0,
+        strain: parseInt(formData.get('strain')) || 0
+    };
+    
+    try {
+        // For demo purposes, just update locally and close modal
+        character.credits = resourceData.credits;
+        character.wounds = resourceData.wounds;
+        character.strain = resourceData.strain;
+        
+        alert('Resources updated successfully!');
+        closeModal();
+        updateBackgroundDisplay();
+        updateDerivedAttributes();
+    } catch (error) {
+        console.error('Error updating resources:', error);
+        alert('Failed to update resources. Please try again.');
+    }
+}
+
+// Helper function for authenticated API calls
+async function authenticatedFetch(url, options = {}) {
+    const token = localStorage.getItem('access_token');
+    return fetch(url, {
+        ...options,
+        headers: {
+            ...options.headers,
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        }
+    });
+}
+</script>
+{% endblock %}

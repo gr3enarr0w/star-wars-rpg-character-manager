@@ -4,7 +4,8 @@
 
 {% block layout %}
 <!-- Full width layout without sidebar -->
-<div style="max-width: 1200px; margin: 0 auto; padding: 2rem 1rem;">
+<div class="auth-required" style="max-width: 1200px; margin: 0 auto; padding: 2rem 1rem;">
+<div id="userDisplay" style="display: none;">User: <span id="currentUser">Loading...</span></div>
 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
     <div>
         <h1 style="color: #ffd700; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); margin: 0 0 0.5rem 0;">⭐ My Characters</h1>
@@ -13,7 +14,7 @@
     <div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
         <input type="text" id="characterFilter" placeholder="Search characters..." 
                style="padding: 0.5rem 1rem; background: rgba(255, 255, 255, 0.1); border: 1px solid #ffd700; border-radius: 4px; color: #e0e0e0; min-width: 200px;">
-        <a href="{{ url_for('create_character_page') }}" class="btn">+ Create Character</a>
+        <a href="{{ url_for('create_character_start') }}" class="btn">+ Create Character</a>
     </div>
 </div>
 
@@ -27,7 +28,7 @@
     <div style="font-size: 3rem; margin-bottom: 1rem;">🌟</div>
     <h2 style="color: #ffd700; margin: 0 0 1rem 0;">No Characters Yet</h2>
     <p style="margin-bottom: 2rem;">Create your first Star Wars RPG character to get started!</p>
-    <a href="{{ url_for('create_character_page') }}" class="btn btn-lg">+ Create Character</a>
+    <a href="{{ url_for('create_character_start') }}" class="btn btn-lg">+ Create Character</a>
 </div>
 
 <!-- Loading State -->
@@ -43,9 +44,45 @@ let allCharacters = [];
 
 // Load characters on page load
 document.addEventListener('DOMContentLoaded', async () => {
+    // Check authentication and show user info
+    await checkAuthentication();
     await loadCharacters();
     setupCharacterFilter();
 });
+
+async function checkAuthentication() {
+    try {
+        // For demo auth, check if token exists
+        const token = localStorage.getItem('access_token');
+        if (token) {
+            // Make API call to verify token and get user info
+            const response = await fetch('/api/auth/me', {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            
+            if (response.ok) {
+                const userData = await response.json();
+                const userDisplay = document.getElementById('userDisplay');
+                const currentUser = document.getElementById('currentUser');
+                
+                if (userDisplay && currentUser) {
+                    currentUser.textContent = userData.username || userData.email || 'User';
+                    userDisplay.style.display = 'block';
+                }
+                
+                // Make auth-required content visible
+                const authRequired = document.querySelector('.auth-required');
+                if (authRequired) {
+                    authRequired.style.display = 'block';
+                }
+            }
+        }
+    } catch (error) {
+        console.error('Authentication check failed:', error);
+    }
+}
 
 async function loadCharacters() {
     try {
@@ -82,42 +119,45 @@ function displayCharacters(characters) {
     grid.style.display = 'grid';
     
     grid.innerHTML = characters.map(character => `
-        <div class="character-card" style="background: linear-gradient(145deg, #2d3748, #4a5568); border: 2px solid #ffd700; border-radius: 12px; padding: 2rem; transition: all 0.3s ease; min-width: 300px; max-width: 400px; margin: 0 auto;">
-            <!-- Character Header -->
-            <div style="text-align: center; margin-bottom: 1.5rem;">
-                <h3 style="color: #ffd700; margin: 0 0 0.5rem 0; font-size: 1.3rem; font-weight: bold; word-break: break-word; line-height: 1.3;">${character.name}</h3>
-                <div style="color: #ffffff; font-size: 1.1rem; font-weight: 500;">${character.species} ${character.career}</div>
-                <div style="color: #e2e8f0; font-size: 0.95rem; margin-top: 0.5rem;">Player: ${character.playerName}</div>
+        <div class="character-card" onclick="editCharacter('${character.id}')" style="background: linear-gradient(145deg, #1a1a2e, #2d3748); border: 1px solid #333; border-radius: 8px; padding: 1rem; transition: all 0.3s ease; width: 300px; height: 200px; margin: 0 auto; cursor: pointer; display: flex; flex-direction: column;">
+            <!-- Top Row: Name, Species/Career, Player on left; XP on right -->
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
+                <div style="flex: 1; min-width: 0;">
+                    <h3 style="color: #ffd700; margin: 0 0 0.25rem 0; font-size: 1.1rem; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${character.name}</h3>
+                    <div style="color: #e0e0e0; font-size: 0.9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${character.species} ${character.career}</div>
+                    <div style="color: #a0aec0; font-size: 0.8rem; margin-top: 0.25rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Player: ${character.playerName}</div>
+                </div>
+                <div style="background: rgba(255, 215, 0, 0.1); border: 1px solid #ffd700; border-radius: 4px; padding: 0.5rem; text-align: center; min-width: 50px; margin-left: 0.5rem;">
+                    <div style="color: #a0aec0; font-size: 0.7rem;">XP</div>
+                    <div style="color: #ffd700; font-weight: bold; font-size: 0.9rem;">${character.availableXP}</div>
+                </div>
             </div>
             
-            <!-- Compact XP Display -->
-            <div style="margin-bottom: 1.5rem; padding: 0.75rem; background: rgba(255, 215, 0, 0.15); border: 1px solid #ffd700; border-radius: 6px; text-align: center;">
-                <span style="color: #ffd700; font-size: 0.9rem; font-weight: bold;">XP: </span>
-                <span style="color: #ffd700; font-size: 1.1rem; font-weight: bold;">${character.availableXP} / ${character.totalXP}</span>
-            </div>
-            
-            <!-- Action Buttons -->
-            <div style="display: flex; gap: 1rem; justify-content: center; margin-bottom: 1.5rem;">
-                <button onclick="editCharacter('${character.id}')" class="btn" style="padding: 0.75rem 1.5rem; font-size: 1rem; flex: 1; max-width: 140px; font-weight: 600;">Edit</button>
-                <button onclick="awardXP('${character.id}')" class="btn btn-outline" style="padding: 0.75rem 1.5rem; font-size: 1rem; flex: 1; max-width: 140px; font-weight: 600;">Award XP</button>
-            </div>
-            
-            <!-- Characteristics at Bottom -->
-            <div>
-                <div style="color: #ffd700; font-size: 1rem; font-weight: bold; text-align: center; margin-bottom: 0.75rem;">Characteristics</div>
-                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem;">
-                    <div style="text-align: center; padding: 0.75rem; background: rgba(255, 255, 255, 0.1); border: 1px solid #ffd700; border-radius: 6px;">
-                        <div style="color: #e2e8f0; font-size: 0.8rem; margin-bottom: 0.25rem; font-weight: 500;">BRA</div>
-                        <div style="color: #ffd700; font-weight: bold; font-size: 1.4rem;">${character.characteristics.brawn}</div>
-                    </div>
-                    <div style="text-align: center; padding: 0.75rem; background: rgba(255, 255, 255, 0.1); border: 1px solid #ffd700; border-radius: 6px;">
-                        <div style="color: #e2e8f0; font-size: 0.8rem; margin-bottom: 0.25rem; font-weight: 500;">AGI</div>
-                        <div style="color: #ffd700; font-weight: bold; font-size: 1.4rem;">${character.characteristics.agility}</div>
-                    </div>
-                    <div style="text-align: center; padding: 0.75rem; background: rgba(255, 255, 255, 0.1); border: 1px solid #ffd700; border-radius: 6px;">
-                        <div style="color: #e2e8f0; font-size: 0.8rem; margin-bottom: 0.25rem; font-weight: 500;">INT</div>
-                        <div style="color: #ffd700; font-weight: bold; font-size: 1.4rem;">${character.characteristics.intellect}</div>
-                    </div>
+            <!-- Characteristics Row - All 6 in equal size boxes -->
+            <div style="display: grid; grid-template-columns: repeat(6, 1fr); gap: 0.25rem; flex: 1;">
+                <div style="text-align: center; padding: 0.5rem; background: rgba(255, 215, 0, 0.1); border-radius: 4px; display: flex; flex-direction: column; justify-content: center;">
+                    <div style="color: #a0aec0; font-size: 0.65rem; margin-bottom: 0.25rem;">BRA</div>
+                    <div style="color: #ffd700; font-weight: bold; font-size: 1rem;">${character.characteristics.brawn}</div>
+                </div>
+                <div style="text-align: center; padding: 0.5rem; background: rgba(255, 215, 0, 0.1); border-radius: 4px; display: flex; flex-direction: column; justify-content: center;">
+                    <div style="color: #a0aec0; font-size: 0.65rem; margin-bottom: 0.25rem;">AGI</div>
+                    <div style="color: #ffd700; font-weight: bold; font-size: 1rem;">${character.characteristics.agility}</div>
+                </div>
+                <div style="text-align: center; padding: 0.5rem; background: rgba(255, 215, 0, 0.1); border-radius: 4px; display: flex; flex-direction: column; justify-content: center;">
+                    <div style="color: #a0aec0; font-size: 0.65rem; margin-bottom: 0.25rem;">INT</div>
+                    <div style="color: #ffd700; font-weight: bold; font-size: 1rem;">${character.characteristics.intellect}</div>
+                </div>
+                <div style="text-align: center; padding: 0.5rem; background: rgba(255, 215, 0, 0.1); border-radius: 4px; display: flex; flex-direction: column; justify-content: center;">
+                    <div style="color: #a0aec0; font-size: 0.65rem; margin-bottom: 0.25rem;">CUN</div>
+                    <div style="color: #ffd700; font-weight: bold; font-size: 1rem;">${character.characteristics.cunning}</div>
+                </div>
+                <div style="text-align: center; padding: 0.5rem; background: rgba(255, 215, 0, 0.1); border-radius: 4px; display: flex; flex-direction: column; justify-content: center;">
+                    <div style="color: #a0aec0; font-size: 0.65rem; margin-bottom: 0.25rem;">WIL</div>
+                    <div style="color: #ffd700; font-weight: bold; font-size: 1rem;">${character.characteristics.willpower}</div>
+                </div>
+                <div style="text-align: center; padding: 0.5rem; background: rgba(255, 215, 0, 0.1); border-radius: 4px; display: flex; flex-direction: column; justify-content: center;">
+                    <div style="color: #a0aec0; font-size: 0.65rem; margin-bottom: 0.25rem;">PRE</div>
+                    <div style="color: #ffd700; font-weight: bold; font-size: 1rem;">${character.characteristics.presence}</div>
                 </div>
             </div>
         </div>
@@ -188,7 +228,23 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     `;
     document.head.appendChild(style);
+    
+    // Auto-open profile modal if URL contains /profile
+    if (window.location.pathname === '/profile') {
+        loadProfilePage();
+    }
 });
+
+// Profile page loading function
+async function loadProfilePage() {
+    // Update URL for test expectations
+    if (window.location.pathname !== '/profile') {
+        history.pushState({}, 'Profile Settings', '/profile');
+    }
+    
+    // Open profile modal and switch to appropriate tab
+    openProfileModal();
+}
 </script>
 
 </div>

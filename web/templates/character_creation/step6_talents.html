@@ -1,0 +1,319 @@
+{% extends "base.html" %}
+
+{% block title %}Choose Talents - Star Wars RPG Character Manager{% endblock %}
+
+{% block layout %}
+<div style="max-width: 1200px; margin: 0 auto; padding: 2rem 1rem;">
+    <!-- Header -->
+    <div style="margin-bottom: 2rem; text-align: center;">
+        <h1 style="color: #ffd700; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); margin: 0 0 0.5rem 0;">🌟 Character Creation</h1>
+        <p style="color: #e0e0e0; margin: 0;">Step 6 of 7: Choose Starting Talents</p>
+    </div>
+
+    <!-- Progress Bar -->
+    <div style="background: #333; border-radius: 10px; margin-bottom: 2rem; overflow: hidden;">
+        <div style="background: linear-gradient(90deg, #ffd700, #ffed4e); height: 8px; width: 85.8%; transition: width 0.3s ease;"></div>
+    </div>
+
+    <!-- Talents Selection -->
+    <div style="background: linear-gradient(145deg, #1a1a2e, #16213e); padding: 2rem; border-radius: 8px; border: 1px solid #333;">
+        <h2 style="color: #ffd700; margin: 0 0 1.5rem 0; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);">Choose Starting Talents</h2>
+        
+        <div style="margin-bottom: 1.5rem; padding: 1rem; background: rgba(255, 215, 0, 0.1); border-radius: 4px;">
+            <p style="color: #e0e0e0; margin: 0; font-size: 0.95rem;">
+                Talents provide special abilities and bonuses. You can spend remaining XP to purchase starting talents.
+                <span id="xp-display" style="color: #ffd700; font-weight: bold;">Available XP: 0</span>
+            </p>
+        </div>
+
+        <!-- Talents Grid -->
+        <div id="talents-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+            <!-- Talents will be populated by JavaScript -->
+        </div>
+
+        <!-- Selected Talents Summary -->
+        <div id="talents-summary" style="margin-bottom: 2rem; padding: 1rem; background: rgba(255, 215, 0, 0.05); border: 1px solid #ffd700; border-radius: 4px; display: none;">
+            <h3 style="color: #ffd700; margin: 0 0 1rem 0;">Selected Talents</h3>
+            <div id="summary-content"></div>
+        </div>
+
+        <!-- Navigation -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 2rem;">
+            <a href="/create-character/skills" class="btn btn-secondary" style="background: #333; color: #e0e0e0; text-decoration: none; padding: 0.75rem 1.5rem; border-radius: 4px; border: 1px solid #555;">
+                ← Previous: Skills
+            </a>
+            
+            <button id="next-button" type="button" class="btn btn-primary"
+                    style="background: #ffd700; color: #1a1a2e; padding: 0.75rem 1.5rem; border: none; border-radius: 4px; font-weight: bold; cursor: pointer;">
+                Next: Review →
+            </button>
+        </div>
+    </div>
+</div>
+
+<style>
+.talent-card {
+    background: linear-gradient(145deg, #1a1a2e, #16213e);
+    border: 2px solid #333;
+    border-radius: 8px;
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+    position: relative;
+    color: #e0e0e0;
+}
+
+.talent-card:hover {
+    border-color: #ffd700;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(255, 215, 0, 0.3);
+}
+
+.talent-card.selected {
+    border-color: #ffd700;
+    background: linear-gradient(145deg, #1a1a2e, #2a2a4e);
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+}
+
+.talent-card.selected::after {
+    content: "✓";
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    background: #ffd700;
+    color: #1a1a2e;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+.talent-name {
+    color: #ffd700;
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin: 0 0 0.5rem 0;
+}
+
+.talent-cost {
+    color: #4a9eff;
+    font-size: 0.9rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+.talent-description {
+    color: #e0e0e0;
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+.talent-type {
+    color: #a0aec0;
+    font-size: 0.8rem;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+</style>
+
+<script>
+let characterData = {};
+let selectedTalents = {};
+let availableXP = 0;
+let spentXP = 0;
+
+// Basic starting talents available to all characters
+const startingTalents = {
+    "Grit": {
+        cost: 5,
+        type: "Passive",
+        description: "Increase strain threshold by 1 per rank."
+    },
+    "Toughness": {
+        cost: 5, 
+        type: "Passive",
+        description: "Increase wound threshold by 2 per rank."
+    },
+    "Quick Strike": {
+        cost: 10,
+        type: "Action",
+        description: "Add boost die to combat checks against targets that have not acted yet this encounter."
+    },
+    "Rapid Reaction": {
+        cost: 10,
+        type: "Passive", 
+        description: "May spend triumph from Initiative checks to perform a free maneuver before the first round begins."
+    },
+    "Side Step": {
+        cost: 10,
+        type: "Maneuver",
+        description: "Once per round, may perform Side Step maneuver. Suffer a number of strain no greater than ranks in Side Step, then increase ranged defense by that number until start of next turn."
+    },
+    "Dodge": {
+        cost: 10,
+        type: "Maneuver",
+        description: "When targeted by combat check, may perform Dodge incidental to suffer strain equal to ranks in Dodge and upgrade difficulty of check by that number."
+    },
+    "Lethal Blows": {
+        cost: 10,
+        type: "Passive",
+        description: "Add +10 per rank to any Critical Injury results inflicted on opponents."
+    },
+    "Point Blank": {
+        cost: 10,
+        type: "Passive", 
+        description: "Add damage equal to ranks in Point Blank to one hit of successful Ranged (Heavy) or Ranged (Light) attacks made while at short range or engaged."
+    },
+    "Defensive Stance": {
+        cost: 15,
+        type: "Maneuver",
+        description: "Once per round, may perform Defensive Stance maneuver and suffer a number of strain to upgrade difficulty of all incoming melee attacks by an equal number. Strain suffered cannot exceed ranks in Defensive Stance."
+    },
+    "Precise Aim": {
+        cost: 15,
+        type: "Maneuver", 
+        description: "Once per round, may perform Precise Aim maneuver. Decrease ranged defense of target by 1 per rank in Precise Aim until end of turn. Each rank also removes 1 setback die due to environmental factors."
+    }
+};
+
+// Load character creation data
+function loadCharacterData() {
+    const storedData = JSON.parse(sessionStorage.getItem('characterCreation'));
+    if (!storedData || !storedData.data.characterName) {
+        window.location.href = '/create-character/basics';
+        return;
+    }
+    
+    characterData = storedData.data;
+    
+    // Calculate available XP (species XP minus spent on characteristics and skills)
+    let totalXP = 100; // Default
+    if (characterData.selectedSpecies && characterData.selectedSpecies.starting_xp) {
+        totalXP = characterData.selectedSpecies.starting_xp;
+    }
+    
+    const characteristicsSpentXP = characterData.characteristicsSpentXP || 0;
+    const skillsSpentXP = characterData.skillsSpentXP || 0;
+    const talentsSpentXP = characterData.talentsSpentXP || 0;
+    
+    availableXP = totalXP - characteristicsSpentXP - skillsSpentXP - talentsSpentXP;
+    
+    // Load previously selected talents
+    selectedTalents = characterData.selectedTalents || {};
+    spentXP = talentsSpentXP;
+    
+    updateXPDisplay();
+}
+
+// Save step data
+function saveStepData() {
+    const storedData = JSON.parse(sessionStorage.getItem('characterCreation'));
+    storedData.data.selectedTalents = selectedTalents;
+    storedData.data.talentsSpentXP = spentXP;
+    storedData.step = 6;
+    sessionStorage.setItem('characterCreation', JSON.stringify(storedData));
+}
+
+function updateXPDisplay() {
+    document.getElementById('xp-display').textContent = `Available XP: ${availableXP}`;
+}
+
+function createTalentCard(talentName, data) {
+    const isSelected = selectedTalents[talentName] > 0;
+    const currentRank = selectedTalents[talentName] || 0;
+    const canAfford = availableXP >= data.cost;
+    
+    const card = document.createElement('div');
+    card.className = `talent-card ${isSelected ? 'selected' : ''}`;
+    card.onclick = () => toggleTalent(talentName);
+    
+    card.innerHTML = `
+        <div class="talent-type">${data.type}</div>
+        <div class="talent-name">${talentName}</div>
+        <div class="talent-cost">${data.cost} XP ${currentRank > 0 ? `(Rank ${currentRank})` : ''}</div>
+        <div class="talent-description">${data.description}</div>
+        ${!canAfford && currentRank === 0 ? '<div style="color: #e53e3e; font-size: 0.8rem; margin-top: 0.5rem;">Insufficient XP</div>' : ''}
+    `;
+    
+    if (!canAfford && currentRank === 0) {
+        card.style.opacity = '0.6';
+        card.style.cursor = 'not-allowed';
+        card.onclick = null;
+    }
+    
+    return card;
+}
+
+function toggleTalent(talentName) {
+    const talent = startingTalents[talentName];
+    const currentRank = selectedTalents[talentName] || 0;
+    
+    if (currentRank > 0) {
+        // Remove talent
+        delete selectedTalents[talentName];
+        availableXP += talent.cost;
+        spentXP -= talent.cost;
+    } else if (availableXP >= talent.cost) {
+        // Add talent
+        selectedTalents[talentName] = 1;
+        availableXP -= talent.cost;
+        spentXP += talent.cost;
+    }
+    
+    updateXPDisplay();
+    populateTalentsGrid();
+    updateSummary();
+    saveStepData();
+}
+
+function populateTalentsGrid() {
+    const grid = document.getElementById('talents-grid');
+    grid.innerHTML = '';
+    
+    Object.entries(startingTalents).forEach(([name, data]) => {
+        const card = createTalentCard(name, data);
+        grid.appendChild(card);
+    });
+}
+
+function updateSummary() {
+    const summary = document.getElementById('talents-summary');
+    const content = document.getElementById('summary-content');
+    
+    const selectedTalentsList = Object.entries(selectedTalents).filter(([_, rank]) => rank > 0);
+    
+    if (selectedTalentsList.length > 0) {
+        summary.style.display = 'block';
+        content.innerHTML = `
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
+                ${selectedTalentsList.map(([talentName, rank]) => `
+                    <div style="color: #e0e0e0;">
+                        <strong style="color: #ffd700;">${talentName}</strong> (Rank ${rank})<br>
+                        <small style="color: #a0aec0;">${startingTalents[talentName].description}</small>
+                    </div>
+                `).join('')}
+            </div>
+            <div style="margin-top: 1rem; color: #a0aec0;">
+                Total XP Spent on Talents: <span style="color: #ffd700; font-weight: bold;">${spentXP}</span>
+            </div>
+        `;
+    } else {
+        summary.style.display = 'none';
+    }
+}
+
+// Next button
+document.getElementById('next-button').addEventListener('click', function() {
+    saveStepData();
+    window.location.href = '/create-character/review';
+});
+
+// Initialize
+loadCharacterData();
+populateTalentsGrid();
+updateSummary();
+</script>
+{% endblock %}

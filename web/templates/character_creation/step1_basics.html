@@ -1,0 +1,183 @@
+{% extends "base.html" %}
+
+{% block title %}Character Basics - Star Wars RPG Character Manager{% endblock %}
+
+{% block layout %}
+<div style="max-width: 800px; margin: 0 auto; padding: 2rem 1rem;">
+    <!-- Header -->
+    <div style="margin-bottom: 2rem; text-align: center;">
+        <h1 style="color: #ffd700; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); margin: 0 0 0.5rem 0;">🌟 Character Creation</h1>
+        <p style="color: #e0e0e0; margin: 0;">Step 1 of 7: Character Basics</p>
+    </div>
+
+    <!-- Progress Bar -->
+    <div style="background: #333; border-radius: 10px; margin-bottom: 2rem; overflow: hidden;">
+        <div style="background: linear-gradient(90deg, #ffd700, #ffed4e); height: 8px; width: 14.3%; transition: width 0.3s ease;"></div>
+    </div>
+
+    <!-- Character Basics Form -->
+    <div style="background: linear-gradient(145deg, #1a1a2e, #16213e); padding: 2rem; border-radius: 8px; border: 1px solid #333;">
+        <h2 style="color: #ffd700; margin: 0 0 1.5rem 0; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);">Character Basics</h2>
+        
+        <form id="character-basics-form">
+            <div class="form-group" style="margin-bottom: 1.5rem;">
+                <label class="form-label" style="display: block; margin-bottom: 0.5rem; color: #ffd700; font-weight: bold; font-size: 1.1rem;">Character Name *</label>
+                <input type="text" id="character-name" name="characterName" class="form-input" placeholder="Enter character name" required
+                       style="width: 100%; padding: 0.75rem; background: #0f0f23; border: 1px solid #333; border-radius: 4px; color: #e0e0e0; font-size: 1rem; box-sizing: border-box;">
+                <div class="help-text" style="margin-top: 0.5rem; font-size: 0.9rem; color: #a0aec0;">Choose a memorable name for your character</div>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 1.5rem;">
+                <label class="form-label" style="display: block; margin-bottom: 0.5rem; color: #ffd700; font-weight: bold; font-size: 1.1rem;">Player Name *</label>
+                <input type="text" id="player-name" name="playerName" class="form-input" placeholder="Enter player name" required
+                       style="width: 100%; padding: 0.75rem; background: #0f0f23; border: 1px solid #333; border-radius: 4px; color: #e0e0e0; font-size: 1rem; box-sizing: border-box;">
+                <div class="help-text" style="margin-top: 0.5rem; font-size: 0.9rem; color: #a0aec0;">The name of the player controlling this character</div>
+            </div>
+
+            <!-- Obligation Selection -->
+            <div class="form-group" style="margin-bottom: 1.5rem;">
+                <label class="form-label" style="display: block; margin-bottom: 0.5rem; color: #ffd700; font-weight: bold; font-size: 1.1rem;">Obligation Type</label>
+                <select id="obligation-type" name="obligationType" class="form-input" 
+                        style="width: 100%; padding: 0.75rem; background: #0f0f23; border: 1px solid #333; border-radius: 4px; color: #e0e0e0; font-size: 1rem; box-sizing: border-box;">
+                    <option value="">Choose an obligation...</option>
+                    <option value="Debt">Debt - Owe credits to someone dangerous</option>
+                    <option value="Bounty">Bounty - Someone has put a price on your head</option>
+                    <option value="Blackmail">Blackmail - Someone has compromising information</option>
+                    <option value="Family">Family - Obligations to family members</option>
+                    <option value="Favor">Favor - Owe someone a significant favor</option>
+                    <option value="Oath">Oath - Sworn to a cause or organization</option>
+                    <option value="Responsibility">Responsibility - Duty to protect someone/something</option>
+                    <option value="Addiction">Addiction - Dependency on substances or experiences</option>
+                </select>
+                <div class="help-text" style="margin-top: 0.5rem; font-size: 0.9rem; color: #a0aec0;">Your obligation represents complications and commitments that follow your character</div>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 1.5rem;">
+                <label class="form-label" style="display: block; margin-bottom: 0.5rem; color: #ffd700; font-weight: bold; font-size: 1.1rem;">Obligation Magnitude</label>
+                <input type="number" id="obligation-magnitude" name="obligationMagnitude" class="form-input" 
+                       min="5" max="20" value="10" placeholder="10"
+                       style="width: 100%; padding: 0.75rem; background: #0f0f23; border: 1px solid #333; border-radius: 4px; color: #e0e0e0; font-size: 1rem; box-sizing: border-box;">
+                <div class="help-text" style="margin-top: 0.5rem; font-size: 0.9rem; color: #a0aec0;">Higher values mean more significant obligations (5-20 typical range)</div>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 1.5rem;">
+                <label class="form-label" style="display: block; margin-bottom: 0.5rem; color: #ffd700; font-weight: bold; font-size: 1.1rem;">Obligation Details</label>
+                <textarea id="obligation-details" name="obligationDetails" class="form-input" rows="3" placeholder="Describe your obligation in detail..."
+                          style="width: 100%; padding: 0.75rem; background: #0f0f23; border: 1px solid #333; border-radius: 4px; color: #e0e0e0; font-size: 1rem; box-sizing: border-box; resize: vertical;"></textarea>
+                <div class="help-text" style="margin-top: 0.5rem; font-size: 0.9rem; color: #a0aec0;">Explain who or what you're obligated to and why</div>
+            </div>
+
+            <div style="text-align: center; color: #a0aec0; margin-bottom: 2rem; padding: 1rem; background: rgba(255, 215, 0, 0.05); border-radius: 4px;">
+                <p style="margin: 0 0 0.5rem 0; font-size: 1.1rem; color: #ffd700;">Welcome to the Star Wars RPG Character Creator!</p>
+                <p style="margin: 0;">This step-by-step process will guide you through creating your character.</p>
+            </div>
+
+            <!-- Navigation -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 2rem;">
+                <a href="/" class="btn btn-secondary" style="background: #333; color: #e0e0e0; text-decoration: none; padding: 0.75rem 1.5rem; border-radius: 4px; border: 1px solid #555;">
+                    ← Cancel
+                </a>
+                
+                <button type="submit" class="btn btn-primary" style="background: #ffd700; color: #1a1a2e; padding: 0.75rem 1.5rem; border: none; border-radius: 4px; font-weight: bold; cursor: pointer;">
+                    Next: Choose Species →
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+// Authentication check
+async function checkAuthentication() {
+    const token = localStorage.getItem('access_token');
+    const userStr = localStorage.getItem('user');
+    
+    if (!token || !userStr) {
+        // Set up demo authentication for testing
+        localStorage.setItem('access_token', 'demo_token_12345');
+        localStorage.setItem('user', JSON.stringify({
+            id: '1',
+            username: 'demo_user',
+            email: 'test@example.com',
+            role: 'user'
+        }));
+    }
+}
+
+// Initialize character creation data in sessionStorage
+function initCharacterData() {
+    if (!sessionStorage.getItem('characterCreation')) {
+        sessionStorage.setItem('characterCreation', JSON.stringify({
+            step: 1,
+            data: {}
+        }));
+    }
+}
+
+// Save current step data
+function saveStepData() {
+    const characterData = JSON.parse(sessionStorage.getItem('characterCreation'));
+    const form = document.getElementById('character-basics-form');
+    const formData = new FormData(form);
+    
+    characterData.data.characterName = formData.get('characterName');
+    characterData.data.playerName = formData.get('playerName');
+    characterData.data.obligationType = formData.get('obligationType');
+    characterData.data.obligationMagnitude = parseInt(formData.get('obligationMagnitude')) || 10;
+    characterData.data.obligationDetails = formData.get('obligationDetails');
+    characterData.step = 1;
+    
+    sessionStorage.setItem('characterCreation', JSON.stringify(characterData));
+}
+
+// Load existing data if returning to this step
+function loadStepData() {
+    const characterData = JSON.parse(sessionStorage.getItem('characterCreation'));
+    if (characterData && characterData.data) {
+        if (characterData.data.characterName) {
+            document.getElementById('character-name').value = characterData.data.characterName;
+        }
+        if (characterData.data.playerName) {
+            document.getElementById('player-name').value = characterData.data.playerName;
+        }
+        if (characterData.data.obligationType) {
+            document.getElementById('obligation-type').value = characterData.data.obligationType;
+        }
+        if (characterData.data.obligationMagnitude) {
+            document.getElementById('obligation-magnitude').value = characterData.data.obligationMagnitude;
+        }
+        if (characterData.data.obligationDetails) {
+            document.getElementById('obligation-details').value = characterData.data.obligationDetails;
+        }
+    }
+}
+
+// Form submission
+document.getElementById('character-basics-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const characterName = document.getElementById('character-name').value.trim();
+    const playerName = document.getElementById('player-name').value.trim();
+    
+    if (!characterName || !playerName) {
+        alert('Please fill in both character name and player name.');
+        return;
+    }
+    
+    saveStepData();
+    window.location.href = '/create-character/species';
+});
+
+// Auto-save on input changes
+document.getElementById('character-name').addEventListener('input', saveStepData);
+document.getElementById('player-name').addEventListener('input', saveStepData);
+document.getElementById('obligation-type').addEventListener('change', saveStepData);
+document.getElementById('obligation-magnitude').addEventListener('input', saveStepData);
+document.getElementById('obligation-details').addEventListener('input', saveStepData);
+
+// Initialize
+checkAuthentication();
+initCharacterData();
+loadStepData();
+</script>
+{% endblock %}

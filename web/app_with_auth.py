@@ -144,31 +144,10 @@ def login():
         password = data.get('password')
         two_factor_token = data.get('two_factor_token')
 
-        # DEBUG: Add logging with flush
-        print(f"🔍 LOGIN DEBUG: email={email}, password_len={len(password) if password else 0}", flush=True)
-
         if not email or not password:
             return jsonify({'error': 'Email and password are required'}), 400
 
-        # DEBUG: Test user lookup
-        try:
-            # Debug encryption setup
-            from swrpg_character_manager.security import data_encryption
-            import os as debug_os
-            key_file = debug_os.path.join(debug_os.path.dirname(__file__), '..', 'src', 'swrpg_character_manager', '../../.encryption_key')
-            key_file = debug_os.path.abspath(key_file)
-            print(f"🔍 LOGIN DEBUG: encryption_key_path={key_file}, exists={debug_os.path.exists(key_file)}", flush=True)
-            print(f"🔍 LOGIN DEBUG: working_dir={debug_os.getcwd()}", flush=True)
-            
-            user = db_manager.get_user_by_email(email)
-            print(f"🔍 LOGIN DEBUG: user_found={user is not None}", flush=True)
-            if user:
-                print(f"🔍 LOGIN DEBUG: user_username={user.username}, user_active={user.is_active}", flush=True)
-        except Exception as e:
-            print(f"🔍 LOGIN DEBUG: user_lookup_error={e}", flush=True)
-
         success, message, user = auth_manager.authenticate_user(email, password)
-        print(f"🔍 LOGIN DEBUG: auth_success={success}, auth_message={message}", flush=True)
 
         if not success:
             return jsonify({'error': message}), 401
@@ -485,20 +464,42 @@ def create_campaign():
         current_user_id = ObjectId(get_jwt_identity())
         data = request.get_json()
 
+        # Validate required fields
+        if not data.get('name') or not data.get('name').strip():
+            return jsonify({'error': 'Campaign name is required'}), 400
+
+        if not data.get('game_system'):
+            return jsonify({'error': 'Game system is required'}), 400
+
+        # Prepare campaign settings with additional fields
+        campaign_settings = {
+            'game_system': data.get('game_system'),
+            'max_players': data.get('max_players', 4)
+        }
+
         campaign = Campaign(
-            name=data.get('name'),
+            name=data.get('name').strip(),
             description=data.get('description', ''),
-            game_master_id=current_user_id
+            game_master_id=current_user_id,
+            settings=campaign_settings
         )
 
         campaign_id = db_manager.create_campaign(campaign)
 
         return jsonify({
             'message': 'Campaign created successfully',
-            'campaign_id': str(campaign_id)
+            'campaign_id': str(campaign_id),
+            'campaign': {
+                'id': str(campaign_id),
+                'name': campaign.name,
+                'description': campaign.description,
+                'game_system': campaign_settings['game_system'],
+                'max_players': campaign_settings['max_players']
+            }
         }), 201
 
     except Exception as e:
+        print(f"Campaign creation error: {str(e)}")  # Add logging
         return jsonify({'error': str(e)}), 500
 
 @app.route('/api/campaigns/<campaign_id>/invite', methods=['POST'])
@@ -1474,6 +1475,12 @@ def create_character_page():
     current_user = db_manager.get_user_by_id(current_user_id)
     return render_template('create_character.html', current_user=current_user)
 
+@app.route('/create-character')
+@auth_manager.require_auth
+def create_character_start():
+    """Alias for character creation page to match template expectations."""
+    return redirect(url_for('create_character_page'))
+
 @app.route('/character/<character_id>')
 @auth_manager.require_auth
 def character_sheet_page(character_id):
@@ -1517,12 +1524,9 @@ def documentation_page():
 
 # User Profile
 @app.route('/profile')
-@auth_manager.require_auth
 def profile_page():
-    """User profile settings page."""
-    current_user_id = ObjectId(get_jwt_identity())
-    current_user = db_manager.get_user_by_id(current_user_id)
-    return render_template('profile.html', current_user=current_user)
+    """User profile settings page - redirect to main app with profile hash."""
+    return render_template('index_with_auth.html')
 
 # Admin Panel
 @app.route('/admin')

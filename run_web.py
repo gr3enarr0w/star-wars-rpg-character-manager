@@ -17,11 +17,11 @@ sys.path.insert(0, os.path.join(script_dir, 'web'))
 web_dir = os.path.join(script_dir, 'web')
 os.chdir(web_dir)
 
-# Now import and run the app
-from app import app
+# Now import and run the app (Production Auth System)
+from app_with_auth import app
 
 if __name__ == '__main__':
     print("Starting Star Wars RPG Character Manager Web Application...")
-    print("Open your browser to: http://localhost:8000")
+    print("Open your browser to: http://localhost:8001")
     print(f"Working directory: {os.getcwd()}")
-    app.run(debug=True, host='127.0.0.1', port=8000)
+    app.run(debug=False, host='127.0.0.1', port=8001)

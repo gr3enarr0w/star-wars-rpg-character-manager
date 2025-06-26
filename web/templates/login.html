@@ -155,7 +155,7 @@
             loginBtn.textContent = 'Logging in...';
             
             try {
-                const response = await fetch('/api/debug/test-login', {
+                const response = await fetch('/api/auth/login', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -167,7 +167,9 @@
                     })
                 });
                 
-                const data = await response.json();
+                const responseText = await response.text();
+                console.log('Raw response:', responseText);
+                const data = JSON.parse(responseText);
                 
                 if (response.ok) {
                     // Store token and redirect
@@ -190,6 +192,7 @@
                     }
                 }
             } catch (error) {
+                console.error('Login error:', error);
                 messageDiv.innerHTML = `<div class="error-message">Login failed: ${error.message}</div>`;
             } finally {
                 loginBtn.disabled = false;

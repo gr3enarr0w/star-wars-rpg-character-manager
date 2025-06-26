@@ -2,6 +2,7 @@
 
 from typing import Dict, List, Optional, Tuple, Any
 from dataclasses import dataclass
+from .character_creator import CharacterCreator
 
 
 @dataclass
@@ -19,6 +20,7 @@ class CharacterCreationWalkthrough:
     def __init__(self):
         self.obligations_data = self._initialize_obligations()
         self.creation_rules = self._initialize_creation_rules()
+        self.character_creator = CharacterCreator()
     
     def _initialize_obligations(self) -> Dict[str, Dict]:
         """Initialize obligation types with their details."""
@@ -200,57 +202,23 @@ class CharacterCreationWalkthrough:
         return len(errors) == 0, errors
     
     def get_species_data(self) -> Dict[str, Dict]:
-        """Get comprehensive species data for character creation."""
-        return {
-            "human": {
-                "name": "Human",
-                "characteristics": {"brawn": 2, "agility": 2, "intellect": 2, "cunning": 2, "willpower": 2, "presence": 2},
-                "starting_xp": 110,
-                "special_abilities": ["Extra skill rank during character creation", "Extra non-career skill rank"]
-            },
-            "twilek": {
-                "name": "Twi'lek",
-                "characteristics": {"brawn": 1, "agility": 2, "intellect": 2, "cunning": 3, "willpower": 2, "presence": 2},
-                "starting_xp": 100,
-                "special_abilities": ["Free rank in Charm or Deception"]
-            },
-            "rodian": {
-                "name": "Rodian",
-                "characteristics": {"brawn": 2, "agility": 3, "intellect": 2, "cunning": 2, "willpower": 1, "presence": 2},
-                "starting_xp": 100,
-                "special_abilities": ["Expert Tracker", "Free rank in Survival"]
-            },
-            "wookiee": {
-                "name": "Wookiee",
-                "characteristics": {"brawn": 3, "agility": 2, "intellect": 2, "cunning": 2, "willpower": 1, "presence": 2},
-                "starting_xp": 90,
-                "special_abilities": ["Powerful Build", "Free rank in Brawl"]
-            },
-            "bothan": {
-                "name": "Bothan",
-                "characteristics": {"brawn": 1, "agility": 2, "intellect": 2, "cunning": 3, "willpower": 2, "presence": 2},
-                "starting_xp": 100,
-                "special_abilities": ["Spy Network", "Free rank in Streetwise"]
-            },
-            "duros": {
-                "name": "Duros",
-                "characteristics": {"brawn": 1, "agility": 2, "intellect": 3, "cunning": 2, "willpower": 2, "presence": 2},
-                "starting_xp": 100,
-                "special_abilities": ["Intuitive Navigation", "Free rank in Piloting (Space)"]
-            },
-            "gand": {
-                "name": "Gand",
-                "characteristics": {"brawn": 2, "agility": 2, "intellect": 2, "cunning": 3, "willpower": 1, "presence": 2},
-                "starting_xp": 100,
-                "special_abilities": ["Ammonia Breathers", "Free rank in Discipline"]
-            },
-            "trandoshan": {
-                "name": "Trandoshan",
-                "characteristics": {"brawn": 3, "agility": 1, "intellect": 2, "cunning": 2, "willpower": 2, "presence": 2},
-                "starting_xp": 90,
-                "special_abilities": ["Regeneration", "Natural Weapons"]
-            }
-        }
+        """Get comprehensive species data for character creation using extracted PDF data."""
+        # Get species data from the CharacterCreator (which now uses extracted data)
+        species_data = {}
+        
+        for species_name in self.character_creator.get_available_species():
+            species_info = self.character_creator.get_species_info(species_name)
+            if species_info:
+                # Convert to lowercase key for API compatibility
+                key = species_name.lower().replace("'", "").replace(" ", "_")
+                species_data[key] = {
+                    "name": species_name,
+                    "characteristics": species_info["characteristics"],
+                    "starting_xp": species_info["starting_xp"],
+                    "special_abilities": species_info["special_abilities"]
+                }
+        
+        return species_data
     
     def get_career_data(self) -> Dict[str, Dict]:
         """Get comprehensive career data for character creation."""

@@ -1273,14 +1273,14 @@ class CharacterManager {
         try {
             console.log('Making API call to advance skill...');
             const token = localStorage.getItem('access_token');
-            const response = await fetch(`/api/characters/${encodeURIComponent(this.currentCharacter.id)}/skills/${encodeURIComponent(skillName)}`, {
+            const response = await fetch(`/api/characters/${encodeURIComponent(this.currentCharacter.id)}/advance-skill`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
                 },
                 body: JSON.stringify({
-                    action: 'increase'
+                    skill: skillName
                 })
             });
 
@@ -1316,14 +1316,14 @@ class CharacterManager {
         try {
             console.log('Making API call to advance characteristic...');
             const token = localStorage.getItem('access_token');
-            const response = await fetch(`/api/characters/${encodeURIComponent(this.currentCharacter.id)}/characteristics/${encodeURIComponent(characteristicName.toLowerCase())}`, {
+            const response = await fetch(`/api/characters/${encodeURIComponent(this.currentCharacter.id)}/advance-characteristic`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
                 },
                 body: JSON.stringify({
-                    action: 'increase'
+                    characteristic: characteristicName.toLowerCase()
                 })
             });
 

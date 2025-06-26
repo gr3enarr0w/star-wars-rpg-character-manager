@@ -3,43 +3,9 @@
 {% block title %}Create Character - Star Wars RPG Character Manager{% endblock %}
 
 
-{% block sidebar %}
-<div class="sidebar">
-<!-- Character Preview -->
-<div id="character-preview" style="margin-bottom: 1rem; padding: 1rem; background: rgba(255, 215, 0, 0.25); border: 1px solid #ffd700; border-radius: 4px;">
-    <h4 style="color: #ffd700; margin: 0 0 0.5rem 0; text-shadow: 2px 2px 4px rgba(0,0,0,0.9); font-weight: bold;">Character Preview</h4>
-    <div id="preview-content" style="color: #ffffff; font-size: 0.9rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.9); font-weight: 500;">
-        <div id="preview-name" style="margin-bottom: 0.25rem;">Name: Not set</div>
-        <div id="preview-species" style="margin-bottom: 0.25rem;">Species: Not selected</div>
-        <div id="preview-career" style="margin-bottom: 0.25rem;">Career: Not selected</div>
-        <div id="preview-xp" style="margin-top: 0.5rem; font-weight: bold; color: #ffd700;">Starting XP: 0</div>
-    </div>
-</div>
-
-<!-- Progress Steps -->
-<div style="margin-bottom: 1rem; padding: 1rem; background: rgba(255, 215, 0, 0.2); border: 1px solid #ffd700; border-radius: 4px;">
-    <h4 style="color: #ffd700; margin: 0 0 1rem 0; text-shadow: 2px 2px 4px rgba(0,0,0,0.9); font-weight: bold;">Creation Steps</h4>
-    <div id="progress-steps" style="color: #ffffff; font-size: 0.9rem; font-weight: 500;">
-        <div class="step" data-step="1">1. Character Basics</div>
-        <div class="step" data-step="2">2. Choose Species</div>
-        <div class="step" data-step="3">3. Select Career</div>
-        <div class="step" data-step="4">4. Assign Characteristics</div>
-        <div class="step" data-step="5">5. Customize Skills</div>
-        <div class="step" data-step="6">6. Background & Details</div>
-        <div class="step" data-step="7">7. Review & Create</div>
-    </div>
-</div>
-
-<!-- Navigation -->
-<div>
-    <a href="{{ url_for('index') }}" class="btn btn-outline" style="width: 100%; text-align: center;">
-        ← Back to Dashboard
-    </a>
-</div>
-</div>
-{% endblock %}
-
-{% block content %}
+{% block layout %}
+<!-- Full width layout without sidebar -->
+<div style="max-width: 1000px; margin: 0 auto; padding: 2rem 1rem;">
 <div id="character-wizard">
     <!-- Header -->
     <div style="margin-bottom: 2rem;">
@@ -53,34 +19,37 @@
     </div>
 
     <!-- Step Content Container -->
-    <div id="wizard-content" style="background: linear-gradient(145deg, #1a1a2e, #16213e); border: 1px solid #333; border-radius: 8px; padding: 2rem; min-height: 500px;">
+    <div id="wizard-content" style="color: #e0e0e0; background: transparent; border: none; border-radius: 0; padding: 0;">
         
         <!-- Step 1: Character Basics -->
-        <div class="wizard-step active" data-step="1" style="display: block !important;">
-            <h2 style="color: #ffd700; margin: 0 0 1.5rem 0;">Step 1: Character Basics</h2>
+        <div class="wizard-step active" data-step="1" style="display: block !important; background: transparent; padding: 0; border: none; border-radius: 0;">
+            <h2 style="color: #ffd700; margin: 0 0 1.5rem 0; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);">Step 1: Character Basics</h2>
             
             <div class="form-group" style="margin-bottom: 1.5rem;">
-                <label class="form-label" style="display: block; margin-bottom: 0.5rem; color: #1a202c; font-weight: bold; font-size: 1.1rem;">Character Name *</label>
+                <label class="form-label" style="display: block; margin-bottom: 0.5rem; color: #ffd700; font-weight: bold; font-size: 1.1rem;">Character Name *</label>
                 <input type="text" id="character-name" class="form-input" placeholder="Enter character name" 
-                       style="width: 100%; padding: 1rem; background: #ffffff !important; border: 3px solid #ffd700 !important; border-radius: 8px; color: #1a202c !important; font-size: 1.1rem; font-weight: 500; box-sizing: border-box;">
-                <div class="help-text" style="margin-top: 0.5rem; font-size: 0.9rem; color: #2d3748; font-weight: 500;">Choose a memorable name for your character</div>
+                       aria-describedby="character-name-help"
+                       style="width: 100%; padding: 0.75rem; background: #1a1a2e !important; border: 1px solid #333 !important; border-radius: 4px; color: #e0e0e0 !important; font-size: 1rem; box-sizing: border-box;">
+                <div id="character-name-help" class="help-text" style="margin-top: 0.5rem; font-size: 0.9rem; color: #a0aec0; font-weight: 500;">Choose a memorable name for your character</div>
             </div>
 
             <div class="form-group" style="margin-bottom: 1.5rem;">
-                <label class="form-label" style="display: block; margin-bottom: 0.5rem; color: #1a202c; font-weight: bold; font-size: 1.1rem;">Player Name *</label>
+                <label class="form-label" style="display: block; margin-bottom: 0.5rem; color: #ffd700; font-weight: bold; font-size: 1.1rem;">Player Name *</label>
                 <input type="text" id="player-name" class="form-input" placeholder="Enter player name"
-                       style="width: 100%; padding: 1rem; background: #ffffff !important; border: 3px solid #ffd700 !important; border-radius: 8px; color: #1a202c !important; font-size: 1.1rem; font-weight: 500; box-sizing: border-box;">
+                       aria-describedby="player-name-help"
+                       style="width: 100%; padding: 0.75rem; background: #1a1a2e !important; border: 1px solid #333 !important; border-radius: 4px; color: #e0e0e0 !important; font-size: 1rem; box-sizing: border-box;">
+                <div id="player-name-help" class="help-text" style="margin-top: 0.5rem; font-size: 0.9rem; color: #a0aec0; font-weight: 500;">The name of the player controlling this character</div>
             </div>
 
-            <div style="text-align: center; color: #e0e0e0; margin-bottom: 2rem;">
+            <div style="text-align: center; color: #a0aec0; margin-bottom: 2rem;">
                 <p>Welcome to the Star Wars RPG Character Creator!</p>
                 <p>This wizard will guide you through creating your character step by step.</p>
             </div>
         </div>
 
         <!-- Step 2: Species Selection -->
-        <div class="wizard-step" data-step="2">
-            <h2 style="color: #ffd700; margin: 0 0 1.5rem 0;">Step 2: Choose Your Species</h2>
+        <div class="wizard-step" data-step="2" style="background: transparent; padding: 0; border: none; border-radius: 0;">
+            <h2 style="color: #ffd700; margin: 0 0 1.5rem 0; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);">Step 2: Choose Your Species</h2>
             
             <div id="species-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem;">
                 <!-- Species cards will be populated by JavaScript -->
@@ -88,12 +57,12 @@
         </div>
 
         <!-- Step 3: Career Selection -->
-        <div class="wizard-step" data-step="3">
-            <h2 style="color: #ffd700; margin: 0 0 1.5rem 0;">Step 3: Select Your Career</h2>
+        <div class="wizard-step" data-step="3" style="background: transparent; padding: 0; border: none; border-radius: 0;">
+            <h2 style="color: #ffd700; margin: 0 0 1.5rem 0; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);">Step 3: Select Your Career</h2>
             
             <div style="margin-bottom: 1.5rem;">
                 <label class="form-label" style="color: #ffd700; font-weight: bold;">Game Line</label>
-                <select id="game-line-filter" class="form-select" style="background: rgba(255, 255, 255, 0.1); color: #e0e0e0; border: 1px solid #ffd700;">
+                <select id="game-line-filter" class="form-select" style="background: #1a1a2e; color: #e0e0e0; border: 1px solid #333; padding: 0.75rem;">
                     <option value="all">All Game Lines</option>
                     <option value="edge_of_empire">Edge of the Empire</option>
                     <option value="age_of_rebellion">Age of Rebellion</option>
@@ -107,8 +76,8 @@
         </div>
 
         <!-- Step 4: Characteristics Assignment -->
-        <div class="wizard-step" data-step="4">
-            <h2 style="color: #ffd700; margin: 0 0 1.5rem 0;">Step 4: Assign Characteristics</h2>
+        <div class="wizard-step" data-step="4" style="background: transparent; padding: 0; border: none; border-radius: 0;">
+            <h2 style="color: #ffd700; margin: 0 0 1.5rem 0; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);">Step 4: Assign Characteristics</h2>
             
             <div style="margin-bottom: 1.5rem; padding: 1rem; background: rgba(255, 215, 0, 0.1); border-radius: 4px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
@@ -134,8 +103,8 @@
         </div>
 
         <!-- Step 5: Skills Customization -->
-        <div class="wizard-step" data-step="5">
-            <h2 style="color: #ffd700; margin: 0 0 1.5rem 0;">Step 5: Customize Skills</h2>
+        <div class="wizard-step" data-step="5" style="background: transparent; padding: 0; border: none; border-radius: 0;">
+            <h2 style="color: #ffd700; margin: 0 0 1.5rem 0; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);">Step 5: Customize Skills</h2>
             
             <div style="margin-bottom: 1.5rem; padding: 1rem; background: rgba(255, 215, 0, 0.1); border-radius: 4px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
@@ -151,28 +120,28 @@
         </div>
 
         <!-- Step 6: Background & Details -->
-        <div class="wizard-step" data-step="6">
-            <h2 style="color: #ffd700; margin: 0 0 1.5rem 0;">Step 6: Background & Details</h2>
+        <div class="wizard-step" data-step="6" style="background: transparent; padding: 0; border: none; border-radius: 0;">
+            <h2 style="color: #ffd700; margin: 0 0 1.5rem 0; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);">Step 6: Background & Details</h2>
             
             <div class="form-group" style="margin-bottom: 1.5rem;">
                 <label class="form-label" style="color: #ffd700; font-weight: bold;">Character Background</label>
-                <textarea id="character-background" class="form-input" rows="4" placeholder="Describe your character's background, motivation, and history..." style="background: rgba(255, 255, 255, 0.1); color: #e0e0e0; border: 1px solid #ffd700; resize: vertical;"></textarea>
+                <textarea id="character-background" class="form-input" rows="4" placeholder="Describe your character's background, motivation, and history..." style="background: #1a1a2e; color: #e0e0e0; border: 1px solid #333; resize: vertical; width: 100%; padding: 0.75rem; border-radius: 4px; box-sizing: border-box;"></textarea>
             </div>
 
             <div class="form-group" style="margin-bottom: 1.5rem;">
                 <label class="form-label" style="color: #ffd700; font-weight: bold;">Obligation/Duty/Morality</label>
-                <textarea id="character-obligation" class="form-input" rows="3" placeholder="Define your character's obligation, duty, or moral conflicts..." style="background: rgba(255, 255, 255, 0.1); color: #e0e0e0; border: 1px solid #ffd700; resize: vertical;"></textarea>
+                <textarea id="character-obligation" class="form-input" rows="3" placeholder="Define your character's obligation, duty, or moral conflicts..." style="background: #1a1a2e; color: #e0e0e0; border: 1px solid #333; resize: vertical; width: 100%; padding: 0.75rem; border-radius: 4px; box-sizing: border-box;"></textarea>
             </div>
 
             <div class="form-group">
                 <label class="form-label" style="color: #ffd700; font-weight: bold;">Character Notes</label>
-                <textarea id="character-notes" class="form-input" rows="3" placeholder="Additional notes about your character..." style="background: rgba(255, 255, 255, 0.1); color: #e0e0e0; border: 1px solid #ffd700; resize: vertical;"></textarea>
+                <textarea id="character-notes" class="form-input" rows="3" placeholder="Additional notes about your character..." style="background: #1a1a2e; color: #e0e0e0; border: 1px solid #333; resize: vertical; width: 100%; padding: 0.75rem; border-radius: 4px; box-sizing: border-box;"></textarea>
             </div>
         </div>
 
         <!-- Step 7: Review & Create -->
-        <div class="wizard-step" data-step="7">
-            <h2 style="color: #ffd700; margin: 0 0 1.5rem 0;">Step 7: Review & Create Character</h2>
+        <div class="wizard-step" data-step="7" style="background: transparent; padding: 0; border: none; border-radius: 0;">
+            <h2 style="color: #ffd700; margin: 0 0 1.5rem 0; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);">Step 7: Review & Create Character</h2>
             
             <div id="character-summary" style="background: rgba(255, 215, 0, 0.05); border: 1px solid #333; border-radius: 4px; padding: 1.5rem;">
                 <!-- Character summary will be populated by JavaScript -->
@@ -208,24 +177,25 @@
 .form-input, .form-select {
     width: 100%;
     padding: 0.75rem;
-    background: rgba(255, 255, 255, 0.15) !important;
-    border: 2px solid #ffd700 !important;
+    background: #1a1a2e !important;
+    border: 1px solid #333 !important;
     border-radius: 4px;
-    color: #ffffff !important;
+    color: #e0e0e0 !important;
     font-size: 1rem;
     transition: all 0.3s ease;
     box-sizing: border-box;
 }
 
 .form-input:focus, .form-select:focus {
-    outline: none;
+    outline: 3px solid #ffed4e;
+    outline-offset: 2px;
     border-color: #ffed4e;
-    box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.2);
-    background: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.3);
+    background: #ffffff;
 }
 
 .form-input::placeholder {
-    color: #a0aec0;
+    color: #4a5568;
 }
 
 .help-text {
@@ -250,12 +220,15 @@
     cursor: pointer;
     transition: all 0.3s ease;
     position: relative;
+    color: #e0e0e0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
 .species-card:hover, .career-card:hover {
     border-color: #ffd700;
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(255, 215, 0, 0.3);
+    color: #ffffff;
 }
 
 .species-card.selected, .career-card.selected {
@@ -285,6 +258,7 @@
     font-size: 1.2rem;
     font-weight: bold;
     margin: 0 0 0.5rem 0;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
 }
 
 .card-subtitle {
@@ -326,16 +300,19 @@
 
 .characteristic-control {
     background: linear-gradient(145deg, #1a1a2e, #16213e);
-    border: 1px solid #ffd700;
+    border: 1px solid #333;
     border-radius: 8px;
     padding: 1rem;
     text-align: center;
+    color: #e0e0e0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .characteristic-name {
     color: #ffd700;
     font-weight: bold;
     margin-bottom: 0.5rem;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
 }
 
 .characteristic-value {
@@ -481,7 +458,6 @@
     }
 }
 </style>
-{% endblock %}
 
 {% block extra_js %}
 <script src="{{ url_for('static', filename='js/auth.js') }}"></script>
@@ -513,6 +489,7 @@ class CharacterWizard {
     async init() {
         await this.loadGameData();
         this.setupEventListeners();
+        this.syncFormData(); // Sync any pre-filled form data with character data
         this.updateUI();
     }
 
@@ -525,6 +502,23 @@ class CharacterWizard {
         } catch (error) {
             console.error('Error loading game data:', error);
         }
+    }
+
+    syncFormData() {
+        // Sync form field values with character data on initialization
+        const nameField = document.getElementById('character-name');
+        const playerNameField = document.getElementById('player-name');
+        
+        if (nameField && nameField.value) {
+            this.characterData.name = nameField.value;
+        }
+        
+        if (playerNameField && playerNameField.value) {
+            this.characterData.playerName = playerNameField.value;
+        }
+        
+        // Update preview with any synced data
+        this.updatePreview();
     }
 
     setupEventListeners() {
@@ -937,10 +931,10 @@ class CharacterWizard {
     canProceedToNextStep() {
         switch (this.currentStep) {
             case 1:
-                const nameField = document.getElementById('character-name');
-                const playerNameField = document.getElementById('player-name');
-                const name = nameField ? nameField.value.trim() : '';
-                const playerName = playerNameField ? playerNameField.value.trim() : '';
+                // Use the character data that gets updated by the event handlers
+                // This is more reliable than reading from DOM elements
+                const name = this.characterData.name ? this.characterData.name.trim() : '';
+                const playerName = this.characterData.playerName ? this.characterData.playerName.trim() : '';
                 console.log('Step 1 validation:', { name, playerName, nameLength: name.length, playerNameLength: playerName.length });
                 return name.length > 0 && playerName.length > 0;
             case 2:
@@ -1080,4 +1074,8 @@ async function checkAuthentication() {
     100% { transform: rotate(360deg); }
 }
 </style>
+{% endblock %}
+
+</div>
+</div>
 {% endblock %}

@@ -1,0 +1,336 @@
+{% extends "base.html" %}
+
+{% block title %}Assign Characteristics - Star Wars RPG Character Manager{% endblock %}
+
+{% block layout %}
+<div style="max-width: 1000px; margin: 0 auto; padding: 2rem 1rem;">
+    <!-- Header -->
+    <div style="margin-bottom: 2rem; text-align: center;">
+        <h1 style="color: #ffd700; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); margin: 0 0 0.5rem 0;">🌟 Character Creation</h1>
+        <p style="color: #e0e0e0; margin: 0;">Step 4 of 7: Assign Characteristics</p>
+    </div>
+
+    <!-- Progress Bar -->
+    <div style="background: #333; border-radius: 10px; margin-bottom: 2rem; overflow: hidden;">
+        <div style="background: linear-gradient(90deg, #ffd700, #ffed4e); height: 8px; width: 57.2%; transition: width 0.3s ease;"></div>
+    </div>
+
+    <!-- Characteristics Assignment -->
+    <div style="background: linear-gradient(145deg, #1a1a2e, #16213e); padding: 2rem; border-radius: 8px; border: 1px solid #333;">
+        <h2 style="color: #ffd700; margin: 0 0 1.5rem 0; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);">Assign Characteristics</h2>
+        
+        <div style="margin-bottom: 1.5rem; padding: 1rem; background: rgba(255, 215, 0, 0.1); border-radius: 4px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                <span style="color: #ffd700; font-weight: bold;">Available Experience Points:</span>
+                <span id="available-xp" style="color: #ffd700; font-size: 1.2rem; font-weight: bold;">100</span>
+            </div>
+            <p style="color: #e0e0e0; margin: 0; font-size: 0.95rem;">
+                Use your starting XP to increase characteristics above your species base values.
+                Each increase costs XP based on the target level.
+            </p>
+        </div>
+
+        <!-- Character Summary -->
+        <div id="character-summary" style="margin-bottom: 2rem; padding: 1rem; background: rgba(255, 215, 0, 0.05); border-radius: 4px;">
+            <h3 style="color: #ffd700; margin: 0 0 1rem 0;">Character Summary</h3>
+            <div id="summary-content">
+                <!-- Will be populated by JavaScript -->
+            </div>
+        </div>
+
+        <!-- Characteristics Grid -->
+        <div id="characteristics-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+            <!-- Characteristic controls will be populated by JavaScript -->
+        </div>
+
+        <!-- Cost Reference -->
+        <div style="margin-bottom: 2rem; padding: 1rem; background: rgba(255, 215, 0, 0.05); border-radius: 4px;">
+            <h4 style="color: #ffd700; margin: 0 0 0.5rem 0;">Advancement Costs</h4>
+            <div style="color: #e0e0e0; font-size: 0.875rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 0.5rem;">
+                <div>Characteristic 3: 30 XP</div>
+                <div>Characteristic 4: 40 XP</div>
+                <div>Characteristic 5: 50 XP</div>
+                <div>Characteristic 6: 60 XP</div>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 2rem;">
+            <a href="/create-character/career" class="btn btn-secondary" style="background: #333; color: #e0e0e0; text-decoration: none; padding: 0.75rem 1.5rem; border-radius: 4px; border: 1px solid #555;">
+                ← Previous: Career
+            </a>
+            
+            <button id="next-button" type="button" class="btn btn-primary"
+                    style="background: #ffd700; color: #1a1a2e; padding: 0.75rem 1.5rem; border: none; border-radius: 4px; font-weight: bold; cursor: pointer;">
+                Next: Skills & Talents →
+            </button>
+        </div>
+    </div>
+</div>
+
+<style>
+.characteristic-control {
+    background: linear-gradient(145deg, #0f0f23, #1a1a2e);
+    border: 1px solid #333;
+    border-radius: 8px;
+    padding: 1rem;
+    text-align: center;
+}
+
+.characteristic-name {
+    color: #ffd700;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+}
+
+.characteristic-value {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #e0e0e0;
+    margin: 0.5rem 0;
+}
+
+.characteristic-controls {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.char-button {
+    background: #333;
+    border: 1px solid #555;
+    color: #e0e0e0;
+    width: 30px;
+    height: 30px;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+.char-button:hover:not(:disabled) {
+    background: #ffd700;
+    color: #1a1a2e;
+}
+
+.char-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.cost-display {
+    color: #a0aec0;
+    font-size: 0.8rem;
+    margin-top: 0.25rem;
+}
+</style>
+
+<script>
+let characterData = {};
+let availableXP = 100;
+let characteristics = {
+    brawn: 2,
+    agility: 2,
+    intellect: 2,
+    cunning: 2,
+    willpower: 2,
+    presence: 2
+};
+
+// Authentication check
+async function checkAuthentication() {
+    const token = localStorage.getItem('access_token');
+    const userStr = localStorage.getItem('user');
+    
+    if (!token || !userStr) {
+        // Set up demo authentication for testing
+        localStorage.setItem('access_token', 'demo_token_12345');
+        localStorage.setItem('user', JSON.stringify({
+            id: '1',
+            username: 'demo_user',
+            email: 'test@example.com',
+            role: 'user'
+        }));
+    }
+}
+
+// Load character creation data
+function loadCharacterData() {
+    const savedData = JSON.parse(sessionStorage.getItem('characterCreation'));
+    if (!savedData || !savedData.data.selectedCareer) {
+        // Redirect back to career if no career selected
+        window.location.href = '/create-character/career';
+        return;
+    }
+    
+    characterData = savedData.data;
+    
+    // Load species characteristics and starting XP
+    const speciesData = getSpeciesData(characterData.selectedSpecies);
+    if (speciesData) {
+        characteristics = { ...speciesData.characteristics };
+        availableXP = speciesData.starting_xp;
+    }
+    
+    // Load previously assigned characteristics if any
+    if (characterData.characteristics) {
+        characteristics = { ...characterData.characteristics };
+        availableXP = characterData.availableXP || availableXP;
+    }
+    
+    updateDisplay();
+    updateCharacterSummary();
+}
+
+// Get species data
+function getSpeciesData(speciesName) {
+    const speciesData = {
+        "Human": {
+            "characteristics": {"brawn": 2, "agility": 2, "intellect": 2, "cunning": 2, "willpower": 2, "presence": 2},
+            "starting_xp": 110
+        },
+        "Twi'lek": {
+            "characteristics": {"brawn": 1, "agility": 2, "intellect": 2, "cunning": 3, "willpower": 2, "presence": 2},
+            "starting_xp": 100
+        },
+        "Wookiee": {
+            "characteristics": {"brawn": 3, "agility": 2, "intellect": 2, "cunning": 2, "willpower": 1, "presence": 2},
+            "starting_xp": 90
+        },
+        "Clone": {
+            "characteristics": {"brawn": 2, "agility": 2, "intellect": 2, "cunning": 2, "willpower": 2, "presence": 2},
+            "starting_xp": 100
+        },
+        "Dathomirian": {
+            "characteristics": {"brawn": 3, "agility": 2, "intellect": 2, "cunning": 2, "willpower": 3, "presence": 1},
+            "starting_xp": 100
+        }
+        // Add more species as needed
+    };
+    
+    return speciesData[speciesName];
+}
+
+// Calculate XP cost for increasing characteristic
+function getCharacteristicCost(currentValue, targetValue) {
+    const costs = { 3: 30, 4: 40, 5: 50, 6: 60 };
+    let totalCost = 0;
+    
+    for (let i = currentValue + 1; i <= targetValue; i++) {
+        totalCost += costs[i] || 70; // Higher levels cost 70+ XP
+    }
+    
+    return totalCost;
+}
+
+// Create characteristic control
+function createCharacteristicControl(charName) {
+    const baseValue = getSpeciesData(characterData.selectedSpecies).characteristics[charName];
+    const currentValue = characteristics[charName];
+    const canDecrease = currentValue > baseValue;
+    const canIncrease = currentValue < 6 && getCharacteristicCost(currentValue, currentValue + 1) <= availableXP;
+    
+    const control = document.createElement('div');
+    control.className = 'characteristic-control';
+    
+    control.innerHTML = `
+        <div class="characteristic-name">${charName}</div>
+        <div class="characteristic-value">${currentValue}</div>
+        <div class="characteristic-controls">
+            <button class="char-button" onclick="adjustCharacteristic('${charName}', -1)" ${!canDecrease ? 'disabled' : ''}>-</button>
+            <button class="char-button" onclick="adjustCharacteristic('${charName}', 1)" ${!canIncrease ? 'disabled' : ''}>+</button>
+        </div>
+        <div class="cost-display">
+            Base: ${baseValue}
+            ${currentValue < 6 ? `| Next: ${getCharacteristicCost(currentValue, currentValue + 1)} XP` : '| Max'}
+        </div>
+    `;
+    
+    return control;
+}
+
+// Adjust characteristic
+function adjustCharacteristic(charName, change) {
+    const baseValue = getSpeciesData(characterData.selectedSpecies).characteristics[charName];
+    const currentValue = characteristics[charName];
+    const newValue = currentValue + change;
+    
+    if (change > 0) {
+        // Increasing
+        if (newValue <= 6) {
+            const cost = getCharacteristicCost(currentValue, newValue);
+            if (cost <= availableXP) {
+                characteristics[charName] = newValue;
+                availableXP -= cost;
+            }
+        }
+    } else {
+        // Decreasing
+        if (newValue >= baseValue) {
+            const refund = getCharacteristicCost(newValue, currentValue);
+            characteristics[charName] = newValue;
+            availableXP += refund;
+        }
+    }
+    
+    updateDisplay();
+    saveStepData();
+}
+
+// Update display
+function updateDisplay() {
+    document.getElementById('available-xp').textContent = availableXP;
+    
+    const grid = document.getElementById('characteristics-grid');
+    grid.innerHTML = '';
+    
+    Object.keys(characteristics).forEach(charName => {
+        const control = createCharacteristicControl(charName);
+        grid.appendChild(control);
+    });
+}
+
+// Update character summary
+function updateCharacterSummary() {
+    const summaryContent = document.getElementById('summary-content');
+    summaryContent.innerHTML = `
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+            <div>
+                <strong style="color: #ffd700;">Character:</strong> ${characterData.characterName}<br>
+                <strong style="color: #ffd700;">Player:</strong> ${characterData.playerName}
+            </div>
+            <div>
+                <strong style="color: #ffd700;">Species:</strong> ${characterData.selectedSpecies}<br>
+                <strong style="color: #ffd700;">Career:</strong> ${characterData.selectedCareer}
+            </div>
+        </div>
+    `;
+}
+
+// Save step data
+function saveStepData() {
+    const savedData = JSON.parse(sessionStorage.getItem('characterCreation'));
+    savedData.data.characteristics = { ...characteristics };
+    savedData.data.availableXP = availableXP;
+    savedData.step = 4;
+    sessionStorage.setItem('characterCreation', JSON.stringify(savedData));
+}
+
+// Next button click
+document.getElementById('next-button').addEventListener('click', function() {
+    saveStepData();
+    window.location.href = '/create-character/skills';
+});
+
+// Make adjustCharacteristic global for onclick handlers
+window.adjustCharacteristic = adjustCharacteristic;
+
+// Initialize
+checkAuthentication();
+loadCharacterData();
+</script>
+{% endblock %}

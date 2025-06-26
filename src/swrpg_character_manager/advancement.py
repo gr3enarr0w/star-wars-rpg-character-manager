@@ -14,6 +14,7 @@ class AdvancementManager:
     def _initialize_characteristic_costs(self) -> Dict[int, int]:
         """Initialize XP costs for characteristic increases."""
         return {
+            2: 20,   # 1→2
             3: 30,   # 2→3
             4: 40,   # 3→4
             5: 50,   # 4→5

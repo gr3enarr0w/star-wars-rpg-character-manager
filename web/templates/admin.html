@@ -6,33 +6,47 @@
     <title>Admin Panel - Star Wars RPG Character Manager</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
     <style>
+        body {
+            background: radial-gradient(ellipse at center, #0f0f23 0%, #000000 70%);
+            color: #e0e0e0;
+            min-height: 100vh;
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        
         .admin-container {
             max-width: 1200px;
             margin: 2rem auto;
             padding: 0 1rem;
         }
+        
         .admin-header {
-            background: #dc3545;
-            color: white;
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            color: #000;
             padding: 1rem;
-            border-radius: 4px 4px 0 0;
+            border-radius: 8px 8px 0 0;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            box-shadow: 0 4px 8px rgba(255, 215, 0, 0.3);
         }
+        
         .admin-content {
-            background: white;
-            border: 1px solid #ddd;
+            background: linear-gradient(145deg, #1a1a2e, #16213e);
+            border: 1px solid #ffd700;
             border-top: none;
-            border-radius: 0 0 4px 4px;
+            border-radius: 0 0 8px 8px;
             padding: 2rem;
+            color: #e0e0e0;
         }
         .admin-tabs {
             display: flex;
-            border-bottom: 1px solid #ddd;
+            border-bottom: 1px solid #333;
             margin-bottom: 2rem;
             flex-wrap: wrap;
         }
+        
         .tab-button {
             background: none;
             border: none;
@@ -40,10 +54,18 @@
             cursor: pointer;
             border-bottom: 2px solid transparent;
             font-size: 1rem;
+            color: #a0aec0;
+            transition: all 0.3s ease;
         }
+        
+        .tab-button:hover {
+            color: #ffd700;
+            background: rgba(255, 215, 0, 0.1);
+        }
+        
         .tab-button.active {
-            border-bottom-color: #dc3545;
-            color: #dc3545;
+            border-bottom-color: #ffd700;
+            color: #ffd700;
             font-weight: bold;
         }
         .tab-content {
@@ -55,37 +77,52 @@
         .admin-section {
             margin-bottom: 2rem;
             padding: 1.5rem;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            background: #f8f9fa;
+            border: 1px solid #333;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .admin-section h2 {
+            color: #ffd700;
+            margin-top: 0;
         }
         .user-table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 1rem;
         }
+        
         .user-table th,
         .user-table td {
             padding: 0.75rem;
             text-align: left;
-            border-bottom: 1px solid #ddd;
+            border-bottom: 1px solid #333;
         }
+        
         .user-table th {
-            background: #e9ecef;
+            background: rgba(255, 215, 0, 0.1);
+            color: #ffd700;
             font-weight: bold;
         }
+        
+        .user-table td {
+            color: #e0e0e0;
+        }
+        
         .user-table tr:hover {
-            background: #f1f3f4;
+            background: rgba(255, 215, 0, 0.05);
         }
         .back-button {
             text-decoration: none;
-            color: white;
+            color: #000;
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            font-weight: bold;
         }
+        
         .back-button:hover {
-            color: #ccc;
+            color: #333;
         }
         .stats-grid {
             display: grid;
@@ -94,19 +131,22 @@
             margin-bottom: 2rem;
         }
         .stat-card {
-            background: white;
+            background: linear-gradient(145deg, #1a1a2e, #2d3748);
+            border: 1px solid #ffd700;
             padding: 1.5rem;
-            border-radius: 4px;
-            border: 1px solid #ddd;
+            border-radius: 8px;
             text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
         }
+        
         .stat-number {
             font-size: 2rem;
             font-weight: bold;
-            color: #dc3545;
+            color: #ffd700;
         }
+        
         .stat-label {
-            color: #666;
+            color: #a0aec0;
             font-size: 0.875rem;
             margin-top: 0.5rem;
         }
@@ -115,10 +155,107 @@
             grid-template-columns: 1fr;
             gap: 1rem;
         }
+        
         @media (min-width: 768px) {
             .form-grid {
                 grid-template-columns: 1fr 1fr;
             }
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 1rem;
+        }
+        
+        .form-label {
+            color: #ffd700;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .form-input,
+        .form-select {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid #333;
+            border-radius: 4px;
+            padding: 0.75rem;
+            color: #e0e0e0;
+            font-size: 1rem;
+        }
+        
+        .form-input:focus,
+        .form-select:focus {
+            outline: none;
+            border-color: #ffd700;
+            box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.2);
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            color: #000;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn:hover {
+            background: linear-gradient(135deg, #ffed4e, #ffd700);
+            transform: translateY(-1px);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            color: #ffd700;
+            border: 1px solid #ffd700;
+        }
+        
+        .btn-outline:hover {
+            background: rgba(255, 215, 0, 0.1);
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(135deg, #666, #888);
+            color: white;
+        }
+        
+        .btn-danger {
+            background: linear-gradient(135deg, #dc3545, #c82333);
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background: linear-gradient(135deg, #c82333, #dc3545);
+        }
+        
+        .btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: #a0aec0;
+        }
+        
+        .error {
+            color: #ff6b6b;
+            text-align: center;
+            padding: 1rem;
+        }
+        
+        .text-center {
+            text-align: center;
+        }
+        
+        .text-secondary {
+            color: #a0aec0;
         }
     </style>
 </head>
@@ -495,13 +632,123 @@
         }
 
         async function loadActiveInvites() {
-            // TODO: Implement loading active invite codes
-            document.getElementById('active-invites').innerHTML = '<div class="text-secondary">Active invite codes display coming soon</div>';
+            try {
+                const response = await authenticatedFetch('/api/admin/invites');
+                if (response.ok) {
+                    const data = await response.json();
+                    displayActiveInvites(data.invites || []);
+                } else {
+                    document.getElementById('active-invites').innerHTML = '<div class="error">Error loading invite codes</div>';
+                }
+            } catch (error) {
+                console.error('Error loading active invites:', error);
+                document.getElementById('active-invites').innerHTML = '<div class="error">Failed to load invite codes</div>';
+            }
+        }
+        
+        function displayActiveInvites(invites) {
+            const container = document.getElementById('active-invites');
+            
+            if (invites.length === 0) {
+                container.innerHTML = '<div class="text-center text-secondary">No active invite codes</div>';
+                return;
+            }
+            
+            container.innerHTML = `
+                <table class="user-table">
+                    <thead>
+                        <tr>
+                            <th>Code</th>
+                            <th>Role</th>
+                            <th>Created</th>
+                            <th>Expires</th>
+                            <th>Used</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${invites.map(invite => `
+                            <tr>
+                                <td style="font-family: monospace;">${invite.code}</td>
+                                <td>${invite.role}</td>
+                                <td>${new Date(invite.created_at).toLocaleDateString()}</td>
+                                <td>${new Date(invite.expires_at).toLocaleDateString()}</td>
+                                <td>
+                                    <span class="badge ${invite.used ? 'badge-success' : 'badge-warning'}">
+                                        ${invite.used ? 'Used' : 'Active'}
+                                    </span>
+                                </td>
+                                <td>
+                                    ${!invite.used ? `<button class="btn btn-danger btn-sm" onclick="revokeInvite('${invite.id}')">Revoke</button>` : ''}
+                                </td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
         }
 
         async function loadAuditLogs() {
-            // TODO: Implement loading audit logs
-            document.getElementById('audit-logs-list').innerHTML = '<div class="text-secondary">Audit logs display coming soon</div>';
+            const filter = document.getElementById('log-filter').value;
+            
+            try {
+                const url = `/api/admin/audit-logs${filter ? `?filter=${filter}` : ''}`;
+                const response = await authenticatedFetch(url);
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    displayAuditLogs(data.logs || []);
+                } else {
+                    document.getElementById('audit-logs-list').innerHTML = '<div class="error">Error loading audit logs</div>';
+                }
+            } catch (error) {
+                console.error('Error loading audit logs:', error);
+                document.getElementById('audit-logs-list').innerHTML = '<div class="error">Failed to load audit logs</div>';
+            }
+        }
+        
+        function displayAuditLogs(logs) {
+            const container = document.getElementById('audit-logs-list');
+            
+            if (logs.length === 0) {
+                container.innerHTML = '<div class="text-center text-secondary">No audit logs found</div>';
+                return;
+            }
+            
+            container.innerHTML = `
+                <table class="user-table">
+                    <thead>
+                        <tr>
+                            <th>Timestamp</th>
+                            <th>Event</th>
+                            <th>User</th>
+                            <th>Details</th>
+                            <th>IP Address</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${logs.map(log => `
+                            <tr>
+                                <td>${new Date(log.timestamp).toLocaleString()}</td>
+                                <td>
+                                    <span class="badge ${getEventBadgeClass(log.event)}">
+                                        ${log.event}
+                                    </span>
+                                </td>
+                                <td>${log.username || 'System'}</td>
+                                <td>${log.details || '-'}</td>
+                                <td>${log.ip_address || '-'}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+        }
+        
+        function getEventBadgeClass(event) {
+            if (event.includes('login') || event.includes('creation')) return 'badge-success';
+            if (event.includes('security') || event.includes('error')) return 'badge-danger';
+            return 'badge-warning';
         }
 
         // User management functions
@@ -535,44 +782,267 @@
             }
         }
 
-        function viewUserDetails(userId) {
-            alert('User details modal coming soon');
+        async function viewUserDetails(userId) {
+            try {
+                const response = await authenticatedFetch(`/api/admin/users/${userId}`);
+                if (response.ok) {
+                    const user = await response.json();
+                    showUserDetailsModal(user);
+                } else {
+                    alert('Error loading user details');
+                }
+            } catch (error) {
+                console.error('Error loading user details:', error);
+                alert('Failed to load user details');
+            }
+        }
+        
+        function showUserDetailsModal(user) {
+            const modalHTML = `
+                <div id="userDetailsModal" class="modal-overlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); z-index: 2000; display: flex; justify-content: center; align-items: center;">
+                    <div class="modal-content" style="background: linear-gradient(145deg, #1a1a2e, #16213e); border: 1px solid #ffd700; border-radius: 8px; width: 90%; max-width: 600px; color: #e0e0e0;">
+                        <div class="modal-header" style="display: flex; justify-content: space-between; align-items: center; padding: 1rem; border-bottom: 1px solid #333;">
+                            <h3 style="color: #ffd700; margin: 0;">User Details - ${user.username}</h3>
+                            <button onclick="closeUserDetailsModal()" style="background: none; border: none; color: #ffd700; font-size: 1.5rem; cursor: pointer; padding: 0.25rem 0.5rem; border-radius: 4px;">&times;</button>
+                        </div>
+                        <div style="padding: 1rem;">
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label class="form-label">Username</label>
+                                    <div style="color: #e0e0e0;">${user.username}</div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Role</label>
+                                    <div style="color: #e0e0e0;">${user.role}</div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Account Created</label>
+                                    <div style="color: #e0e0e0;">${new Date(user.created_at).toLocaleDateString()}</div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Last Login</label>
+                                    <div style="color: #e0e0e0;">${user.last_login ? new Date(user.last_login).toLocaleDateString() : 'Never'}</div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Two-Factor Auth</label>
+                                    <div style="color: #e0e0e0;">${user.two_factor_enabled ? 'Enabled' : 'Disabled'}</div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Total Characters</label>
+                                    <div style="color: #e0e0e0;">${user.character_count || 0}</div>
+                                </div>
+                            </div>
+                            <div style="display: flex; gap: 1rem; justify-content: flex-end; margin-top: 1rem;">
+                                <button onclick="closeUserDetailsModal()" class="btn btn-outline">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.insertAdjacentHTML('beforeend', modalHTML);
+        }
+        
+        function closeUserDetailsModal() {
+            const modal = document.getElementById('userDetailsModal');
+            if (modal) {
+                modal.remove();
+            }
         }
 
-        function suspendUser(userId) {
+        async function suspendUser(userId) {
             const confirmed = confirm('Are you sure you want to suspend/activate this user?');
-            if (confirmed) {
-                alert('User suspension functionality coming soon');
+            if (!confirmed) return;
+            
+            try {
+                const response = await authenticatedFetch(`/api/admin/users/${userId}/suspend`, {
+                    method: 'POST'
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    alert(result.message || 'User status updated successfully');
+                    loadUsers(); // Refresh the user list
+                } else {
+                    alert('Error updating user status: ' + result.error);
+                }
+            } catch (error) {
+                console.error('Error updating user status:', error);
+                alert('Failed to update user status');
             }
         }
 
         // System maintenance functions
-        function backupDatabase() {
-            alert('Database backup functionality coming soon');
-        }
-
-        function cleanupSessions() {
-            alert('Session cleanup functionality coming soon');
-        }
-
-        function optimizeDatabase() {
-            alert('Database optimization functionality coming soon');
-        }
-
-        function systemRestart() {
-            const confirmed = confirm('Are you sure you want to restart the system? All users will be disconnected.');
-            if (confirmed) {
-                alert('System restart functionality coming soon');
+        async function backupDatabase() {
+            const confirmed = confirm('Create a database backup? This may take a few minutes.');
+            if (!confirmed) return;
+            
+            try {
+                const response = await authenticatedFetch('/api/admin/backup', {
+                    method: 'POST'
+                });
+                
+                if (response.ok) {
+                    const blob = await response.blob();
+                    const url = URL.createObjectURL(blob);
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.download = `swrpg-backup-${new Date().toISOString().split('T')[0]}.zip`;
+                    link.click();
+                    URL.revokeObjectURL(url);
+                    alert('Database backup downloaded successfully!');
+                } else {
+                    const result = await response.json();
+                    alert('Error creating backup: ' + result.error);
+                }
+            } catch (error) {
+                console.error('Error creating backup:', error);
+                alert('Failed to create backup');
             }
         }
 
-        function searchUsers() {
-            const searchTerm = document.getElementById('user-search').value;
-            alert(`Search functionality coming soon. Search term: ${searchTerm}`);
+        async function cleanupSessions() {
+            const confirmed = confirm('Clean up expired sessions? This will log out inactive users.');
+            if (!confirmed) return;
+            
+            try {
+                const response = await authenticatedFetch('/api/admin/cleanup-sessions', {
+                    method: 'POST'
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    alert(`Session cleanup completed. ${result.cleaned_count || 0} sessions removed.`);
+                    loadSystemStats(); // Refresh stats
+                } else {
+                    alert('Error cleaning up sessions: ' + result.error);
+                }
+            } catch (error) {
+                console.error('Error cleaning up sessions:', error);
+                alert('Failed to cleanup sessions');
+            }
         }
 
-        function exportLogs() {
-            alert('Log export functionality coming soon');
+        async function optimizeDatabase() {
+            const confirmed = confirm('Optimize the database? This may take a few minutes and could affect performance temporarily.');
+            if (!confirmed) return;
+            
+            try {
+                const response = await authenticatedFetch('/api/admin/optimize-db', {
+                    method: 'POST'
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    alert('Database optimization completed successfully!');
+                } else {
+                    alert('Error optimizing database: ' + result.error);
+                }
+            } catch (error) {
+                console.error('Error optimizing database:', error);
+                alert('Failed to optimize database');
+            }
+        }
+
+        async function systemRestart() {
+            const confirmed = confirm('Are you sure you want to restart the system? All users will be disconnected.');
+            if (!confirmed) return;
+            
+            const doubleConfirm = confirm('This will restart the entire application. Are you absolutely sure?');
+            if (!doubleConfirm) return;
+            
+            try {
+                const response = await authenticatedFetch('/api/admin/restart', {
+                    method: 'POST'
+                });
+                
+                if (response.ok) {
+                    alert('System restart initiated. The application will be unavailable for a few minutes.');
+                    setTimeout(() => {
+                        window.location.href = '/login';
+                    }, 3000);
+                } else {
+                    const result = await response.json();
+                    alert('Error restarting system: ' + result.error);
+                }
+            } catch (error) {
+                console.error('Error restarting system:', error);
+                alert('Failed to restart system');
+            }
+        }
+
+        async function searchUsers() {
+            const searchTerm = document.getElementById('user-search').value.trim();
+            
+            if (!searchTerm) {
+                alert('Please enter a search term');
+                return;
+            }
+            
+            try {
+                const response = await authenticatedFetch(`/api/admin/users/search?q=${encodeURIComponent(searchTerm)}`);
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    displayUsers(data.users);
+                } else {
+                    const result = await response.json();
+                    alert('Error searching users: ' + result.error);
+                }
+            } catch (error) {
+                console.error('Error searching users:', error);
+                alert('Failed to search users');
+            }
+        }
+
+        async function exportLogs() {
+            try {
+                const filter = document.getElementById('log-filter').value;
+                const url = `/api/admin/audit-logs/export${filter ? `?filter=${filter}` : ''}`;
+                const response = await authenticatedFetch(url);
+                
+                if (response.ok) {
+                    const blob = await response.blob();
+                    const url = URL.createObjectURL(blob);
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.download = `audit-logs-${new Date().toISOString().split('T')[0]}.csv`;
+                    link.click();
+                    URL.revokeObjectURL(url);
+                    alert('Audit logs exported successfully!');
+                } else {
+                    const result = await response.json();
+                    alert('Error exporting logs: ' + result.error);
+                }
+            } catch (error) {
+                console.error('Error exporting logs:', error);
+                alert('Failed to export logs');
+            }
+        }
+        
+        async function revokeInvite(inviteId) {
+            const confirmed = confirm('Are you sure you want to revoke this invite code?');
+            if (!confirmed) return;
+            
+            try {
+                const response = await authenticatedFetch(`/api/admin/invites/${inviteId}`, {
+                    method: 'DELETE'
+                });
+                
+                if (response.ok) {
+                    alert('Invite code revoked successfully');
+                    loadActiveInvites(); // Refresh the list
+                } else {
+                    const result = await response.json();
+                    alert('Error revoking invite: ' + result.error);
+                }
+            } catch (error) {
+                console.error('Error revoking invite:', error);
+                alert('Failed to revoke invite');
+            }
         }
 
         async function authenticatedFetch(url, options = {}) {
@@ -595,13 +1065,20 @@
             font-size: 0.75rem;
             font-weight: bold;
         }
+        
         .badge-success {
             background: #28a745;
             color: white;
         }
+        
         .badge-warning {
             background: #ffc107;
             color: black;
+        }
+        
+        .badge-danger {
+            background: #dc3545;
+            color: white;
         }
     </style>
 </body>

@@ -1,5 +1,7 @@
 """Character creation functionality for Star Wars RPG."""
 
+import json
+import os
 from typing import Dict, List
 from .models import Character, Career, Specialization, GameLine, Characteristic
 
@@ -9,7 +11,7 @@ class CharacterCreator:
     
     def __init__(self):
         self.careers = self._initialize_careers()
-        self.species_data = self._initialize_species()
+        self.species_data = self._load_extracted_species_data()
     
     def _initialize_careers(self) -> Dict[str, Career]:
         """Initialize available careers for each game line."""
@@ -252,6 +254,14 @@ class CharacterCreator:
                 "starting_xp": 100,
                 "special_abilities": ["Amphibious", "Pheromone detection"]
             },
+            "Neimoidian": {
+                "characteristics": {"brawn": 1, "agility": 2, "intellect": 3, 
+                                 "cunning": 3, "willpower": 1, "presence": 2},
+                "wound_threshold": 9,
+                "strain_threshold": 11,
+                "starting_xp": 100,
+                "special_abilities": ["One rank in Negotiation", "One rank in Knowledge (Core Worlds)", "Coward: Add setback to fear checks"]
+            },
             "Zabrak": {
                 "characteristics": {"brawn": 2, "agility": 2, "intellect": 2, 
                                  "cunning": 2, "willpower": 3, "presence": 1},
@@ -327,6 +337,224 @@ class CharacterCreator:
                 "strain_threshold": 10,
                 "starting_xp": 100,
                 "special_abilities": ["Natural mystics", "Wanderlust"]
+            },
+            
+            # Era of the Republic Species
+            "Clone": {
+                "characteristics": {"brawn": 2, "agility": 2, "intellect": 2, 
+                                 "cunning": 2, "willpower": 2, "presence": 2},
+                "wound_threshold": 11,
+                "strain_threshold": 11,
+                "starting_xp": 100,
+                "special_abilities": ["One rank in Knowledge (Warfare)", "One rank in Resilience", "Kamino Training: One rank in Physical Training talent"]
+            },
+            "Dathomirian": {
+                "characteristics": {"brawn": 3, "agility": 2, "intellect": 2, 
+                                 "cunning": 2, "willpower": 3, "presence": 1},
+                "wound_threshold": 10,
+                "strain_threshold": 11,
+                "starting_xp": 100,
+                "special_abilities": ["One rank in Coordination", "One rank in Survival", "Nightsister Magic"]
+            },
+            "Harch": {
+                "characteristics": {"brawn": 2, "agility": 3, "intellect": 2, 
+                                 "cunning": 2, "willpower": 1, "presence": 2},
+                "wound_threshold": 10,
+                "strain_threshold": 10,
+                "starting_xp": 100,
+                "special_abilities": ["Multiple arms", "Natural climbers", "Web spinners"]
+            },
+            "Karkarodon": {
+                "characteristics": {"brawn": 3, "agility": 2, "intellect": 2, 
+                                 "cunning": 2, "willpower": 2, "presence": 1},
+                "wound_threshold": 12,
+                "strain_threshold": 10,
+                "starting_xp": 90,
+                "special_abilities": ["One rank in Athletics", "Amphibious", "Jaws: +1 damage, Critical 3"]
+            },
+            
+            # Additional Popular Species
+            "Togruta": {
+                "characteristics": {"brawn": 2, "agility": 2, "intellect": 2, 
+                                 "cunning": 2, "willpower": 3, "presence": 1},
+                "wound_threshold": 10,
+                "strain_threshold": 11,
+                "starting_xp": 100,
+                "special_abilities": ["Pack hunters", "Echolocation", "Natural mystics"]
+            },
+            "Weequay": {
+                "characteristics": {"brawn": 3, "agility": 1, "intellect": 2, 
+                                 "cunning": 2, "willpower": 2, "presence": 2},
+                "wound_threshold": 12,
+                "strain_threshold": 9,
+                "starting_xp": 90,
+                "special_abilities": ["Desert dwellers", "Pheromone communication", "Tough hide"]
+            },
+            "Quarren": {
+                "characteristics": {"brawn": 2, "agility": 2, "intellect": 3, 
+                                 "cunning": 2, "willpower": 1, "presence": 2},
+                "wound_threshold": 10,
+                "strain_threshold": 10,
+                "starting_xp": 100,
+                "special_abilities": ["Amphibious", "Ink cloud", "Tentacle dexterity"]
+            },
+            "Ithorian": {
+                "characteristics": {"brawn": 2, "agility": 1, "intellect": 2, 
+                                 "cunning": 2, "willpower": 3, "presence": 2},
+                "wound_threshold": 11,
+                "strain_threshold": 11,
+                "starting_xp": 100,
+                "special_abilities": ["Nature bond", "Sonic bellow", "Peaceful nature"]
+            },
+            
+            # Additional Species from Complete Species List
+            "Aqualish": {
+                "characteristics": {"brawn": 3, "agility": 2, "intellect": 2, 
+                                 "cunning": 1, "willpower": 2, "presence": 2},
+                "wound_threshold": 11,
+                "strain_threshold": 8,
+                "starting_xp": 90,
+                "special_abilities": ["One rank in Brawl", "Amphibious: Can breathe underwater", "Sub-species options available"]
+            },
+            "Arcona": {
+                "characteristics": {"brawn": 2, "agility": 2, "intellect": 2, 
+                                 "cunning": 3, "willpower": 1, "presence": 2},
+                "wound_threshold": 10,
+                "strain_threshold": 10,
+                "starting_xp": 100,
+                "special_abilities": ["One rank in Vigilance", "Desert adaptation", "Mood readers: Boost to Charm/Negotiation"]
+            },
+            "Chevin": {
+                "characteristics": {"brawn": 3, "agility": 1, "intellect": 2, 
+                                 "cunning": 2, "willpower": 3, "presence": 1},
+                "wound_threshold": 11,
+                "strain_threshold": 11,
+                "starting_xp": 80,
+                "special_abilities": ["One rank in Negotiation", "Advanced olfaction", "Thick hide: One rank in Durable"]
+            },
+            "Falleen": {
+                "characteristics": {"brawn": 2, "agility": 1, "intellect": 2, 
+                                 "cunning": 2, "willpower": 2, "presence": 3},
+                "wound_threshold": 10,
+                "strain_threshold": 12,
+                "starting_xp": 90,
+                "special_abilities": ["One rank in Charm", "Beguiling Pheromones: Upgrade social checks"]
+            },
+            "Gotal": {
+                "characteristics": {"brawn": 2, "agility": 2, "intellect": 2, 
+                                 "cunning": 2, "willpower": 3, "presence": 1},
+                "wound_threshold": 9,
+                "strain_threshold": 8,
+                "starting_xp": 100,
+                "special_abilities": ["One rank in Perception", "Energy Sensitivity: Sense emotions within short range"]
+            },
+            "Gran": {
+                "characteristics": {"brawn": 2, "agility": 1, "intellect": 2, 
+                                 "cunning": 2, "willpower": 2, "presence": 3},
+                "wound_threshold": 10,
+                "strain_threshold": 9,
+                "starting_xp": 100,
+                "special_abilities": ["One rank in Charm or Negotiation", "Enhanced Vision: Remove setback from ranged/perception"]
+            },
+            "Klatooinian": {
+                "characteristics": {"brawn": 2, "agility": 2, "intellect": 2, 
+                                 "cunning": 1, "willpower": 3, "presence": 2},
+                "wound_threshold": 10,
+                "strain_threshold": 10,
+                "starting_xp": 100,
+                "special_abilities": ["One rank in Brawl, Ranged (Heavy), or Ranged (Light)", "One additional non-career skill rank"]
+            },
+            "Muun": {
+                "characteristics": {"brawn": 1, "agility": 2, "intellect": 3, 
+                                 "cunning": 3, "willpower": 1, "presence": 2},
+                "wound_threshold": 9,
+                "strain_threshold": 9,
+                "starting_xp": 90,
+                "special_abilities": ["One rank in Knowledge (Education) and Knowledge (Core Worlds)", "Deep Pockets: +1,000 credits"]
+            },
+            "Sathari": {
+                "characteristics": {"brawn": 1, "agility": 3, "intellect": 2, 
+                                 "cunning": 2, "willpower": 2, "presence": 2},
+                "wound_threshold": 8,
+                "strain_threshold": 10,
+                "starting_xp": 100,
+                "special_abilities": ["One rank in Coordination", "Glider: Safe falling and gap crossing"]
+            },
+            "Toydarian": {
+                "characteristics": {"brawn": 1, "agility": 3, "intellect": 2, 
+                                 "cunning": 2, "willpower": 2, "presence": 2},
+                "wound_threshold": 9,
+                "strain_threshold": 12,
+                "starting_xp": 90,
+                "special_abilities": ["Silhouette 0: Smaller than average", "Hoverer: Wings allow hovering movement"]
+            }
+        }
+    
+    def _load_extracted_species_data(self) -> Dict[str, Dict]:
+        """Load species data from extracted SWRPG PDF data, with core species fallback."""
+        # Start with core hardcoded species for compatibility
+        core_species = self._get_core_species_data()
+        
+        # Get the path to the comprehensive species data
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        project_root = os.path.dirname(os.path.dirname(current_dir))
+        species_file = os.path.join(project_root, 'swrpg_extracted_data', 'json', 'comprehensive_species_data.json')
+        
+        try:
+            with open(species_file, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+            
+            # Extract species data from the JSON
+            extracted_species = data.get('species', {})
+            
+            if extracted_species:
+                # Merge extracted species with core species (extracted takes precedence)
+                combined_species = {**core_species, **extracted_species}
+                print(f"✅ Loaded {len(extracted_species)} species from comprehensive SWRPG sourcebooks + {len(core_species)} core species")
+                return combined_species
+            else:
+                print("⚠️ No species found in extracted data, using core species only")
+                return core_species
+                
+        except FileNotFoundError:
+            print("⚠️ Extracted species data file not found, using core species only")
+            return core_species
+        except json.JSONDecodeError:
+            print("⚠️ Error parsing extracted species data, using core species only")
+            return core_species
+        except Exception as e:
+            print(f"⚠️ Unexpected error loading extracted species data: {e}, using core species only")
+            return core_species
+    
+    def _get_core_species_data(self) -> Dict[str, Dict]:
+        """Get essential core species data for compatibility."""
+        return {
+            "Human": {
+                "characteristics": {"brawn": 2, "agility": 2, "intellect": 2, 
+                                 "cunning": 2, "willpower": 2, "presence": 2},
+                "wound_threshold": 10,
+                "strain_threshold": 10,
+                "starting_xp": 110,
+                "special_abilities": ["Extra skill rank in two different skills"],
+                "source": "Core - Edge of the Empire"
+            },
+            "Twi'lek": {
+                "characteristics": {"brawn": 1, "agility": 2, "intellect": 2, 
+                                 "cunning": 3, "willpower": 2, "presence": 2},
+                "wound_threshold": 10,
+                "strain_threshold": 11,
+                "starting_xp": 100,
+                "special_abilities": ["Remove one setback die from charm and deception checks"],
+                "source": "Core - Edge of the Empire"
+            },
+            "Wookiee": {
+                "characteristics": {"brawn": 3, "agility": 2, "intellect": 2, 
+                                 "cunning": 2, "willpower": 1, "presence": 2},
+                "wound_threshold": 14,
+                "strain_threshold": 8,
+                "starting_xp": 90,
+                "special_abilities": ["Rage ability", "Natural claws (Brawl +1 damage)"],
+                "source": "Core - Edge of the Empire"
             }
         }
     

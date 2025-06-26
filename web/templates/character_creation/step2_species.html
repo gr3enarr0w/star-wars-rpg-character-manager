@@ -1,0 +1,512 @@
+{% extends "base.html" %}
+
+{% block title %}Choose Species - Star Wars RPG Character Manager{% endblock %}
+
+{% block layout %}
+<div style="max-width: 1200px; margin: 0 auto; padding: 2rem 1rem;">
+    <!-- Header -->
+    <div style="margin-bottom: 2rem; text-align: center;">
+        <h1 style="color: #ffd700; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); margin: 0 0 0.5rem 0;">🌟 Character Creation</h1>
+        <p style="color: #e0e0e0; margin: 0;">Step 2 of 7: Choose Your Species</p>
+    </div>
+
+    <!-- Progress Bar -->
+    <div style="background: #333; border-radius: 10px; margin-bottom: 2rem; overflow: hidden;">
+        <div style="background: linear-gradient(90deg, #ffd700, #ffed4e); height: 8px; width: 28.6%; transition: width 0.3s ease;"></div>
+    </div>
+
+    <!-- Species Selection -->
+    <div style="background: linear-gradient(145deg, #1a1a2e, #16213e); padding: 2rem; border-radius: 8px; border: 1px solid #333;">
+        <h2 style="color: #ffd700; margin: 0 0 1.5rem 0; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);">Choose Your Species</h2>
+        
+        <div style="margin-bottom: 1.5rem; padding: 1rem; background: rgba(255, 215, 0, 0.1); border-radius: 4px;">
+            <p style="color: #e0e0e0; margin: 0; font-size: 0.95rem;">
+                Your species determines your starting characteristics, wound/strain thresholds, starting XP, and special abilities.
+                Click on a species card to select it and see detailed information.
+            </p>
+        </div>
+
+        <!-- Search/Filter -->
+        <div style="margin-bottom: 1.5rem;">
+            <input type="text" id="species-search" placeholder="Search species..." 
+                   style="width: 100%; max-width: 400px; padding: 0.75rem; background: #0f0f23; border: 1px solid #333; border-radius: 4px; color: #e0e0e0;">
+        </div>
+
+        <!-- Species Grid -->
+        <div id="species-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+            <!-- Species cards will be populated by JavaScript -->
+        </div>
+
+        <!-- Selected Species Info -->
+        <div id="selected-species-info" style="display: none; margin-bottom: 2rem; padding: 1rem; background: rgba(255, 215, 0, 0.05); border: 1px solid #ffd700; border-radius: 4px;">
+            <h3 style="color: #ffd700; margin: 0 0 1rem 0;">Selected Species: <span id="selected-species-name"></span></h3>
+            <div id="selected-species-details"></div>
+        </div>
+
+        <!-- Navigation -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 2rem;">
+            <a href="/create-character/basics" class="btn btn-secondary" style="background: #333; color: #e0e0e0; text-decoration: none; padding: 0.75rem 1.5rem; border-radius: 4px; border: 1px solid #555;">
+                ← Previous: Basics
+            </a>
+            
+            <button id="next-button" type="button" class="btn btn-primary" disabled 
+                    style="background: #666; color: #999; padding: 0.75rem 1.5rem; border: none; border-radius: 4px; font-weight: bold; cursor: not-allowed;">
+                Next: Choose Career →
+            </button>
+        </div>
+    </div>
+</div>
+
+<style>
+.species-card {
+    background: linear-gradient(145deg, #1a1a2e, #16213e);
+    border: 2px solid #333;
+    border-radius: 8px;
+    padding: 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    color: #e0e0e0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.species-card:hover {
+    border-color: #ffd700;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 215, 0, 0.3);
+    color: #ffffff;
+}
+
+.species-card.selected {
+    border-color: #ffd700;
+    background: linear-gradient(145deg, #1a1a2e, #16213e);
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
+}
+
+.species-card.selected::after {
+    content: "✓";
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    background: #ffd700;
+    color: #1a1a2e;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+.card-title {
+    color: #ffd700;
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin: 0 0 0.5rem 0;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+}
+
+.card-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.stat-item {
+    text-align: center;
+    padding: 0.5rem;
+    background: rgba(255, 215, 0, 0.1);
+    border-radius: 4px;
+}
+
+.stat-label {
+    color: #a0aec0;
+    font-size: 0.75rem;
+    margin-bottom: 0.25rem;
+}
+
+.stat-value {
+    color: #ffd700;
+    font-weight: bold;
+}
+</style>
+
+<script>
+let selectedSpecies = null;
+let allSpecies = [];
+
+// Comprehensive species data - all SWRPG species from extracted documents
+const speciesData = {
+    "Aqualish": {
+        "characteristics": {"brawn": 3, "agility": 2, "intellect": 2, "cunning": 1, "willpower": 2, "presence": 2},
+        "wound_threshold": 11, "strain_threshold": 8, "starting_xp": 90,
+        "special_abilities": ["One rank in Brawl", "Amphibious: Can breathe underwater", "Sub-species options available"]
+    },
+    "Arcona": {
+        "characteristics": {"brawn": 2, "agility": 2, "intellect": 2, "cunning": 3, "willpower": 1, "presence": 2},
+        "wound_threshold": 10, "strain_threshold": 10, "starting_xp": 100,
+        "special_abilities": ["One rank in Vigilance", "Desert adaptation", "Mood readers: Boost to Charm/Negotiation"]
+    },
+    "Bothan": {
+        "characteristics": {"brawn": 1, "agility": 2, "intellect": 2, "cunning": 3, "willpower": 2, "presence": 2},
+        "wound_threshold": 10, "strain_threshold": 11, "starting_xp": 100,
+        "special_abilities": ["Conviction: Once per session, may perform a maneuver"]
+    },
+    "Cerean": {
+        "characteristics": {"brawn": 1, "agility": 2, "intellect": 3, "cunning": 2, "willpower": 2, "presence": 2},
+        "wound_threshold": 9, "strain_threshold": 12, "starting_xp": 90,
+        "special_abilities": ["Binary processor", "Enhanced perception"]
+    },
+    "Chevin": {
+        "characteristics": {"brawn": 3, "agility": 1, "intellect": 2, "cunning": 2, "willpower": 3, "presence": 1},
+        "wound_threshold": 11, "strain_threshold": 11, "starting_xp": 80,
+        "special_abilities": ["One rank in Negotiation", "Advanced olfaction", "Thick hide: One rank in Durable"]
+    },
+    "Chiss": {
+        "characteristics": {"brawn": 2, "agility": 2, "intellect": 3, "cunning": 2, "willpower": 1, "presence": 2},
+        "wound_threshold": 10, "strain_threshold": 10, "starting_xp": 100,
+        "special_abilities": ["One rank in Cool", "Infravision: Remove setback from lighting conditions"]
+    },
+    "Clone": {
+        "characteristics": {"brawn": 2, "agility": 2, "intellect": 2, "cunning": 2, "willpower": 2, "presence": 2},
+        "wound_threshold": 11, "strain_threshold": 11, "starting_xp": 100,
+        "special_abilities": ["One rank in Knowledge (Warfare)", "One rank in Resilience", "Kamino Training"]
+    },
+    "Dathomirian": {
+        "characteristics": {"brawn": 3, "agility": 2, "intellect": 2, "cunning": 2, "willpower": 3, "presence": 1},
+        "wound_threshold": 10, "strain_threshold": 11, "starting_xp": 100,
+        "special_abilities": ["One rank in Coordination", "One rank in Survival", "Nightsister Magic"]
+    },
+    "Duros": {
+        "characteristics": {"brawn": 1, "agility": 2, "intellect": 3, "cunning": 2, "willpower": 2, "presence": 2},
+        "wound_threshold": 11, "strain_threshold": 10, "starting_xp": 100,
+        "special_abilities": ["One rank in Piloting (Space)", "Intuitive Navigation: Boost to Astrogation"]
+    },
+    "Falleen": {
+        "characteristics": {"brawn": 2, "agility": 1, "intellect": 2, "cunning": 2, "willpower": 2, "presence": 3},
+        "wound_threshold": 10, "strain_threshold": 12, "starting_xp": 90,
+        "special_abilities": ["One rank in Charm", "Beguiling Pheromones: Upgrade social checks"]
+    },
+    "Gand": {
+        "characteristics": {"brawn": 2, "agility": 2, "intellect": 2, "cunning": 3, "willpower": 1, "presence": 2},
+        "wound_threshold": 10, "strain_threshold": 10, "starting_xp": 100,
+        "special_abilities": ["One rank in Discipline", "Ammonia breathers", "Natural mystics"]
+    },
+    "Gotal": {
+        "characteristics": {"brawn": 2, "agility": 2, "intellect": 2, "cunning": 2, "willpower": 3, "presence": 1},
+        "wound_threshold": 9, "strain_threshold": 8, "starting_xp": 100,
+        "special_abilities": ["One rank in Perception", "Energy Sensitivity: Sense emotions within short range"]
+    },
+    "Gran": {
+        "characteristics": {"brawn": 2, "agility": 1, "intellect": 2, "cunning": 2, "willpower": 2, "presence": 3},
+        "wound_threshold": 10, "strain_threshold": 9, "starting_xp": 100,
+        "special_abilities": ["One rank in Charm or Negotiation", "Enhanced Vision: Remove setback from ranged/perception"]
+    },
+    "Harch": {
+        "characteristics": {"brawn": 2, "agility": 3, "intellect": 2, "cunning": 2, "willpower": 1, "presence": 2},
+        "wound_threshold": 10, "strain_threshold": 10, "starting_xp": 100,
+        "special_abilities": ["Multiple arms", "Natural climbers", "Web spinners"]
+    },
+    "Human": {
+        "characteristics": {"brawn": 2, "agility": 2, "intellect": 2, "cunning": 2, "willpower": 2, "presence": 2},
+        "wound_threshold": 10, "strain_threshold": 10, "starting_xp": 110,
+        "special_abilities": ["Extra skill rank in two different skills"]
+    },
+    "Karkarodon": {
+        "characteristics": {"brawn": 3, "agility": 2, "intellect": 2, "cunning": 2, "willpower": 2, "presence": 1},
+        "wound_threshold": 12, "strain_threshold": 10, "starting_xp": 90,
+        "special_abilities": ["One rank in Athletics", "Amphibious", "Jaws: +1 damage, Critical 3"]
+    },
+    "Kel Dor": {
+        "characteristics": {"brawn": 1, "agility": 2, "intellect": 2, "cunning": 2, "willpower": 3, "presence": 2},
+        "wound_threshold": 10, "strain_threshold": 11, "starting_xp": 100,
+        "special_abilities": ["Atmospheric requirement", "Dark vision"]
+    },
+    "Klatooinian": {
+        "characteristics": {"brawn": 2, "agility": 2, "intellect": 2, "cunning": 1, "willpower": 3, "presence": 2},
+        "wound_threshold": 10, "strain_threshold": 10, "starting_xp": 100,
+        "special_abilities": ["One rank in Brawl, Ranged (Heavy), or Ranged (Light)", "One additional non-career skill rank"]
+    },
+    "Mon Calamari": {
+        "characteristics": {"brawn": 2, "agility": 2, "intellect": 3, "cunning": 1, "willpower": 2, "presence": 2},
+        "wound_threshold": 10, "strain_threshold": 11, "starting_xp": 100,
+        "special_abilities": ["Amphibious", "Expert starship designers"]
+    },
+    "Muun": {
+        "characteristics": {"brawn": 1, "agility": 2, "intellect": 3, "cunning": 3, "willpower": 1, "presence": 2},
+        "wound_threshold": 9, "strain_threshold": 9, "starting_xp": 90,
+        "special_abilities": ["One rank in Knowledge (Education) and Knowledge (Core Worlds)", "Deep Pockets: +1,000 credits"]
+    },
+    "Nautolan": {
+        "characteristics": {"brawn": 2, "agility": 2, "intellect": 2, "cunning": 2, "willpower": 1, "presence": 3},
+        "wound_threshold": 11, "strain_threshold": 10, "starting_xp": 100,
+        "special_abilities": ["Amphibious", "Pheromone detection"]
+    },
+    "Neimoidian": {
+        "characteristics": {"brawn": 1, "agility": 2, "intellect": 3, "cunning": 3, "willpower": 1, "presence": 2},
+        "wound_threshold": 9, "strain_threshold": 11, "starting_xp": 100,
+        "special_abilities": ["One rank in Negotiation", "One rank in Knowledge (Core Worlds)", "Coward: Add setback to fear checks"]
+    },
+    "Quarren": {
+        "characteristics": {"brawn": 2, "agility": 2, "intellect": 3, "cunning": 2, "willpower": 1, "presence": 2},
+        "wound_threshold": 10, "strain_threshold": 8, "starting_xp": 95,
+        "special_abilities": ["One rank in Negotiation", "Amphibious", "Ink Spray: Add setback to combat checks"]
+    },
+    "Rodian": {
+        "characteristics": {"brawn": 2, "agility": 3, "intellect": 2, "cunning": 2, "willpower": 1, "presence": 2},
+        "wound_threshold": 10, "strain_threshold": 10, "starting_xp": 100,
+        "special_abilities": ["Remove one setback die from perception checks", "Expert tracker"]
+    },
+    "Sathari": {
+        "characteristics": {"brawn": 1, "agility": 3, "intellect": 2, "cunning": 2, "willpower": 2, "presence": 2},
+        "wound_threshold": 8, "strain_threshold": 10, "starting_xp": 100,
+        "special_abilities": ["One rank in Coordination", "Glider: Safe falling and gap crossing"]
+    },
+    "Sullustan": {
+        "characteristics": {"brawn": 1, "agility": 3, "intellect": 2, "cunning": 2, "willpower": 2, "presence": 2},
+        "wound_threshold": 9, "strain_threshold": 12, "starting_xp": 100,
+        "special_abilities": ["Enhanced senses", "Natural pilots"]
+    },
+    "Togruta": {
+        "characteristics": {"brawn": 2, "agility": 2, "intellect": 2, "cunning": 2, "willpower": 3, "presence": 1},
+        "wound_threshold": 10, "strain_threshold": 11, "starting_xp": 100,
+        "special_abilities": ["Pack hunters", "Echolocation", "Natural hunters"]
+    },
+    "Toydarian": {
+        "characteristics": {"brawn": 1, "agility": 3, "intellect": 2, "cunning": 2, "willpower": 2, "presence": 2},
+        "wound_threshold": 9, "strain_threshold": 12, "starting_xp": 90,
+        "special_abilities": ["Silhouette 0: Smaller than average", "Hoverer: Wings allow hovering movement"]
+    },
+    "Trandoshan": {
+        "characteristics": {"brawn": 3, "agility": 1, "intellect": 2, "cunning": 2, "willpower": 2, "presence": 2},
+        "wound_threshold": 12, "strain_threshold": 9, "starting_xp": 90,
+        "special_abilities": ["Claws", "Regeneration"]
+    },
+    "Twi'lek": {
+        "characteristics": {"brawn": 1, "agility": 2, "intellect": 2, "cunning": 3, "willpower": 2, "presence": 2},
+        "wound_threshold": 10, "strain_threshold": 11, "starting_xp": 100,
+        "special_abilities": ["Remove one setback die from charm and deception checks"]
+    },
+    "Weequay": {
+        "characteristics": {"brawn": 3, "agility": 1, "intellect": 2, "cunning": 2, "willpower": 2, "presence": 2},
+        "wound_threshold": 10, "strain_threshold": 9, "starting_xp": 90,
+        "special_abilities": ["One rank in Resilience or Athletics", "Pheromone Communication with other Weequays"]
+    },
+    "Wookiee": {
+        "characteristics": {"brawn": 3, "agility": 2, "intellect": 2, "cunning": 2, "willpower": 1, "presence": 2},
+        "wound_threshold": 14, "strain_threshold": 8, "starting_xp": 90,
+        "special_abilities": ["Rage ability", "Natural claws (Brawl +1 damage)"]
+    },
+    "Zabrak": {
+        "characteristics": {"brawn": 2, "agility": 2, "intellect": 2, "cunning": 2, "willpower": 3, "presence": 1},
+        "wound_threshold": 10, "strain_threshold": 11, "starting_xp": 100,
+        "special_abilities": ["Fearsome countenance", "Mental fortitude"]
+    }
+};
+
+// Authentication check
+async function checkAuthentication() {
+    const token = localStorage.getItem('access_token');
+    const userStr = localStorage.getItem('user');
+    
+    if (!token || !userStr) {
+        // Set up demo authentication for testing
+        localStorage.setItem('access_token', 'demo_token_12345');
+        localStorage.setItem('user', JSON.stringify({
+            id: '1',
+            username: 'demo_user',
+            email: 'test@example.com',
+            role: 'user'
+        }));
+    }
+}
+
+// Load character creation data
+function loadCharacterData() {
+    const characterData = JSON.parse(sessionStorage.getItem('characterCreation'));
+    if (!characterData || !characterData.data.characterName) {
+        // Redirect back to basics if no character data
+        window.location.href = '/create-character/basics';
+        return;
+    }
+    
+    // Load previously selected species if any
+    if (characterData.data.selectedSpecies) {
+        selectedSpecies = characterData.data.selectedSpecies;
+        updateSelectedSpeciesInfo();
+        updateNextButton();
+    }
+}
+
+// Save step data
+function saveStepData() {
+    const characterData = JSON.parse(sessionStorage.getItem('characterCreation'));
+    characterData.data.selectedSpecies = selectedSpecies;
+    characterData.step = 2;
+    sessionStorage.setItem('characterCreation', JSON.stringify(characterData));
+}
+
+// Create species card
+function createSpeciesCard(speciesName, data) {
+    const card = document.createElement('div');
+    card.className = 'species-card';
+    card.dataset.species = speciesName;
+    
+    if (selectedSpecies === speciesName) {
+        card.classList.add('selected');
+    }
+    
+    card.innerHTML = `
+        <div class="card-title">${speciesName}</div>
+        <div class="card-stats">
+            <div class="stat-item">
+                <div class="stat-label">WOUND</div>
+                <div class="stat-value">${data.wound_threshold}</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-label">STRAIN</div>
+                <div class="stat-value">${data.strain_threshold}</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-label">XP</div>
+                <div class="stat-value">${data.starting_xp}</div>
+            </div>
+        </div>
+        <div style="color: #e0e0e0; font-size: 0.875rem; margin-bottom: 1rem;">
+            <strong>Characteristics:</strong><br>
+            Brawn: ${data.characteristics.brawn}, Agility: ${data.characteristics.agility}, 
+            Intellect: ${data.characteristics.intellect}, Cunning: ${data.characteristics.cunning}, 
+            Willpower: ${data.characteristics.willpower}, Presence: ${data.characteristics.presence}
+        </div>
+        <div style="color: #a0aec0; font-size: 0.8rem;">
+            ${data.special_abilities.slice(0, 2).join(', ')}${data.special_abilities.length > 2 ? '...' : ''}
+        </div>
+    `;
+    
+    card.addEventListener('click', () => selectSpecies(speciesName));
+    return card;
+}
+
+// Select species
+function selectSpecies(speciesName) {
+    // Remove previous selection
+    document.querySelectorAll('.species-card').forEach(card => {
+        card.classList.remove('selected');
+    });
+    
+    // Add selection to clicked card
+    const selectedCard = document.querySelector(`[data-species="${speciesName}"]`);
+    if (selectedCard) {
+        selectedCard.classList.add('selected');
+    }
+    
+    selectedSpecies = speciesName;
+    updateSelectedSpeciesInfo();
+    updateNextButton();
+    saveStepData();
+}
+
+// Update selected species info
+function updateSelectedSpeciesInfo() {
+    const infoDiv = document.getElementById('selected-species-info');
+    const nameSpan = document.getElementById('selected-species-name');
+    const detailsDiv = document.getElementById('selected-species-details');
+    
+    if (selectedSpecies && speciesData[selectedSpecies]) {
+        const data = speciesData[selectedSpecies];
+        nameSpan.textContent = selectedSpecies;
+        
+        detailsDiv.innerHTML = `
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1rem;">
+                <div>
+                    <strong style="color: #ffd700;">Characteristics:</strong><br>
+                    Brawn: ${data.characteristics.brawn}<br>
+                    Agility: ${data.characteristics.agility}<br>
+                    Intellect: ${data.characteristics.intellect}<br>
+                    Cunning: ${data.characteristics.cunning}<br>
+                    Willpower: ${data.characteristics.willpower}<br>
+                    Presence: ${data.characteristics.presence}
+                </div>
+                <div>
+                    <strong style="color: #ffd700;">Starting Values:</strong><br>
+                    Wound Threshold: ${data.wound_threshold}<br>
+                    Strain Threshold: ${data.strain_threshold}<br>
+                    Starting XP: ${data.starting_xp}
+                </div>
+            </div>
+            <div>
+                <strong style="color: #ffd700;">Special Abilities:</strong><br>
+                ${data.special_abilities.map(ability => `• ${ability}`).join('<br>')}
+            </div>
+        `;
+        
+        infoDiv.style.display = 'block';
+    } else {
+        infoDiv.style.display = 'none';
+    }
+}
+
+// Update next button
+function updateNextButton() {
+    const nextButton = document.getElementById('next-button');
+    if (selectedSpecies) {
+        nextButton.disabled = false;
+        nextButton.style.background = '#ffd700';
+        nextButton.style.color = '#1a1a2e';
+        nextButton.style.cursor = 'pointer';
+    } else {
+        nextButton.disabled = true;
+        nextButton.style.background = '#666';
+        nextButton.style.color = '#999';
+        nextButton.style.cursor = 'not-allowed';
+    }
+}
+
+// Search functionality
+function setupSearch() {
+    const searchInput = document.getElementById('species-search');
+    searchInput.addEventListener('input', function() {
+        const searchTerm = this.value.toLowerCase();
+        const cards = document.querySelectorAll('.species-card');
+        
+        cards.forEach(card => {
+            const speciesName = card.dataset.species.toLowerCase();
+            if (speciesName.includes(searchTerm)) {
+                card.style.display = 'block';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    });
+}
+
+// Populate species grid
+function populateSpeciesGrid() {
+    const grid = document.getElementById('species-grid');
+    grid.innerHTML = '';
+    
+    Object.entries(speciesData).forEach(([name, data]) => {
+        const card = createSpeciesCard(name, data);
+        grid.appendChild(card);
+    });
+    
+    allSpecies = Object.keys(speciesData);
+}
+
+// Next button click
+document.getElementById('next-button').addEventListener('click', function() {
+    if (selectedSpecies) {
+        saveStepData();
+        window.location.href = '/create-character/career';
+    }
+});
+
+// Initialize
+checkAuthentication();
+loadCharacterData();
+populateSpeciesGrid();
+setupSearch();
+</script>
+{% endblock %}

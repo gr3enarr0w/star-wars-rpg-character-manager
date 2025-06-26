@@ -1,0 +1,380 @@
+{% extends "base.html" %}
+
+{% block title %}Choose Skills - Star Wars RPG Character Manager{% endblock %}
+
+{% block layout %}
+<div style="max-width: 1200px; margin: 0 auto; padding: 2rem 1rem;">
+    <!-- Header -->
+    <div style="margin-bottom: 2rem; text-align: center;">
+        <h1 style="color: #ffd700; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); margin: 0 0 0.5rem 0;">🌟 Character Creation</h1>
+        <p style="color: #e0e0e0; margin: 0;">Step 5 of 7: Choose Starting Skills</p>
+    </div>
+
+    <!-- Progress Bar -->
+    <div style="background: #333; border-radius: 10px; margin-bottom: 2rem; overflow: hidden;">
+        <div style="background: linear-gradient(90deg, #ffd700, #ffed4e); height: 8px; width: 71.5%; transition: width 0.3s ease;"></div>
+    </div>
+
+    <!-- Skills Selection -->
+    <div style="background: linear-gradient(145deg, #1a1a2e, #16213e); padding: 2rem; border-radius: 8px; border: 1px solid #333;">
+        <h2 style="color: #ffd700; margin: 0 0 1.5rem 0; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);">Choose Starting Skills</h2>
+        
+        <div style="margin-bottom: 1.5rem; padding: 1rem; background: rgba(255, 215, 0, 0.1); border-radius: 4px;">
+            <p style="color: #e0e0e0; margin: 0; font-size: 0.95rem;">
+                Your career provides several career skills that cost less to advance. You can spend XP to increase skill ranks during character creation.
+                <span id="xp-display" style="color: #ffd700; font-weight: bold;">Available XP: 0</span>
+            </p>
+        </div>
+
+        <!-- Filter Options -->
+        <div style="margin-bottom: 1.5rem;">
+            <label style="color: #ffd700; font-weight: bold; display: block; margin-bottom: 0.5rem;">Filter Skills:</label>
+            <select id="skill-filter" style="padding: 0.5rem; background: #0f0f23; border: 1px solid #333; border-radius: 4px; color: #e0e0e0;">
+                <option value="all">All Skills</option>
+                <option value="career">Career Skills Only</option>
+                <option value="general">General Skills Only</option>
+            </select>
+        </div>
+
+        <!-- Skills Grid -->
+        <div id="skills-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+            <!-- Skills will be populated by JavaScript -->
+        </div>
+
+        <!-- Summary -->
+        <div id="skills-summary" style="margin-bottom: 2rem; padding: 1rem; background: rgba(255, 215, 0, 0.05); border: 1px solid #ffd700; border-radius: 4px; display: none;">
+            <h3 style="color: #ffd700; margin: 0 0 1rem 0;">Skills Summary</h3>
+            <div id="summary-content"></div>
+        </div>
+
+        <!-- Navigation -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 2rem;">
+            <a href="/create-character/characteristics" class="btn btn-secondary" style="background: #333; color: #e0e0e0; text-decoration: none; padding: 0.75rem 1.5rem; border-radius: 4px; border: 1px solid #555;">
+                ← Previous: Characteristics
+            </a>
+            
+            <button id="next-button" type="button" class="btn btn-primary"
+                    style="background: #ffd700; color: #1a1a2e; padding: 0.75rem 1.5rem; border: none; border-radius: 4px; font-weight: bold; cursor: pointer;">
+                Next: Talents →
+            </button>
+        </div>
+    </div>
+</div>
+
+<style>
+.skill-card {
+    background: linear-gradient(145deg, #1a1a2e, #16213e);
+    border: 2px solid #333;
+    border-radius: 8px;
+    padding: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    color: #e0e0e0;
+}
+
+.skill-card:hover {
+    border-color: #ffd700;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(255, 215, 0, 0.3);
+}
+
+.skill-card.career-skill {
+    border-color: #4a9eff;
+    background: linear-gradient(145deg, #1a1a2e, #1a2a4e);
+}
+
+.skill-card.career-skill::before {
+    content: "CAREER";
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    background: #4a9eff;
+    color: #1a1a2e;
+    padding: 0.2rem 0.5rem;
+    border-radius: 3px;
+    font-size: 0.7rem;
+    font-weight: bold;
+}
+
+.skill-name {
+    color: #ffd700;
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin: 0 0 0.5rem 0;
+}
+
+.skill-characteristic {
+    color: #a0aec0;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+}
+
+.skill-ranks {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.rank-button {
+    background: #333;
+    border: 1px solid #555;
+    border-radius: 3px;
+    color: #e0e0e0;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.rank-button:hover {
+    background: #555;
+    border-color: #ffd700;
+}
+
+.rank-button:disabled {
+    background: #222;
+    color: #666;
+    cursor: not-allowed;
+}
+
+.rank-indicator {
+    display: flex;
+    gap: 0.2rem;
+}
+
+.rank-dot {
+    width: 0.7rem;
+    height: 0.7rem;
+    border-radius: 50%;
+    background: #333;
+    border: 1px solid #555;
+}
+
+.rank-dot.filled {
+    background: #ffd700;
+    border-color: #ffd700;
+}
+
+.xp-cost {
+    color: #4a9eff;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+</style>
+
+<script>
+let characterData = {};
+let skillData = {};
+let availableXP = 0;
+let spentXP = 0;
+
+// Define all skills with their characteristics
+const allSkills = {
+    "Astrogation": "Intellect",
+    "Athletics": "Brawn", 
+    "Charm": "Presence",
+    "Coercion": "Willpower",
+    "Computers": "Intellect",
+    "Cool": "Presence",
+    "Coordination": "Agility",
+    "Deception": "Cunning",
+    "Discipline": "Willpower",
+    "Leadership": "Presence",
+    "Mechanics": "Intellect",
+    "Medicine": "Intellect",
+    "Negotiation": "Presence",
+    "Perception": "Cunning",
+    "Piloting (Planetary)": "Agility",
+    "Piloting (Space)": "Agility",
+    "Ranged (Light)": "Agility",
+    "Ranged (Heavy)": "Agility",
+    "Resilience": "Brawn",
+    "Skulduggery": "Cunning",
+    "Stealth": "Agility",
+    "Streetwise": "Cunning",
+    "Survival": "Cunning",
+    "Vigilance": "Willpower"
+};
+
+// Load character creation data
+function loadCharacterData() {
+    const storedData = JSON.parse(sessionStorage.getItem('characterCreation'));
+    if (!storedData || !storedData.data.characterName) {
+        window.location.href = '/create-character/basics';
+        return;
+    }
+    
+    characterData = storedData.data;
+    
+    // Calculate available XP based on species
+    if (characterData.selectedSpecies && characterData.selectedSpecies.starting_xp) {
+        availableXP = characterData.selectedSpecies.starting_xp;
+    } else {
+        availableXP = 100; // Default
+    }
+    
+    // Initialize skill data
+    skillData = characterData.selectedSkills || {};
+    spentXP = characterData.skillsSpentXP || 0;
+    availableXP -= spentXP;
+    
+    updateXPDisplay();
+}
+
+// Save step data
+function saveStepData() {
+    const storedData = JSON.parse(sessionStorage.getItem('characterCreation'));
+    storedData.data.selectedSkills = skillData;
+    storedData.data.skillsSpentXP = spentXP;
+    storedData.step = 5;
+    sessionStorage.setItem('characterCreation', JSON.stringify(storedData));
+}
+
+function updateXPDisplay() {
+    document.getElementById('xp-display').textContent = `Available XP: ${availableXP}`;
+}
+
+function calculateSkillCost(skillName, currentRank, isCareer) {
+    const targetRank = currentRank + 1;
+    const baseCost = targetRank * 5;
+    return isCareer ? baseCost : baseCost + 5;
+}
+
+function isCareerSkill(skillName) {
+    return characterData.selectedCareer && 
+           characterData.selectedCareer.career_skills && 
+           characterData.selectedCareer.career_skills.includes(skillName);
+}
+
+function createSkillCard(skillName, characteristic) {
+    const isCareer = isCareerSkill(skillName);
+    const currentRank = skillData[skillName] || 0;
+    const canIncrease = currentRank < 5;
+    const cost = canIncrease ? calculateSkillCost(skillName, currentRank, isCareer) : 0;
+    const canAfford = availableXP >= cost;
+    
+    const card = document.createElement('div');
+    card.className = `skill-card ${isCareer ? 'career-skill' : ''}`;
+    card.innerHTML = `
+        <div class="skill-name">${skillName}</div>
+        <div class="skill-characteristic">${characteristic}</div>
+        <div class="skill-ranks">
+            <div class="rank-indicator">
+                ${[1,2,3,4,5].map(i => `
+                    <div class="rank-dot ${i <= currentRank ? 'filled' : ''}"></div>
+                `).join('')}
+            </div>
+            <div style="margin-left: auto; display: flex; gap: 0.5rem; align-items: center;">
+                ${currentRank > 0 ? `<button class="rank-button" onclick="decreaseSkill('${skillName}')">-</button>` : ''}
+                <span style="min-width: 2rem; text-align: center; color: #ffd700; font-weight: bold;">Rank ${currentRank}</span>
+                ${canIncrease ? `
+                    <button class="rank-button ${canAfford ? '' : 'disabled'}" 
+                            onclick="increaseSkill('${skillName}')" 
+                            ${canAfford ? '' : 'disabled'}>+</button>
+                    <span class="xp-cost">${cost} XP</span>
+                ` : '<span style="color: #666;">MAX</span>'}
+            </div>
+        </div>
+    `;
+    
+    return card;
+}
+
+function increaseSkill(skillName) {
+    const currentRank = skillData[skillName] || 0;
+    if (currentRank >= 5) return;
+    
+    const isCareer = isCareerSkill(skillName);
+    const cost = calculateSkillCost(skillName, currentRank, isCareer);
+    
+    if (availableXP >= cost) {
+        skillData[skillName] = currentRank + 1;
+        availableXP -= cost;
+        spentXP += cost;
+        updateXPDisplay();
+        populateSkillsGrid();
+        updateSummary();
+        saveStepData();
+    }
+}
+
+function decreaseSkill(skillName) {
+    const currentRank = skillData[skillName] || 0;
+    if (currentRank <= 0) return;
+    
+    const isCareer = isCareerSkill(skillName);
+    const cost = calculateSkillCost(skillName, currentRank - 1, isCareer);
+    
+    if (currentRank === 1) {
+        delete skillData[skillName];
+    } else {
+        skillData[skillName] = currentRank - 1;
+    }
+    
+    availableXP += cost;
+    spentXP -= cost;
+    updateXPDisplay();
+    populateSkillsGrid();
+    updateSummary();
+    saveStepData();
+}
+
+function populateSkillsGrid() {
+    const grid = document.getElementById('skills-grid');
+    const filter = document.getElementById('skill-filter').value;
+    
+    grid.innerHTML = '';
+    
+    Object.entries(allSkills).forEach(([skillName, characteristic]) => {
+        const isCareer = isCareerSkill(skillName);
+        
+        if (filter === 'career' && !isCareer) return;
+        if (filter === 'general' && isCareer) return;
+        
+        const card = createSkillCard(skillName, characteristic);
+        grid.appendChild(card);
+    });
+}
+
+function updateSummary() {
+    const summary = document.getElementById('skills-summary');
+    const content = document.getElementById('summary-content');
+    
+    const trainedSkills = Object.entries(skillData).filter(([_, rank]) => rank > 0);
+    
+    if (trainedSkills.length > 0) {
+        summary.style.display = 'block';
+        content.innerHTML = `
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.5rem;">
+                ${trainedSkills.map(([skill, rank]) => `
+                    <div style="color: #e0e0e0;">
+                        <strong style="color: #ffd700;">${skill}:</strong> Rank ${rank}
+                        ${isCareerSkill(skill) ? ' <span style="color: #4a9eff;">(Career)</span>' : ''}
+                    </div>
+                `).join('')}
+            </div>
+            <div style="margin-top: 1rem; color: #a0aec0;">
+                Total XP Spent on Skills: <span style="color: #ffd700; font-weight: bold;">${spentXP}</span>
+            </div>
+        `;
+    } else {
+        summary.style.display = 'none';
+    }
+}
+
+// Setup filter
+document.getElementById('skill-filter').addEventListener('change', populateSkillsGrid);
+
+// Next button
+document.getElementById('next-button').addEventListener('click', function() {
+    saveStepData();
+    window.location.href = '/create-character/talents';
+});
+
+// Initialize
+loadCharacterData();
+populateSkillsGrid();
+updateSummary();
+</script>
+{% endblock %}
