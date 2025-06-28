@@ -754,39 +754,27 @@ def create_character():
             if not data.get(field):
                 return jsonify({'error': f'Missing required field: {field}'}), 400
 
-        # Get creation context and obligations
-        creation_context = data.get('creation_context', 'new_campaign')
-        obligations = data.get('obligations', [])
+        # Simple character creation for form-based interface
+        try:
+            # Get species data for starting characteristics and XP
+            species_data = character_walkthrough.get_species_data().get(data['species'], {})
+            starting_characteristics = species_data.get('characteristics', {
+                'brawn': 2, 'agility': 2, 'intellect': 2, 
+                'cunning': 2, 'willpower': 2, 'presence': 2
+            })
+            starting_xp = species_data.get('starting_xp', 100)
+        except:
+            # Fallback to default values if walkthrough module fails
+            starting_characteristics = {
+                'brawn': 2, 'agility': 2, 'intellect': 2, 
+                'cunning': 2, 'willpower': 2, 'presence': 2
+            }
+            starting_xp = 100
         
-        # Validate character creation data with context
-        character_data = {
-            'skills': data.get('skills', {}),
-            'characteristics': data.get('characteristics', {}),
-            'obligations': obligations
-        }
-        
-        is_valid, errors = character_walkthrough.validate_character_creation(character_data, creation_context)
-        if not is_valid:
-            return jsonify({'error': 'Character validation failed', 'details': errors}), 400
+        # Use starting characteristics as final (no custom allocation for simple form)
+        final_characteristics = starting_characteristics
 
-        # Get species data for starting characteristics and XP
-        species_data = character_walkthrough.get_species_data().get(data['species'], {})
-        starting_characteristics = species_data.get('characteristics', {
-            'brawn': 2, 'agility': 2, 'intellect': 2, 
-            'cunning': 2, 'willpower': 2, 'presence': 2
-        })
-        
-        # Calculate starting XP including obligation bonuses
-        starting_xp = character_walkthrough.calculate_starting_xp(data['species'], obligations, creation_context)
-        
-        # Apply any characteristic upgrades from character data
-        final_characteristics = starting_characteristics.copy()
-        char_upgrades = data.get('characteristics', {})
-        for char_name, value in char_upgrades.items():
-            if char_name in final_characteristics:
-                final_characteristics[char_name] = value
-
-        # Create enhanced character model
+        # Create simple character model
         character = Character(
             user_id=current_user_id,
             name=data['name'],
@@ -794,7 +782,6 @@ def create_character():
             species=data['species'],
             career=data['career'],
             background=data.get('background', ''),
-            creation_context=creation_context,
             
             # Set characteristics
             brawn=final_characteristics['brawn'],
@@ -806,16 +793,16 @@ def create_character():
             
             # Set experience
             total_xp=starting_xp,
-            available_xp=data.get('available_xp', starting_xp),
-            spent_xp=data.get('spent_xp', 0),
+            available_xp=starting_xp,
+            spent_xp=0,
             
-            # Set skills and obligations
-            skills=data.get('skills', {}),
-            obligations=obligations,
+            # Set default skills and empty obligations
+            skills={},
+            obligations=[],
             
             # Equipment
-            credits=data.get('credits', 0),
-            equipment=data.get('equipment', [])
+            credits=500,  # Default starting credits
+            equipment=[]
         )
 
         # Assign to campaign if specified

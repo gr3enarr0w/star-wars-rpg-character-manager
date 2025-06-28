@@ -14,7 +14,6 @@
     <div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
         <input type="text" id="characterFilter" placeholder="Search characters..." 
                style="padding: 0.5rem 1rem; background: rgba(255, 255, 255, 0.1); border: 1px solid #ffd700; border-radius: 4px; color: #e0e0e0; min-width: 200px;">
-        <a href="{{ url_for('create_character_start') }}" class="btn">+ Create Character</a>
     </div>
 </div>
 
@@ -28,7 +27,7 @@
     <div style="font-size: 3rem; margin-bottom: 1rem;">🌟</div>
     <h2 style="color: #ffd700; margin: 0 0 1rem 0;">No Characters Yet</h2>
     <p style="margin-bottom: 2rem;">Create your first Star Wars RPG character to get started!</p>
-    <a href="{{ url_for('create_character_start') }}" class="btn btn-lg">+ Create Character</a>
+    <p style="color: #a0aec0;">Use the navigation menu to create a new character.</p>
 </div>
 
 <!-- Loading State -->
@@ -86,12 +85,23 @@ async function checkAuthentication() {
 
 async function loadCharacters() {
     try {
+        console.log('Loading characters...');
         const response = await authenticatedFetch('/api/characters');
+        console.log('Characters API response status:', response.status);
+        
         if (response.ok) {
             const data = await response.json();
+            console.log('Characters API response data:', data);
             allCharacters = data.characters || [];
+            console.log('Loaded characters count:', allCharacters.length);
             displayCharacters(allCharacters);
-            updateCharacterStats();
+            
+            // Update stats separately to avoid affecting character display
+            try {
+                updateCharacterStats();
+            } catch (statsError) {
+                console.warn('Error updating character stats (non-critical):', statsError);
+            }
         } else {
             throw new Error('Failed to load characters');
         }
@@ -103,18 +113,23 @@ async function loadCharacters() {
 }
 
 function displayCharacters(characters) {
+    console.log('displayCharacters called with:', characters.length, 'characters');
     const grid = document.getElementById('charactersGrid');
     const emptyState = document.getElementById('emptyState');
     const loadingState = document.getElementById('loadingState');
     
+    console.log('Elements found - grid:', !!grid, 'emptyState:', !!emptyState, 'loadingState:', !!loadingState);
+    
     loadingState.style.display = 'none';
     
     if (characters.length === 0) {
+        console.log('No characters found, showing empty state');
         grid.style.display = 'none';
         emptyState.style.display = 'block';
         return;
     }
     
+    console.log('Characters found, hiding empty state and showing grid');
     emptyState.style.display = 'none';
     grid.style.display = 'grid';
     
@@ -179,8 +194,16 @@ function setupCharacterFilter() {
 }
 
 function updateCharacterStats() {
-    document.getElementById('totalCharacters').textContent = allCharacters.length;
-    document.getElementById('activeCharacters').textContent = allCharacters.length; // For now, all are active
+    // Check if elements exist before updating (they may not exist in this template)
+    const totalElement = document.getElementById('totalCharacters');
+    const activeElement = document.getElementById('activeCharacters');
+    
+    if (totalElement) {
+        totalElement.textContent = allCharacters.length;
+    }
+    if (activeElement) {
+        activeElement.textContent = allCharacters.length; // For now, all are active
+    }
 }
 
 function editCharacter(characterId) {
@@ -226,22 +249,15 @@ document.addEventListener('DOMContentLoaded', () => {
     `;
     document.head.appendChild(style);
     
-    // Auto-open profile modal if URL contains /profile
+    // If URL is /profile, redirect to actual profile page
     if (window.location.pathname === '/profile') {
-        loadProfilePage();
+        // Let the browser handle the navigation naturally
+        console.log('Profile page URL detected, allowing natural navigation');
     }
 });
 
-// Profile page loading function
-async function loadProfilePage() {
-    // Update URL for test expectations
-    if (window.location.pathname !== '/profile') {
-        history.pushState({}, 'Profile Settings', '/profile');
-    }
-    
-    // Open profile modal and switch to appropriate tab
-    openProfileModal();
-}
+// Profile page loading function - REMOVED
+// Now using proper navigation to /profile route instead of modal
 </script>
 
 </div>
