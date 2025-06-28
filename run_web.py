@@ -22,6 +22,7 @@ from app_with_auth import app
 
 if __name__ == '__main__':
     print("Starting Star Wars RPG Character Manager Web Application...")
-    print("Open your browser to: http://localhost:8001")
+    port = int(os.getenv('FLASK_PORT', 8001))
+    print(f"Open your browser to: http://localhost:{port}")
     print(f"Working directory: {os.getcwd()}")
-    app.run(debug=False, host='127.0.0.1', port=8001)
+    app.run(debug=False, host='0.0.0.0', port=port)

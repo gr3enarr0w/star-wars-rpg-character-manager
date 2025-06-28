@@ -9,7 +9,7 @@ import base64
 from datetime import datetime, timedelta, timezone
 from typing import Optional, Dict, List, Tuple
 from functools import wraps
-from flask import request, jsonify, current_app
+from flask import request, jsonify, current_app, redirect, url_for
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import JWTManager, create_access_token, get_jwt_identity, verify_jwt_in_request
 from bson import ObjectId
@@ -225,11 +225,26 @@ class AuthManager:
         @wraps(f)
         def decorated_function(*args, **kwargs):
             try:
+                # Try JWT authentication first
                 verify_jwt_in_request()
                 return f(*args, **kwargs)
             except Exception as e:
-                return jsonify({"error": "Authentication required"}), 401
+                # Check if this is an API route
+                if request.path.startswith('/api/'):
+                    return jsonify({"error": "Authentication required"}), 401
+                else:
+                    # For page routes, check session authentication
+                    from flask import session
+                    if session.get('authenticated') and session.get('user_id'):
+                        return f(*args, **kwargs)
+                    else:
+                        # Redirect to login if not authenticated
+                        return redirect(url_for('login_page'))
         return decorated_function
+    
+    def require_login(self, f):
+        """Alias for require_auth for consistency."""
+        return self.require_auth(f)
     
     def require_role(self, required_role: str):
         """Decorator to require specific role."""
@@ -237,6 +252,7 @@ class AuthManager:
             @wraps(f)
             def decorated_function(*args, **kwargs):
                 try:
+                    # Try JWT authentication first
                     verify_jwt_in_request()
                     current_user_id = get_jwt_identity()
                     user = db_manager.get_user_by_id(ObjectId(current_user_id))
@@ -246,7 +262,29 @@ class AuthManager:
                     
                     return f(*args, **kwargs)
                 except Exception as e:
-                    return jsonify({"error": "Authentication required"}), 401
+                    # Check if this is an API route
+                    if request.path.startswith('/api/'):
+                        return jsonify({"error": "Authentication required"}), 401
+                    else:
+                        # For page routes, check session authentication
+                        from flask import session
+                        if session.get('authenticated') and session.get('user_id'):
+                            # Get user from session
+                            current_user_id = ObjectId(session['user_id'])
+                            user = db_manager.get_user_by_id(current_user_id)
+                            
+                            if not user or user.role != required_role:
+                                # User is authenticated but doesn't have required role
+                                from flask import render_template
+                                return render_template('error.html', 
+                                                     error_title="Access Denied",
+                                                     error_message=f"You need {required_role} role to access this page.",
+                                                     current_user=user), 403
+                            
+                            return f(*args, **kwargs)
+                        else:
+                            # Not authenticated, redirect to login
+                            return redirect(url_for('login_page'))
             return decorated_function
         return decorator
     
@@ -272,7 +310,12 @@ class AuthManager:
                 
                 return f(*args, **kwargs)
             except Exception as e:
-                return jsonify({"error": "Authentication required"}), 401
+                # Check if this is an API route
+                if request.path.startswith('/api/'):
+                    return jsonify({"error": "Authentication required"}), 401
+                else:
+                    # For page routes, redirect to login
+                    return redirect(url_for('login_page'))
         return decorated_function
 
 # Global auth manager instance

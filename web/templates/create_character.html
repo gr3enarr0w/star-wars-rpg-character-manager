@@ -275,9 +275,36 @@ let campaigns = [];
 
 // Initialize page
 document.addEventListener('DOMContentLoaded', async () => {
+    // Check authentication first
+    await checkAuthentication();
     await loadCampaigns();
     setupFormHandling();
 });
+
+async function checkAuthentication() {
+    try {
+        const token = localStorage.getItem('access_token');
+        if (!token) {
+            window.location.href = '/login';
+            return;
+        }
+        
+        const response = await fetch('/api/auth/me', {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+        
+        if (!response.ok) {
+            localStorage.removeItem('access_token');
+            window.location.href = '/login';
+            return;
+        }
+    } catch (error) {
+        console.error('Authentication check failed:', error);
+        window.location.href = '/login';
+    }
+}
 
 async function loadCampaigns() {
     try {

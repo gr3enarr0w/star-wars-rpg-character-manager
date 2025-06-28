@@ -57,6 +57,34 @@ def initialize_database():
         except Exception as e:
             app.logger.error(f"Failed to initialize database: {e}")
 
+@app.after_request
+def add_security_headers(response):
+    """Add security headers to all responses."""
+    # Add security headers
+    response.headers['X-Content-Type-Options'] = 'nosniff'
+    response.headers['X-Frame-Options'] = 'DENY'
+    response.headers['X-XSS-Protection'] = '1; mode=block'
+    response.headers['Referrer-Policy'] = 'strict-origin-when-cross-origin'
+    
+    return response
+
+# Create WSGI middleware to override server header
+class ServerHeaderMiddleware:
+    def __init__(self, wsgi_app):
+        self.wsgi_app = wsgi_app
+    
+    def __call__(self, environ, start_response):
+        def custom_start_response(status, headers, exc_info=None):
+            # Remove any existing server headers and add our custom one
+            headers = [(name, value) for name, value in headers if name.lower() != 'server']
+            headers.append(('Server', 'SWRPG-Manager'))
+            return start_response(status, headers, exc_info)
+        
+        return self.wsgi_app(environ, custom_start_response)
+
+# Wrap the Flask app with our middleware
+app.wsgi_app = ServerHeaderMiddleware(app.wsgi_app)
+
 # Authentication Routes
 @app.route('/api/auth/register', methods=['POST'])
 def register():
@@ -87,17 +115,53 @@ def register():
 def login():
     """Login user."""
     try:
-        data = request.get_json()
+        # Better JSON parsing with error handling
+        if not request.is_json:
+            app.logger.error(f"Request is not JSON. Content-Type: {request.content_type}")
+            return jsonify({'error': 'Request must be JSON'}), 400
+            
+        data = request.get_json(force=True)
+        if not data:
+            app.logger.error("No JSON data received")
+            return jsonify({'error': 'No data provided'}), 400
+            
+        app.logger.info(f"Login attempt for: {data.get('email', 'no-email')}")
+        
         email = data.get('email')
         password = data.get('password')
         two_factor_token = data.get('two_factor_token')
+        
+        # Debug: Log password details (remove after fix)
+        app.logger.info(f"Password received: length={len(password)} repr={repr(password)}")
 
         if not email or not password:
             return jsonify({'error': 'Email and password are required'}), 400
 
+        app.logger.info(f"Attempting authentication for: {email}")
+        
+        # Debug: Check database connection in web app
+        try:
+            user_check = db_manager.get_user_by_email(email)
+            if user_check:
+                app.logger.info(f"User found in web app db: {user_check.username}")
+                # Test password directly
+                is_valid = auth_manager.verify_password(password, user_check.password_hash)
+                app.logger.info(f"Password verification in web app: {is_valid}")
+            else:
+                app.logger.error("User not found in web app database")
+        except Exception as e:
+            app.logger.error(f"Database check failed: {e}")
+        
         success, message, user = auth_manager.authenticate_user(email, password)
+        app.logger.info(f"Authentication result: {success} - {message}")
+        
+        if user:
+            app.logger.info(f"User found: {user.username} / {user.role}")
+        else:
+            app.logger.info("No user object returned")
 
         if not success:
+            app.logger.warning(f"Authentication failed for {email}: {message}")
             return jsonify({'error': message}), 401
 
         # Check 2FA if enabled
@@ -110,6 +174,12 @@ def login():
 
         # Create access token
         access_token = auth_manager.create_access_token(user)
+        
+        # Also set session for web navigation
+        session['user_id'] = str(user._id)
+        session['username'] = user.username
+        session['role'] = user.role
+        session['authenticated'] = True
 
         return jsonify({
             'message': 'Login successful',
@@ -122,14 +192,15 @@ def login():
         }), 200
 
     except Exception as e:
-        return jsonify({'error': 'Operation failed'}), 500
+        app.logger.error(f"Login error: {e}")
+        return jsonify({'error': f'Login failed: {str(e)}'}), 500
 
 @app.route('/api/auth/me', methods=['GET'])
 @auth_manager.require_auth
 def get_current_user():
     """Get current user information."""
     try:
-        current_user_id = ObjectId(get_jwt_identity())
+        current_user_id = get_current_user_id()
         user = db_manager.get_user_by_id(current_user_id)
 
         if not user:
@@ -145,12 +216,23 @@ def get_current_user():
     except Exception as e:
         return jsonify({'error': 'Operation failed'}), 500
 
+@app.route('/api/auth/logout', methods=['POST'])
+def logout():
+    """Logout user and clear session."""
+    try:
+        # Clear session data
+        session.clear()
+        return jsonify({'message': 'Logout successful'}), 200
+    except Exception as e:
+        app.logger.error(f"Logout error: {e}")
+        return jsonify({'error': 'Logout failed'}), 500
+
 @app.route('/api/auth/setup-2fa', methods=['POST'])
 @auth_manager.require_auth
 def setup_2fa():
     """Set up two-factor authentication."""
     try:
-        current_user_id = ObjectId(get_jwt_identity())
+        current_user_id = get_current_user_id()
         secret, qr_code, backup_codes = auth_manager.setup_2fa(current_user_id)
 
         return jsonify({
@@ -167,7 +249,7 @@ def setup_2fa():
 def verify_2fa_setup():
     """Verify 2FA setup."""
     try:
-        current_user_id = ObjectId(get_jwt_identity())
+        current_user_id = get_current_user_id()
         token = request.get_json().get('token')
 
         if not token:
@@ -186,7 +268,7 @@ def verify_2fa_setup():
 def change_password():
     """Change user password."""
     try:
-        current_user_id = ObjectId(get_jwt_identity())
+        current_user_id = get_current_user_id()
         data = request.get_json()
         
         current_password = data.get('current_password')
@@ -350,7 +432,7 @@ def social_register():
 def link_social_account():
     """Link social account to existing user."""
     try:
-        current_user_id = ObjectId(get_jwt_identity())
+        current_user_id = get_current_user_id()
         data = request.get_json()
         provider = data.get('provider')
 
@@ -378,13 +460,33 @@ def link_social_account():
     except Exception as e:
         return jsonify({'error': 'Operation failed'}), 500
 
+# Health Check Route (for Docker)
+@app.route('/health')
+def health_check():
+    """Health check endpoint for Docker."""
+    try:
+        # Test database connection
+        if not db_manager.client:
+            return jsonify({"status": "unhealthy", "error": "Database client not initialized"}), 503
+        
+        # Test with ping command
+        result = db_manager.client.admin.command('ping')
+        return jsonify({
+            "status": "healthy", 
+            "timestamp": datetime.utcnow().isoformat(),
+            "database": "connected"
+        }), 200
+    except Exception as e:
+        app.logger.error(f"Health check failed: {e}")
+        return jsonify({"status": "unhealthy", "error": "Database connection failed"}), 503
+
 # Campaign Management Routes
 @app.route('/api/campaigns', methods=['GET'])
 @auth_manager.require_auth
 def get_campaigns():
     """Get user's campaigns."""
     try:
-        current_user_id = ObjectId(get_jwt_identity())
+        current_user_id = get_current_user_id()
         campaigns = db_manager.get_user_campaigns(current_user_id)
 
         campaign_data = []
@@ -409,7 +511,7 @@ def get_campaigns():
 def create_campaign():
     """Create a new campaign."""
     try:
-        current_user_id = ObjectId(get_jwt_identity())
+        current_user_id = get_current_user_id()
         data = request.get_json()
 
         # Validate required fields
@@ -455,7 +557,7 @@ def create_campaign():
 def generate_campaign_invite(campaign_id):
     """Generate campaign invite code."""
     try:
-        current_user_id = ObjectId(get_jwt_identity())
+        current_user_id = get_current_user_id()
         campaign = db_manager.get_campaign_by_id(ObjectId(campaign_id))
 
         if not campaign or campaign.game_master_id != current_user_id:
@@ -477,7 +579,7 @@ def generate_campaign_invite(campaign_id):
 def join_campaign():
     """Join campaign using invite code."""
     try:
-        current_user_id = ObjectId(get_jwt_identity())
+        current_user_id = get_current_user_id()
         data = request.get_json()
         invite_code = data.get('invite_code')
 
@@ -494,6 +596,32 @@ def join_campaign():
 
     except Exception as e:
         return jsonify({'error': 'Operation failed'}), 500
+
+@app.route('/api/campaigns/<campaign_id>/players/<player_id>', methods=['DELETE'])
+@auth_manager.require_auth
+def remove_player_from_campaign(campaign_id, player_id):
+    """Remove a player from a campaign."""
+    try:
+        current_user_id = get_current_user_id()
+        campaign = db_manager.get_campaign_by_id(ObjectId(campaign_id))
+
+        if not campaign:
+            return jsonify({'error': 'Campaign not found'}), 404
+
+        if campaign.game_master_id != current_user_id:
+            return jsonify({'error': 'Access denied'}), 403
+
+        # Remove player from campaign
+        success, message = db_manager.remove_player_from_campaign(ObjectId(campaign_id), ObjectId(player_id))
+
+        if success:
+            return jsonify({'message': message}), 200
+        else:
+            return jsonify({'error': message}), 400
+
+    except Exception as e:
+        app.logger.error(f"Campaign player removal error: {str(e)}")
+        return jsonify({'error': 'Resource not found'}), 404
 
 # Character Creation Walkthrough Routes
 @app.route('/api/character-creation/walkthrough-data', methods=['GET'])
@@ -545,13 +673,25 @@ def calculate_starting_xp():
     except Exception as e:
         return jsonify({'error': 'Operation failed'}), 500
 
+def get_current_user_id():
+    """Get current user ID from either JWT token or session."""
+    try:
+        # Try JWT first
+        return ObjectId(get_jwt_identity())
+    except:
+        # Fall back to session
+        user_id = session.get('user_id')
+        if user_id:
+            return ObjectId(user_id)
+        raise Exception("No authenticated user found")
+
 # Enhanced Character Routes with Campaign Support
 @app.route('/api/characters', methods=['GET'])
 @auth_manager.require_auth
 def get_characters():
     """Get user's characters, optionally filtered by campaign."""
     try:
-        current_user_id = ObjectId(get_jwt_identity())
+        current_user_id = get_current_user_id()
         campaign_id = request.args.get('campaign_id')
 
         if campaign_id:
@@ -605,7 +745,7 @@ def get_characters():
 def create_character():
     """Create a new character using enhanced walkthrough system."""
     try:
-        current_user_id = ObjectId(get_jwt_identity())
+        current_user_id = get_current_user_id()
         data = request.get_json()
 
         # Validate required fields
@@ -708,7 +848,7 @@ def create_character():
 def assign_character_to_campaign(character_id):
     """Assign character to campaign."""
     try:
-        current_user_id = ObjectId(get_jwt_identity())
+        current_user_id = get_current_user_id()
         character = db_manager.get_character_by_id(ObjectId(character_id))
 
         if not character or character.user_id != current_user_id:
@@ -736,7 +876,7 @@ def assign_character_to_campaign(character_id):
 def get_character(character_id):
     """Get specific character details."""
     try:
-        current_user_id = ObjectId(get_jwt_identity())
+        current_user_id = get_current_user_id()
         character = db_manager.get_character_by_id(ObjectId(character_id))
 
         if not character:
@@ -784,7 +924,7 @@ def get_character(character_id):
 def delete_character(character_id):
     """Delete a character."""
     try:
-        current_user_id = ObjectId(get_jwt_identity())
+        current_user_id = get_current_user_id()
         character = db_manager.get_character_by_id(ObjectId(character_id))
 
         if not character or character.user_id != current_user_id:
@@ -804,7 +944,7 @@ def delete_character(character_id):
 def award_xp(character_id):
     """Award XP to character."""
     try:
-        current_user_id = ObjectId(get_jwt_identity())
+        current_user_id = get_current_user_id()
         character = db_manager.get_character_by_id(ObjectId(character_id))
 
         if not character:
@@ -845,7 +985,7 @@ def award_xp(character_id):
 def modify_characteristic(character_id, characteristic):
     """Increase or decrease a characteristic."""
     try:
-        current_user_id = ObjectId(get_jwt_identity())
+        current_user_id = get_current_user_id()
         character = db_manager.get_character_by_id(ObjectId(character_id))
 
         if not character or character.user_id != current_user_id:
@@ -912,7 +1052,7 @@ def modify_characteristic(character_id, characteristic):
 def modify_skill(character_id, skill):
     """Increase or decrease a skill."""
     try:
-        current_user_id = ObjectId(get_jwt_identity())
+        current_user_id = get_current_user_id()
         character = db_manager.get_character_by_id(ObjectId(character_id))
 
         if not character or character.user_id != current_user_id:
@@ -982,7 +1122,7 @@ def modify_skill(character_id, skill):
 def get_documentation_sections():
     """Get documentation sections based on user role."""
     try:
-        current_user_id = ObjectId(get_jwt_identity())
+        current_user_id = get_current_user_id()
         user = db_manager.get_user_by_id(current_user_id)
         
         if not user:
@@ -1083,13 +1223,13 @@ def get_documentation_sections():
 def get_documentation_content(section_id, content_id):
     """Get specific documentation content based on user role."""
     try:
-        current_user_id = ObjectId(get_jwt_identity())
+        current_user_id = get_current_user_id()
         user = db_manager.get_user_by_id(current_user_id)
         
         if not user:
             return jsonify({'error': 'User not found'}), 404
 
-        # Sample content based on the analysis
+        # Comprehensive content library
         content_library = {
             'species_guide': {
                 'species': {
@@ -1112,137 +1252,439 @@ def get_documentation_content(section_id, content_id):
 - **Recommended For**: Social characters, spies, diplomats
 
 ### Wookiee
-- **Characteristics**: High Brawn (3), Low Willpower (1)
+- **Characteristics**: High Brawn (3), Low Presence (1)
 - **Starting XP**: 90
-- **Special Abilities**: Powerful Build, Free rank in Brawl
-- **Recommended For**: Warriors, mechanics, pilots
+- **Special Abilities**: Powerful Build, Natural Weapons (Claws)
+- **Recommended For**: Warriors, mechanics, heavy combat
 
-### Rodian
-- **Characteristics**: High Agility (3), Low Willpower (1)
+### Clone
+- **Characteristics**: High Brawn (2), balanced stats
 - **Starting XP**: 100
-- **Special Abilities**: Expert Tracker, Free rank in Survival
-- **Recommended For**: Bounty hunters, scouts, trackers
+- **Special Abilities**: Military Training, Clones bond
+- **Recommended For**: Soldiers, tactical characters
 
-## Choosing Your Species
+### Dathomirian
+- **Characteristics**: Varies by subspecies
+- **Starting XP**: 95
+- **Special Abilities**: Force Sensitivity potential
+- **Recommended For**: Force-sensitive characters, warriors
 
-Consider these factors when selecting a species:
-1. **Career Synergy**: Choose species that complement your intended career
-2. **Role-Playing Opportunities**: Each species has unique cultural backgrounds
-3. **Mechanical Benefits**: Starting characteristics and special abilities
-4. **Campaign Setting**: Some species may be more or less common in your campaign
+## Tips for Species Selection
+1. Consider your preferred playstyle
+2. Match species strengths to career requirements
+3. Think about roleplay opportunities
+4. Starting XP affects advancement speed
                     '''
-                }
-            },
-            'career_guide': {
+                },
                 'careers': {
-                    'title': 'Career Paths Guide',
+                    'title': 'Career Path Guide',
                     'content': '''
-# Career Paths Guide
+# Career Path Guide
 
 ## Edge of the Empire Careers
 
 ### Bounty Hunter
-- **Focus**: Tracking and capturing targets
-- **Key Skills**: Athletics, Brawl, Ranged (Heavy), Vigilance
+- **Skills**: Piloting, Athletics, Ranged Combat
 - **Specializations**: Assassin, Gadgeteer, Survivalist
-- **Starting Credits**: 1000 + 1d10 × 50
+- **Playstyle**: Combat-focused, tracking, enforcement
 
 ### Smuggler
-- **Focus**: Fast talking and faster ships
-- **Key Skills**: Piloting (Space), Deception, Skulduggery, Streetwise
+- **Skills**: Piloting, Streetwise, Deception
 - **Specializations**: Pilot, Scoundrel, Thief
-- **Starting Credits**: 1000 + 1d10 × 50
+- **Playstyle**: Fast-talking, ship operations, criminal
+
+### Colonist
+- **Skills**: Knowledge, Medicine, Social
+- **Specializations**: Doctor, Politico, Scholar
+- **Playstyle**: Support, healing, information
+
+### Explorer
+- **Skills**: Survival, Xenology, Piloting
+- **Specializations**: Fringer, Scout, Trader
+- **Playstyle**: Exploration, frontier life
+
+### Hired Gun
+- **Skills**: Ranged Combat, Athletics, Intimidation
+- **Specializations**: Bodyguard, Marauder, Mercenary
+- **Playstyle**: Combat, protection, military
 
 ### Technician
-- **Focus**: Fixing, building, and improving technology
-- **Key Skills**: Mechanics, Computers, Knowledge (Outer Rim)
+- **Skills**: Mechanics, Computers, Knowledge
 - **Specializations**: Mechanic, Outlaw Tech, Slicer
-- **Starting Credits**: 1000 + 1d10 × 50
+- **Playstyle**: Technical support, gadgets, hacking
 
-## Age of Rebellion Careers
+## Choosing Your Career
+1. Consider your group's needs
+2. Think about character background
+3. Match career skills to your concept
+4. Plan for specialization growth
+                    '''
+                },
+                'obligations': {
+                    'title': 'Obligations System',
+                    'content': '''
+# Obligations System
 
-### Ace
-- **Focus**: Piloting and vehicle combat
-- **Key Skills**: Piloting (Space/Planetary), Gunnery, Mechanics
-- **Specializations**: Driver, Gunner, Pilot
-- **Starting Credits**: 500 + 1d10 × 25
+## What are Obligations?
+Obligations represent debts, duties, or commitments that tie your character to the galaxy and drive story complications.
 
-### Commander
-- **Focus**: Leadership and tactics
-- **Key Skills**: Leadership, Knowledge (Warfare), Cool, Discipline
-- **Specializations**: Commodore, Squadron Leader, Tactician
-- **Starting Credits**: 500 + 1d10 × 25
+## Types of Obligations
 
-## Force and Destiny Careers
+### Debt
+- You owe credits to someone dangerous
+- **Story Hooks**: Loan sharks, payment deadlines
+- **Complications**: Bounty hunters, interest rates
 
-### Guardian
-- **Focus**: Protection and lightsaber combat
-- **Key Skills**: Brawl, Melee, Discipline, Vigilance
-- **Specializations**: Protector, Soresu Defender, Warleader
-- **Starting Credits**: 500 + 1d10 × 25
+### Family
+- Responsibilities to family members
+- **Story Hooks**: Protecting relatives, family honor
+- **Complications**: Family in danger, conflicting loyalties
 
-### Consular
-- **Focus**: Negotiation and Force powers
-- **Key Skills**: Discipline, Leadership, Negotiation, Knowledge (Lore)
-- **Specializations**: Healer, Niman Disciple, Sage
-- **Starting Credits**: 500 + 1d10 × 25
+### Favor
+- You owe someone a significant favor
+- **Story Hooks**: Called in at inconvenient times
+- **Complications**: Moral conflicts, competing interests
+
+### Criminal
+- Wanted by law enforcement
+- **Story Hooks**: Manhunts, limited travel
+- **Complications**: Arrests, bounties
+
+### Oath
+- Bound by a sworn promise
+- **Story Hooks**: Honor conflicts, duty calls
+- **Complications**: Breaking oaths, impossible choices
+
+## Obligation Mechanics
+- Start with 10 Obligation points
+- Can take more for extra credits/XP
+- GM rolls to trigger complications
+- Higher Obligation = more problems
+
+## Managing Obligations
+1. Work with GM on story integration
+2. Consider how they drive character growth
+3. Use them to create dramatic moments
+4. Remember they can be reduced through play
+                    '''
+                },
+                'creation_walkthrough': {
+                    'title': 'Character Creation Walkthrough',
+                    'content': '''
+# Character Creation Step-by-Step
+
+## Step 1: Concept
+1. Decide on character archetype
+2. Consider background and motivation
+3. Think about role in group
+4. Choose a general concept
+
+## Step 2: Species
+1. Review species options
+2. Consider characteristic bonuses
+3. Note starting XP amounts
+4. Factor in special abilities
+
+## Step 3: Career
+1. Match to your concept
+2. Review career skills
+3. Consider specializations
+4. Plan advancement path
+
+## Step 4: Characteristics
+1. Allocate starting points
+2. Apply species modifiers
+3. Consider career requirements
+4. Balance offensive/defensive needs
+
+## Step 5: Skills
+1. Choose career skills
+2. Allocate free ranks
+3. Consider specialization skills
+4. Round out with general skills
+
+## Step 6: Talents
+1. Choose starting specialization
+2. Select initial talents
+3. Plan talent tree progression
+4. Consider synergies
+
+## Step 7: Equipment
+1. Purchase starting gear
+2. Consider career requirements
+3. Don't forget armor and weapons
+4. Save some credits for later
+
+## Step 8: Final Details
+1. Calculate derived attributes
+2. Set Obligation
+3. Write backstory
+4. Establish connections to other PCs
+
+## Tips for New Players
+- Start simple, add complexity later
+- Ask experienced players for advice
+- Don't min-max your first character
+- Focus on fun over optimization
                     '''
                 }
             },
-            'obligations_guide': {
-                'obligations': {
-                    'title': 'Obligations System Guide',
+            'game_mechanics': {
+                'dice_system': {
+                    'title': 'Star Wars RPG Dice System',
                     'content': '''
-# Obligations System Guide
+# Star Wars RPG Dice System
 
-## What are Obligations?
+## Dice Types
 
-Obligations represent debts, commitments, or complications that tie your character to the galaxy. They create story hooks and can provide additional starting XP at character creation.
+### Ability Dice (Green d8)
+- Represent natural talent and training
+- Show Success and Advantage symbols
+- **Success**: Achieve the basic goal
+- **Advantage**: Additional positive effects
 
-## Obligation Types
+### Proficiency Dice (Yellow d12)
+- Represent mastery and expertise
+- Upgrade from Ability dice
+- Show Success, Advantage, and Triumph symbols
+- **Triumph**: Major success with story impact
 
-### Addiction
-- **Value**: 10 (base)
-- **XP Bonus**: +5
-- **Description**: Character has an addiction that affects judgment and actions
-- **Story Potential**: Need for the substance, withdrawal effects, dealers
+### Difficulty Dice (Purple d8)
+- Represent task difficulty
+- Show Failure and Threat symbols
+- **Failure**: Cancel Success symbols
+- **Threat**: Negative side effects
 
-### Debt
-- **Value**: 10 (base)
-- **XP Bonus**: +5
-- **Description**: Character owes significant money or favors
-- **Story Potential**: Creditors, payment deadlines, interest
+### Challenge Dice (Red d12)
+- Represent extreme difficulty
+- Upgrade from Difficulty dice
+- Show Failure, Threat, and Despair symbols
+- **Despair**: Major failure with story consequences
 
-### Bounty
-- **Value**: 10 (base)
-- **XP Bonus**: +5
-- **Description**: Price on the character's head
-- **Story Potential**: Bounty hunters, recognition, hiding identity
+### Boost Dice (Blue d6)
+- Represent beneficial circumstances
+- Show Success and Advantage symbols
+- Added for favorable conditions
 
-### Family
-- **Value**: 10 (base)
-- **XP Bonus**: +5
-- **Description**: Family in danger or causing complications
-- **Story Potential**: Rescue missions, family obligations, protection
+### Setback Dice (Black d6)
+- Represent penalties and obstacles
+- Show Failure and Threat symbols
+- Added for unfavorable conditions
 
-## Using Obligations
+## Building Dice Pools
+1. Start with Characteristic rating (Ability dice)
+2. Upgrade dice equal to Skill ranks
+3. Add Difficulty dice for task difficulty
+4. Add Boost/Setback dice for conditions
 
-### Character Creation
-- **Single Obligation**: Standard 10 value, +5 starting XP
-- **Multiple Obligations**: Can take up to 2, each worth +5 XP
-- **Higher Values**: Increase obligation value for more XP (GM discretion)
+## Reading Results
+1. Count net Success (Success - Failure)
+2. Count net Advantage (Advantage - Threat)
+3. Check for Triumph and Despair
+4. Interpret narrative outcomes
 
-### During Play
-- **Obligation Triggers**: GM rolls at session start
-- **Effects**: When triggered, creates complications for that character
-- **Reducing Obligations**: Through play, characters can reduce or eliminate obligations
+## Success and Failure
+- Need 1+ net Success to succeed
+- Can succeed with Threat or fail with Advantage
+- Triumph/Despair always have narrative impact
+                    '''
+                },
+                'skill_checks': {
+                    'title': 'Skill Checks and Difficulty',
+                    'content': '''
+# Skill Checks and Difficulty
 
-## Tips for Players
+## Difficulty Levels
 
-1. **Choose Meaningful Obligations**: Pick obligations that interest you story-wise
-2. **Coordinate with GM**: Discuss how obligations fit into the campaign
-3. **Embrace Complications**: Obligations create great story moments
-4. **Work Toward Resolution**: Make reducing obligations a character goal
+### Simple (0 Difficulty)
+- No dice needed
+- Automatic success under normal circumstances
+- **Examples**: Walking, basic conversation
+
+### Easy (1 Purple)
+- Minor challenge
+- **Examples**: Climbing a ladder, finding food in civilization
+
+### Average (2 Purple)
+- Moderate challenge
+- **Examples**: Picking a simple lock, haggling
+
+### Hard (3 Purple)
+- Significant challenge
+- **Examples**: Piloting through an asteroid field
+
+### Daunting (4 Purple)
+- Major challenge
+- **Examples**: Hacking Imperial security
+
+### Formidable (5 Purple)
+- Extreme challenge
+- **Examples**: Surgery without proper tools
+
+## Modifying Difficulty
+
+### Boost Dice (Add Blue)
+- Superior equipment
+- Advantageous circumstances
+- Assistance from allies
+- Environmental benefits
+
+### Setback Dice (Add Black)
+- Poor equipment
+- Distracting conditions
+- Environmental hazards
+- Time pressure
+
+### Upgrading Difficulty
+- Upgrade Purple to Red for:
+  - Active opposition
+  - Extreme circumstances
+  - Critical situations
+
+## Competitive Checks
+1. Both characters roll
+2. Compare net Success
+3. Higher wins
+4. Ties go to PC or use secondary factors
+
+## Opposed Checks
+- Opponent's dice become Difficulty
+- One character makes the roll
+- Used for social conflicts, stealth, etc.
+                    '''
+                },
+                'combat_basics': {
+                    'title': 'Combat Basics',
+                    'content': '''
+# Combat Basics
+
+## Initiative and Turn Order
+1. Roll Initiative (Cool or Vigilance)
+2. Generate Initiative slots
+3. Players choose order within PC slots
+4. Alternate between PC and NPC slots
+
+## Actions in Combat
+
+### Maneuvers (1 per turn, or 2 strain)
+- Move to short range
+- Draw/holster weapon
+- Open door
+- Aim (add Boost die)
+- Take cover
+
+### Actions (1 per turn)
+- Attack
+- Full defense
+- Use skill
+- Activate ability
+
+### Incidentals (unlimited)
+- Speak
+- Drop item
+- Simple interactions
+
+## Combat Skills
+
+### Ranged (Light)
+- Pistols, small weapons
+- **Characteristic**: Agility
+- **Range**: Short to medium
+
+### Ranged (Heavy)
+- Rifles, heavy weapons
+- **Characteristic**: Agility
+- **Range**: Long to extreme
+
+### Melee
+- Brawl, Lightsaber, Melee weapons
+- **Characteristic**: Brawn (Brawl), varies
+- **Range**: Engaged only
+
+### Gunnery
+- Vehicle weapons
+- **Characteristic**: Agility
+- **Range**: Varies by weapon
+
+## Damage and Health
+
+### Wounds
+- Physical damage
+- When exceed Wound Threshold: incapacitated
+- Healed slowly over time
+
+### Strain
+- Mental/physical stress
+- When exceed Strain Threshold: unconscious
+- Recovers after encounters
+
+## Range Bands
+- **Engaged**: Touching, wrestling
+- **Short**: Across a room
+- **Medium**: Down a hallway
+- **Long**: Across a plaza
+- **Extreme**: Across a valley
+                    '''
+                },
+                'social_encounters': {
+                    'title': 'Social Encounters',
+                    'content': '''
+# Social Encounters
+
+## Social Skills
+
+### Charm
+- **Characteristic**: Presence
+- **Use**: Being likeable, friendly persuasion
+- **Works On**: Those inclined to be friendly
+
+### Coercion
+- **Characteristic**: Willpower
+- **Use**: Threats, intimidation
+- **Works On**: Those who can be frightened
+
+### Deception
+- **Characteristic**: Cunning
+- **Use**: Lies, misdirection, disguise
+- **Works On**: Those who don't know the truth
+
+### Leadership
+- **Characteristic**: Presence
+- **Use**: Inspiring allies, giving orders
+- **Works On**: Allies and subordinates
+
+### Negotiation
+- **Characteristic**: Presence
+- **Use**: Making deals, finding compromise
+- **Works On**: Those with something to gain
+
+## Social Mechanics
+
+### Difficulty Factors
+- Target's disposition
+- Plausibility of request
+- Stakes involved
+- Social situation
+
+### Advantage/Threat in Social
+- **Advantage**: Gain favor, learn information
+- **Threat**: Create suspicion, social cost
+- **Triumph**: Major social victory
+- **Despair**: Significant social consequence
+
+## Structured Social Encounters
+1. Set stakes and victory conditions
+2. Determine NPC motivation
+3. Make opposed social checks
+4. Track "strain" or pressure
+5. Resolve when threshold reached
+
+## Tips for Social Play
+- Roleplay first, roll second
+- Use multiple approaches
+- Consider NPC motivations
+- Consequences matter
+- Make it collaborative storytelling
                     '''
                 }
             }
@@ -1340,7 +1782,7 @@ def get_all_users():
 def change_user_role(user_id):
     """Change user role (admin only)."""
     try:
-        current_user_id = ObjectId(get_jwt_identity())
+        current_user_id = get_current_user_id()
         target_user_id = ObjectId(user_id)
         
         # Don't allow changing own role
@@ -1369,7 +1811,7 @@ def change_user_role(user_id):
 def create_invite():
     """Create invite code (admin only)."""
     try:
-        current_user_id = ObjectId(get_jwt_identity())
+        current_user_id = get_current_user_id()
         data = request.get_json()
 
         role = data.get('role', 'player')
@@ -1394,8 +1836,9 @@ def calculate_level(character):
 
 # Main routes - Dashboard and Landing
 @app.route('/')
+@auth_manager.require_auth
 def index():
-    """Main dashboard page with client-side authentication."""
+    """Main dashboard page with server-side authentication."""
     return render_template('index_with_auth.html')
 
 @app.route('/welcome')
@@ -1419,7 +1862,7 @@ def register_page():
 @auth_manager.require_auth
 def create_character_page():
     """Character creation page."""
-    current_user_id = ObjectId(get_jwt_identity())
+    current_user_id = get_current_user_id()
     current_user = db_manager.get_user_by_id(current_user_id)
     return render_template('create_character.html', current_user=current_user)
 
@@ -1433,7 +1876,7 @@ def create_character_start():
 @auth_manager.require_auth
 def character_sheet_page(character_id):
     """Character sheet page."""
-    current_user_id = ObjectId(get_jwt_identity())
+    current_user_id = get_current_user_id()
     current_user = db_manager.get_user_by_id(current_user_id)
     
     # Verify access to character
@@ -1457,7 +1900,7 @@ def character_sheet_page(character_id):
 @auth_manager.require_auth
 def campaigns_page():
     """Campaign management page."""
-    current_user_id = ObjectId(get_jwt_identity())
+    current_user_id = get_current_user_id()
     current_user = db_manager.get_user_by_id(current_user_id)
     return render_template('campaigns.html', current_user=current_user)
 
@@ -1466,22 +1909,25 @@ def campaigns_page():
 @auth_manager.require_auth
 def documentation_page():
     """Documentation page with role-based access."""
-    current_user_id = ObjectId(get_jwt_identity())
+    current_user_id = get_current_user_id()
     current_user = db_manager.get_user_by_id(current_user_id)
     return render_template('documentation.html', current_user=current_user)
 
 # User Profile
 @app.route('/profile')
+@auth_manager.require_login
 def profile_page():
-    """User profile settings page - redirect to main app with profile hash."""
-    return render_template('index_with_auth.html')
+    """User profile settings page."""
+    current_user_id = get_current_user_id()
+    current_user = db_manager.get_user_by_id(current_user_id)
+    return render_template('profile.html', current_user=current_user)
 
 # Admin Panel
 @app.route('/admin')
 @auth_manager.require_role('admin')
 def admin_page():
     """Admin panel page."""
-    current_user_id = ObjectId(get_jwt_identity())
+    current_user_id = get_current_user_id()
     current_user = db_manager.get_user_by_id(current_user_id)
     return render_template('admin.html', current_user=current_user)
 

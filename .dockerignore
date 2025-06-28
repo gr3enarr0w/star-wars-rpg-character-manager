@@ -1,0 +1,145 @@
+# Git and version control
+.git
+.gitignore
+.gitattributes
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual environments
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Testing
+.coverage
+.pytest_cache/
+.tox/
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
+test-results/
+playwright-report/
+results.json/
+
+# Documentation and reports
+*.md
+!README.md
+!DOCKER.md
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+*.tmp
+*.temp
+temp/
+tmp/
+
+# Screenshots and test artifacts
+*.png
+*.jpg
+*.jpeg
+*.gif
+test_screenshots*/
+*_screenshots/
+debug_*.png
+export_test_*/
+ui_test_screenshots/
+final_screenshots/
+critical_bug_test_screenshots*/
+
+# Node.js (if used for frontend tools)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+
+# Development tools
+.env.local
+.env.*.local
+
+# Build artifacts
+archive/
+
+# AI/OCR extraction tools (development only)
+*_ai_ocr*.py
+*_ocr_*.py
+*_pdf_*.py
+*_extraction*.py
+extract_*.py
+process_*.py
+comprehensive_*.py
+overnight_*.py
+multi_model_*.py
+simple_*.py
+retry_*.py
+improve_*.py
+fix_*.py
+
+# Test files
+test_*.py
+*_test.py
+*.spec.js
+debug_*.py
+diagnose_*.py
+quick_*.py
+create_*.py
+setup_*.py
+list_*.py
+reset_*.py
+recreate_*.py
+
+# Data processing
+swrpg_complete_extraction/
+swrpg_extracted_data/
+
+# Configuration files for development
+playwright.config.js
+package.json
+
+# Extracted content
+*.json/

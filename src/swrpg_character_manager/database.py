@@ -176,7 +176,7 @@ class MongoDBManager:
     def connect(self):
         """Connect to MongoDB database."""
         try:
-            mongodb_uri = os.getenv('MONGODB_URI', 'mongodb://localhost:27017/')
+            mongodb_uri = os.getenv('MONGO_URI', os.getenv('MONGODB_URI', 'mongodb://localhost:27017/'))
             db_name = os.getenv('MONGODB_DB', 'swrpg_manager')
             
             self.client = MongoClient(mongodb_uri)

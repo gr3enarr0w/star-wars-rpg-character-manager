@@ -86,7 +86,7 @@ async function checkAuthentication() {
 
 async function loadCharacters() {
     try {
-        const response = await fetch('/api/characters');
+        const response = await authenticatedFetch('/api/characters');
         if (response.ok) {
             const data = await response.json();
             allCharacters = data.characters || [];
@@ -194,11 +194,8 @@ async function awardXP(characterId) {
     const reason = prompt('Reason for XP award (optional):') || 'Manual award';
     
     try {
-        const response = await fetch(`/api/characters/${characterId}/award-xp`, {
+        const response = await authenticatedFetch(`/api/characters/${characterId}/award-xp`, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
             body: JSON.stringify({
                 amount: parseInt(amount),
                 reason: reason

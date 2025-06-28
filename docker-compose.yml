@@ -1,0 +1,55 @@
+# Remove version line as it's obsolete in modern Docker Compose
+
+services:
+  web:
+    build: .
+    ports:
+      - "8001:8001"
+    environment:
+      - FLASK_ENV=production
+      - APP_ENV=production
+      - PYTHONPATH=/app/src
+      - PYTHONUNBUFFERED=1
+      - MONGO_URI=${MONGO_URI:-mongodb://mongo:27017/swrpg_character_manager}
+      - FLASK_SECRET_KEY=${FLASK_SECRET_KEY:-production-secret-key-change-me}
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY:-jwt-production-secret-key-change-me}
+      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
+      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
+      - DISCORD_CLIENT_ID=${DISCORD_CLIENT_ID}
+      - DISCORD_CLIENT_SECRET=${DISCORD_CLIENT_SECRET}
+    volumes:
+      - ./logs:/app/logs
+    depends_on:
+      - mongo
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  mongo:
+    image: mongo:7.0
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_DATABASE=swrpg_character_manager
+    volumes:
+      - mongo_data:/data/db
+      - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+volumes:
+  mongo_data:
+    driver: local
+
+networks:
+  default:
+    name: swrpg-network

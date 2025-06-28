@@ -575,48 +575,8 @@ async function generateInviteCode(campaignId) {
 }
 
 function managePlayers(campaignId) {
-    const campaign = campaigns.find(c => c.id === campaignId);
-    if (!campaign) return;
-    
-    console.log('Opening manage players modal for campaign:', campaign.name);
-    
-    showModal(`
-        <div class="modal-header">
-            <h3>Manage Players - ${campaign.name}</h3>
-            <button onclick="closeModal()" class="modal-close">&times;</button>
-        </div>
-        <div class="campaign-modal-body">
-            <div class="campaign-section">
-                <h4>Current Players (${campaign.player_count || 0})</h4>
-                <div id="campaign-players-list">
-                    <div class="player-item">
-                        <div class="player-info">
-                            <strong>Demo Player</strong> - 2 characters
-                            <div style="font-size: 0.875rem; color: #a0aec0; margin-top: 0.25rem;">
-                                Last active: 2 days ago
-                            </div>
-                        </div>
-                        <div class="player-actions">
-                            <button class="btn btn-sm btn-outline" onclick="viewPlayerCharacters('demo-player')">View Characters</button>
-                            <button class="btn btn-sm btn-outline" onclick="sendMessage('demo-player')">Message</button>
-                            <button class="btn btn-sm btn-danger" onclick="removePlayer('demo-player')">Remove</button>
-                        </div>
-                    </div>
-                    <div class="player-item">
-                        <div class="player-info">
-                            <strong>Test Player 2</strong> - 1 character
-                            <div style="font-size: 0.875rem; color: #a0aec0; margin-top: 0.25rem;">
-                                Last active: 1 week ago
-                            </div>
-                        </div>
-                        <div class="player-actions">
-                            <button class="btn btn-sm btn-outline" onclick="viewPlayerCharacters('test-player-2')">View Characters</button>
-                            <button class="btn btn-sm btn-outline" onclick="sendMessage('test-player-2')">Message</button>
-                            <button class="btn btn-sm btn-danger" onclick="removePlayer('test-player-2')">Remove</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    // Navigate to dedicated campaign management page instead of modal
+    window.location.href = `/campaigns/${campaignId}/manage`;
             
             <div class="campaign-section">
                 <h4>Player Invitations</h4>

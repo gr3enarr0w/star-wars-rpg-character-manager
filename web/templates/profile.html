@@ -1,40 +1,44 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profile Settings - Star Wars RPG Character Manager</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
-    <style>
+{% extends "base.html" %}
+
+{% block title %}Profile Settings - Star Wars RPG Character Manager{% endblock %}
+
+{% block content %}
+<style>
         .profile-container {
             max-width: 800px;
             margin: 2rem auto;
             padding: 0 1rem;
         }
         .profile-header {
-            background: #007cba;
-            color: white;
+            background: linear-gradient(135deg, #000000 0%, #1a1a2e 50%, #000000 100%);
+            color: #ffd700;
             padding: 1rem;
             border-radius: 4px 4px 0 0;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            border: 1px solid #ffd700;
         }
         .profile-content {
-            background: white;
-            border: 1px solid #ddd;
+            background: rgba(26, 26, 46, 0.8);
+            border: 1px solid #ffd700;
             border-top: none;
             border-radius: 0 0 4px 4px;
             padding: 2rem;
+            color: #e0e0e0;
         }
         .profile-section {
             margin-bottom: 2rem;
             padding-bottom: 2rem;
-            border-bottom: 1px solid #eee;
+            border-bottom: 1px solid #444;
         }
         .profile-section:last-child {
             border-bottom: none;
             margin-bottom: 0;
+        }
+        .profile-section h2 {
+            color: #ffd700;
+            margin-bottom: 1rem;
         }
         .profile-grid {
             display: grid;
@@ -48,17 +52,15 @@
         }
         .back-button {
             text-decoration: none;
-            color: white;
+            color: #ffd700;
             display: flex;
             align-items: center;
             gap: 0.5rem;
         }
         .back-button:hover {
-            color: #ccc;
+            color: #e6c200;
         }
     </style>
-</head>
-<body>
     <div class="profile-container">
         <div class="profile-header">
             <h1>Profile Settings</h1>
@@ -342,5 +344,4 @@
             color: black;
         }
     </style>
-</body>
-</html>
+{% endblock %}
