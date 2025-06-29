@@ -263,6 +263,33 @@ def verify_2fa_setup():
     except Exception as e:
         return jsonify({'error': 'Operation failed'}), 500
 
+@app.route('/api/auth/disable-2fa', methods=['POST'])
+@auth_manager.require_auth
+def disable_2fa():
+    """Disable two-factor authentication for the current user."""
+    try:
+        current_user_id = get_current_user_id()
+        data = request.get_json() or {}
+        
+        # Require current password for security
+        current_password = data.get('current_password')
+        if not current_password:
+            return jsonify({'error': 'Current password is required to disable 2FA'}), 400
+        
+        # Verify current password
+        user = db_manager.get_user_by_id(current_user_id)
+        if not user or not auth_manager.verify_password(current_password, user.password_hash):
+            return jsonify({'error': 'Invalid current password'}), 400
+        
+        # Disable 2FA
+        if auth_manager.disable_2fa(current_user_id):
+            return jsonify({'message': '2FA disabled successfully'}), 200
+        else:
+            return jsonify({'error': 'Failed to disable 2FA'}), 500
+            
+    except Exception as e:
+        return jsonify({'error': 'Operation failed'}), 500
+
 @app.route('/api/auth/change-password', methods=['POST'])
 @auth_manager.require_auth
 def change_password():
@@ -623,6 +650,40 @@ def remove_player_from_campaign(campaign_id, player_id):
         app.logger.error(f"Campaign player removal error: {str(e)}")
         return jsonify({'error': 'Resource not found'}), 404
 
+@app.route('/api/campaigns/<campaign_id>/players', methods=['GET'])
+@auth_manager.require_auth
+def get_campaign_players(campaign_id):
+    """Get players in a campaign."""
+    try:
+        current_user_id = get_current_user_id()
+        campaign = db_manager.get_campaign_by_id(ObjectId(campaign_id))
+        
+        if not campaign:
+            return jsonify({'error': 'Campaign not found'}), 404
+            
+        # Check if user has access to view players (GM or player in campaign)
+        if current_user_id != campaign.game_master_id and current_user_id not in campaign.players:
+            return jsonify({'error': 'Access denied'}), 403
+            
+        # Get player details
+        players = []
+        for player_id in campaign.players:
+            user = db_manager.get_user_by_id(player_id)
+            if user:
+                players.append({
+                    'id': str(player_id),
+                    'email': user.email,
+                    'username': getattr(user, 'username', user.email.split('@')[0]),
+                    'role': 'player',
+                    'joined_at': getattr(user, 'created_at', None)
+                })
+        
+        return jsonify({'players': players}), 200
+        
+    except Exception as e:
+        app.logger.error(f"Get campaign players error: {str(e)}")
+        return jsonify({'error': 'Operation failed'}), 500
+
 # Character Creation Walkthrough Routes
 @app.route('/api/character-creation/walkthrough-data', methods=['GET'])
 @auth_manager.require_auth
@@ -684,6 +745,60 @@ def get_current_user_id():
         if user_id:
             return ObjectId(user_id)
         raise Exception("No authenticated user found")
+
+# Character Creation Data API Routes
+@app.route('/api/character-data/species', methods=['GET'])
+def get_species_data():
+    """Get available species data for character creation."""
+    try:
+        # Get comprehensive species data from character creator
+        species_data = {}
+        
+        # Add all species from character creator with formatted descriptions
+        if hasattr(creator, 'species_data') and creator.species_data:
+            for species_name, species_info in creator.species_data.items():
+                species_data[species_name] = {
+                    'name': species_name,
+                    'starting_xp': species_info.get('starting_xp', 100),
+                    'characteristics': species_info.get('characteristics', {}),
+                    'wound_threshold': species_info.get('wound_threshold', 10),
+                    'strain_threshold': species_info.get('strain_threshold', 10),
+                    'special_abilities': species_info.get('special_abilities', []),
+                    'description': f"{species_name} ({species_info.get('starting_xp', 100)} XP)"
+                }
+        
+        return jsonify({
+            'species': species_data,
+            'count': len(species_data)
+        }), 200
+    except Exception as e:
+        app.logger.error(f"Error fetching species data: {e}")
+        return jsonify({'error': 'Failed to fetch species data'}), 500
+
+@app.route('/api/character-data/careers', methods=['GET'])
+def get_careers_data():
+    """Get available careers data for character creation."""
+    try:
+        careers_data = {}
+        
+        # Get all careers from character creator
+        for career_name, career in creator.careers.items():
+            careers_data[career_name] = {
+                'name': career_name,
+                'game_line': career.game_line.value,
+                'career_skills': career.career_skills,
+                'starting_wound_threshold': career.starting_wound_threshold,
+                'starting_strain_threshold': career.starting_strain_threshold,
+                'description': f"{career_name} ({career.game_line.value})"
+            }
+        
+        return jsonify({
+            'careers': careers_data,
+            'count': len(careers_data)
+        }), 200
+    except Exception as e:
+        app.logger.error(f"Error fetching careers data: {e}")
+        return jsonify({'error': 'Failed to fetch careers data'}), 500
 
 # Enhanced Character Routes with Campaign Support
 @app.route('/api/characters', methods=['GET'])
@@ -1823,9 +1938,8 @@ def calculate_level(character):
 
 # Main routes - Dashboard and Landing
 @app.route('/')
-@auth_manager.require_auth
 def index():
-    """Main dashboard page with server-side authentication."""
+    """Main dashboard page with client-side authentication."""
     return render_template('index_with_auth.html')
 
 @app.route('/welcome')
@@ -1846,12 +1960,10 @@ def register_page():
 
 # Character Management Pages
 @app.route('/create')
-@auth_manager.require_auth
 def create_character_page():
-    """Character creation page."""
-    current_user_id = get_current_user_id()
-    current_user = db_manager.get_user_by_id(current_user_id)
-    return render_template('create_character.html', current_user=current_user)
+    """Character creation page with client-side authentication."""
+    # Let JavaScript handle authentication like homepage
+    return render_template('create_character_fixed.html')
 
 @app.route('/create-character')
 @auth_manager.require_auth
@@ -1891,8 +2003,30 @@ def campaigns_page():
     current_user = db_manager.get_user_by_id(current_user_id)
     return render_template('campaigns.html', current_user=current_user)
 
+@app.route('/campaigns/<campaign_id>/manage')
+@auth_manager.require_auth
+def campaign_management_page(campaign_id):
+    """Dedicated campaign management page."""
+    current_user_id = get_current_user_id()
+    current_user = db_manager.get_user_by_id(current_user_id)
+    
+    # Get campaign details
+    try:
+        campaign = db_manager.get_campaign_by_id(ObjectId(campaign_id))
+        if not campaign:
+            return render_template('error.html', error_message='Campaign not found', current_user=current_user), 404
+        
+        # Check if user has access to this campaign
+        if current_user_id not in [campaign.game_master_id] + campaign.players:
+            return render_template('error.html', error_message='Access denied', current_user=current_user), 403
+        
+        return render_template('campaign_management.html', campaign=campaign, current_user=current_user)
+    except Exception as e:
+        return render_template('error.html', error_message='Failed to load campaign', current_user=current_user), 500
+
 # Documentation
 @app.route('/docs')
+@app.route('/documentation')  # Add alias for backward compatibility
 @auth_manager.require_auth
 def documentation_page():
     """Documentation page with role-based access."""

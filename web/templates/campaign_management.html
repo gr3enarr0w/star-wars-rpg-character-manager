@@ -1,0 +1,353 @@
+{% extends "base.html" %}
+
+{% block title %}Manage Campaign - {{ campaign.name }}{% endblock %}
+
+{% block layout %}
+<div style="max-width: 1000px; margin: 0 auto; padding: 2rem 1rem;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
+        <div>
+            <h1 style="color: #ffd700; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); margin: 0 0 0.5rem 0;">⭐ Manage Campaign: {{ campaign.name }}</h1>
+            <p style="color: #e0e0e0; margin: 0;">Campaign management and settings</p>
+        </div>
+        <a href="/campaigns" class="btn btn-outline">← Back to Campaigns</a>
+    </div>
+    
+    <div style="background: linear-gradient(145deg, #1a1a2e, #2d3748); border: 1px solid #333; border-radius: 8px; padding: 2rem;">
+        <div class="campaign-tabs" style="display: flex; border-bottom: 1px solid #333; margin-bottom: 2rem; flex-wrap: wrap;">
+            <button class="tab-button active" onclick="showTab('general', this)">General</button>
+            <button class="tab-button" onclick="showTab('players', this)">Players</button>
+            <!-- Sessions tab removed per requirements -->
+            <!-- Settings tab hidden for v1 - no settings options available -->
+            <!-- <button class="tab-button" onclick="showTab('settings', this)">Settings</button> -->
+        </div>
+        
+        <!-- General Tab -->
+        <div id="general-tab" class="tab-content active">
+            <h2 style="color: #ffd700; margin: 0 0 1rem 0;">Campaign Information</h2>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2rem;">
+                <div>
+                    <p><strong>Name:</strong> {{ campaign.name }}</p>
+                    <p><strong>Game System:</strong> {{ campaign.game_system }}</p>
+                    <p><strong>Description:</strong> {{ campaign.description or 'No description' }}</p>
+                </div>
+                <div>
+                    <p><strong>Players:</strong> {{ campaign.players|length }}/{{ campaign.max_players or 4 }}</p>
+                    <p><strong>Characters:</strong> {{ campaign.characters|length }}</p>
+                    <p><strong>Created:</strong> {{ campaign.created_at.strftime('%B %d, %Y') if campaign.created_at else 'Unknown' }}</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Players Tab -->
+        <div id="players-tab" class="tab-content" style="display: none;">
+            <h2 style="color: #ffd700; margin: 0 0 1rem 0;">Player Management</h2>
+            
+            <!-- Current Players Section -->
+            <div style="margin-bottom: 2rem;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                    <h3 style="color: #ffd700; margin: 0;">Current Players</h3>
+                    <button id="addPlayerBtn" onclick="showAddPlayerForm()" 
+                            style="background: linear-gradient(135deg, #ffd700, #ffed4e); color: #000; border: none; padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer; font-weight: bold;">
+                        + Add Player
+                    </button>
+                </div>
+                
+                <div id="players-list" style="display: grid; gap: 1rem;">
+                    <!-- Players will be loaded here -->
+                    <div class="loading" style="color: #a0aec0;">Loading players...</div>
+                </div>
+            </div>
+            
+            <!-- Add Player Form (Hidden by default) -->
+            <div id="add-player-form" style="display: none; background: rgba(255, 215, 0, 0.1); border: 1px solid #ffd700; border-radius: 4px; padding: 1rem; margin-bottom: 2rem;">
+                <h4 style="color: #ffd700; margin: 0 0 1rem 0;">Invite Player to Campaign</h4>
+                <div style="display: grid; grid-template-columns: 1fr auto; gap: 1rem; align-items: end;">
+                    <div>
+                        <label style="color: #ffd700; display: block; margin-bottom: 0.5rem;">Player Email</label>
+                        <input type="email" id="playerEmail" placeholder="Enter player's email address" 
+                               style="width: 100%; padding: 0.5rem; background: rgba(255, 255, 255, 0.1); border: 1px solid #333; border-radius: 4px; color: #e0e0e0;">
+                    </div>
+                    <div style="display: flex; gap: 0.5rem;">
+                        <button onclick="sendPlayerInvite()" 
+                                style="background: linear-gradient(135deg, #28a745, #20c997); color: white; border: none; padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer;">
+                            Send Invite
+                        </button>
+                        <button onclick="hideAddPlayerForm()" 
+                                style="background: #6c757d; color: white; border: none; padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer;">
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Invite Codes Section -->
+            <div style="margin-bottom: 2rem;">
+                <h3 style="color: #ffd700; margin: 0 0 1rem 0;">Campaign Invite Codes</h3>
+                <div id="invite-codes-section">
+                    <button onclick="generateNewInviteCode()" 
+                            style="background: linear-gradient(135deg, #17a2b8, #138496); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 4px; cursor: pointer; font-weight: bold;">
+                        Generate New Invite Code
+                    </button>
+                    <div id="invite-codes-list" style="margin-top: 1rem;">
+                        <!-- Invite codes will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Sessions tab removed per requirements -->
+        
+        <!-- Settings Tab hidden for v1 - no settings options available -->
+        <!-- <div id="settings-tab" class="tab-content" style="display: none;">
+            <h2 style="color: #ffd700; margin: 0 0 1rem 0;">Campaign Settings</h2>
+            <p style="color: #a0aec0;">Campaign settings will be implemented here.</p>
+        </div> -->
+    </div>
+</div>
+
+<style>
+    .tab-button {
+        background: none;
+        border: none;
+        padding: 1rem 1.5rem;
+        cursor: pointer;
+        border-bottom: 2px solid transparent;
+        font-size: 1rem;
+        color: #a0aec0;
+        transition: all 0.3s ease;
+    }
+    
+    .tab-button:hover {
+        color: #ffd700;
+        background: rgba(255, 215, 0, 0.1);
+    }
+    
+    .tab-button.active {
+        color: #ffd700;
+        border-bottom-color: #ffd700;
+    }
+    
+    .tab-content {
+        display: none;
+    }
+    
+    .tab-content.active {
+        display: block;
+    }
+</style>
+
+<script>
+    function showTab(tabName, button) {
+        // Hide all tab contents
+        document.querySelectorAll('.tab-content').forEach(tab => {
+            tab.style.display = 'none';
+            tab.classList.remove('active');
+        });
+        
+        // Remove active class from all buttons
+        document.querySelectorAll('.tab-button').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        
+        // Show selected tab and mark button as active
+        document.getElementById(tabName + '-tab').style.display = 'block';
+        document.getElementById(tabName + '-tab').classList.add('active');
+        button.classList.add('active');
+        
+        // Load tab-specific data
+        if (tabName === 'players') {
+            loadPlayers();
+        }
+    }
+    
+    // Player Management Functions
+    let campaignId = '{{ campaign.id }}';
+    let currentUser = '{{ current_user.username }}';
+    
+    function showAddPlayerForm() {
+        document.getElementById('add-player-form').style.display = 'block';
+        document.getElementById('playerEmail').focus();
+    }
+    
+    function hideAddPlayerForm() {
+        document.getElementById('add-player-form').style.display = 'none';
+        document.getElementById('playerEmail').value = '';
+    }
+    
+    async function loadPlayers() {
+        try {
+            const response = await fetch(`/api/campaigns/${campaignId}/players`, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+                }
+            });
+            
+            if (response.ok) {
+                const data = await response.json();
+                displayPlayers(data.players || []);
+            } else {
+                document.getElementById('players-list').innerHTML = '<div style="color: #dc3545;">Failed to load players</div>';
+            }
+        } catch (error) {
+            console.error('Error loading players:', error);
+            document.getElementById('players-list').innerHTML = '<div style="color: #dc3545;">Error loading players</div>';
+        }
+    }
+    
+    function displayPlayers(players) {
+        const playersList = document.getElementById('players-list');
+        
+        if (players.length === 0) {
+            playersList.innerHTML = `
+                <div style="text-align: center; padding: 2rem; color: #a0aec0;">
+                    <div style="font-size: 2rem; margin-bottom: 1rem;">👥</div>
+                    <h3 style="color: #ffd700; margin: 0 0 0.5rem 0;">No Players Yet</h3>
+                    <p>Invite players to join this campaign!</p>
+                </div>
+            `;
+            return;
+        }
+        
+        playersList.innerHTML = players.map(player => `
+            <div style="background: rgba(255, 215, 0, 0.1); border: 1px solid #333; border-radius: 4px; padding: 1rem; display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <h4 style="color: #ffd700; margin: 0 0 0.25rem 0;">${player.username}</h4>
+                    <p style="color: #a0aec0; margin: 0; font-size: 0.9rem;">${player.email}</p>
+                    <p style="color: #e0e0e0; margin: 0.25rem 0 0 0; font-size: 0.8rem;">
+                        Characters: ${player.characters ? player.characters.length : 0} | 
+                        Joined: ${new Date(player.joined_date).toLocaleDateString()}
+                    </p>
+                </div>
+                <div style="display: flex; gap: 0.5rem;">
+                    <button onclick="viewPlayerCharacters('${player.id}')" 
+                            style="background: #17a2b8; color: white; border: none; padding: 0.4rem 0.8rem; border-radius: 4px; cursor: pointer; font-size: 0.9rem;">
+                        Characters
+                    </button>
+                    <button onclick="removePlayer('${player.id}')" 
+                            style="background: #dc3545; color: white; border: none; padding: 0.4rem 0.8rem; border-radius: 4px; cursor: pointer; font-size: 0.9rem;">
+                        Remove
+                    </button>
+                </div>
+            </div>
+        `).join('');
+    }
+    
+    async function sendPlayerInvite() {
+        const email = document.getElementById('playerEmail').value.trim();
+        
+        if (!email) {
+            alert('Please enter a player email address');
+            return;
+        }
+        
+        try {
+            const response = await fetch(`/api/campaigns/${campaignId}/invite`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email: email })
+            });
+            
+            if (response.ok) {
+                alert('Player invitation sent successfully!');
+                hideAddPlayerForm();
+                loadPlayers(); // Refresh players list
+            } else {
+                const error = await response.json();
+                alert(`Failed to send invitation: ${error.error || 'Unknown error'}`);
+            }
+        } catch (error) {
+            console.error('Error sending invite:', error);
+            alert('Failed to send invitation. Please try again.');
+        }
+    }
+    
+    async function removePlayer(playerId) {
+        if (!confirm('Are you sure you want to remove this player from the campaign?')) {
+            return;
+        }
+        
+        try {
+            const response = await fetch(`/api/campaigns/${campaignId}/players/${playerId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+                }
+            });
+            
+            if (response.ok) {
+                alert('Player removed successfully');
+                loadPlayers(); // Refresh players list
+            } else {
+                const error = await response.json();
+                alert(`Failed to remove player: ${error.error || 'Unknown error'}`);
+            }
+        } catch (error) {
+            console.error('Error removing player:', error);
+            alert('Failed to remove player. Please try again.');
+        }
+    }
+    
+    async function generateNewInviteCode() {
+        try {
+            const response = await fetch(`/api/campaigns/${campaignId}/invite-code`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+                }
+            });
+            
+            if (response.ok) {
+                const data = await response.json();
+                displayInviteCode(data.invite_code);
+            } else {
+                alert('Failed to generate invite code');
+            }
+        } catch (error) {
+            console.error('Error generating invite code:', error);
+            alert('Failed to generate invite code. Please try again.');
+        }
+    }
+    
+    function displayInviteCode(inviteCode) {
+        const invitesList = document.getElementById('invite-codes-list');
+        invitesList.innerHTML = `
+            <div style="background: rgba(23, 162, 184, 0.1); border: 1px solid #17a2b8; border-radius: 4px; padding: 1rem; margin-top: 1rem;">
+                <h4 style="color: #17a2b8; margin: 0 0 0.5rem 0;">New Invite Code Generated</h4>
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <code style="background: rgba(0,0,0,0.3); padding: 0.5rem; border-radius: 4px; color: #ffd700; font-size: 1.1rem; flex: 1;">${inviteCode}</code>
+                    <button onclick="copyInviteCode('${inviteCode}')" 
+                            style="background: #28a745; color: white; border: none; padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer;">
+                        Copy
+                    </button>
+                </div>
+                <p style="color: #a0aec0; margin: 0.5rem 0 0 0; font-size: 0.9rem;">
+                    Share this code with players so they can join the campaign.
+                </p>
+            </div>
+        `;
+    }
+    
+    function copyInviteCode(code) {
+        navigator.clipboard.writeText(code).then(() => {
+            alert('Invite code copied to clipboard!');
+        }).catch(() => {
+            // Fallback for older browsers
+            const textArea = document.createElement('textarea');
+            textArea.value = code;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textArea);
+            alert('Invite code copied to clipboard!');
+        });
+    }
+    
+    function viewPlayerCharacters(playerId) {
+        // Navigate to characters page filtered by player
+        window.location.href = `/characters?player=${playerId}&campaign=${campaignId}`;
+    }
+</script>
+{% endblock %}

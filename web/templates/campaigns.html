@@ -15,8 +15,8 @@
     <div style="background: linear-gradient(145deg, #1a1a2e, #2d3748); border: 1px solid #333; border-radius: 8px; padding: 2rem;">
         <div class="campaign-tabs" style="display: flex; border-bottom: 1px solid #333; margin-bottom: 2rem; flex-wrap: wrap;">
             <button class="tab-button active" onclick="showTab('my-campaigns', this)" style="background: none; border: none; padding: 1rem 1.5rem; cursor: pointer; border-bottom: 2px solid transparent; font-size: 1rem; color: #e0e0e0;">My Campaigns</button>
-            <button class="tab-button" onclick="showTab('create-campaign', this)" style="background: none; border: none; padding: 1rem 1.5rem; cursor: pointer; border-bottom: 2px solid transparent; font-size: 1rem; color: #e0e0e0;">Create Campaign</button>
-            <button class="tab-button" onclick="showTab('join-campaign', this)" style="background: none; border: none; padding: 1rem 1.5rem; cursor: pointer; border-bottom: 2px solid transparent; font-size: 1rem; color: #e0e0e0;">Join Campaign</button>
+            <button class="tab-button" id="create-campaign-tab-btn" onclick="showTab('create-campaign', this)" style="background: none; border: none; padding: 1rem 1.5rem; cursor: pointer; border-bottom: 2px solid transparent; font-size: 1rem; color: #e0e0e0;">Create Campaign</button>
+            <button class="tab-button" id="join-campaign-tab-btn" onclick="showTab('join-campaign', this)" style="background: none; border: none; padding: 1rem 1.5rem; cursor: pointer; border-bottom: 2px solid transparent; font-size: 1rem; color: #e0e0e0;">Join Campaign</button>
         </div>
         
         <!-- My Campaigns Tab -->
@@ -65,7 +65,7 @@
                         </div>
                     </div>
                     
-                    <button type="submit" class="btn" style="margin-top: 1rem;">Create Campaign</button>
+                    <button type="submit" id="create-campaign-submit-btn" class="btn" style="margin-top: 1rem;">Create Campaign</button>
                 </form>
             </div>
         </div>
@@ -81,7 +81,7 @@
                                style="width: 100%; padding: 0.75rem; background: #1a1a2e; border: 1px solid #333; border-radius: 4px; color: #e0e0e0; font-size: 1rem; box-sizing: border-box; font-family: monospace; letter-spacing: 0.1rem;">
                     </div>
                     
-                    <button type="submit" class="btn">Join Campaign</button>
+                    <button type="submit" id="join-campaign-submit-btn" class="btn">Join Campaign</button>
                 </form>
                 
                 <div style="margin-top: 2rem; padding: 1rem; background: rgba(255, 215, 0, 0.1); border: 1px solid #ffd700; border-radius: 4px;">
@@ -448,9 +448,7 @@ function displayCampaigns() {
                                 <button class="btn btn-outline btn-sm" onclick="managePlayers('${campaign.id}')">
                                     Manage Players
                                 </button>
-                                <button class="btn btn-outline btn-sm" onclick="viewSessions('${campaign.id}')">
-                                    Session Tracker
-                                </button>
+                                <!-- Session Tracker removed per requirements -->
                                 <button class="btn btn-outline btn-sm" onclick="editCampaign('${campaign.id}')">
                                     Edit Campaign
                                 </button>
@@ -460,8 +458,7 @@ function displayCampaigns() {
                                 <button class="btn btn-outline btn-sm" onclick="viewCampaignDetails('${campaign.id}')">
                                     View Details
                                 </button>
-                                <button class="btn btn-outline btn-sm" onclick="viewSessions('${campaign.id}')">
-                                    Session History
+                                <!-- Session History removed per requirements -->
                                 </button>
                                 <button class="btn btn-outline btn-sm" onclick="leaveCampaign('${campaign.id}')">
                                     Leave Campaign
@@ -577,97 +574,12 @@ async function generateInviteCode(campaignId) {
 function managePlayers(campaignId) {
     // Navigate to dedicated campaign management page instead of modal
     window.location.href = `/campaigns/${campaignId}/manage`;
-            
-            <div class="campaign-section">
-                <h4>Player Invitations</h4>
-                <div id="campaign-pending-invites">
-                    <div style="background: rgba(255, 215, 0, 0.1); border: 1px solid #ffd700; border-radius: 4px; padding: 1rem; margin-bottom: 1rem;">
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <div>
-                                <strong>Invite Code: SWRPG-CAMP-1234</strong>
-                                <div style="font-size: 0.875rem; color: #a0aec0;">Expires: ${new Date(Date.now() + 24*60*60*1000).toLocaleDateString()}</div>
-                            </div>
-                            <button class="btn btn-sm btn-outline" onclick="copyInviteCode('SWRPG-CAMP-1234')">Copy Code</button>
-                        </div>
-                    </div>
-                </div>
-                <button class="btn" onclick="generateInviteCode('${campaignId}')">Generate New Invite</button>
-            </div>
-            
-            <div class="campaign-section">
-                <h4>Campaign Settings</h4>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-                    <div class="form-group">
-                        <label>Max Players</label>
-                        <input type="number" value="${campaign.max_players || 4}" min="1" max="10" id="max-players-input">
-                    </div>
-                    <div class="form-group">
-                        <label>Visibility</label>
-                        <select id="campaign-visibility">
-                            <option value="private">Private (Invite Only)</option>
-                            <option value="friends">Friends Only</option>
-                            <option value="public">Public</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>Session Frequency</label>
-                    <select id="session-frequency">
-                        <option value="weekly">Weekly</option>
-                        <option value="biweekly">Bi-weekly</option>
-                        <option value="monthly">Monthly</option>
-                        <option value="irregular">Irregular</option>
-                    </select>
-                </div>
-                <button class="btn btn-outline" onclick="updateCampaignSettings('${campaignId}')">Update Settings</button>
-            </div>
-        </div>
-    `);
+
 }
 
 function editCampaign(campaignId) {
-    const campaign = campaigns.find(c => c.id === campaignId);
-    if (!campaign) return;
-    
-    showModal(`
-        <div class="modal-header">
-            <h3>Edit Campaign</h3>
-            <button onclick="closeModal()" class="modal-close">&times;</button>
-        </div>
-        <div class="modal-content">
-            <form id="edit-campaign-form">
-                <div class="form-group">
-                    <label>Campaign Name</label>
-                    <input type="text" id="edit-name" value="${campaign.name}" required>
-                </div>
-                
-                <div class="form-group">
-                    <label>Description</label>
-                    <textarea id="edit-description" rows="3">${campaign.description || ''}</textarea>
-                </div>
-                
-                <div class="form-group">
-                    <label>Game System</label>
-                    <select id="edit-game-system">
-                        <option value="Edge of the Empire" ${campaign.game_system === 'Edge of the Empire' ? 'selected' : ''}>Edge of the Empire</option>
-                        <option value="Age of Rebellion" ${campaign.game_system === 'Age of Rebellion' ? 'selected' : ''}>Age of Rebellion</option>
-                        <option value="Force and Destiny" ${campaign.game_system === 'Force and Destiny' ? 'selected' : ''}>Force and Destiny</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label>Max Players</label>
-                    <input type="number" id="edit-max-players" value="${campaign.max_players || 4}" min="1" max="10">
-                </div>
-                
-                <div class="form-actions">
-                    <button type="button" class="btn" onclick="saveCampaignChanges('${campaignId}')">Save Changes</button>
-                    <button type="button" class="btn btn-outline" onclick="closeModal()">Cancel</button>
-                    <button type="button" class="btn btn-danger" onclick="deleteCampaign('${campaignId}')">Delete Campaign</button>
-                </div>
-            </form>
-        </div>
-    `);
+    // Navigate to dedicated campaign management page instead of modal
+    window.location.href = `/campaigns/${campaignId}/manage`;
 }
 
 function viewCampaignDetails(campaignId) {
@@ -793,7 +705,12 @@ function closeModal() {
 }
 
 // Session tracking functions
-async function viewSessions(campaignId) {
+function viewSessions(campaignId) {
+    // Navigate to dedicated campaign management page instead of modal
+    window.location.href = `/campaigns/${campaignId}/manage`;
+}
+
+async function viewSessionsOld(campaignId) {
     const campaign = campaigns.find(c => c.id === campaignId);
     if (!campaign) return;
     

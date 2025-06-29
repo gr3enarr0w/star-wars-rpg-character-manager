@@ -196,6 +196,23 @@ class AuthManager:
         """Generate a backup code for 2FA."""
         return ''.join(secrets.choice(string.ascii_uppercase + string.digits) for _ in range(8))
     
+    def disable_2fa(self, user_id: ObjectId) -> bool:
+        """Disable two-factor authentication for a user."""
+        try:
+            # Update user to disable 2FA and clear secrets
+            update_data = {
+                "two_factor_enabled": False,
+                "two_factor_secret": None,
+                "backup_codes": []
+            }
+            
+            result = db_manager.update_user(user_id, update_data)
+            return result is not None
+            
+        except Exception as e:
+            self.logger.error(f"Failed to disable 2FA for user {user_id}: {str(e)}")
+            return False
+    
     # Invite code management
     def generate_invite_code(self, created_by: ObjectId, role: str = "player", expires_in_days: int = 7) -> str:
         """Generate invite code."""
@@ -252,39 +269,50 @@ class AuthManager:
             @wraps(f)
             def decorated_function(*args, **kwargs):
                 try:
-                    # Try JWT authentication first
-                    verify_jwt_in_request()
-                    current_user_id = get_jwt_identity()
-                    user = db_manager.get_user_by_id(ObjectId(current_user_id))
+                    # Check authentication using the same logic as other routes
+                    from flask import g
                     
-                    if not user or user.role != required_role:
-                        return jsonify({"error": "Insufficient permissions"}), 403
+                    current_user_id = None
+                    user = None
+                    
+                    # Try JWT authentication first
+                    try:
+                        verify_jwt_in_request()
+                        current_user_id = ObjectId(get_jwt_identity())
+                        user = db_manager.get_user_by_id(current_user_id)
+                    except:
+                        # Fall back to session authentication for non-API routes
+                        if not request.path.startswith('/api/'):
+                            from flask import session
+                            if session.get('authenticated') and session.get('user_id'):
+                                current_user_id = ObjectId(session['user_id'])
+                                user = db_manager.get_user_by_id(current_user_id)
+                    
+                    # Check if user was found and has required role
+                    if not user:
+                        if request.path.startswith('/api/'):
+                            return jsonify({"error": "Authentication required"}), 401
+                        else:
+                            return redirect(url_for('login_page'))
+                    
+                    if user.role != required_role:
+                        if request.path.startswith('/api/'):
+                            return jsonify({"error": "Insufficient permissions"}), 403
+                        else:
+                            from flask import render_template
+                            return render_template('error.html', 
+                                                 error_title="Access Denied",
+                                                 error_message=f"You need {required_role} role to access this page.",
+                                                 current_user=user), 403
                     
                     return f(*args, **kwargs)
+                    
                 except Exception as e:
-                    # Check if this is an API route
+                    # Handle any unexpected errors
                     if request.path.startswith('/api/'):
-                        return jsonify({"error": "Authentication required"}), 401
+                        return jsonify({"error": "Authentication error"}), 401
                     else:
-                        # For page routes, check session authentication
-                        from flask import session
-                        if session.get('authenticated') and session.get('user_id'):
-                            # Get user from session
-                            current_user_id = ObjectId(session['user_id'])
-                            user = db_manager.get_user_by_id(current_user_id)
-                            
-                            if not user or user.role != required_role:
-                                # User is authenticated but doesn't have required role
-                                from flask import render_template
-                                return render_template('error.html', 
-                                                     error_title="Access Denied",
-                                                     error_message=f"You need {required_role} role to access this page.",
-                                                     current_user=user), 403
-                            
-                            return f(*args, **kwargs)
-                        else:
-                            # Not authenticated, redirect to login
-                            return redirect(url_for('login_page'))
+                        return redirect(url_for('login_page'))
             return decorated_function
         return decorator
     

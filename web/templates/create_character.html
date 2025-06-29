@@ -2,48 +2,20 @@
 
 {% block title %}Create Character - Star Wars RPG Character Manager{% endblock %}
 
-{% block sidebar_content %}
-<!-- Character Creation Help -->
-<div style="margin-bottom: 1rem; padding: 1rem; background: rgba(255, 215, 0, 0.1); border: 1px solid #ffd700; border-radius: 4px;">
-    <h4 style="color: #ffd700; margin: 0 0 0.5rem 0;">Creation Guide</h4>
-    <div style="color: #e0e0e0; font-size: 0.875rem; line-height: 1.4;">
-        <p>1. Choose your species carefully - it affects starting characteristics and XP</p>
-        <p>2. Select a career that matches your desired playstyle</p>
-        <p>3. Add background details to bring your character to life</p>
-    </div>
-</div>
-
-<!-- Species Quick Reference -->
-<div style="margin-bottom: 1rem; padding: 1rem; background: rgba(255, 215, 0, 0.05); border: 1px solid #333; border-radius: 4px;">
-    <h4 style="color: #ffd700; margin: 0 0 0.5rem 0;">Popular Species</h4>
-    <div style="color: #e0e0e0; font-size: 0.875rem;">
-        <div style="margin-bottom: 0.25rem;"><strong>Human:</strong> Versatile, 110 XP</div>
-        <div style="margin-bottom: 0.25rem;"><strong>Twi'lek:</strong> Social, High Cunning</div>
-        <div style="margin-bottom: 0.25rem;"><strong>Wookiee:</strong> Strong, High Brawn</div>
-        <div><strong>Rodian:</strong> Agile, Good for hunters</div>
-    </div>
-</div>
-
-<!-- Navigation -->
-<div>
-    <a href="{{ url_for('index') }}" class="btn btn-outline" style="width: 100%; text-align: center; margin-bottom: 0.5rem;">
-        ← Back to Dashboard
-    </a>
-    <a href="{{ url_for('documentation_page') }}" class="btn btn-secondary" style="width: 100%; text-align: center;">
-        📖 View Documentation
-    </a>
-</div>
-{% endblock %}
-
-{% block content %}
-<div id="character-creation">
-    <!-- Header -->
-    <div style="margin-bottom: 2rem;">
+{% block layout %}
+<!-- Full width layout without sidebar -->
+<div style="max-width: 1200px; margin: 0 auto; padding: 2rem 1rem;">
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
+    <div>
         <h1 style="color: #ffd700; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); margin: 0 0 0.5rem 0;">🌟 Create New Character</h1>
         <p style="color: #e0e0e0; margin: 0;">Build your Star Wars RPG character step by step</p>
     </div>
-
-    <!-- Creation Form -->
+    <a href="{{ url_for('index') }}" class="btn btn-outline">← Back to Dashboard</a>
+</div>
+<!-- Character Creation Help -->
+<div style="display: grid; grid-template-columns: 2fr 1fr; gap: 2rem; margin-bottom: 2rem;">
+    <div>
+        <!-- Creation Form -->
     <form id="character-creation-form" style="background: linear-gradient(145deg, #1a1a2e, #16213e); border: 1px solid #333; border-radius: 8px; padding: 2rem;">
         <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
             <div class="form-group">
@@ -143,10 +115,42 @@
         </div>
     </form>
 
-    <!-- Creation Status -->
-    <div id="creation-status" style="margin-top: 1rem; padding: 1rem; border-radius: 4px; display: none;">
-        <div id="status-message"></div>
+        <!-- Creation Status -->
+        <div id="creation-status" style="margin-top: 1rem; padding: 1rem; border-radius: 4px; display: none;">
+            <div id="status-message"></div>
+        </div>
     </div>
+    
+    <!-- Help Sidebar -->
+    <div>
+        <!-- Character Creation Help -->
+        <div style="margin-bottom: 1rem; padding: 1rem; background: rgba(255, 215, 0, 0.1); border: 1px solid #ffd700; border-radius: 4px;">
+            <h4 style="color: #ffd700; margin: 0 0 0.5rem 0;">Creation Guide</h4>
+            <div style="color: #e0e0e0; font-size: 0.875rem; line-height: 1.4;">
+                <p>1. Choose your species carefully - it affects starting characteristics and XP</p>
+                <p>2. Select a career that matches your desired playstyle</p>
+                <p>3. Add background details to bring your character to life</p>
+            </div>
+        </div>
+
+        <!-- Species Quick Reference -->
+        <div style="margin-bottom: 1rem; padding: 1rem; background: rgba(255, 215, 0, 0.05); border: 1px solid #333; border-radius: 4px;">
+            <h4 style="color: #ffd700; margin: 0 0 0.5rem 0;">Popular Species</h4>
+            <div style="color: #e0e0e0; font-size: 0.875rem;">
+                <div style="margin-bottom: 0.25rem;"><strong>Human:</strong> Versatile, 110 XP</div>
+                <div style="margin-bottom: 0.25rem;"><strong>Twi'lek:</strong> Social, High Cunning</div>
+                <div style="margin-bottom: 0.25rem;"><strong>Wookiee:</strong> Strong, High Brawn</div>
+                <div><strong>Rodian:</strong> Agile, Good for hunters</div>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <div>
+            <!-- Documentation removed for v1 -->
+        </div>
+    </div>
+</div>
+
 </div>
 
 <style>

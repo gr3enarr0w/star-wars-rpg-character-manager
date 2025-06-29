@@ -1489,7 +1489,7 @@ class CharacterManager {
                 </div>
                 
                 <div class="xp-note mt-3">
-                    <p class="text-secondary"><strong>Note:</strong> Detailed XP award history tracking will be added in a future update. For now, you can see total XP earned vs spent.</p>
+                    <p class="text-secondary"><strong>XP Summary:</strong> Track your character's experience progression and spending.</p>
                 </div>
             </div>
             <div class="modal-footer">

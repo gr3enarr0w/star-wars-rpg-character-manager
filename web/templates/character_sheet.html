@@ -1301,7 +1301,8 @@ async function showXPHistoryModal() {
 }
 
 function editCharacter() {
-    alert('Edit character functionality will be implemented in the next iteration.');
+    // Navigate to create character page in edit mode (or hide button for v1)
+    window.location.href = `/create-character?edit=${characterId}`;
 }
 
 async function deleteCharacter() {
