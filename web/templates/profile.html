@@ -149,8 +149,8 @@
     <script>
         let currentUser = null;
 
-        // Load user data on page load
-        document.addEventListener('DOMContentLoaded', async () => {
+        // Simplified and reliable user data loading
+        async function loadUserDataNow() {
             const token = localStorage.getItem('access_token');
             if (!token) {
                 window.location.href = '/login';
@@ -167,10 +167,13 @@
                     window.location.href = '/login';
                 }
             } catch (error) {
-                console.error('Authentication check failed:', error);
+                console.error('Profile page: Authentication check failed:', error);
                 window.location.href = '/login';
             }
-        });
+        }
+
+        // Load user data on page load
+        document.addEventListener('DOMContentLoaded', loadUserDataNow);
 
         function populateUserData() {
             document.getElementById('username').value = currentUser.username;
@@ -234,6 +237,21 @@
         });
 
         function manage2FA() {
+            // Check if user data is loaded, if not try to load it
+            if (!currentUser) {
+                console.log('User data not loaded, attempting to load...');
+                // Try to load user data immediately
+                loadUserDataNow().then(() => {
+                    // Retry the manage2FA call after loading
+                    if (currentUser) {
+                        manage2FA();
+                    } else {
+                        alert('Unable to load user data. Please refresh the page and try again.');
+                    }
+                });
+                return;
+            }
+            
             if (currentUser.two_factor_enabled) {
                 // Show disable 2FA option
                 const confirmed = confirm('Are you sure you want to disable Two-Factor Authentication? This will make your account less secure.');
@@ -451,6 +469,17 @@
                 }
             });
         }
+
+        // Now that authenticatedFetch is defined, try loading user data immediately
+        loadUserDataNow();
+        
+        // Backup method - try to load user data after a delay if currentUser is still null
+        setTimeout(async () => {
+            if (!currentUser) {
+                console.log('Profile page: Backup user data load triggered');
+                await loadUserDataNow();
+            }
+        }, 2000);
     </script>
     
     <style>
