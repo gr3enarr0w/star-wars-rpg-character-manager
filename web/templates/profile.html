@@ -177,6 +177,13 @@
             document.getElementById('email').value = currentUser.email;
             document.getElementById('role').value = currentUser.role;
             
+            // Format created date
+            const createdField = document.getElementById('created_at');
+            if (createdField && currentUser.created_at) {
+                const date = new Date(currentUser.created_at);
+                createdField.value = date.toLocaleDateString();
+            }
+            
             // Format 2FA status
             const twoFAStatus = document.getElementById('twofa_status');
             if (currentUser.two_factor_enabled) {
@@ -278,7 +285,7 @@
                         <div style="text-align: center; margin-bottom: 1rem;">
                             <p>Scan this QR code with your authenticator app:</p>
                             <div style="background: white; padding: 1rem; border-radius: 4px; display: inline-block;">
-                                <img src="data:image/png;base64,${setupData.qr_code}" alt="2FA QR Code" style="max-width: 200px;">
+                                <img src="${setupData.qr_code}" alt="2FA QR Code" style="max-width: 200px;">
                             </div>
                         </div>
                         

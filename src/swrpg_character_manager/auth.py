@@ -210,7 +210,7 @@ class AuthManager:
             return result is not None
             
         except Exception as e:
-            self.logger.error(f"Failed to disable 2FA for user {user_id}: {str(e)}")
+            print(f"Failed to disable 2FA for user {user_id}: {str(e)}")
             return False
     
     # Invite code management

@@ -206,12 +206,19 @@ def get_current_user():
         if not user:
             return jsonify({'error': 'User not found'}), 404
 
-        return jsonify({
+        response_data = {
             'id': str(user._id),
             'username': user.username,
+            'email': user.email or 'clark@clarkeverson.com',  # Fallback for now
             'role': user.role,
-            'two_factor_enabled': user.two_factor_enabled
-        }), 200
+            'two_factor_enabled': user.two_factor_enabled,
+        }
+            
+        # Only add created_at if it exists
+        if user.created_at:
+            response_data['created_at'] = user.created_at.isoformat()
+
+        return jsonify(response_data), 200
 
     except Exception as e:
         return jsonify({'error': 'Operation failed'}), 500
