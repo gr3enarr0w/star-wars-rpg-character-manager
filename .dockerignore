@@ -127,11 +127,14 @@ test_*.py
 debug_*.py
 diagnose_*.py
 quick_*.py
-create_*.py
+create_test_*.py
 setup_*.py
 list_*.py
 reset_*.py
 recreate_*.py
+
+# Allow critical admin setup script
+!create_admin_user.py
 
 # Data processing
 swrpg_complete_extraction/

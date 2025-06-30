@@ -498,7 +498,7 @@ class CharacterCreator:
         # Get the path to the comprehensive species data
         current_dir = os.path.dirname(os.path.abspath(__file__))
         project_root = os.path.dirname(os.path.dirname(current_dir))
-        species_file = os.path.join(project_root, 'swrpg_extracted_data', 'json', 'comprehensive_species_data.json')
+        species_file = os.path.join(project_root, 'swrpg_extracted_data', 'json', 'comprehensive_species_data_v2.json')
         
         try:
             with open(species_file, 'r', encoding='utf-8') as f:

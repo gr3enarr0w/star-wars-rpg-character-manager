@@ -394,11 +394,6 @@
                             </div>
                         </div>
                         
-                        <div class="form-group">
-                            <label class="form-label">
-                                <input type="checkbox" name="require_2fa"> Require Two-Factor Authentication for all users
-                            </label>
-                        </div>
                         
                         <div class="form-group">
                             <label class="form-label">
@@ -543,7 +538,6 @@
                             <tr>
                                 <th>Username</th>
                                 <th>Role</th>
-                                <th>2FA</th>
                                 <th>Created</th>
                                 <th>Last Login</th>
                                 <th>Actions</th>
@@ -559,11 +553,6 @@
                                             <option value="gamemaster" ${user.role === 'gamemaster' ? 'selected' : ''}>Game Master</option>
                                             <option value="admin" ${user.role === 'admin' ? 'selected' : ''}>Admin</option>
                                         </select>
-                                    </td>
-                                    <td>
-                                        <span class="badge ${user.two_factor_enabled ? 'badge-success' : 'badge-warning'}">
-                                            ${user.two_factor_enabled ? 'Enabled' : 'Disabled'}
-                                        </span>
                                     </td>
                                     <td>${new Date(user.created_at).toLocaleDateString()}</td>
                                     <td>${user.last_login ? new Date(user.last_login).toLocaleDateString() : 'Never'}</td>
@@ -822,10 +811,6 @@
                                 <div class="form-group">
                                     <label class="form-label">Last Login</label>
                                     <div style="color: #e0e0e0;">${user.last_login ? new Date(user.last_login).toLocaleDateString() : 'Never'}</div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">Two-Factor Auth</label>
-                                    <div style="color: #e0e0e0;">${user.two_factor_enabled ? 'Enabled' : 'Disabled'}</div>
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label">Total Characters</label>

@@ -100,9 +100,6 @@
         .auth-links a:hover {
             color: #ffed4e;
         }
-        .two-factor-section {
-            display: none;
-        }
     </style>
 </head>
 <body>
@@ -123,12 +120,6 @@
                 <input type="password" class="form-input" id="password" name="password" required>
             </div>
             
-            <div class="form-group two-factor-section" id="twoFactorSection">
-                <label class="form-label" for="twoFactorToken">Two-Factor Authentication Code</label>
-                <input type="text" class="form-input" id="twoFactorToken" name="twoFactorToken" placeholder="Enter 6-digit code">
-                <small>Enter the code from your authenticator app or use a backup code</small>
-            </div>
-            
             <button type="submit" class="btn" id="loginBtn">Login</button>
             
             <div id="message"></div>
@@ -140,14 +131,11 @@
     </div>
 
     <script>
-        let requires2FA = false;
-        
         document.getElementById('loginForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
-            const twoFactorToken = document.getElementById('twoFactorToken').value;
             const messageDiv = document.getElementById('message');
             const loginBtn = document.getElementById('loginBtn');
             
@@ -162,8 +150,7 @@
                     },
                     body: JSON.stringify({
                         email,
-                        password,
-                        two_factor_token: twoFactorToken
+                        password
                     })
                 });
                 
@@ -181,15 +168,7 @@
                         window.location.href = '/';
                     }, 1000);
                 } else {
-                    if (data.requires_2fa) {
-                        // Show 2FA section
-                        requires2FA = true;
-                        document.getElementById('twoFactorSection').style.display = 'block';
-                        document.getElementById('twoFactorToken').focus();
-                        messageDiv.innerHTML = '<div class="error-message">Please enter your two-factor authentication code</div>';
-                    } else {
-                        messageDiv.innerHTML = `<div class="error-message">${data.error}</div>`;
-                    }
+                    messageDiv.innerHTML = `<div class="error-message">${data.error}</div>`;
                 }
             } catch (error) {
                 console.error('Login error:', error);

@@ -234,69 +234,6 @@ def logout():
         app.logger.error(f"Logout error: {e}")
         return jsonify({'error': 'Logout failed'}), 500
 
-@app.route('/api/auth/setup-2fa', methods=['POST'])
-@auth_manager.require_auth
-def setup_2fa():
-    """Set up two-factor authentication."""
-    try:
-        current_user_id = get_current_user_id()
-        secret, qr_code, backup_codes = auth_manager.setup_2fa(current_user_id)
-
-        return jsonify({
-            'secret': secret,
-            'qr_code': qr_code,
-            'backup_codes': backup_codes
-        }), 200
-
-    except Exception as e:
-        return jsonify({'error': 'Operation failed'}), 500
-
-@app.route('/api/auth/verify-2fa-setup', methods=['POST'])
-@auth_manager.require_auth
-def verify_2fa_setup():
-    """Verify 2FA setup."""
-    try:
-        current_user_id = get_current_user_id()
-        token = request.get_json().get('token')
-
-        if not token:
-            return jsonify({'error': 'Token is required'}), 400
-
-        if auth_manager.verify_2fa_setup(current_user_id, token):
-            return jsonify({'message': 'Two-factor authentication enabled successfully'}), 200
-        else:
-            return jsonify({'error': 'Invalid token'}), 400
-
-    except Exception as e:
-        return jsonify({'error': 'Operation failed'}), 500
-
-@app.route('/api/auth/disable-2fa', methods=['POST'])
-@auth_manager.require_auth
-def disable_2fa():
-    """Disable two-factor authentication for the current user."""
-    try:
-        current_user_id = get_current_user_id()
-        data = request.get_json() or {}
-        
-        # Require current password for security
-        current_password = data.get('current_password')
-        if not current_password:
-            return jsonify({'error': 'Current password is required to disable 2FA'}), 400
-        
-        # Verify current password
-        user = db_manager.get_user_by_id(current_user_id)
-        if not user or not auth_manager.verify_password(current_password, user.password_hash):
-            return jsonify({'error': 'Invalid current password'}), 400
-        
-        # Disable 2FA
-        if auth_manager.disable_2fa(current_user_id):
-            return jsonify({'message': '2FA disabled successfully'}), 200
-        else:
-            return jsonify({'error': 'Failed to disable 2FA'}), 500
-            
-    except Exception as e:
-        return jsonify({'error': 'Operation failed'}), 500
-
 @app.route('/api/auth/change-password', methods=['POST'])
 @auth_manager.require_auth
 def change_password():
@@ -333,6 +270,7 @@ def change_password():
     
     except Exception as e:
         return jsonify({'error': 'Operation failed'}), 500
+
 
 # Social Authentication Routes
 @app.route('/api/auth/social/google/login')
