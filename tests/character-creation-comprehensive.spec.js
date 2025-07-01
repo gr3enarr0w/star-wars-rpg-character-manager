@@ -1,7 +1,7 @@
 const { test, expect } = require('@playwright/test');
 
 test.describe('Comprehensive Character Creation Testing - GitHub Codespaces', () => {
-    const APP_URL = 'http://localhost:8001';
+    const APP_URL = 'http://localhost:8000';
     
     // Sample of Star Wars RPG species to test (from the 55+ available)
     const testSpecies = [

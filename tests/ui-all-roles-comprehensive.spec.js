@@ -1,7 +1,7 @@
 const { test, expect } = require('@playwright/test');
 
 test.describe('Comprehensive All Roles UI Testing - GitHub Codespaces', () => {
-    const APP_URL = 'http://localhost:8001';
+    const APP_URL = 'http://localhost:8000';
     
     // Test user configurations for different roles
     const testUsers = {

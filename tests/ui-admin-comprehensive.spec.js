@@ -1,7 +1,7 @@
 const { test, expect } = require('@playwright/test');
 
 test.describe('Comprehensive Admin UI Testing - GitHub Codespaces', () => {
-    const APP_URL = 'http://localhost:8001';
+    const APP_URL = 'http://localhost:8000';
     
     // Helper function to login as admin
     async function loginAsAdmin(page) {

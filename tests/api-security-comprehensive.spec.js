@@ -1,7 +1,7 @@
 const { test, expect } = require('@playwright/test');
 
 test.describe('Comprehensive API Security Testing - GitHub Codespaces', () => {
-    const API_BASE = 'http://localhost:8001';
+    const API_BASE = 'http://localhost:8000';
     
     // Comprehensive list of all API endpoints to test
     const apiEndpoints = [
