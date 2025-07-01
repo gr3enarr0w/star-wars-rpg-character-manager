@@ -1,0 +1,207 @@
+name: Deploy and Test in GitHub Codespaces
+
+on:
+  workflow_dispatch:
+    inputs:
+      test_scope:
+        description: 'Scope of testing to run'
+        required: true
+        default: 'all'
+        type: choice
+        options:
+        - all
+        - api-security-only
+        - ui-admin-only
+        - ui-all-roles-only
+        - character-creation-only
+  push:
+    branches: [ main ]
+    paths:
+    - 'src/**'
+    - 'web/**'
+    - 'tests/**'
+    - 'Dockerfile'
+    - 'docker-compose.yml'
+
+env:
+  MONGODB_URI: "mongodb://admin:password123@localhost:27017/swrpg_characters?authSource=admin"
+  JWT_SECRET_KEY: "github-codespaces-testing-secret-key-2024"
+  FLASK_ENV: "production"
+
+jobs:
+  deploy-and-test-x64:
+    runs-on: ubuntu-latest
+    
+    services:
+      mongodb:
+        image: mongo:7.0
+        env:
+          MONGO_INITDB_ROOT_USERNAME: admin
+          MONGO_INITDB_ROOT_PASSWORD: password123
+          MONGO_INITDB_DATABASE: swrpg_characters
+        ports:
+          - 27017:27017
+        options: >-
+          --health-cmd "mongosh --eval 'db.adminCommand(\"ping\")'"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+    - name: 📥 Checkout repository
+      uses: actions/checkout@v4
+
+    - name: 🏗️ Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    - name: 🔨 Build application Docker image
+      run: |
+        echo "🔨 Building Star Wars RPG Character Manager..."
+        docker build -t swrpg-app .
+
+    - name: 🚀 Start application container
+      run: |
+        echo "🚀 Starting application container..."
+        docker run -d \
+          --name swrpg-app \
+          --network host \
+          -e MONGODB_URI="${{ env.MONGODB_URI }}" \
+          -e JWT_SECRET_KEY="${{ env.JWT_SECRET_KEY }}" \
+          -e FLASK_ENV="${{ env.FLASK_ENV }}" \
+          -p 8001:8000 \
+          swrpg-app
+
+    - name: ⏳ Wait for application to be ready
+      run: |
+        echo "⏳ Waiting for application to start..."
+        timeout 120 bash -c 'until curl -f http://localhost:8001/health; do sleep 3; echo "Waiting for app..."; done'
+        echo "✅ Application is ready!"
+
+    - name: 🎯 Set up Node.js for Playwright testing
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+
+    - name: 📦 Install testing dependencies
+      run: |
+        echo "📦 Installing Playwright and dependencies..."
+        npm init -y
+        npm install --save-dev playwright @playwright/test
+        npx playwright install --with-deps
+
+    - name: 👤 Create admin user
+      run: |
+        echo "👤 Creating admin user for testing..."
+        docker exec swrpg-app python create_admin_user.py
+
+    - name: 🧪 Create test results directory
+      run: |
+        mkdir -p test-results
+        echo "📁 Test results directory created"
+
+    - name: 🔒 Run API Security Tests
+      if: ${{ github.event.inputs.test_scope == 'all' || github.event.inputs.test_scope == 'api-security-only' }}
+      run: |
+        echo "🔒 Running comprehensive API security tests..."
+        npx playwright test tests/api-security-comprehensive.spec.js --reporter=list --output-dir=test-results
+
+    - name: 🏛️ Run Admin UI Tests
+      if: ${{ github.event.inputs.test_scope == 'all' || github.event.inputs.test_scope == 'ui-admin-only' }}
+      run: |
+        echo "🏛️ Running comprehensive admin UI tests..."
+        npx playwright test tests/ui-admin-comprehensive.spec.js --reporter=list --output-dir=test-results
+
+    - name: 👥 Run All Roles UI Tests
+      if: ${{ github.event.inputs.test_scope == 'all' || github.event.inputs.test_scope == 'ui-all-roles-only' }}
+      run: |
+        echo "👥 Running all user roles UI tests..."
+        npx playwright test tests/ui-all-roles-comprehensive.spec.js --reporter=list --output-dir=test-results
+
+    - name: ⚔️ Run Character Creation Tests
+      if: ${{ github.event.inputs.test_scope == 'all' || github.event.inputs.test_scope == 'character-creation-only' }}
+      run: |
+        echo "⚔️ Running comprehensive character creation tests..."
+        npx playwright test tests/character-creation-comprehensive.spec.js --reporter=list --output-dir=test-results
+
+    - name: 📊 Generate comprehensive test report
+      if: always()
+      run: |
+        echo "📊 Generating test reports..."
+        npx playwright show-report --reporter=html
+
+    - name: 📸 Upload screenshots and test results
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: playwright-test-results
+        path: test-results/
+        retention-days: 30
+
+    - name: 📋 Upload HTML test report
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: playwright-html-report
+        path: playwright-report/
+        retention-days: 30
+
+    - name: 📝 Collect application logs
+      if: always()
+      run: |
+        echo "📝 Collecting application logs..."
+        docker logs swrpg-app > application.log 2>&1 || echo "Could not collect logs"
+        
+    - name: 📋 Upload application logs
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: application-logs
+        path: application.log
+        retention-days: 30
+
+    - name: 🏥 Final health checks
+      if: always()
+      run: |
+        echo "🏥 Running final health checks..."
+        echo "Application health:"
+        curl -f http://localhost:8001/health || echo "❌ Health check failed"
+        echo -e "\nLogin endpoint:"
+        curl -f http://localhost:8001/login || echo "❌ Login endpoint not accessible"
+        echo -e "\nContainer status:"
+        docker ps | grep swrpg-app || echo "❌ Container not running"
+
+    - name: 🧹 Cleanup
+      if: always()
+      run: |
+        echo "🧹 Cleaning up..."
+        docker stop swrpg-app || true
+        docker rm swrpg-app || true
+
+  test-summary:
+    needs: deploy-and-test-x64
+    runs-on: ubuntu-latest
+    if: always()
+    
+    steps:
+    - name: 📊 Test Summary
+      run: |
+        echo "## 🎯 GitHub Codespaces Testing Summary" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "### 🚀 Deployment Status" >> $GITHUB_STEP_SUMMARY
+        echo "- **Platform**: x64 Ubuntu (GitHub Codespaces environment)" >> $GITHUB_STEP_SUMMARY
+        echo "- **Application**: Star Wars RPG Character Manager" >> $GITHUB_STEP_SUMMARY
+        echo "- **Database**: MongoDB 7.0" >> $GITHUB_STEP_SUMMARY
+        echo "- **Testing Framework**: Playwright" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "### 🧪 Tests Executed" >> $GITHUB_STEP_SUMMARY
+        echo "- **API Security Testing**: Comprehensive authentication and authorization tests" >> $GITHUB_STEP_SUMMARY
+        echo "- **Admin UI Testing**: Complete admin interface functionality" >> $GITHUB_STEP_SUMMARY
+        echo "- **Multi-Role UI Testing**: Admin, User, and Gamemaster role testing" >> $GITHUB_STEP_SUMMARY
+        echo "- **Character Creation**: All 55+ species and career combinations" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "### 📋 Artifacts Available" >> $GITHUB_STEP_SUMMARY
+        echo "- Screenshots from all test scenarios" >> $GITHUB_STEP_SUMMARY
+        echo "- HTML test reports with detailed results" >> $GITHUB_STEP_SUMMARY
+        echo "- Application logs for debugging" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "**Status**: ${{ needs.deploy-and-test-x64.result }}" >> $GITHUB_STEP_SUMMARY

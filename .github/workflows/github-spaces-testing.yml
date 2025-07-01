@@ -1,0 +1,144 @@
+name: GitHub Codespaces E2E Testing
+
+on:
+  workflow_dispatch:
+    inputs:
+      test_type:
+        description: 'Type of testing to run'
+        required: true
+        default: 'full'
+        type: choice
+        options:
+        - full
+        - api-only
+        - ui-only
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  e2e-testing:
+    runs-on: ubuntu-latest
+    
+    services:
+      mongodb:
+        image: mongo:7.0
+        env:
+          MONGO_INITDB_ROOT_USERNAME: admin
+          MONGO_INITDB_ROOT_PASSWORD: password123
+          MONGO_INITDB_DATABASE: swrpg_characters
+        ports:
+          - 27017:27017
+        options: >-
+          --health-cmd "mongosh --eval 'db.adminCommand(\"ping\")'"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    - name: Build application image
+      run: |
+        docker build -t swrpg-app .
+
+    - name: Start application container
+      run: |
+        docker run -d \
+          --name swrpg-app \
+          --network host \
+          -e MONGODB_URI="mongodb://admin:password123@localhost:27017/swrpg_characters?authSource=admin" \
+          -e JWT_SECRET_KEY="github-spaces-testing-secret-key-2024" \
+          -e FLASK_ENV=production \
+          -p 8001:8000 \
+          swrpg-app
+
+    - name: Wait for application to be ready
+      run: |
+        timeout 60 bash -c 'until curl -f http://localhost:8001/health; do sleep 2; done'
+
+    - name: Set up Node.js for testing
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+
+    - name: Install testing dependencies
+      run: |
+        npm init -y
+        npm install --save-dev playwright @playwright/test
+        npx playwright install
+
+    - name: Create admin user
+      run: |
+        docker exec swrpg-app python create_admin_user.py
+
+    - name: Run API Security Tests
+      if: ${{ github.event.inputs.test_type == 'full' || github.event.inputs.test_type == 'api-only' }}
+      run: |
+        npx playwright test tests/api-security-comprehensive.spec.js --reporter=github
+
+    - name: Run UI Tests - Admin Role
+      if: ${{ github.event.inputs.test_type == 'full' || github.event.inputs.test_type == 'ui-only' }}
+      run: |
+        npx playwright test tests/ui-admin-comprehensive.spec.js --reporter=github
+
+    - name: Run UI Tests - All Roles
+      if: ${{ github.event.inputs.test_type == 'full' || github.event.inputs.test_type == 'ui-only' }}
+      run: |
+        npx playwright test tests/ui-all-roles-comprehensive.spec.js --reporter=github
+
+    - name: Run Character Creation Tests
+      if: ${{ github.event.inputs.test_type == 'full' || github.event.inputs.test_type == 'ui-only' }}
+      run: |
+        npx playwright test tests/character-creation-comprehensive.spec.js --reporter=github
+
+    - name: Generate Test Report
+      if: always()
+      run: |
+        npx playwright show-report --reporter=html
+        
+    - name: Upload Test Results
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: playwright-report
+        path: playwright-report/
+        retention-days: 30
+
+    - name: Upload Screenshots
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-screenshots
+        path: test-results/
+        retention-days: 30
+
+    - name: Collect Application Logs
+      if: always()
+      run: |
+        docker logs swrpg-app > application.log 2>&1
+        
+    - name: Upload Application Logs
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: application-logs
+        path: application.log
+        retention-days: 30
+
+    - name: Check Application Health
+      if: always()
+      run: |
+        curl -f http://localhost:8001/health || echo "Health check failed"
+        curl -f http://localhost:8001/api/auth/login || echo "Login endpoint not accessible"
+
+    - name: Cleanup
+      if: always()
+      run: |
+        docker stop swrpg-app || true
+        docker rm swrpg-app || true

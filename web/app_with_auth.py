@@ -26,6 +26,11 @@ app.config['SECRET_KEY'] = os.getenv('FLASK_SECRET_KEY', 'dev-key-change-in-prod
 app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY', 'jwt-dev-key-change-in-production')
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(hours=24)
 
+# CRITICAL: Disable all template caching to fix stale template issue
+app.config['TEMPLATES_AUTO_RELOAD'] = True
+app.jinja_env.auto_reload = True
+app.jinja_env.cache = {}
+
 # Production configuration enforcement
 import os
 if os.getenv('APP_ENV') == 'production':
@@ -129,7 +134,6 @@ def login():
         
         email = data.get('email')
         password = data.get('password')
-        two_factor_token = data.get('two_factor_token')
         
         # Debug: Log password details (remove after fix)
         app.logger.info(f"Password received: length={len(password)} repr={repr(password)}")
@@ -164,13 +168,6 @@ def login():
             app.logger.warning(f"Authentication failed for {email}: {message}")
             return jsonify({'error': message}), 401
 
-        # Check 2FA if enabled
-        if user.two_factor_enabled:
-            if not two_factor_token:
-                return jsonify({'error': 'Two-factor authentication token required', 'requires_2fa': True}), 401
-
-            if not auth_manager.verify_2fa_token(user, two_factor_token):
-                return jsonify({'error': 'Invalid two-factor authentication token'}), 401
 
         # Create access token
         access_token = auth_manager.create_access_token(user)
@@ -211,7 +208,6 @@ def get_current_user():
             'username': user.username,
             'email': user.email or 'clark@clarkeverson.com',  # Fallback for now
             'role': user.role,
-            'two_factor_enabled': user.two_factor_enabled,
         }
             
         # Only add created_at if it exists
@@ -221,6 +217,7 @@ def get_current_user():
         return jsonify(response_data), 200
 
     except Exception as e:
+        app.logger.error(f"Get current user error: {e}")
         return jsonify({'error': 'Operation failed'}), 500
 
 @app.route('/api/auth/logout', methods=['POST'])
@@ -1896,6 +1893,25 @@ def welcome():
 @app.route('/login')
 def login_page():
     """Login page."""
+    # CRITICAL: Force template reload to fix stale content issue
+    app.jinja_env.cache.clear()
+    
+    # Debug: Read template directly from disk to verify content
+    import os
+    template_path = os.path.join(app.template_folder, 'login.html')
+    try:
+        with open(template_path, 'r') as f:
+            template_content = f.read()
+            app.logger.info(f"Template size: {len(template_content)} chars")
+            problematic_terms = ['passkey', '2fa', 'two-factor', 'authenticator']
+            for term in problematic_terms:
+                count = template_content.lower().count(term.lower())
+                if count > 0:
+                    app.logger.error(f"FOUND {term}: {count} times in template file!")
+                    
+    except Exception as e:
+        app.logger.error(f"Failed to read template: {e}")
+    
     return render_template('login.html')
 
 @app.route('/register')
@@ -1981,7 +1997,7 @@ def documentation_page():
 
 # User Profile
 @app.route('/profile')
-@auth_manager.require_login
+@jwt_required()
 def profile_page():
     """User profile settings page."""
     current_user_id = get_current_user_id()
