@@ -49,100 +49,27 @@ venv.bak/
 ehthumbs.db
 Thumbs.db
 
-# Testing
-.coverage
-.pytest_cache/
-.tox/
-.cache
-nosetests.xml
-coverage.xml
-*.cover
-.hypothesis/
-.pytest_cache/
+# Testing artifacts (but allow source code)
 test-results/
 playwright-report/
-results.json/
+screenshots/
+*_screenshots/
+*.png
+*.jpg
+*.jpeg
 
-# Documentation and reports
-*.md
-!README.md
-!DOCKER.md
+# Node.js
+node_modules/
+package-lock.json
 
 # Logs
 *.log
 logs/
 
-# Temporary files
-*.tmp
-*.temp
-temp/
-tmp/
-
-# Screenshots and test artifacts
-*.png
-*.jpg
-*.jpeg
-*.gif
-test_screenshots*/
-*_screenshots/
-debug_*.png
-export_test_*/
-ui_test_screenshots/
-final_screenshots/
-critical_bug_test_screenshots*/
-
-# Node.js (if used for frontend tools)
-node_modules/
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-package-lock.json
-
-# Development tools
-.env.local
-.env.*.local
-
-# Build artifacts
-archive/
-
-# AI/OCR extraction tools (development only)
-*_ai_ocr*.py
-*_ocr_*.py
-*_pdf_*.py
-*_extraction*.py
-extract_*.py
-process_*.py
-comprehensive_*.py
-overnight_*.py
-multi_model_*.py
-simple_*.py
-retry_*.py
-improve_*.py
-fix_*.py
-
-# Test files
-test_*.py
-*_test.py
-*.spec.js
-debug_*.py
-diagnose_*.py
-quick_*.py
-create_test_*.py
-setup_*.py
-list_*.py
-reset_*.py
-recreate_*.py
-
-# Allow critical admin setup script
-!create_admin_user.py
-
-# Data processing
+# Data processing (large files)
 swrpg_complete_extraction/
 swrpg_extracted_data/
 
-# Configuration files for development
-playwright.config.js
-package.json
-
-# Extracted content
-*.json/
+# Build artifacts
+archive/
+temp/
