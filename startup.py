@@ -104,18 +104,25 @@ def start_web_application():
     
     # Start the web application directly
     try:
-        # Change to the correct directory and run the web app
-        os.chdir("/app")
+        # Get the current working directory (GitHub Actions uses this)
+        current_dir = os.getcwd()
+        print(f"📁 Current directory: {current_dir}")
+        
+        # Look for run_web.py in current directory
         if os.path.exists("run_web.py"):
+            print("📄 Found run_web.py, starting application...")
             subprocess.run([sys.executable, "run_web.py"], check=True)
         else:
             print("❌ run_web.py not found, starting Flask app directly")
-            # Import and start Flask app directly
-            sys.path.insert(0, "/app/web")
+            # Import and start Flask app directly from web directory
+            web_dir = os.path.join(current_dir, "web")
+            sys.path.insert(0, web_dir)
             from app_with_auth import app
-            app.run(host='0.0.0.0', port=8001, debug=False)
+            app.run(host='0.0.0.0', port=8000, debug=False)
     except Exception as e:
         print(f"❌ Failed to start web application: {e}")
+        import traceback
+        traceback.print_exc()
         return False
 
 def main():
@@ -135,7 +142,7 @@ def main():
     
     # Step 3: Start web application
     print("\n🚀 Starting web application...")
-    print("   Access at: http://localhost:8001")
+    print("   Access at: http://localhost:8000")
     print("   Admin login: clark@everson.dev")
     print("=" * 60)
     
