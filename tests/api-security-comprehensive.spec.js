@@ -38,8 +38,8 @@ test.describe('Comprehensive API Security Testing - GitHub Codespaces', () => {
         
         const response = await page.request.post(`${API_BASE}/api/auth/login`, {
             data: {
-                email: 'clark@everson.dev',
-                password: 'with1artie4oskar3VOCATION!advances'
+                email: process.env.ADMIN_EMAIL || 'clark@everson.dev',
+                password: process.env.ADMIN_PASSWORD || 'github-testing-admin-password-2024'
             }
         });
         

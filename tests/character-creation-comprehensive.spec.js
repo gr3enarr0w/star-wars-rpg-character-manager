@@ -23,8 +23,8 @@ test.describe('Comprehensive Character Creation Testing - GitHub Codespaces', ()
         console.log('🔑 Logging in as admin for character creation testing...');
         
         await page.goto(`${APP_URL}/login`);
-        await page.fill('#email', 'clark@everson.dev');
-        await page.fill('#password', 'with1artie4oskar3VOCATION!advances');
+        await page.fill('#email', process.env.ADMIN_EMAIL || 'clark@everson.dev');
+        await page.fill('#password', process.env.ADMIN_PASSWORD || 'github-testing-admin-password-2024');
         await page.click('#loginBtn');
         
         await page.waitForURL(`${APP_URL}/`, { timeout: 10000 });
