@@ -26,7 +26,7 @@ def check_users():
             print(f"  Email: {user.get('email')}")
             print(f"  Role: {user.get('role')}")
             print(f"  Active: {user.get('is_active', True)}")
-            print(f"  2FA Enabled: {user.get('two_factor_enabled', False)}")
+            print(f"  Security Features: {user.get('enhanced_security', False)}")
             print(f"  Created: {user.get('created_at')}")
             
         if len(users) == 0:

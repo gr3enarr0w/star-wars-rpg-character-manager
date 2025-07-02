@@ -4,15 +4,18 @@ services:
   web:
     build: .
     ports:
-      - "8001:8001"
+      - "8000:8000"
     environment:
       - FLASK_ENV=production
       - APP_ENV=production
       - PYTHONPATH=/app/src
       - PYTHONUNBUFFERED=1
+      - PORT=8000
       - MONGO_URI=${MONGO_URI:-mongodb://mongo:27017/swrpg_character_manager}
       - FLASK_SECRET_KEY=${FLASK_SECRET_KEY:-production-secret-key-change-me}
       - JWT_SECRET_KEY=${JWT_SECRET_KEY:-jwt-production-secret-key-change-me}
+      - ADMIN_EMAIL=${ADMIN_EMAIL:-admin@example.com}
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD}
       - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
       - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
       - DISCORD_CLIENT_ID=${DISCORD_CLIENT_ID}
@@ -23,7 +26,7 @@ services:
       - mongo
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8001/health"]
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
       interval: 30s
       timeout: 10s
       retries: 3

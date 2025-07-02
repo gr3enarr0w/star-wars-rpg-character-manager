@@ -19,6 +19,8 @@ env:
   MONGODB_URI: "mongodb://admin:password123@localhost:27017/swrpg_characters?authSource=admin"
   JWT_SECRET_KEY: "github-codespaces-testing-secret-key-2024"
   FLASK_ENV: "production"
+  ADMIN_EMAIL: "clark@everson.dev"
+  ADMIN_PASSWORD: "github-testing-admin-password-2024"
 
 jobs:
   deploy-and-test-x64:

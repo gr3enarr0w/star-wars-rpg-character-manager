@@ -11,7 +11,7 @@ A comprehensive web application for managing characters, campaigns, and gameplay
 #### 🔐 Authentication & Security
 - **JWT-based Authentication** - Secure token-based authentication system
 - **Invite-Only Registration** - Controlled access with invite codes
-- **Two-Factor Authentication (2FA)** - Enhanced security with TOTP support
+- **Multi-Layer Security** - Enhanced account protection with modern security standards
 - **Social Authentication** - Google and Discord OAuth integration
 - **NIST-Compliant Encryption** - Enterprise-grade data protection
 - **Comprehensive Audit Logging** - Full activity tracking for security and compliance
@@ -74,7 +74,7 @@ A comprehensive web application for managing characters, campaigns, and gameplay
 
 ### Security
 - **NIST-Compliant Encryption** - Industry-standard data protection
-- **Two-Factor Authentication** - TOTP-based 2FA
+- **Enhanced Authentication** - Multi-layer security protocols
 - **OAuth Integration** - Google and Discord social login
 - **Audit Logging** - Comprehensive activity tracking
 
@@ -174,7 +174,7 @@ The application provides a comprehensive RESTful API. See [API_DOCUMENTATION.md]
 
 ### Quick API Overview
 
-- **Authentication**: `/api/auth/*` - Login, registration, 2FA
+- **Authentication**: `/api/auth/*` - Login, registration, security
 - **Users**: `/api/users/*` - User management and profiles
 - **Campaigns**: `/api/campaigns/*` - Campaign CRUD operations
 - **Characters**: `/api/characters/*` - Character management
