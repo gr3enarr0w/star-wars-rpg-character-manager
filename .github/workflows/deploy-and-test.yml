@@ -125,25 +125,25 @@ jobs:
       if: ${{ github.event.inputs.test_scope == 'all' || github.event.inputs.test_scope == 'api-security-only' }}
       run: |
         echo "🔒 Running comprehensive API security tests..."
-        npx playwright test tests/api-security-comprehensive.spec.js --reporter=list --output-dir=test-results
+        npx playwright test tests/api-security-comprehensive.spec.js --reporter=list
 
     - name: 🏛️ Run Admin UI Tests
       if: ${{ github.event.inputs.test_scope == 'all' || github.event.inputs.test_scope == 'ui-admin-only' }}
       run: |
         echo "🏛️ Running comprehensive admin UI tests..."
-        npx playwright test tests/ui-admin-comprehensive.spec.js --reporter=list --output-dir=test-results
+        npx playwright test tests/ui-admin-comprehensive.spec.js --reporter=list
 
     - name: 👥 Run All Roles UI Tests
       if: ${{ github.event.inputs.test_scope == 'all' || github.event.inputs.test_scope == 'ui-all-roles-only' }}
       run: |
         echo "👥 Running all user roles UI tests..."
-        npx playwright test tests/ui-all-roles-comprehensive.spec.js --reporter=list --output-dir=test-results
+        npx playwright test tests/ui-all-roles-comprehensive.spec.js --reporter=list
 
     - name: ⚔️ Run Character Creation Tests
       if: ${{ github.event.inputs.test_scope == 'all' || github.event.inputs.test_scope == 'character-creation-only' }}
       run: |
         echo "⚔️ Running comprehensive character creation tests..."
-        npx playwright test tests/character-creation-comprehensive.spec.js --reporter=list --output-dir=test-results
+        npx playwright test tests/character-creation-comprehensive.spec.js --reporter=list
 
     - name: 📊 Generate comprehensive test report
       if: always()
