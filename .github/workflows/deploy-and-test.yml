@@ -34,7 +34,7 @@ jobs:
     
     services:
       mongodb:
-        image: mongo:7.0
+        image: mongo:5.0
         env:
           MONGO_INITDB_ROOT_USERNAME: admin
           MONGO_INITDB_ROOT_PASSWORD: password123
@@ -42,10 +42,10 @@ jobs:
         ports:
           - 27017:27017
         options: >-
-          --health-cmd "mongosh --eval 'db.adminCommand(\"ping\")'"
+          --health-cmd "mongo --eval 'db.adminCommand(\"ping\")'"
           --health-interval 10s
           --health-timeout 5s
-          --health-retries 5
+          --health-retries 10
 
     steps:
     - name: 📥 Checkout repository
@@ -65,15 +65,20 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    - name: 🚀 Start application in testing mode
+    - name: 🚀 Start full application with MongoDB
       run: |
-        echo "🚀 Starting application in testing mode..."
+        echo "🚀 Starting full Star Wars RPG Character Manager..."
+        export MONGODB_URI="${{ env.MONGODB_URI }}"
+        export JWT_SECRET_KEY="${{ env.JWT_SECRET_KEY }}"
+        export FLASK_ENV="${{ env.FLASK_ENV }}"
         export PYTHONPATH="$(pwd)/src"
-        echo "Starting simplified application for testing workflow completion..."
-        nohup python startup_testing.py > app.log 2>&1 &
+        echo "Waiting for MongoDB service to be healthy..."
+        sleep 20
+        echo "Starting application..."
+        nohup python startup.py > app.log 2>&1 &
         echo $! > app.pid
         echo "Application started with PID $(cat app.pid)"
-        sleep 5
+        sleep 10
         echo "Application log preview:"
         tail -10 app.log || echo "No logs yet"
 
