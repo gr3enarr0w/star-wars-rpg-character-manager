@@ -12,10 +12,6 @@ on:
         - full
         - api-only
         - ui-only
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
 
 jobs:
   e2e-testing:

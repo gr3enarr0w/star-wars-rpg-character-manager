@@ -14,14 +14,6 @@ on:
         - ui-admin-only
         - ui-all-roles-only
         - character-creation-only
-  push:
-    branches: [ main ]
-    paths:
-    - 'src/**'
-    - 'web/**'
-    - 'tests/**'
-    - 'Dockerfile'
-    - 'docker-compose.yml'
 
 env:
   MONGODB_URI: "mongodb://admin:password123@localhost:27017/swrpg_characters?authSource=admin"
