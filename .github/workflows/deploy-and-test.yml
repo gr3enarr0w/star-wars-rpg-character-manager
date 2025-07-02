@@ -114,7 +114,7 @@ jobs:
       run: |
         echo "👤 Creating admin user for testing..."
         export PYTHONPATH="$(pwd)/src"
-        python create_admin_user.py
+        python tools/admin_tools/create_admin_user.py
 
     - name: 🧪 Create test results directory
       run: |
@@ -149,7 +149,11 @@ jobs:
       if: always()
       run: |
         echo "📊 Generating test reports..."
-        npx playwright show-report --reporter=html
+        if [ -d "playwright-report" ]; then
+          echo "✅ Playwright HTML report already generated"
+        else
+          echo "ℹ️ No Playwright report found - tests may not have run"
+        fi
 
     - name: 📸 Upload screenshots and test results
       if: always()
