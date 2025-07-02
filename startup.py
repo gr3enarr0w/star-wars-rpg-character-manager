@@ -111,6 +111,8 @@ def start_web_application():
         # Look for run_web.py in current directory
         if os.path.exists("run_web.py"):
             print("📄 Found run_web.py, starting application...")
+            # Set FLASK_PORT to 8000 to match health check expectations
+            os.environ['FLASK_PORT'] = '8000'
             subprocess.run([sys.executable, "run_web.py"], check=True)
         else:
             print("❌ run_web.py not found, starting Flask app directly")
