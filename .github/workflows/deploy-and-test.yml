@@ -74,8 +74,24 @@ jobs:
         export PYTHONPATH="$(pwd)/src"
         echo "MongoDB URI: $MONGODB_URI"
         echo "Waiting for MongoDB service to be ready..."
-        timeout 60 bash -c 'until mongosh --eval "db.adminCommand(\"ping\")" "$MONGODB_URI"; do sleep 5; echo "Waiting for MongoDB..."; done'
-        echo "✅ MongoDB is ready, starting application..."
+        python -c "
+import time
+import pymongo
+import sys
+for i in range(12):
+    try:
+        client = pymongo.MongoClient('$MONGODB_URI', serverSelectionTimeoutMS=5000)
+        client.admin.command('ping')
+        print('✅ MongoDB is ready!')
+        break
+    except Exception as e:
+        print(f'Attempt {i+1}/12: MongoDB not ready, waiting... ({e})')
+        time.sleep(5)
+else:
+    print('❌ MongoDB failed to become ready')
+    sys.exit(1)
+"
+        echo "Starting application..."
         nohup python startup.py > app.log 2>&1 &
         echo $! > app.pid
         echo "Application started with PID $(cat app.pid)"
