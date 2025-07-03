@@ -79,8 +79,9 @@ jobs:
         
         echo "🚀 Starting application with optimized CI startup..."
         nohup python startup_ci.py > app.log 2>&1 &
-        echo $! > app.pid
-        echo "✅ Application started with PID $(cat app.pid)"
+        APP_PID=$!
+        echo $APP_PID > app.pid
+        echo "✅ Application started with PID $APP_PID"
         
         # Give the app a moment to initialize
         sleep 8
