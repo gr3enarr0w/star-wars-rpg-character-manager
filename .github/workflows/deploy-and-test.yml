@@ -59,43 +59,78 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    - name: 🚀 Start full application with MongoDB
+    - name: 🚀 Start optimized application for CI testing
       run: |
-        echo "🚀 Starting full Star Wars RPG Character Manager..."
+        echo "🚀 Starting optimized Star Wars RPG Character Manager for CI..."
         export MONGODB_URI="${{ env.MONGODB_URI }}"
         export JWT_SECRET_KEY="${{ env.JWT_SECRET_KEY }}"
         export FLASK_ENV="${{ env.FLASK_ENV }}"
         export PYTHONPATH="$(pwd)/src"
-        echo "Waiting for MongoDB service to be healthy..."
-        sleep 20
-        echo "Starting application..."
-        nohup python startup.py > app.log 2>&1 &
+        export FLASK_PORT="8000"
+        export PORT="8000"
+        
+        echo "📊 Environment check:"
+        echo "  MongoDB URI: ${MONGODB_URI/password123/***}"
+        echo "  Flask Environment: $FLASK_ENV"
+        echo "  Python Path: $PYTHONPATH"
+        
+        echo "⏳ Waiting for MongoDB to be fully ready..."
+        sleep 15
+        
+        echo "🚀 Starting application with optimized CI startup..."
+        nohup python startup_ci.py > app.log 2>&1 &
         echo $! > app.pid
-        echo "Application started with PID $(cat app.pid)"
-        sleep 10
-        echo "Application log preview:"
-        tail -10 app.log || echo "No logs yet"
+        echo "✅ Application started with PID $(cat app.pid)"
+        
+        # Give the app a moment to initialize
+        sleep 8
+        echo "📋 Initial application log:"
+        head -20 app.log || echo "No logs yet"
 
-    - name: ⏳ Wait for application to be ready
+    - name: ⏳ Wait for application with improved health checks
       run: |
-        echo "⏳ Waiting for application to start..."
-        echo "Checking if application process is running:"
-        ps aux | grep python || echo "No python process found"
-        echo "Trying to connect to health endpoint..."
-        for i in {1..40}; do
+        echo "⏳ Verifying application startup..."
+        
+        # Check if process is running
+        if [ -f app.pid ]; then
+          pid=$(cat app.pid)
+          if ps -p $pid > /dev/null; then
+            echo "✅ Application process (PID: $pid) is running"
+          else
+            echo "❌ Application process not found"
+            echo "📋 Application log:"
+            cat app.log || echo "No logs available"
+            exit 1
+          fi
+        else
+          echo "❌ PID file not found"
+          exit 1
+        fi
+        
+        echo "🔍 Testing health endpoint with optimized timing..."
+        for i in {1..30}; do
           if curl -f http://localhost:8000/health; then
-            echo "✅ Application is ready!"
+            echo ""
+            echo "✅ Application is ready and healthy!"
+            echo "📊 Final health check successful after $i attempts"
             exit 0
           else
-            echo "Attempt $i/40: Health check failed, retrying in 3 seconds..."
-            echo "Current application log:"
-            tail -5 app.log 2>/dev/null || echo "No logs available"
-            sleep 3
+            if [ $i -le 5 ] || [ $((i % 5)) -eq 0 ]; then
+              echo "⏳ Attempt $i/30: Health check pending..."
+              if [ $i -eq 10 ] || [ $i -eq 20 ]; then
+                echo "📋 Current application log (last 10 lines):"
+                tail -10 app.log 2>/dev/null || echo "No logs available yet"
+              fi
+            fi
+            sleep 2
           fi
         done
-        echo "❌ Application failed to become ready after 120 seconds"
-        echo "Final application log:"
+        
+        echo "❌ Application health check failed after 60 seconds"
+        echo "📋 Complete application log:"
         cat app.log 2>/dev/null || echo "No logs available"
+        echo "🔍 Process status:"
+        ps aux | grep python || echo "No python processes found"
         exit 1
 
     - name: 🎯 Set up Node.js for Playwright testing

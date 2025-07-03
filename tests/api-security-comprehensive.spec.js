@@ -300,7 +300,7 @@ test.describe('Comprehensive API Security Testing - GitHub Codespaces', () => {
         
         expect(response.ok()).toBe(true);
         
-        const headers = await response.allHeaders();
+        const headers = await response.headers();
         
         console.log('🔍 Checking Security Headers:');
         const securityHeaders = [
