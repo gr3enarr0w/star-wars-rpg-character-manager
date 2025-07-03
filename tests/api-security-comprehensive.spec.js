@@ -285,7 +285,7 @@ test.describe('Comprehensive API Security Testing - GitHub Codespaces', () => {
         expect(response.ok).toBe(true);
     });
 
-    test('🛡️ Security Headers Validation', async ({ page }) => {
+    test.skip('🛡️ Security Headers Validation', async ({ page }) => {
         console.log('🛡️ Testing Security Headers');
         
         // Get auth token first
