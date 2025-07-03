@@ -97,7 +97,7 @@ test.describe('Comprehensive API Security Testing - GitHub Codespaces', () => {
                 status: response.status(),
                 statusText: response.statusText(),
                 ok: response.ok(),
-                headers: await response.headersArray()
+                headers: await response.headers()
             };
         } catch (error) {
             return {
