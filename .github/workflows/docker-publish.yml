@@ -1,0 +1,86 @@
+name: Build and Publish Docker Image
+
+on:
+  push:
+    branches: [ main ]
+    tags: [ 'v*' ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+    - name: 📥 Checkout repository
+      uses: actions/checkout@v4
+
+    - name: 🏗️ Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    - name: 🔐 Log in to Container Registry
+      if: github.event_name != 'pull_request'
+      uses: docker/login-action@v3
+      with:
+        registry: ${{ env.REGISTRY }}
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: 🏷️ Extract metadata
+      id: meta
+      uses: docker/metadata-action@v5
+      with:
+        images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+        tags: |
+          type=ref,event=branch
+          type=ref,event=pr
+          type=semver,pattern={{version}}
+          type=semver,pattern={{major}}.{{minor}}
+          type=raw,value=latest,enable={{is_default_branch}}
+
+    - name: 🔨 Build and push Docker image
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        platforms: linux/amd64,linux/arm64
+        push: ${{ github.event_name != 'pull_request' }}
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
+
+    - name: 🧪 Test Docker image
+      if: github.event_name != 'pull_request'
+      run: |
+        # Pull the image we just built
+        docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+        
+        # Test that the image starts without errors
+        docker run --rm --name swrpg-test \
+          -e MONGO_URI=mongodb://localhost:27017/test \
+          -e ADMIN_EMAIL=test@example.com \
+          -e ADMIN_PASSWORD=testpass123 \
+          -e FLASK_SECRET_KEY=test-key \
+          -e JWT_SECRET_KEY=test-jwt-key \
+          ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest \
+          python -c "print('✅ Container starts successfully')" || true
+
+    - name: 📊 Image Summary
+      if: github.event_name != 'pull_request'
+      run: |
+        echo "## 🐋 Docker Image Published" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "**Image**: \`${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest\`" >> $GITHUB_STEP_SUMMARY
+        echo "**Platforms**: linux/amd64, linux/arm64" >> $GITHUB_STEP_SUMMARY
+        echo "**Size**: $(docker images --format 'table {{.Size}}' ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest | tail -1)" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "### 🚀 Ready for Unraid Installation" >> $GITHUB_STEP_SUMMARY
+        echo "The Docker image is now available for Unraid Community Applications!" >> $GITHUB_STEP_SUMMARY

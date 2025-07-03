@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<Container version="2">
+  <Name>MongoDB-SWRPG</Name>
+  <Repository>mongo:7.0</Repository>
+  <Registry>https://hub.docker.com/_/mongo</Registry>
+  <Network>bridge</Network>
+  <MyIP/>
+  <Shell>bash</Shell>
+  <Privileged>false</Privileged>
+  <Support>https://github.com/gr3enarr0w/python-course-app/issues</Support>
+  <Project>https://github.com/gr3enarr0w/python-course-app</Project>
+  <Overview>MongoDB database for Star Wars RPG Character Manager. Install this first before installing the main SWRPG Character Manager app.</Overview>
+  <Category>GameServers:</Category>
+  <WebUI/>
+  <TemplateURL>https://raw.githubusercontent.com/gr3enarr0w/python-course-app/main/unraid-templates/mongodb.xml</TemplateURL>
+  <Icon>https://raw.githubusercontent.com/gr3enarr0w/python-course-app/main/icons/mongodb.png</Icon>
+  <ExtraParams>--restart=unless-stopped --health-cmd="mongosh --eval 'db.adminCommand(\"ping\")'" --health-interval=30s --health-timeout=10s --health-retries=3</ExtraParams>
+  <PostArgs/>
+  <CPUset/>
+  <DateInstalled>1704067200</DateInstalled>
+  <DonateText>Support the developers</DonateText>
+  <DonateLink>https://github.com/sponsors/gr3enarr0w</DonateLink>
+  <Description>MongoDB database for Star Wars RPG Character Manager. This provides the database backend for character data, campaigns, and user accounts. Install this container before installing the main SWRPG Character Manager application.</Description>
+  <Networking>
+    <Mode>bridge</Mode>
+    <Publish>
+      <Port>
+        <HostPort>27017</HostPort>
+        <ContainerPort>27017</ContainerPort>
+        <Protocol>tcp</Protocol>
+      </Port>
+    </Publish>
+  </Networking>
+  <Data>
+    <Volume>
+      <HostDir>/mnt/user/appdata/mongodb-swrpg</HostDir>
+      <ContainerDir>/data/db</ContainerDir>
+      <Mode>rw</Mode>
+    </Volume>
+    <Volume>
+      <HostDir>/mnt/user/appdata/mongodb-swrpg/configdb</HostDir>
+      <ContainerDir>/data/configdb</ContainerDir>
+      <Mode>rw</Mode>
+    </Volume>
+  </Data>
+  <Environment>
+    <Variable>
+      <Value>swrpg_character_manager</Value>
+      <Name>MONGO_INITDB_DATABASE</Name>
+      <Mode/>
+    </Variable>
+    <Variable>
+      <Value>99</Value>
+      <Name>PUID</Name>
+      <Mode/>
+    </Variable>
+    <Variable>
+      <Value>100</Value>
+      <Name>PGID</Name>
+      <Mode/>
+    </Variable>
+  </Environment>
+  <Labels/>
+  <Config Name="MongoDB Data" Target="/data/db" Default="/mnt/user/appdata/mongodb-swrpg" Mode="rw" Description="MongoDB database files" Type="Path" Display="always" Required="true" Mask="false">/mnt/user/appdata/mongodb-swrpg</Config>
+  <Config Name="MongoDB Config" Target="/data/configdb" Default="/mnt/user/appdata/mongodb-swrpg/configdb" Mode="rw" Description="MongoDB configuration files" Type="Path" Display="always" Required="true" Mask="false">/mnt/user/appdata/mongodb-swrpg/configdb</Config>
+  <Config Name="MongoDB Port" Target="27017" Default="27017" Mode="tcp" Description="MongoDB database port" Type="Port" Display="always" Required="true" Mask="false">27017</Config>
+  <Config Name="Database Name" Target="MONGO_INITDB_DATABASE" Default="swrpg_character_manager" Mode="" Description="Initial database name for SWRPG" Type="Variable" Display="always" Required="true" Mask="false">swrpg_character_manager</Config>
+  <Config Name="PUID" Target="PUID" Default="99" Mode="" Description="User ID" Type="Variable" Display="advanced" Required="false" Mask="false">99</Config>
+  <Config Name="PGID" Target="PGID" Default="100" Mode="" Description="Group ID" Type="Variable" Display="advanced" Required="false" Mask="false">100</Config>
+</Container>
