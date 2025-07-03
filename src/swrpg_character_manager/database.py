@@ -331,6 +331,11 @@ class MongoDBManager:
         result = self.users.update_one({"_id": user_id}, {"$set": updates})
         return result.modified_count > 0
     
+    def delete_user(self, user_id: ObjectId) -> bool:
+        """Delete user document."""
+        result = self.users.delete_one({"_id": user_id})
+        return result.deleted_count > 0
+    
     # Campaign operations
     def create_campaign(self, campaign: Campaign) -> ObjectId:
         """Create a new campaign."""

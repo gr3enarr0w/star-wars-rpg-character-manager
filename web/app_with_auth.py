@@ -70,6 +70,11 @@ def add_security_headers(response):
     response.headers['X-Frame-Options'] = 'DENY'
     response.headers['X-XSS-Protection'] = '1; mode=block'
     response.headers['Referrer-Policy'] = 'strict-origin-when-cross-origin'
+    response.headers['Content-Security-Policy'] = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:;"
+    
+    # Add HSTS header in production
+    if os.getenv('FLASK_ENV') == 'production':
+        response.headers['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains'
     
     return response
 
@@ -89,6 +94,48 @@ class ServerHeaderMiddleware:
 
 # Wrap the Flask app with our middleware
 app.wsgi_app = ServerHeaderMiddleware(app.wsgi_app)
+
+# API authentication check middleware
+@app.before_request
+def check_api_authentication():
+    """Check authentication for all API routes before route processing."""
+    # Skip authentication for non-API routes
+    if not request.path.startswith('/api/'):
+        return None
+    
+    # Skip authentication for public endpoints
+    public_endpoints = [
+        '/api/auth/login',
+        '/api/auth/register', 
+        '/api/auth/google',
+        '/api/auth/github',
+        '/api/auth/callback',
+        '/health'
+    ]
+    
+    if request.path in public_endpoints:
+        return None
+    
+    # Check if this is an OPTIONS request (CORS preflight)
+    if request.method == 'OPTIONS':
+        return None
+    
+    # For all other API routes, verify JWT token
+    try:
+        from flask_jwt_extended import verify_jwt_in_request, get_jwt_identity
+        verify_jwt_in_request()
+        current_user_id = get_jwt_identity()
+        
+        # Verify user exists and is active
+        user = db_manager.get_user_by_id(ObjectId(current_user_id))
+        if not user or not user.is_active:
+            return jsonify({"error": "Authentication required"}), 401
+            
+        return None  # Continue to route handler
+        
+    except Exception as e:
+        # Return 401 for any authentication failure
+        return jsonify({"error": "Authentication required"}), 401
 
 # Authentication Routes
 @app.route('/api/auth/register', methods=['POST'])
@@ -1869,6 +1916,133 @@ def create_invite():
             'expires_in_days': expires_in_days
         }), 201
 
+    except Exception as e:
+        return jsonify({'error': 'Operation failed'}), 500
+
+# Additional admin user management routes for API completeness
+@app.route('/api/admin/users', methods=['POST'])
+@auth_manager.require_role('admin')
+def create_admin_user():
+    """Create new user (admin only)."""
+    try:
+        data = request.get_json()
+        email = data.get('email')
+        username = data.get('username')
+        password = data.get('password')
+        role = data.get('role', 'player')
+        
+        if not all([email, username, password]):
+            return jsonify({'error': 'Email, username, and password are required'}), 400
+        
+        # Create user using auth manager
+        success, message, user_id = auth_manager.register_user_direct(email, username, password, role)
+        
+        if success:
+            return jsonify({'message': 'User created successfully', 'user_id': str(user_id)}), 201
+        else:
+            return jsonify({'error': message}), 400
+            
+    except Exception as e:
+        return jsonify({'error': 'Operation failed'}), 500
+
+@app.route('/api/admin/users/<user_id>', methods=['PUT'])
+@auth_manager.require_role('admin')  
+def update_admin_user(user_id):
+    """Update user information (admin only)."""
+    try:
+        current_user_id = get_current_user_id()
+        target_user_id = ObjectId(user_id)
+        
+        # Don't allow updating own account through this endpoint
+        if current_user_id == target_user_id:
+            return jsonify({'error': 'Use profile endpoint to update your own account'}), 400
+        
+        data = request.get_json()
+        update_data = {}
+        
+        # Only allow updating specific fields
+        allowed_fields = ['username', 'role', 'is_active']
+        for field in allowed_fields:
+            if field in data:
+                update_data[field] = data[field]
+        
+        if not update_data:
+            return jsonify({'error': 'No valid fields to update'}), 400
+        
+        result = db_manager.update_user(target_user_id, update_data)
+        
+        if result:
+            return jsonify({'message': 'User updated successfully'}), 200
+        else:
+            return jsonify({'error': 'User not found'}), 404
+            
+    except Exception as e:
+        return jsonify({'error': 'Operation failed'}), 500
+
+@app.route('/api/admin/users/<user_id>', methods=['DELETE'])
+@auth_manager.require_role('admin')
+def delete_admin_user(user_id):
+    """Delete user (admin only)."""
+    try:
+        current_user_id = get_current_user_id()
+        target_user_id = ObjectId(user_id)
+        
+        # Don't allow deleting own account
+        if current_user_id == target_user_id:
+            return jsonify({'error': 'Cannot delete your own account'}), 400
+        
+        # Check if user exists
+        user = db_manager.get_user_by_id(target_user_id)
+        if not user:
+            return jsonify({'error': 'User not found'}), 404
+        
+        # Delete user
+        result = db_manager.delete_user(target_user_id)
+        
+        if result:
+            return jsonify({'message': 'User deleted successfully'}), 200
+        else:
+            return jsonify({'error': 'Failed to delete user'}), 500
+            
+    except Exception as e:
+        return jsonify({'error': 'Operation failed'}), 500
+
+# Add missing character route for PUT method
+@app.route('/api/characters/<character_id>', methods=['PUT'])
+@jwt_required()
+def update_character(character_id):
+    """Update character information."""
+    try:
+        current_user_id = get_current_user_id()
+        char_obj_id = ObjectId(character_id)
+        
+        # Get character and verify ownership
+        character = db_manager.get_character_by_id(char_obj_id)
+        if not character:
+            return jsonify({'error': 'Character not found'}), 404
+        
+        if character.user_id != current_user_id:
+            return jsonify({'error': 'Not authorized to update this character'}), 403
+        
+        data = request.get_json()
+        update_data = {}
+        
+        # Only allow updating specific fields
+        allowed_fields = ['name', 'player', 'description', 'notes']
+        for field in allowed_fields:
+            if field in data:
+                update_data[field] = data[field]
+        
+        if not update_data:
+            return jsonify({'error': 'No valid fields to update'}), 400
+        
+        result = db_manager.update_character(char_obj_id, update_data)
+        
+        if result:
+            return jsonify({'message': 'Character updated successfully'}), 200
+        else:
+            return jsonify({'error': 'Failed to update character'}), 500
+            
     except Exception as e:
         return jsonify({'error': 'Operation failed'}), 500
 

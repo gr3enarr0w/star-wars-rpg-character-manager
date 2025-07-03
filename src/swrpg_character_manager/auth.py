@@ -99,6 +99,38 @@ class AuthManager:
         except Exception as e:
             return False, f"Registration failed: {str(e)}", None
     
+    def register_user_direct(self, email: str, username: str, password: str, role: str = "player") -> Tuple[bool, str, Optional[ObjectId]]:
+        """Register a new user directly without invite code (admin only)."""
+        # Check if user already exists
+        if db_manager.get_user_by_email(email):
+            return False, "Email already registered", None
+        
+        if db_manager.get_user_by_username(username):
+            return False, "Username already taken", None
+        
+        # Validate password
+        is_valid, errors = self.validate_password_strength(password)
+        if not is_valid:
+            return False, "; ".join(errors), None
+        
+        # Validate role
+        if role not in ['player', 'gamemaster', 'admin']:
+            return False, "Invalid role", None
+        
+        # Create user
+        user = User(
+            email=email,
+            username=username,
+            password_hash=self.hash_password(password),
+            role=role
+        )
+        
+        try:
+            user_id = db_manager.create_user(user)
+            return True, "User created successfully", user_id
+        except Exception as e:
+            return False, f"User creation failed: {str(e)}", None
+    
     def authenticate_user(self, email: str, password: str) -> Tuple[bool, str, Optional[User]]:
         """Authenticate user with email and password."""
         user = db_manager.get_user_by_email(email)
