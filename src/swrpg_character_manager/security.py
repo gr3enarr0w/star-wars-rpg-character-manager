@@ -30,8 +30,21 @@ class DataEncryption:
             try:
                 with open(key_file, 'r') as f:
                     key_content = f.read().strip()
-                    # If it's a URL-safe base64 key from startup script, use it directly
-                    return base64.urlsafe_b64decode(key_content + '==')  # Add padding if needed
+                    # If it's a URL-safe base64 key from startup script, it's already properly formatted
+                    # Just need to ensure it's bytes for Fernet
+                    try:
+                        # Try to use it directly as Fernet key (it should be 32 URL-safe base64-encoded bytes)
+                        test_key = key_content.encode('utf-8')
+                        # Test if it's a valid Fernet key
+                        test_cipher = Fernet(test_key)
+                        return test_key
+                    except Exception:
+                        # If direct use fails, try decoding it
+                        # Add padding if needed for base64 decoding
+                        padded_key = key_content + '=' * (4 - len(key_content) % 4)
+                        decoded_key = base64.urlsafe_b64decode(padded_key)
+                        # Re-encode as URL-safe base64 for Fernet
+                        return base64.urlsafe_b64encode(decoded_key)
             except (OSError, PermissionError, Exception) as e:
                 print(f"Warning: Cannot read encryption key file {key_file}: {e}")
                 # Fall through to environment variable or generation
@@ -40,7 +53,9 @@ class DataEncryption:
         env_key = os.getenv('ENCRYPTION_KEY')
         if env_key:
             try:
-                return base64.urlsafe_b64decode(env_key + '==')  # Add padding if needed
+                # Environment key should be URL-safe base64 string, use directly
+                test_cipher = Fernet(env_key.encode('utf-8'))
+                return env_key.encode('utf-8')
             except Exception as e:
                 print(f"Warning: Invalid ENCRYPTION_KEY environment variable: {e}")
         
@@ -55,13 +70,16 @@ class DataEncryption:
             salt=salt,
             iterations=100000,  # NIST recommended minimum
         )
-        key = base64.urlsafe_b64encode(kdf.derive(password))
+        key_bytes = kdf.derive(password)
+        
+        # Convert to URL-safe base64 for Fernet compatibility
+        fernet_key = base64.urlsafe_b64encode(key_bytes)
         
         # Try to save key for future use (with error handling)
         try:
             os.makedirs(os.path.dirname(key_file), exist_ok=True)
-            with open(key_file, 'wb') as f:
-                f.write(key)
+            with open(key_file, 'w') as f:
+                f.write(fernet_key.decode('utf-8'))
             
             # Set secure permissions (readable only by owner)
             os.chmod(key_file, 0o600)
@@ -70,7 +88,7 @@ class DataEncryption:
             print(f"Warning: Cannot save encryption key to {key_file}: {e}")
             print("Using in-memory encryption key for this session")
         
-        return key
+        return fernet_key
     
     def encrypt_email(self, email: str) -> str:
         """Encrypt email address for secure storage."""
