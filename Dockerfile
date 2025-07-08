@@ -21,11 +21,15 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy application source
 COPY src/ ./src/
 COPY web/ ./web/
+COPY wsgi.py .
+COPY startup_production.py .
 COPY run_web.py .
 COPY startup.py .
-COPY startup_production.py .
 COPY startup_ci.py .
 COPY tools/ ./tools/
+
+# Create swrpg_extracted_data directory (fallback if not in git)
+RUN mkdir -p /app/swrpg_extracted_data/json
 
 # Create necessary directories with proper permissions
 RUN mkdir -p /app/logs /app/data \
@@ -52,4 +56,4 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
 
 # Use entrypoint script for proper permission handling
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
-CMD ["python", "-c", "print('🔥 DOCKERFILE DEBUG: About to run startup_production.py'); exec(open('startup_production.py').read())"]
+CMD ["python", "startup_production.py"]
