@@ -12,13 +12,18 @@ class AdvancementManager:
         self.skill_costs = self._initialize_skill_costs()
     
     def _initialize_characteristic_costs(self) -> Dict[int, int]:
-        """Initialize XP costs for characteristic increases."""
+        """Initialize XP costs for characteristic increases during character creation only.
+        
+        SWRPG Rule: Characteristics can only be increased with XP during character creation.
+        After creation, they can only be increased through specific talents like 'Dedication'.
+        Cost formula: 10 × new rank
+        """
         return {
-            2: 20,   # 1→2
-            3: 30,   # 2→3
-            4: 40,   # 3→4
-            5: 50,   # 4→5
-            6: 60    # 5→6
+            2: 20,   # 1→2 (10 × 2 = 20 XP)
+            3: 30,   # 2→3 (10 × 3 = 30 XP)
+            4: 40,   # 3→4 (10 × 4 = 40 XP)
+            5: 50,   # 4→5 (10 × 5 = 50 XP)
+            6: 60    # 5→6 (10 × 6 = 60 XP)
         }
     
     def _initialize_skill_costs(self) -> Dict[int, int]:
@@ -33,7 +38,15 @@ class AdvancementManager:
     
     def calculate_characteristic_cost(self, character: Character, 
                                     characteristic: Characteristic) -> Optional[int]:
-        """Calculate XP cost to increase a characteristic."""
+        """Calculate XP cost to increase a characteristic during character creation only.
+        
+        SWRPG Rule: After character creation, characteristics can only be increased
+        through specific talents like 'Dedication', not with XP.
+        """
+        # Check if character is already created (has been saved/finalized)
+        if hasattr(character, 'is_created') and character.is_created:
+            return None  # Cannot increase characteristics with XP after creation
+        
         char_name = characteristic.value.lower()
         current_value = getattr(character, char_name)
         
@@ -64,10 +77,18 @@ class AdvancementManager:
     
     def advance_characteristic(self, character: Character, 
                              characteristic: Characteristic) -> bool:
-        """Advance a characteristic if possible."""
+        """Advance a characteristic if possible during character creation only.
+        
+        SWRPG Rule: After character creation, characteristics can only be increased
+        through specific talents like 'Dedication', not with XP.
+        """
         cost = self.calculate_characteristic_cost(character, characteristic)
         
         if cost is None:
+            return False
+        
+        # Additional check for post-creation attempts
+        if hasattr(character, 'is_created') and character.is_created:
             return False
         
         return character.increase_characteristic(characteristic, cost)
@@ -89,28 +110,27 @@ class AdvancementManager:
             "talents": []
         }
         
-        # Characteristic advancement options
-        for characteristic in Characteristic:
-            cost = self.calculate_characteristic_cost(character, characteristic)
-            if cost is not None and character.available_xp >= cost:
-                char_name = characteristic.value.lower()
-                current_value = getattr(character, char_name)
-                options["characteristics"][characteristic.value] = {
-                    "current": current_value,
-                    "target": current_value + 1,
-                    "cost": cost,
-                    "affordable": True
-                }
+        # Characteristic advancement options (only during character creation)
+        if not (hasattr(character, 'is_created') and character.is_created):
+            for characteristic in Characteristic:
+                cost = self.calculate_characteristic_cost(character, characteristic)
+                if cost is not None and character.available_xp >= cost:
+                    char_name = characteristic.value.lower()
+                    current_value = getattr(character, char_name)
+                    options["characteristics"][characteristic.value] = {
+                        "current": current_value,
+                        "target": current_value + 1,
+                        "cost": cost
+                    }
         
-        # Skill advancement options
+        # Skill advancement options (always available)
         for skill_name, skill in character.skills.items():
             cost = self.calculate_skill_cost(character, skill_name)
-            if cost is not None:
+            if cost is not None and character.available_xp >= cost:
                 options["skills"][skill_name] = {
                     "current": skill.ranks,
                     "target": skill.ranks + 1,
                     "cost": cost,
-                    "affordable": character.available_xp >= cost,
                     "career_skill": skill.career_skill
                 }
         
@@ -119,113 +139,61 @@ class AdvancementManager:
     def simulate_advancement(self, character: Character, 
                            advancement_plan: Dict) -> Dict:
         """Simulate an advancement plan without actually spending XP."""
-        simulation_result = {
+        total_cost = 0
+        results = {
+            "valid": True,
             "total_cost": 0,
-            "feasible": True,
             "remaining_xp": character.available_xp,
-            "changes": []
+            "breakdown": []
         }
         
-        # Create a copy of the character for simulation
-        temp_available_xp = character.available_xp
-        
-        # Process characteristic improvements
+        # Calculate characteristic costs (only during creation)
         if "characteristics" in advancement_plan:
-            for char_name, target_value in advancement_plan["characteristics"].items():
+            for char_name, increases in advancement_plan["characteristics"].items():
                 characteristic = Characteristic(char_name)
-                current_value = getattr(character, characteristic.value.lower())
-                
-                while current_value < target_value:
+                for _ in range(increases):
                     cost = self.calculate_characteristic_cost(character, characteristic)
-                    if cost is None or temp_available_xp < cost:
-                        simulation_result["feasible"] = False
+                    if cost is None:
+                        results["valid"] = False
+                        results["breakdown"].append({
+                            "type": "characteristic",
+                            "name": char_name,
+                            "error": "Cannot increase or already at maximum"
+                        })
                         break
                     
-                    simulation_result["total_cost"] += cost
-                    temp_available_xp -= cost
-                    current_value += 1
-                    simulation_result["changes"].append(
-                        f"{char_name}: {current_value-1}→{current_value} ({cost} XP)"
-                    )
+                    total_cost += cost
+                    results["breakdown"].append({
+                        "type": "characteristic",
+                        "name": char_name,
+                        "cost": cost
+                    })
         
-        # Process skill improvements
+        # Calculate skill costs
         if "skills" in advancement_plan:
-            for skill_name, target_rank in advancement_plan["skills"].items():
-                current_rank = character.skills[skill_name].ranks
-                
-                while current_rank < target_rank:
+            for skill_name, increases in advancement_plan["skills"].items():
+                for _ in range(increases):
                     cost = self.calculate_skill_cost(character, skill_name)
-                    if cost is None or temp_available_xp < cost:
-                        simulation_result["feasible"] = False
+                    if cost is None:
+                        results["valid"] = False
+                        results["breakdown"].append({
+                            "type": "skill",
+                            "name": skill_name,
+                            "error": "Cannot increase or already at maximum"
+                        })
                         break
                     
-                    simulation_result["total_cost"] += cost
-                    temp_available_xp -= cost
-                    current_rank += 1
-                    simulation_result["changes"].append(
-                        f"{skill_name}: {current_rank-1}→{current_rank} ({cost} XP)"
-                    )
+                    total_cost += cost
+                    results["breakdown"].append({
+                        "type": "skill",
+                        "name": skill_name,
+                        "cost": cost
+                    })
         
-        simulation_result["remaining_xp"] = temp_available_xp
-        return simulation_result
-    
-    def execute_advancement_plan(self, character: Character, 
-                               advancement_plan: Dict) -> bool:
-        """Execute an advancement plan on a character."""
-        # First simulate to check feasibility
-        simulation = self.simulate_advancement(character, advancement_plan)
+        results["total_cost"] = total_cost
+        results["remaining_xp"] = character.available_xp - total_cost
         
-        if not simulation["feasible"]:
-            return False
+        if results["remaining_xp"] < 0:
+            results["valid"] = False
         
-        # Execute characteristic improvements
-        if "characteristics" in advancement_plan:
-            for char_name, target_value in advancement_plan["characteristics"].items():
-                characteristic = Characteristic(char_name)
-                current_value = getattr(character, characteristic.value.lower())
-                
-                while current_value < target_value:
-                    if not self.advance_characteristic(character, characteristic):
-                        return False
-                    current_value += 1
-        
-        # Execute skill improvements
-        if "skills" in advancement_plan:
-            for skill_name, target_rank in advancement_plan["skills"].items():
-                current_rank = character.skills[skill_name].ranks
-                
-                while current_rank < target_rank:
-                    if not self.advance_skill(character, skill_name):
-                        return False
-                    current_rank += 1
-        
-        return True
-    
-    def award_xp(self, character: Character, amount: int, reason: str = "") -> None:
-        """Award experience points to a character."""
-        character.add_xp(amount)
-        print(f"Awarded {amount} XP to {character.name}" + 
-              (f" for {reason}" if reason else ""))
-    
-    def get_character_progression_summary(self, character: Character) -> Dict:
-        """Get a summary of character progression."""
-        return {
-            "name": character.name,
-            "total_xp": character.total_xp,
-            "spent_xp": character.spent_xp,
-            "available_xp": character.available_xp,
-            "characteristics": {
-                "Brawn": character.brawn,
-                "Agility": character.agility,
-                "Intellect": character.intellect,
-                "Cunning": character.cunning,
-                "Willpower": character.willpower,
-                "Presence": character.presence
-            },
-            "trained_skills": {
-                name: skill.ranks 
-                for name, skill in character.skills.items() 
-                if skill.ranks > 0
-            },
-            "talents": [talent.name for talent in character.talents]
-        }
+        return results

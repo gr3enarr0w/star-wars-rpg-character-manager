@@ -24,6 +24,23 @@ This extracted content includes:
 
 **Data Verification Protocol**: Always cross-reference character creation data, species stats, career information, and game mechanics against these extracted sources to ensure accuracy and completeness. The application currently has 28+ species available in the character creation wizard.
 
+## SWRPG Advancement Rules
+
+### Character Creation (Official Rules)
+- **Characteristic Costs**: 10 × new rank (e.g., 30 XP for rank 3, 40 XP for rank 4)
+- **Starting Characteristics**: All start at 2, modified by species
+- **Maximum During Creation**: Can increase to rank 5 with XP
+
+### Post-Creation Advancement (Official Rules)
+- **Characteristics**: Can ONLY be increased through specific talents like "Dedication", NOT with XP
+- **Skills**: 5 × new rank for career skills, +5 XP for non-career skills
+- **Talents**: Purchased through talent trees with varying XP costs
+
+### Species Starting XP (Verified Against Sourcebooks)
+- **Human**: 110 XP (most versatile)
+- **Most Species**: 100 XP (standard)
+- **Powerful Species**: 90 XP (Wookiee, etc. - compensated with higher starting characteristics)
+
 ## Development Commands
 
 ### Running the Web Application (Primary Interface)
@@ -79,7 +96,7 @@ print(display.display_character_sheet(character))
 3. **Character Management**: View all characters on the dashboard, click any to view/edit
 4. **Character Advancement**: 
    - Click "Award XP" to give experience points
-   - Click "Advance" buttons next to characteristics/skills to spend XP
+   - Click "Advance" buttons next to skills to spend XP (characteristics can only be increased during creation or via Dedication talents)
    - View real-time dice pool calculations
 5. **Data Management**: Characters auto-save, use Export/Import for backups
 
@@ -93,7 +110,7 @@ swrpg create "Luke Skywalker" "Player1" "Human" "Guardian"
 swrpg award-xp 50 --reason "Completed adventure"
 swrpg advance  # Show advancement options
 swrpg advance-skill "Discipline"
-swrpg advance-characteristic "Willpower"
+# Note: Cannot advance characteristics post-creation with XP (need Dedication talents)
 
 # Character Management
 swrpg save && swrpg load "Luke Skywalker" && swrpg sheet
@@ -131,7 +148,7 @@ The application follows a layered architecture with dual interfaces:
 ### Component Interactions
 
 - **CharacterCreator** initializes characters with species modifiers, career skills, and starting XP from static data tables
-- **AdvancementManager** validates advancement costs before calling Character methods, and can simulate XP spending plans
+- **AdvancementManager** validates advancement costs before calling Character methods, enforces SWRPG rules (no post-creation characteristic advancement with XP)
 - **CharacterDatabase** handles complex serialization of Character objects to JSON, flattening nested structures
 - **CLI** maintains stateless operation - no persistent current_character between command invocations
 
@@ -141,7 +158,10 @@ The application implements core SW RPG rules:
 - **Six Characteristics**: Brawn, Agility, Intellect, Cunning, Willpower, Presence (typically 1-6 range)
 - **Career Skills**: Skills linked to careers cost less XP to advance (base cost vs base cost + 5)
 - **Dice Pool Mechanics**: Ability dice (green d8) convert to Proficiency dice (yellow d12) based on skill ranks
-- **XP Costs**: Characteristics cost 30/40/50/60 XP for ranks 3/4/5/6, skills cost 5×new_rank XP
+- **XP Costs**: 
+  - **Character Creation**: Characteristics cost 10 × new rank
+  - **Post-Creation**: Skills cost 5 × new rank XP (+5 for non-career)
+  - **Characteristics**: Can only be increased post-creation via Dedication talents
 
 ## Critical Implementation Details
 
@@ -155,7 +175,7 @@ All characters get the complete skill list initialized in `Character.__post_init
 Complex objects (Career, Specialization, Talent) are flattened to dictionaries during save and reconstructed during load in `CharacterDatabase`. Enums serialize as string values and are reconstructed via enum constructors.
 
 ### Advancement Cost Calculation
-`AdvancementManager` provides cost calculation methods that are separate from the actual spending logic in the Character class. This allows for advancement simulation and validation before committing XP.
+`AdvancementManager` provides cost calculation methods that are separate from the actual spending logic in the Character class. This allows for advancement simulation and validation before committing XP. Post-creation characteristic advancement is blocked to enforce SWRPG rules.
 
 ## Adding New Content
 
@@ -169,4 +189,4 @@ Add to `CharacterCreator._initialize_careers()` with career skills list, startin
 Update the skill list in `Character._initialize_skills()` and link to appropriate characteristics via the Characteristic enum.
 
 ### Adding Talents
-Create Talent objects with activation types, descriptions, and rank costs. Add via advancement system or character creation.
+Create Talent objects with activation types, descriptions, and rank costs. Add via advancement system or character creation. For Dedication talents, they should increase characteristics by 1 when purchased.
