@@ -5,10 +5,32 @@ import os
 import sys
 import time
 import subprocess
+import secrets
 from datetime import datetime, timezone, timedelta
 
 # Add the src directory to the Python path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
+
+def ensure_encryption_key():
+    """Ensure encryption key exists for security module."""
+    encryption_key_path = '.encryption_key'
+    
+    if not os.path.exists(encryption_key_path):
+        print("🔐 Generating encryption key...")
+        # Generate a 32-byte (256-bit) encryption key
+        encryption_key = secrets.token_urlsafe(32)
+        
+        # Write key to file with secure permissions
+        with open(encryption_key_path, 'w') as f:
+            f.write(encryption_key)
+        
+        # Set secure permissions (owner read/write only)
+        os.chmod(encryption_key_path, 0o600)
+        print(f"✅ Encryption key generated and saved to {encryption_key_path}")
+    else:
+        print(f"✅ Encryption key already exists at {encryption_key_path}")
+    
+    return True
 
 def wait_for_mongodb():
     """Wait for MongoDB to be ready."""
@@ -140,17 +162,22 @@ def main():
     print("🌟 Star Wars RPG Character Manager - Production Startup")
     print("=" * 60)
     
-    # Step 1: Wait for MongoDB
+    # Step 1: Ensure encryption key exists
+    if not ensure_encryption_key():
+        print("❌ Encryption key setup failed")
+        sys.exit(1)
+    
+    # Step 2: Wait for MongoDB
     if not wait_for_mongodb():
         print("❌ Cannot start without MongoDB")
         sys.exit(1)
     
-    # Step 2: Ensure admin user exists
+    # Step 3: Ensure admin user exists
     if not ensure_admin_user():
         print("❌ Admin setup failed")
         sys.exit(1)
     
-    # Step 3: Start Gunicorn
+    # Step 4: Start Gunicorn
     print("\\n🚀 Starting production server...")
     print("   Access at: http://localhost:8000")
     print("=" * 60)

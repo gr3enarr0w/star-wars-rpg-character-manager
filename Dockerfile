@@ -23,8 +23,8 @@ COPY web/ ./web/
 COPY swrpg_extracted_data/ ./swrpg_extracted_data/
 COPY startup_production.py .
 
-# Copy encryption key if it exists (for security module)
-COPY .encryption_key ./.encryption_key
+# Create encryption key at runtime if it doesn't exist
+# (Security keys should not be committed to git)
 
 # Create necessary directories with proper permissions
 RUN mkdir -p /app/logs /app/data \
