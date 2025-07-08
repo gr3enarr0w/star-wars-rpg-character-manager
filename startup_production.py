@@ -34,6 +34,12 @@ def ensure_encryption_key():
 
 def wait_for_mongodb():
     """Wait for MongoDB to be ready."""
+    # Show MongoDB configuration for debugging
+    mongodb_uri = os.getenv('MONGO_URI', os.getenv('MONGODB_URI', 'mongodb://localhost:27017/'))
+    db_name = os.getenv('MONGODB_DB', 'swrpg_manager')
+    print(f"🔍 MongoDB URI: {mongodb_uri}")
+    print(f"🔍 Database: {db_name}")
+    
     max_retries = 30
     retry_count = 0
     
@@ -46,6 +52,7 @@ def wait_for_mongodb():
         except Exception as e:
             retry_count += 1
             print(f"⏳ Waiting for MongoDB... (attempt {retry_count}/{max_retries})")
+            print(f"   Error: {str(e)}")
             time.sleep(2)
     
     print("❌ MongoDB connection timeout")
