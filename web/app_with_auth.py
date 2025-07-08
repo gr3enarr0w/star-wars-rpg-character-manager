@@ -747,6 +747,7 @@ def get_current_user_id():
 
 # Character Creation Data API Routes
 @app.route('/api/character-data/species', methods=['GET'])
+@auth_manager.require_auth
 def get_species_data():
     """Get available species data for character creation."""
     try:
@@ -775,6 +776,7 @@ def get_species_data():
         return jsonify({'error': 'Failed to fetch species data'}), 500
 
 @app.route('/api/character-data/careers', methods=['GET'])
+@auth_manager.require_auth
 def get_careers_data():
     """Get available careers data for character creation."""
     try:

@@ -390,18 +390,37 @@ async function checkAuthentication() {
 // Load dynamic species and careers data
 async function loadCharacterData() {
     try {
+        const token = localStorage.getItem('access_token');
+        const headers = {
+            'Content-Type': 'application/json'
+        };
+        
+        if (token) {
+            headers['Authorization'] = `Bearer ${token}`;
+        }
+        
         // Load species data
-        const speciesResponse = await fetch('/api/character-data/species');
+        const speciesResponse = await fetch('/api/character-data/species', {
+            method: 'GET',
+            headers: headers
+        });
         if (speciesResponse.ok) {
             const speciesData = await speciesResponse.json();
             populateSpeciesDropdown(speciesData.species);
+        } else {
+            console.error('Failed to load species data:', speciesResponse.status, speciesResponse.statusText);
         }
         
         // Load careers data
-        const careersResponse = await fetch('/api/character-data/careers');
+        const careersResponse = await fetch('/api/character-data/careers', {
+            method: 'GET',
+            headers: headers
+        });
         if (careersResponse.ok) {
             const careersData = await careersResponse.json();
             populateCareersDropdown(careersData.careers);
+        } else {
+            console.error('Failed to load careers data:', careersResponse.status, careersResponse.statusText);
         }
     } catch (error) {
         console.error('Error loading character data:', error);
