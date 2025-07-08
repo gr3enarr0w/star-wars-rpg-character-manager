@@ -196,17 +196,17 @@ class CharacterCreator:
                 "wound_threshold": 10,
                 "strain_threshold": 10,
                 "starting_xp": 110,
-                "special_abilities": ["Extra skill rank in two different skills"],
-                "source": "Core - Edge of the Empire"
+                "special_abilities": ["Two non-career skills of choice", "Most adaptable and numerous species", "Balanced characteristics"],
+                "source": "EotE Core Rulebook"
             },
             "Twi'lek": {
                 "characteristics": {"brawn": 1, "agility": 2, "intellect": 2, 
-                                 "cunning": 3, "willpower": 2, "presence": 2},
+                                 "cunning": 2, "willpower": 2, "presence": 3},
                 "wound_threshold": 10,
                 "strain_threshold": 11,
                 "starting_xp": 100,
-                "special_abilities": ["Remove one setback die from charm and deception checks"],
-                "source": "Core - Edge of the Empire"
+                "special_abilities": ["Twi'leks begin the game with one rank in either Charm or Deception. They still may not train Charm or Deception above rank 2 during character creation.", "Desert Dwellers: When making skill checks, Twi'leks may remove a setback die imposed due to arid or hot environmental conditions."],
+                "source": "EotE Core Rulebook"
             },
             "Rodian": {
                 "characteristics": {"brawn": 2, "agility": 3, "intellect": 2, 
@@ -214,9 +214,8 @@ class CharacterCreator:
                 "wound_threshold": 10,
                 "strain_threshold": 10,
                 "starting_xp": 100,
-                "special_abilities": ["Remove one setback die from perception checks", 
-                                    "Expert tracker"],
-                "source": "Core - Edge of the Empire"
+                "special_abilities": ["Rodians begin the game with one rank in Survival. They still may not train Survival above rank 2 during character creation.", "Rodians start with one rank in the Expert Tracker talent."],
+                "source": "EotE Core Rulebook"
             },
             "Wookiee": {
                 "characteristics": {"brawn": 3, "agility": 2, "intellect": 2, 
@@ -224,8 +223,8 @@ class CharacterCreator:
                 "wound_threshold": 14,
                 "strain_threshold": 8,
                 "starting_xp": 90,
-                "special_abilities": ["Rage ability", "Natural claws (Brawl +1 damage)"],
-                "source": "Core - Edge of the Empire"
+                "special_abilities": ["Wookiees begin the game with oner rank in Brawl. They still may not train Brawl above rank 2 during character creation.", "Wookiee Rage: When a Wookiee has suffered any wounds [they] deal +1 damage to Brawl and Melee attacks. When a Wookiee is Critically Injured, [they] instead deal +2 damage to Brawl and Melee attacks."],
+                "source": "EotE Core Rulebook"
             },
             "Bothan": {
                 "characteristics": {"brawn": 1, "agility": 2, "intellect": 2, 
@@ -233,7 +232,7 @@ class CharacterCreator:
                 "wound_threshold": 10,
                 "strain_threshold": 11,
                 "starting_xp": 100,
-                "special_abilities": ["Conviction: Once per session, may perform a maneuver"],
+                "special_abilities": ["Bothans begin the game with one rank in Streetwise. They still may not train Streetwise above rank 2 during character creation.", "They also start with one rank in the Convincing Demeanor talent."],
                 "source": "Age of Rebellion"
             },
             
@@ -241,20 +240,20 @@ class CharacterCreator:
             "Duros": {
                 "characteristics": {"brawn": 1, "agility": 2, "intellect": 3, 
                                  "cunning": 2, "willpower": 2, "presence": 2},
-                "wound_threshold": 9,
+                "wound_threshold": 11,
                 "strain_threshold": 12,
                 "starting_xp": 100,
-                "special_abilities": ["Intuitive Navigation", "Remove one setback from Astrogation checks"],
-                "source": "Edge of the Empire"
+                "special_abilities": ["One free rank in Piloting (Space) (cannot train above rank 2 during creation)", "May remove up to 2 setback dice imposed due to environmental effects on any Piloting checks", "Low-Light Vision: Remove up to 2 setback dice imposed by low-light conditions"],
+                "source": "Age of Rebellion"
             },
             "Gand": {
                 "characteristics": {"brawn": 2, "agility": 2, "intellect": 2, 
-                                 "cunning": 3, "willpower": 1, "presence": 2},
-                "wound_threshold": 11,
+                                 "cunning": 2, "willpower": 3, "presence": 1},
+                "wound_threshold": 10,
                 "strain_threshold": 10,
                 "starting_xp": 100,
-                "special_abilities": ["Ammonia breathers", "Natural mystics"],
-                "source": "Edge of the Empire"
+                "special_abilities": ["One rank in Discipline", "Ammonia Breathers: Subspecies variations", "Findsman tracking abilities"],
+                "source": "EotE Core Rulebook"
             },
             "Trandoshan": {
                 "characteristics": {"brawn": 3, "agility": 1, "intellect": 2, 
@@ -262,18 +261,18 @@ class CharacterCreator:
                 "wound_threshold": 12,
                 "strain_threshold": 9,
                 "starting_xp": 90,
-                "special_abilities": ["Claws", "Regeneration"],
-                "source": "Edge of the Empire"
+                "special_abilities": ["Trandoshans begin the game with one rank in Perception. They still may not train Perception above rank 2 during character creation.", "Regeneration: Whenever a Trandoshan would recover one or more wounds from natural rest or recuperation in a Bacta tank, they recover one additional wound. They do not recover one additional wound when receiving first aid or medical treatment from a character, or when using a stimpack. Trandoshans can regrow lost limbs as well, though it usually takes at least a month before the limb is usable.", "Claws: When a Trandoshan makes Brawl checks to deal damage to an opponent, they deal +1 damage and have a Critical Rating of 3."],
+                "source": "Age of Rebellion"
             },
             
             # Force and Destiny Species
             "Cerean": {
-                "characteristics": {"brawn": 1, "agility": 2, "intellect": 3, 
-                                 "cunning": 2, "willpower": 2, "presence": 2},
-                "wound_threshold": 9,
-                "strain_threshold": 12,
+                "characteristics": {"brawn": 2, "agility": 2, "intellect": 3, 
+                                 "cunning": 2, "willpower": 3, "presence": 2},
+                "wound_threshold": 10,
+                "strain_threshold": 11,
                 "starting_xp": 90,
-                "special_abilities": ["Binary processor", "Enhanced perception"],
+                "special_abilities": ["Begin with one rank in Knowledge (Education)", "May spend Destiny Points to reroll any Knowledge skill check", "Alternative: May spend Strain to add advantage to any Knowledge or Vigilance check"],
                 "source": "Force and Destiny"
             },
             "Kel Dor": {
@@ -287,52 +286,52 @@ class CharacterCreator:
             },
             "Nautolan": {
                 "characteristics": {"brawn": 2, "agility": 2, "intellect": 2, 
-                                 "cunning": 2, "willpower": 1, "presence": 3},
-                "wound_threshold": 11,
+                                 "cunning": 2, "willpower": 2, "presence": 2},
+                "wound_threshold": 10,
                 "strain_threshold": 10,
                 "starting_xp": 100,
-                "special_abilities": ["Amphibious", "Pheromone detection"],
+                "special_abilities": ["Amphibious: Can breathe underwater", "Pheromone Detection: Can sense emotions and intentions", "Head Tentacles: Enhanced sensory capabilities"],
                 "source": "Force and Destiny"
             },
             "Zabrak": {
-                "characteristics": {"brawn": 2, "agility": 2, "intellect": 2, 
-                                 "cunning": 2, "willpower": 3, "presence": 1},
-                "wound_threshold": 10,
-                "strain_threshold": 11,
+                "characteristics": {"brawn": 2, "agility": 3, "intellect": 2, 
+                                 "cunning": 2, "willpower": 2, "presence": 2},
+                "wound_threshold": 11,
+                "strain_threshold": 10,
                 "starting_xp": 100,
-                "special_abilities": ["Fearsome countenance", "Mental fortitude"],
+                "special_abilities": ["Pain Tolerance: Reduce Critical Injury results by 10 (minimum of 1)"],
                 "source": "Force and Destiny"
             },
             
             # Age of Rebellion Species
             "Mon Calamari": {
                 "characteristics": {"brawn": 2, "agility": 2, "intellect": 3, 
-                                 "cunning": 1, "willpower": 2, "presence": 2},
+                                 "cunning": 3, "willpower": 2, "presence": 3},
                 "wound_threshold": 10,
-                "strain_threshold": 11,
-                "starting_xp": 100,
-                "special_abilities": ["Amphibious", "Expert starship designers"],
+                "strain_threshold": 13,
+                "starting_xp": 120,
+                "special_abilities": ["Amphibious: Can breathe underwater", "Keen Vision: Enhanced visual capabilities"],
                 "source": "Age of Rebellion"
             },
             "Sullustan": {
-                "characteristics": {"brawn": 1, "agility": 3, "intellect": 2, 
+                "characteristics": {"brawn": 2, "agility": 3, "intellect": 2, 
                                  "cunning": 2, "willpower": 2, "presence": 2},
-                "wound_threshold": 9,
+                "wound_threshold": 12,
                 "strain_threshold": 12,
                 "starting_xp": 100,
-                "special_abilities": ["Enhanced senses", "Natural pilots"],
+                "special_abilities": ["Darkvision: Can see in low-light conditions", "Expert Navigator: Bonuses to navigation checks", "Keen Senses: Enhanced sensory capabilities", "Sure-Footed: Improved balance and movement"],
                 "source": "Age of Rebellion"
             },
             
             # Additional Popular Species
             "Chiss": {
                 "characteristics": {"brawn": 2, "agility": 2, "intellect": 3, 
-                                 "cunning": 2, "willpower": 1, "presence": 2},
+                                 "cunning": 2, "willpower": 3, "presence": 0},
                 "wound_threshold": 10,
-                "strain_threshold": 11,
+                "strain_threshold": 10,
                 "starting_xp": 100,
-                "special_abilities": ["Infrared vision", "Tactical brilliance"],
-                "source": "Unknown Regions"
+                "special_abilities": ["One rank in Cool", "Infravision: Remove setback from lighting conditions", "Disciplined and analytical"],
+                "source": "Enter the Unknown"
             },
             "Jawa": {
                 "characteristics": {"brawn": 1, "agility": 2, "intellect": 3, 
@@ -345,11 +344,11 @@ class CharacterCreator:
             },
             "Devaronian": {
                 "characteristics": {"brawn": 2, "agility": 2, "intellect": 2, 
-                                 "cunning": 3, "willpower": 1, "presence": 2},
-                "wound_threshold": 10,
+                                 "cunning": 3, "willpower": 2, "presence": 1},
+                "wound_threshold": 11,
                 "strain_threshold": 10,
-                "starting_xp": 100,
-                "special_abilities": ["Natural mystics", "Wanderlust"],
+                "starting_xp": 95,
+                "special_abilities": ["One rank in Survival or Deception", "Resilient Metabolism: Automatic boost to Resilience checks", "Hardy physiology resistant to toxins"],
                 "source": "Lords of Nal Hutta"
             },
             
@@ -374,11 +373,11 @@ class CharacterCreator:
             },
             "Togruta": {
                 "characteristics": {"brawn": 2, "agility": 2, "intellect": 2, 
-                                 "cunning": 2, "willpower": 3, "presence": 1},
+                                 "cunning": 2, "willpower": 2, "presence": 3},
                 "wound_threshold": 10,
                 "strain_threshold": 11,
                 "starting_xp": 100,
-                "special_abilities": ["Pack hunters", "Echolocation", "Natural mystics"],
+                "special_abilities": ["Montrals: Togruta have a pair of hollow horn-like projections called montrals that grow from the top of their heads. These montrals are used for echolocation. Togruta ignore the effects of all environmental conditions that would cause them to upgrade the difficulty of Perception checks once.", "Natural Hunters: Add boost dice to checks to track or hunt prey"],
                 "source": "Force and Destiny"
             },
             "Weequay": {
@@ -429,22 +428,22 @@ class CharacterCreator:
                 "source": "Lords of Nal Hutta"
             },
             "Falleen": {
-                "characteristics": {"brawn": 2, "agility": 1, "intellect": 2, 
+                "characteristics": {"brawn": 2, "agility": 2, "intellect": 2, 
                                  "cunning": 2, "willpower": 2, "presence": 3},
                 "wound_threshold": 10,
                 "strain_threshold": 12,
                 "starting_xp": 90,
-                "special_abilities": ["One rank in Charm", "Beguiling Pheromones"],
-                "source": "Lords of Nal Hutta"
+                "special_abilities": ["One rank in Charm", "Beguiling Pheromones: Upgrade Charm/Deception/Negotiation", "Color-changing skin and emotional manipulation"],
+                "source": "Fly Casual"
             },
             "Gran": {
-                "characteristics": {"brawn": 2, "agility": 1, "intellect": 2, 
-                                 "cunning": 2, "willpower": 2, "presence": 3},
+                "characteristics": {"brawn": 2, "agility": 2, "intellect": 2, 
+                                 "cunning": 2, "willpower": 1, "presence": 3},
                 "wound_threshold": 10,
                 "strain_threshold": 9,
                 "starting_xp": 100,
-                "special_abilities": ["One rank in Charm or Negotiation", "Enhanced Vision"],
-                "source": "Lords of Nal Hutta"
+                "special_abilities": ["One rank in Charm or Negotiation", "Enhanced Vision: Remove setback from ranged combat/Perception", "Three-eyed peaceful species"],
+                "source": "Far Horizons"
             }
         }
     
@@ -457,8 +456,8 @@ class CharacterCreator:
                 "wound_threshold": 10,
                 "strain_threshold": 10,
                 "starting_xp": 110,
-                "special_abilities": ["Extra skill rank in two different skills"],
-                "source": "Core - Edge of the Empire"
+                "special_abilities": ["Two non-career skills of choice", "Most adaptable and numerous species", "Balanced characteristics"],
+                "source": "EotE Core Rulebook"
             },
             "Twi'lek": {
                 "characteristics": {"brawn": 1, "agility": 2, "intellect": 2, 
@@ -466,8 +465,8 @@ class CharacterCreator:
                 "wound_threshold": 10,
                 "strain_threshold": 11,
                 "starting_xp": 100,
-                "special_abilities": ["Remove one setback die from charm and deception checks"],
-                "source": "Core - Edge of the Empire"
+                "special_abilities": ["One rank in Charm or Deception", "Heat resistance: Remove setback from arid/hot conditions", "Lekku head-tails for communication"],
+                "source": "EotE Core Rulebook"
             },
             "Wookiee": {
                 "characteristics": {"brawn": 3, "agility": 2, "intellect": 2, 
@@ -476,7 +475,7 @@ class CharacterCreator:
                 "strain_threshold": 8,
                 "starting_xp": 90,
                 "special_abilities": ["Rage ability", "Natural claws (Brawl +1 damage)"],
-                "source": "Core - Edge of the Empire"
+                "source": "EotE Core Rulebook"
             }
         }
     
