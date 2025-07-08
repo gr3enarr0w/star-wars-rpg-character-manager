@@ -18,12 +18,31 @@ class DataEncryption:
     
     def _get_or_create_master_key(self) -> bytes:
         """Get or create master encryption key using PBKDF2 with 256-bit key."""
-        # Check for existing key file
-        key_file = os.path.join(os.path.dirname(__file__), '../../.encryption_key')
+        # Check for key in production location first
+        key_file = '/app/data/.encryption_key'
         
+        # Fallback to old location for development
+        if not os.path.exists(key_file):
+            key_file = os.path.join(os.path.dirname(__file__), '../../.encryption_key')
+        
+        # Try to read existing key file
         if os.path.exists(key_file):
-            with open(key_file, 'rb') as f:
-                return f.read()
+            try:
+                with open(key_file, 'r') as f:
+                    key_content = f.read().strip()
+                    # If it's a URL-safe base64 key from startup script, use it directly
+                    return base64.urlsafe_b64decode(key_content + '==')  # Add padding if needed
+            except (OSError, PermissionError, Exception) as e:
+                print(f"Warning: Cannot read encryption key file {key_file}: {e}")
+                # Fall through to environment variable or generation
+        
+        # Check for environment variable (set by startup_production.py)
+        env_key = os.getenv('ENCRYPTION_KEY')
+        if env_key:
+            try:
+                return base64.urlsafe_b64decode(env_key + '==')  # Add padding if needed
+            except Exception as e:
+                print(f"Warning: Invalid ENCRYPTION_KEY environment variable: {e}")
         
         # Generate new key using environment variable as password + salt
         password = os.getenv('ENCRYPTION_PASSWORD', 'default-key-change-in-production').encode()
@@ -38,13 +57,18 @@ class DataEncryption:
         )
         key = base64.urlsafe_b64encode(kdf.derive(password))
         
-        # Save key for future use
-        os.makedirs(os.path.dirname(key_file), exist_ok=True)
-        with open(key_file, 'wb') as f:
-            f.write(key)
-        
-        # Set secure permissions (readable only by owner)
-        os.chmod(key_file, 0o600)
+        # Try to save key for future use (with error handling)
+        try:
+            os.makedirs(os.path.dirname(key_file), exist_ok=True)
+            with open(key_file, 'wb') as f:
+                f.write(key)
+            
+            # Set secure permissions (readable only by owner)
+            os.chmod(key_file, 0o600)
+            print(f"Generated and saved encryption key to {key_file}")
+        except (OSError, PermissionError) as e:
+            print(f"Warning: Cannot save encryption key to {key_file}: {e}")
+            print("Using in-memory encryption key for this session")
         
         return key
     
