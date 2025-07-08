@@ -2154,15 +2154,19 @@ def test_route():
     """Temporary test route to verify route registration works."""
     return "✅ Route registration working!"
 
-# Route debugging - log routes at startup
+# Route debugging - log routes at startup using Flask logger
 def log_registered_routes():
     """Log all registered routes for debugging."""
-    print("🔍 ALL REGISTERED ROUTES:")
+    import logging
+    logging.basicConfig(level=logging.INFO)
+    logger = logging.getLogger(__name__)
+    
+    logger.info("🔍 ALL REGISTERED ROUTES:")
     for rule in app.url_map.iter_rules():
-        print(f"   {rule.endpoint}: {rule.rule}")
+        logger.info(f"   {rule.endpoint}: {rule.rule}")
     
     campaign_routes = [str(rule) for rule in app.url_map.iter_rules() if 'campaign' in str(rule)]
-    print(f"🎯 Campaign routes specifically: {campaign_routes}")
+    logger.info(f"🎯 Campaign routes specifically: {campaign_routes}")
 
 # Log routes at startup
 log_registered_routes()
