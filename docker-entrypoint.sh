@@ -85,5 +85,10 @@ log "🚀 Starting application as user $PUID:$PGID"
 export MONGODB_URI="$MONGO_URI"
 export PYTHONPATH="/app/src"
 
-# Switch to application user and run the application
-exec gosu "$PUID:$PGID" "$@"
+# Debug: Show what command is being executed
+log "🔥 ENTRYPOINT DEBUG: About to execute command: $@"
+log "🔥 ENTRYPOINT DEBUG: All arguments: $*"
+
+# FORCE: Override and always run startup_production.py
+log "🔥 FORCE OVERRIDE: Running startup_production.py regardless of CMD"
+exec gosu "$PUID:$PGID" python startup_production.py
