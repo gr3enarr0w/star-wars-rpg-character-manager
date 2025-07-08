@@ -47,7 +47,8 @@ def ensure_admin_user():
 
 def start_production_server():
     """Start the production web application using Gunicorn."""
-    print("🚀 Starting Star Wars RPG Character Manager (Production Mode)")
+    print("🚀 STARTUP_PRODUCTION.PY - Starting Star Wars RPG Character Manager (Production Mode)")
+    print("🔧 DEBUG: This message confirms startup_production.py is being executed")
     
     # Get configuration from environment
     port = os.getenv('PORT', '8000')

@@ -52,4 +52,4 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
 
 # Use entrypoint script for proper permission handling
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
-CMD ["python", "startup_production.py"]
+CMD ["python", "-c", "print('🔥 DOCKERFILE DEBUG: About to run startup_production.py'); exec(open('startup_production.py').read())"]
