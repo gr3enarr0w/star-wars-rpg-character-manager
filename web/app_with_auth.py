@@ -2148,6 +2148,32 @@ def campaigns_page():
     current_user = db_manager.get_user_by_id(current_user_id)
     return render_template('campaigns.html', current_user=current_user)
 
+# DEBUG: Temporary test route to verify new routes can be registered
+@app.route('/test-route-registration')
+def test_route():
+    """Temporary test route to verify route registration works."""
+    return "✅ Route registration working!"
+
+# Route debugging - log routes at startup
+def log_registered_routes():
+    """Log all registered routes for debugging."""
+    print("🔍 ALL REGISTERED ROUTES:")
+    for rule in app.url_map.iter_rules():
+        print(f"   {rule.endpoint}: {rule.rule}")
+    
+    campaign_routes = [str(rule) for rule in app.url_map.iter_rules() if 'campaign' in str(rule)]
+    print(f"🎯 Campaign routes specifically: {campaign_routes}")
+
+# Log routes at startup
+log_registered_routes()
+
+# WORKAROUND: Create additional explicit route for campaigns
+@app.route('/campaigns-page')  
+@auth_manager.require_auth
+def campaigns_page_backup():
+    """Backup campaigns page route."""
+    return campaigns_page()
+
 @app.route('/campaigns/<campaign_id>/manage')
 @auth_manager.require_auth
 def campaign_management_page(campaign_id):
