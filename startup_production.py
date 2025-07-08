@@ -56,14 +56,27 @@ def start_production_server():
     
     bind_address = f"{host}:{port}"
     
-    # Change to web directory for proper imports
-    web_dir = os.path.join(os.path.dirname(__file__), 'web')
+    # Set up paths for proper imports  
+    app_dir = os.path.dirname(__file__)
+    web_dir = os.path.join(app_dir, 'web')
+    src_dir = os.path.join(app_dir, 'src')
+    
+    # Ensure PYTHONPATH includes both src and web directories
+    python_path = os.environ.get('PYTHONPATH', '')
+    if src_dir not in python_path:
+        python_path = f"{src_dir}:{python_path}" if python_path else src_dir
+    if web_dir not in python_path:
+        python_path = f"{web_dir}:{python_path}"
+    os.environ['PYTHONPATH'] = python_path
+    
+    # Change to web directory for wsgi.py
     os.chdir(web_dir)
     
     print(f"📊 Configuration:")
     print(f"   Bind: {bind_address}")
     print(f"   Workers: {workers}")
     print(f"   Working Directory: {web_dir}")
+    print(f"   PYTHONPATH: {python_path}")
     
     # Build Gunicorn command
     cmd = [
@@ -79,6 +92,7 @@ def start_production_server():
         "--access-logfile", "-",
         "--error-logfile", "-",
         "--log-level", "info",
+        "--pythonpath", python_path,
         "wsgi:application"
     ]
     
