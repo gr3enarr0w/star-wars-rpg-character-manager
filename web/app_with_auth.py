@@ -450,6 +450,123 @@ def link_social_account():
     except Exception as e:
         return jsonify({'error': 'Operation failed'}), 500
 
+# Campaign Management Routes
+@app.route('/api/campaigns', methods=['GET'])
+@auth_manager.require_auth
+def get_campaigns():
+    """Get user's campaigns."""
+    try:
+        current_user_id = get_current_user_id()
+        campaigns = db_manager.get_user_campaigns(current_user_id)
+
+        campaign_data = []
+        for campaign in campaigns:
+            campaign_data.append({
+                'id': str(campaign._id),
+                'name': campaign.name,
+                'description': campaign.description,
+                'is_game_master': campaign.game_master_id == current_user_id,
+                'player_count': len(campaign.players),
+                'character_count': len(campaign.characters),
+                'created_at': campaign.created_at.isoformat()
+            })
+
+        return jsonify({'campaigns': campaign_data}), 200
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/campaigns', methods=['POST'])
+@auth_manager.require_auth
+def create_campaign():
+    """Create a new campaign."""
+    try:
+        current_user_id = get_current_user_id()
+        data = request.get_json()
+
+        # Validate required fields
+        if not data.get('name') or not data.get('name').strip():
+            return jsonify({'error': 'Campaign name is required'}), 400
+
+        if not data.get('game_system'):
+            return jsonify({'error': 'Game system is required'}), 400
+
+        # Prepare campaign settings with additional fields
+        campaign_settings = {
+            'game_system': data.get('game_system'),
+            'max_players': data.get('max_players', 4)
+        }
+
+        campaign = Campaign(
+            name=data.get('name').strip(),
+            description=data.get('description', ''),
+            game_master_id=current_user_id,
+            settings=campaign_settings
+        )
+
+        campaign_id = db_manager.create_campaign(campaign)
+
+        return jsonify({
+            'message': 'Campaign created successfully',
+            'campaign_id': str(campaign_id),
+            'campaign': {
+                'id': str(campaign_id),
+                'name': campaign.name,
+                'description': campaign.description,
+                'game_system': campaign_settings['game_system'],
+                'max_players': campaign_settings['max_players']
+            }
+        }), 201
+
+    except Exception as e:
+        app.logger.error(f"Campaign creation error: {str(e)}")
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/campaigns/<campaign_id>/invite', methods=['POST'])
+@auth_manager.require_auth
+def generate_campaign_invite(campaign_id):
+    """Generate campaign invite code."""
+    try:
+        current_user_id = get_current_user_id()
+        campaign = db_manager.get_campaign_by_id(ObjectId(campaign_id))
+
+        if not campaign or campaign.game_master_id != current_user_id:
+            return jsonify({'error': 'Access denied'}), 403
+
+        # Generate campaign invite code
+        invite_code = auth_manager.generate_campaign_invite(ObjectId(campaign_id), current_user_id)
+
+        return jsonify({
+            'message': 'Campaign invite code generated successfully',
+            'invite_code': invite_code
+        }), 200
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/campaigns/join', methods=['POST'])
+@auth_manager.require_auth
+def join_campaign():
+    """Join campaign using invite code."""
+    try:
+        current_user_id = get_current_user_id()
+        data = request.get_json()
+        invite_code = data.get('invite_code')
+
+        if not invite_code:
+            return jsonify({'error': 'Invite code is required'}), 400
+
+        # Join campaign using invite code
+        success, message = db_manager.join_campaign_by_invite(current_user_id, invite_code)
+
+        if success:
+            return jsonify({'message': message}), 200
+        else:
+            return jsonify({'error': message}), 400
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
 # Health Check Route (for Docker)
 @app.route('/health')
 def health_check():
@@ -476,19 +593,70 @@ def get_current_user_id():
     """Get current user ID from either JWT token or session."""
     try:
         # Try JWT first
-        return ObjectId(get_jwt_identity())
+        jwt_identity = get_jwt_identity()
+        if jwt_identity:
+            return ObjectId(jwt_identity)
     except:
-        # Fall back to session
-        user_id = session.get('user_id')
-        if user_id:
-            return ObjectId(user_id)
-        raise Exception("No authenticated user found")
+        pass
+    
+    # Fall back to session
+    user_id = session.get('user_id')
+    if user_id:
+        return ObjectId(user_id)
+    
+    raise Exception("No authenticated user found")
 
 # Main routes - Dashboard and Landing
 @app.route('/')
 def index():
     """Main dashboard page with client-side authentication."""
     return render_template('index_with_auth.html')
+
+@app.route('/campaigns')
+@auth_manager.require_auth
+def campaigns_page():
+    """Campaign management page."""
+    try:
+        current_user_id = get_current_user_id()
+        current_user = db_manager.get_user_by_id(current_user_id)
+        return render_template('campaigns.html', current_user=current_user)
+    except Exception as e:
+        app.logger.error(f"Error loading campaigns page: {e}")
+        return redirect(url_for('login_page'))
+
+@app.route('/login')
+def login_page():
+    """Login page."""
+    return render_template('login.html')
+
+@app.route('/admin')
+@auth_manager.require_auth
+def admin_page():
+    """Admin panel page."""
+    try:
+        current_user_id = get_current_user_id()
+        current_user = db_manager.get_user_by_id(current_user_id)
+        
+        # Check if user is admin
+        if not current_user or current_user.role != 'admin':
+            return redirect(url_for('index'))
+        
+        return render_template('admin.html', current_user=current_user)
+    except Exception as e:
+        app.logger.error(f"Error loading admin page: {e}")
+        return redirect(url_for('login_page'))
+
+@app.route('/create-character')
+@auth_manager.require_auth
+def create_character_start():
+    """Character creation page."""
+    try:
+        current_user_id = get_current_user_id()
+        current_user = db_manager.get_user_by_id(current_user_id)
+        return render_template('create_character_wizard.html', current_user=current_user)
+    except Exception as e:
+        app.logger.error(f"Error loading character creation page: {e}")
+        return redirect(url_for('login_page'))
 
 if __name__ == '__main__':
     # Create character data directory if it doesn't exist
