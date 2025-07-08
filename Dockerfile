@@ -20,11 +20,15 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy application source
 COPY src/ ./src/
 COPY web/ ./web/
-COPY wsgi.py .
+COPY swrpg_extracted_data/ ./swrpg_extracted_data/
 COPY startup_production.py .
 
-# Create necessary directories
-RUN mkdir -p /app/logs
+# Copy encryption key if it exists (for security module)
+COPY .encryption_key ./.encryption_key
+
+# Create necessary directories with proper permissions
+RUN mkdir -p /app/logs /app/data \
+    && chmod 755 /app/logs /app/data
 
 # Set environment variables for production
 ENV PYTHONPATH=/app/src

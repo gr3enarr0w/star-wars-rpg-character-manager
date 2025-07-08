@@ -18,12 +18,31 @@ class DataEncryption:
     
     def _get_or_create_master_key(self) -> bytes:
         """Get or create master encryption key using PBKDF2 with 256-bit key."""
-        # Check for existing key file
-        key_file = os.path.join(os.path.dirname(__file__), '../../.encryption_key')
+        # Check for existing key file - try data directory first (for containers), then fallback to original location
+        data_key_file = os.path.join(os.path.dirname(__file__), '../../data/.encryption_key')
+        original_key_file = os.path.join(os.path.dirname(__file__), '../../.encryption_key')
         
+        # Use data directory if it exists (container environment)
+        if os.path.exists(os.path.dirname(data_key_file)):
+            key_file = data_key_file
+        else:
+            key_file = original_key_file
+        
+        # Check if key exists in preferred location
         if os.path.exists(key_file):
             with open(key_file, 'rb') as f:
                 return f.read()
+        
+        # If using data directory but key exists in original location, migrate it
+        if key_file == data_key_file and os.path.exists(original_key_file):
+            with open(original_key_file, 'rb') as f:
+                key_data = f.read()
+            # Copy to new location
+            os.makedirs(os.path.dirname(key_file), exist_ok=True)
+            with open(key_file, 'wb') as f:
+                f.write(key_data)
+            os.chmod(key_file, 0o600)
+            return key_data
         
         # Generate new key using environment variable as password + salt
         password = os.getenv('ENCRYPTION_PASSWORD', 'default-key-change-in-production').encode()
