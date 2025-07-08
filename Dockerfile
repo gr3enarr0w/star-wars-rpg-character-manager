@@ -21,6 +21,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY src/ ./src/
 COPY web/ ./web/
 COPY swrpg_extracted_data/ ./swrpg_extracted_data/
+COPY wsgi.py .
 COPY startup_production.py .
 
 # Create encryption key at runtime if it doesn't exist
