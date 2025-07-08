@@ -22,7 +22,6 @@ COPY src/ ./src/
 COPY web/ ./web/
 COPY run_web.py .
 COPY startup.py .
-COPY create_admin_user.py .
 
 # Create necessary directories
 RUN mkdir -p /app/logs
