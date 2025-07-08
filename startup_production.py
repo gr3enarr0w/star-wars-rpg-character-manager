@@ -1,145 +1,201 @@
 #!/usr/bin/env python3
-"""Production startup script using Gunicorn for the Star Wars RPG Character Manager."""
+"""Production startup script that sets up admin user and starts with Gunicorn."""
 
 import os
 import sys
 import time
 import subprocess
+import secrets
+from datetime import datetime, timezone, timedelta
 
 # Add the src directory to the Python path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
 
-def wait_for_mongodb():
-    """Wait for MongoDB with exponential backoff."""
-    max_retries = 10
-    base_delay = 0.5
-    max_delay = 30
+def ensure_encryption_key():
+    """Ensure encryption key exists for security module."""
+    encryption_key_path = '.encryption_key'
     
-    for attempt in range(max_retries):
+    if not os.path.exists(encryption_key_path):
+        print("🔐 Generating encryption key...")
+        # Generate a 32-byte (256-bit) encryption key
+        encryption_key = secrets.token_urlsafe(32)
+        
+        # Write key to file with secure permissions
+        with open(encryption_key_path, 'w') as f:
+            f.write(encryption_key)
+        
+        # Set secure permissions (owner read/write only)
+        os.chmod(encryption_key_path, 0o600)
+        print(f"✅ Encryption key generated and saved to {encryption_key_path}")
+    else:
+        print(f"✅ Encryption key already exists at {encryption_key_path}")
+    
+    return True
+
+def wait_for_mongodb():
+    """Wait for MongoDB to be ready."""
+    # Show MongoDB configuration for debugging
+    mongodb_uri = os.getenv('MONGO_URI', os.getenv('MONGODB_URI', 'mongodb://localhost:27017/'))
+    db_name = os.getenv('MONGODB_DB', 'swrpg_manager')
+    print(f"🔍 MongoDB URI: {mongodb_uri}")
+    print(f"🔍 Database: {db_name}")
+    
+    max_retries = 30
+    retry_count = 0
+    
+    while retry_count < max_retries:
         try:
             from swrpg_character_manager.database import db_manager
             db_manager.connect()
             print("✅ MongoDB is ready")
             return True
         except Exception as e:
-            if attempt == max_retries - 1:
-                print(f"❌ MongoDB connection timeout after {max_retries} attempts")
-                print(f"   Last error: {e}")
-                break
-            
-            # Exponential backoff with jitter
-            delay = min(base_delay * (2 ** attempt), max_delay)
-            print(f"⏳ Waiting for MongoDB... (attempt {attempt + 1}/{max_retries}, retry in {delay:.1f}s)")
-            time.sleep(delay)
+            retry_count += 1
+            print(f"⏳ Waiting for MongoDB... (attempt {retry_count}/{max_retries})")
+            print(f"   Error: {str(e)}")
+            time.sleep(2)
     
+    print("❌ MongoDB connection timeout")
     return False
 
 def ensure_admin_user():
-    """Ensure the admin user exists using shared admin setup module."""
+    """Ensure the admin user exists."""
     try:
-        from swrpg_character_manager.admin_setup import setup_admin_environment
-        setup_admin_environment()
+        from swrpg_character_manager.database import db_manager, User, InviteCode
+        from swrpg_character_manager.auth import auth_manager
+        
+        # Admin user details
+        admin_email = os.getenv("ADMIN_EMAIL", "admin@example.com")
+        admin_password = os.getenv("ADMIN_PASSWORD", "changeme")
+        
+        print(f"🔍 Checking for admin user: {admin_email}")
+        
+        # Check if admin already exists
+        existing_admin = db_manager.get_user_by_email(admin_email)
+        if existing_admin:
+            print(f"✅ Admin user {admin_email} already exists")
+            # Always update password to ensure it's current
+            updates = {"password_hash": auth_manager.hash_password(admin_password)}
+            db_manager.update_user(existing_admin._id, updates)
+            print(f"🔄 Updated admin password")
+        else:
+            # Create new admin user
+            admin = User(
+                email=admin_email,
+                username=admin_email.split('@')[0] + "_admin",
+                password_hash=auth_manager.hash_password(admin_password),
+                role="admin",
+                created_at=datetime.now(timezone.utc),
+                is_active=True
+            )
+            
+            admin_id = db_manager.create_user(admin)
+            print(f"✅ Created admin user: {admin_email}")
+            print(f"   Username: {admin.username}")
+            print(f"   User ID: {admin_id}")
+        
+        # Ensure invite codes exist
+        admin = db_manager.get_user_by_email(admin_email)
+        
+        invite_codes = [
+            {"code": "PLAYER-2025-SWRPG", "role": "player"},
+            {"code": "GM-2025-SWRPG", "role": "gamemaster"},
+            {"code": "ADMIN-2025-SWRPG", "role": "admin"}
+        ]
+        
+        for invite_data in invite_codes:
+            if not db_manager.get_invite_code(invite_data["code"]):
+                invite = InviteCode(
+                    code=invite_data["code"],
+                    created_by=admin._id,
+                    role=invite_data["role"],
+                    expires_at=datetime.now(timezone.utc) + timedelta(days=365),
+                    is_used=False
+                )
+                db_manager.create_invite_code(invite)
+                print(f"✅ Created invite code: {invite_data['code']}")
+        
+        print(f"🎉 Admin setup complete!")
+        print(f"🔑 Admin Login: {admin_email}")
+        
         return True
         
     except Exception as e:
         print(f"❌ Admin setup failed: {e}")
+        import traceback
+        traceback.print_exc()
         return False
 
-def start_production_server():
-    """Start the production web application using Gunicorn."""
-    print("🚀 STARTUP_PRODUCTION.PY - Starting Star Wars RPG Character Manager (Production Mode)")
-    print("🔧 DEBUG: This message confirms startup_production.py is being executed")
+def start_gunicorn():
+    """Start the application with Gunicorn."""
+    print("🚀 Starting Star Wars RPG Character Manager with Gunicorn...")
     
-    # Get configuration from environment
-    port = os.getenv('PORT', '8000')
-    host = os.getenv('HOST', '0.0.0.0')
-    workers = int(os.getenv('GUNICORN_WORKERS', '2'))
+    # Gunicorn configuration
+    workers = int(os.getenv("GUNICORN_WORKERS", "4"))
+    port = int(os.getenv("PORT", "8000"))
+    bind_address = f"0.0.0.0:{port}"
     
-    bind_address = f"{host}:{port}"
-    
-    # Set up paths for proper imports  
-    app_dir = os.path.dirname(__file__)
-    web_dir = os.path.join(app_dir, 'web')
-    src_dir = os.path.join(app_dir, 'src')
-    
-    # Ensure PYTHONPATH includes both src and web directories
-    python_path = os.environ.get('PYTHONPATH', '')
-    if src_dir not in python_path:
-        python_path = f"{src_dir}:{python_path}" if python_path else src_dir
-    if web_dir not in python_path:
-        python_path = f"{web_dir}:{python_path}"
-    os.environ['PYTHONPATH'] = python_path
-    
-    # Change to web directory for wsgi.py
+    # Change to web directory for template/static file access
+    web_dir = os.path.join(os.path.dirname(__file__), 'web')
     os.chdir(web_dir)
+    print(f"📂 Changed working directory to: {web_dir}")
     
-    print(f"📊 Configuration:")
-    print(f"   Bind: {bind_address}")
-    print(f"   Workers: {workers}")
-    print(f"   Working Directory: {web_dir}")
-    print(f"   PYTHONPATH: {python_path}")
-    
-    # Build Gunicorn command
+    # Gunicorn command
     cmd = [
         "gunicorn",
         "--bind", bind_address,
         "--workers", str(workers),
         "--worker-class", "sync",
-        "--timeout", "120",
-        "--keep-alive", "2",
+        "--worker-connections", "1000",
         "--max-requests", "1000",
         "--max-requests-jitter", "100",
-        "--preload",
+        "--timeout", "120",
+        "--keep-alive", "2",
         "--access-logfile", "-",
         "--error-logfile", "-",
         "--log-level", "info",
-        "--pythonpath", python_path,
-        "wsgi:application"
+        "--pythonpath", "/app/src",
+        "app_with_auth:app"
     ]
     
-    print(f"🔧 Gunicorn command: {' '.join(cmd)}")
+    print(f"🌐 Starting Gunicorn on {bind_address} with {workers} workers")
+    print(f"📝 Command: {' '.join(cmd)}")
     
     try:
-        # Start Gunicorn process
         subprocess.run(cmd, check=True)
     except subprocess.CalledProcessError as e:
         print(f"❌ Gunicorn failed to start: {e}")
-        return False
+        sys.exit(1)
     except KeyboardInterrupt:
-        print("🛑 Received shutdown signal")
-        return True
-    except Exception as e:
-        print(f"❌ Unexpected error: {e}")
-        return False
-    
-    return True
+        print("🛑 Shutting down...")
+        sys.exit(0)
 
 def main():
-    """Main production startup sequence."""
+    """Main startup sequence."""
     print("🌟 Star Wars RPG Character Manager - Production Startup")
     print("=" * 60)
     
-    # Step 1: Wait for MongoDB
+    # Step 1: Ensure encryption key exists
+    if not ensure_encryption_key():
+        print("❌ Encryption key setup failed")
+        sys.exit(1)
+    
+    # Step 2: Wait for MongoDB
     if not wait_for_mongodb():
         print("❌ Cannot start without MongoDB")
         sys.exit(1)
     
-    # Step 2: Ensure admin user exists
+    # Step 3: Ensure admin user exists
     if not ensure_admin_user():
         print("❌ Admin setup failed")
         sys.exit(1)
     
-    # Step 3: Start production server
-    print("\n🚀 Starting production web server...")
-    port = os.getenv('PORT', '8000')
-    print(f"   Access at: http://localhost:{port}")
-    admin_email = os.getenv("ADMIN_EMAIL", "admin@example.com")
-    print(f"   Admin login: {admin_email}")
+    # Step 4: Start Gunicorn
+    print("\n🚀 Starting production server...")
+    print("   Access at: http://localhost:8000")
     print("=" * 60)
     
-    success = start_production_server()
-    if not success:
-        sys.exit(1)
+    start_gunicorn()
 
 if __name__ == "__main__":
     main()
