@@ -6,6 +6,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 This is a Python application called "star-wars-rpg-character-manager" for dynamic character leveling in Star Wars RPG systems (Edge of the Empire, Age of Rebellion, Force and Destiny). The project provides both a modern web interface (similar to D&D Beyond/Demiplane) and a CLI interface for character management. Built with Flask backend and vanilla JavaScript frontend.
 
+**Docker Image**: `ghcr.io/gr3enarr0w/star-wars-rpg-character-manager:latest`
+
 ## SWRPG Content Reference
 
 **IMPORTANT**: For all Star Wars RPG game mechanics, rules, species data, careers, talents, equipment, and other content verification, refer to the extracted SWRPG reference materials located in:
