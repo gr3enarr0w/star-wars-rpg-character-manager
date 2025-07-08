@@ -13,20 +13,36 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
 
 def ensure_encryption_key():
     """Ensure encryption key exists for security module."""
-    encryption_key_path = '.encryption_key'
+    # Use /app/data directory which has proper permissions
+    encryption_key_path = '/app/data/.encryption_key'
     
     if not os.path.exists(encryption_key_path):
         print("🔐 Generating encryption key...")
-        # Generate a 32-byte (256-bit) encryption key
-        encryption_key = secrets.token_urlsafe(32)
-        
-        # Write key to file with secure permissions
-        with open(encryption_key_path, 'w') as f:
-            f.write(encryption_key)
-        
-        # Set secure permissions (owner read/write only)
-        os.chmod(encryption_key_path, 0o600)
-        print(f"✅ Encryption key generated and saved to {encryption_key_path}")
+        try:
+            # Generate a 32-byte (256-bit) encryption key
+            encryption_key = secrets.token_urlsafe(32)
+            
+            # Write key to file with secure permissions
+            with open(encryption_key_path, 'w') as f:
+                f.write(encryption_key)
+            
+            # Set secure permissions (owner read/write only)
+            os.chmod(encryption_key_path, 0o600)
+            print(f"✅ Encryption key generated and saved to {encryption_key_path}")
+        except (PermissionError, OSError) as e:
+            print(f"⚠️  Cannot write encryption key file: {e}")
+            print("🔐 Using environment-based encryption key instead")
+            
+            # Fall back to environment variable
+            env_key = os.getenv('ENCRYPTION_KEY')
+            if not env_key:
+                # Generate key and set as environment variable for this process
+                env_key = secrets.token_urlsafe(32)
+                os.environ['ENCRYPTION_KEY'] = env_key
+                print("✅ Generated encryption key as environment variable")
+            else:
+                print("✅ Using existing ENCRYPTION_KEY environment variable")
+            return True
     else:
         print(f"✅ Encryption key already exists at {encryption_key_path}")
     
@@ -191,7 +207,7 @@ def main():
         sys.exit(1)
     
     # Step 4: Start Gunicorn
-    print("\n🚀 Starting production server...")
+    print("\\n🚀 Starting production server...")
     print("   Access at: http://localhost:8000")
     print("=" * 60)
     
