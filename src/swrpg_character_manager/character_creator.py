@@ -157,8 +157,37 @@ class CharacterCreator:
         
         return careers
     
-    def _initialize_species(self) -> Dict[str, Dict]:
-        """Initialize species data with characteristic modifiers."""
+    def _load_extracted_species_data(self) -> Dict[str, Dict]:
+        """Load species data from extracted SWRPG PDF data, with core species fallback."""
+        # Start with comprehensive hardcoded species for production deployment
+        core_species = self._get_comprehensive_species_data()
+        
+        # Try to load extracted data if available (for development environments)
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        project_root = os.path.dirname(os.path.dirname(current_dir))
+        species_file = os.path.join(project_root, 'swrpg_extracted_data', 'json', 'comprehensive_species_data_v2.json')
+        
+        try:
+            with open(species_file, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+            
+            extracted_species = data.get('species', {})
+            
+            if extracted_species:
+                # Merge extracted species with core species (extracted takes precedence)
+                combined_species = {**core_species, **extracted_species}
+                print(f"✅ Loaded {len(extracted_species)} species from extracted sourcebooks + {len(core_species)} built-in species")
+                return combined_species
+            else:
+                # Use comprehensive built-in species
+                return core_species
+                
+        except (FileNotFoundError, json.JSONDecodeError, Exception):
+            # Silently fall back to comprehensive built-in species for production
+            return core_species
+    
+    def _get_comprehensive_species_data(self) -> Dict[str, Dict]:
+        """Get comprehensive built-in species data for production deployment."""
         return {
             # Core Species from Edge of the Empire
             "Human": {
@@ -167,7 +196,8 @@ class CharacterCreator:
                 "wound_threshold": 10,
                 "strain_threshold": 10,
                 "starting_xp": 110,
-                "special_abilities": ["Extra skill rank in two different skills"]
+                "special_abilities": ["Extra skill rank in two different skills"],
+                "source": "Core - Edge of the Empire"
             },
             "Twi'lek": {
                 "characteristics": {"brawn": 1, "agility": 2, "intellect": 2, 
@@ -175,7 +205,8 @@ class CharacterCreator:
                 "wound_threshold": 10,
                 "strain_threshold": 11,
                 "starting_xp": 100,
-                "special_abilities": ["Remove one setback die from charm and deception checks"]
+                "special_abilities": ["Remove one setback die from charm and deception checks"],
+                "source": "Core - Edge of the Empire"
             },
             "Rodian": {
                 "characteristics": {"brawn": 2, "agility": 3, "intellect": 2, 
@@ -184,7 +215,8 @@ class CharacterCreator:
                 "strain_threshold": 10,
                 "starting_xp": 100,
                 "special_abilities": ["Remove one setback die from perception checks", 
-                                    "Expert tracker"]
+                                    "Expert tracker"],
+                "source": "Core - Edge of the Empire"
             },
             "Wookiee": {
                 "characteristics": {"brawn": 3, "agility": 2, "intellect": 2, 
@@ -192,7 +224,8 @@ class CharacterCreator:
                 "wound_threshold": 14,
                 "strain_threshold": 8,
                 "starting_xp": 90,
-                "special_abilities": ["Rage ability", "Natural claws (Brawl +1 damage)"]
+                "special_abilities": ["Rage ability", "Natural claws (Brawl +1 damage)"],
+                "source": "Core - Edge of the Empire"
             },
             "Bothan": {
                 "characteristics": {"brawn": 1, "agility": 2, "intellect": 2, 
@@ -200,7 +233,8 @@ class CharacterCreator:
                 "wound_threshold": 10,
                 "strain_threshold": 11,
                 "starting_xp": 100,
-                "special_abilities": ["Conviction: Once per session, may perform a maneuver"]
+                "special_abilities": ["Conviction: Once per session, may perform a maneuver"],
+                "source": "Age of Rebellion"
             },
             
             # Additional Core Species
@@ -210,7 +244,8 @@ class CharacterCreator:
                 "wound_threshold": 9,
                 "strain_threshold": 12,
                 "starting_xp": 100,
-                "special_abilities": ["Intuitive Navigation", "Remove one setback from Astrogation checks"]
+                "special_abilities": ["Intuitive Navigation", "Remove one setback from Astrogation checks"],
+                "source": "Edge of the Empire"
             },
             "Gand": {
                 "characteristics": {"brawn": 2, "agility": 2, "intellect": 2, 
@@ -218,7 +253,8 @@ class CharacterCreator:
                 "wound_threshold": 11,
                 "strain_threshold": 10,
                 "starting_xp": 100,
-                "special_abilities": ["Ammonia breathers", "Natural mystics"]
+                "special_abilities": ["Ammonia breathers", "Natural mystics"],
+                "source": "Edge of the Empire"
             },
             "Trandoshan": {
                 "characteristics": {"brawn": 3, "agility": 1, "intellect": 2, 
@@ -226,7 +262,8 @@ class CharacterCreator:
                 "wound_threshold": 12,
                 "strain_threshold": 9,
                 "starting_xp": 90,
-                "special_abilities": ["Claws", "Regeneration"]
+                "special_abilities": ["Claws", "Regeneration"],
+                "source": "Edge of the Empire"
             },
             
             # Force and Destiny Species
@@ -236,7 +273,8 @@ class CharacterCreator:
                 "wound_threshold": 9,
                 "strain_threshold": 12,
                 "starting_xp": 90,
-                "special_abilities": ["Binary processor", "Enhanced perception"]
+                "special_abilities": ["Binary processor", "Enhanced perception"],
+                "source": "Force and Destiny"
             },
             "Kel Dor": {
                 "characteristics": {"brawn": 1, "agility": 2, "intellect": 2, 
@@ -244,7 +282,8 @@ class CharacterCreator:
                 "wound_threshold": 10,
                 "strain_threshold": 11,
                 "starting_xp": 100,
-                "special_abilities": ["Atmospheric requirement", "Dark vision"]
+                "special_abilities": ["Atmospheric requirement", "Dark vision"],
+                "source": "Force and Destiny"
             },
             "Nautolan": {
                 "characteristics": {"brawn": 2, "agility": 2, "intellect": 2, 
@@ -252,15 +291,8 @@ class CharacterCreator:
                 "wound_threshold": 11,
                 "strain_threshold": 10,
                 "starting_xp": 100,
-                "special_abilities": ["Amphibious", "Pheromone detection"]
-            },
-            "Neimoidian": {
-                "characteristics": {"brawn": 1, "agility": 2, "intellect": 3, 
-                                 "cunning": 3, "willpower": 1, "presence": 2},
-                "wound_threshold": 9,
-                "strain_threshold": 11,
-                "starting_xp": 100,
-                "special_abilities": ["One rank in Negotiation", "One rank in Knowledge (Core Worlds)", "Coward: Add setback to fear checks"]
+                "special_abilities": ["Amphibious", "Pheromone detection"],
+                "source": "Force and Destiny"
             },
             "Zabrak": {
                 "characteristics": {"brawn": 2, "agility": 2, "intellect": 2, 
@@ -268,7 +300,8 @@ class CharacterCreator:
                 "wound_threshold": 10,
                 "strain_threshold": 11,
                 "starting_xp": 100,
-                "special_abilities": ["Fearsome countenance", "Mental fortitude"]
+                "special_abilities": ["Fearsome countenance", "Mental fortitude"],
+                "source": "Force and Destiny"
             },
             
             # Age of Rebellion Species
@@ -278,7 +311,8 @@ class CharacterCreator:
                 "wound_threshold": 10,
                 "strain_threshold": 11,
                 "starting_xp": 100,
-                "special_abilities": ["Amphibious", "Expert starship designers"]
+                "special_abilities": ["Amphibious", "Expert starship designers"],
+                "source": "Age of Rebellion"
             },
             "Sullustan": {
                 "characteristics": {"brawn": 1, "agility": 3, "intellect": 2, 
@@ -286,7 +320,8 @@ class CharacterCreator:
                 "wound_threshold": 9,
                 "strain_threshold": 12,
                 "starting_xp": 100,
-                "special_abilities": ["Enhanced senses", "Natural pilots"]
+                "special_abilities": ["Enhanced senses", "Natural pilots"],
+                "source": "Age of Rebellion"
             },
             
             # Additional Popular Species
@@ -296,23 +331,8 @@ class CharacterCreator:
                 "wound_threshold": 10,
                 "strain_threshold": 11,
                 "starting_xp": 100,
-                "special_abilities": ["Infrared vision", "Tactical brilliance"]
-            },
-            "Corellian Human": {
-                "characteristics": {"brawn": 2, "agility": 2, "intellect": 2, 
-                                 "cunning": 2, "willpower": 2, "presence": 2},
-                "wound_threshold": 10,
-                "strain_threshold": 10,
-                "starting_xp": 110,
-                "special_abilities": ["Pilot heritage", "Corellian spirit"]
-            },
-            "Mandalorian Human": {
-                "characteristics": {"brawn": 2, "agility": 2, "intellect": 2, 
-                                 "cunning": 2, "willpower": 3, "presence": 1},
-                "wound_threshold": 11,
-                "strain_threshold": 10,
-                "starting_xp": 100,
-                "special_abilities": ["Warrior culture", "Mandalorian iron will"]
+                "special_abilities": ["Infrared vision", "Tactical brilliance"],
+                "source": "Unknown Regions"
             },
             "Jawa": {
                 "characteristics": {"brawn": 1, "agility": 2, "intellect": 3, 
@@ -320,15 +340,8 @@ class CharacterCreator:
                 "wound_threshold": 8,
                 "strain_threshold": 11,
                 "starting_xp": 90,
-                "special_abilities": ["Technical aptitude", "Scavenger"]
-            },
-            "Ewok": {
-                "characteristics": {"brawn": 1, "agility": 3, "intellect": 2, 
-                                 "cunning": 2, "willpower": 3, "presence": 1},
-                "wound_threshold": 8,
-                "strain_threshold": 12,
-                "starting_xp": 90,
-                "special_abilities": ["Primitive", "Forest dweller"]
+                "special_abilities": ["Technical aptitude", "Scavenger"],
+                "source": "Lords of Nal Hutta"
             },
             "Devaronian": {
                 "characteristics": {"brawn": 2, "agility": 2, "intellect": 2, 
@@ -336,7 +349,8 @@ class CharacterCreator:
                 "wound_threshold": 10,
                 "strain_threshold": 10,
                 "starting_xp": 100,
-                "special_abilities": ["Natural mystics", "Wanderlust"]
+                "special_abilities": ["Natural mystics", "Wanderlust"],
+                "source": "Lords of Nal Hutta"
             },
             
             # Era of the Republic Species
@@ -346,7 +360,8 @@ class CharacterCreator:
                 "wound_threshold": 11,
                 "strain_threshold": 11,
                 "starting_xp": 100,
-                "special_abilities": ["One rank in Knowledge (Warfare)", "One rank in Resilience", "Kamino Training: One rank in Physical Training talent"]
+                "special_abilities": ["One rank in Knowledge (Warfare)", "One rank in Resilience", "Kamino Training"],
+                "source": "Clone Wars Era"
             },
             "Dathomirian": {
                 "characteristics": {"brawn": 3, "agility": 2, "intellect": 2, 
@@ -354,33 +369,17 @@ class CharacterCreator:
                 "wound_threshold": 10,
                 "strain_threshold": 11,
                 "starting_xp": 100,
-                "special_abilities": ["One rank in Coordination", "One rank in Survival", "Nightsister Magic"]
+                "special_abilities": ["One rank in Coordination", "One rank in Survival", "Nightsister Magic"],
+                "source": "Clone Wars Era"
             },
-            "Harch": {
-                "characteristics": {"brawn": 2, "agility": 3, "intellect": 2, 
-                                 "cunning": 2, "willpower": 1, "presence": 2},
-                "wound_threshold": 10,
-                "strain_threshold": 10,
-                "starting_xp": 100,
-                "special_abilities": ["Multiple arms", "Natural climbers", "Web spinners"]
-            },
-            "Karkarodon": {
-                "characteristics": {"brawn": 3, "agility": 2, "intellect": 2, 
-                                 "cunning": 2, "willpower": 2, "presence": 1},
-                "wound_threshold": 12,
-                "strain_threshold": 10,
-                "starting_xp": 90,
-                "special_abilities": ["One rank in Athletics", "Amphibious", "Jaws: +1 damage, Critical 3"]
-            },
-            
-            # Additional Popular Species
             "Togruta": {
                 "characteristics": {"brawn": 2, "agility": 2, "intellect": 2, 
                                  "cunning": 2, "willpower": 3, "presence": 1},
                 "wound_threshold": 10,
                 "strain_threshold": 11,
                 "starting_xp": 100,
-                "special_abilities": ["Pack hunters", "Echolocation", "Natural mystics"]
+                "special_abilities": ["Pack hunters", "Echolocation", "Natural mystics"],
+                "source": "Force and Destiny"
             },
             "Weequay": {
                 "characteristics": {"brawn": 3, "agility": 1, "intellect": 2, 
@@ -388,7 +387,8 @@ class CharacterCreator:
                 "wound_threshold": 12,
                 "strain_threshold": 9,
                 "starting_xp": 90,
-                "special_abilities": ["Desert dwellers", "Pheromone communication", "Tough hide"]
+                "special_abilities": ["Desert dwellers", "Pheromone communication", "Tough hide"],
+                "source": "Lords of Nal Hutta"
             },
             "Quarren": {
                 "characteristics": {"brawn": 2, "agility": 2, "intellect": 3, 
@@ -396,7 +396,8 @@ class CharacterCreator:
                 "wound_threshold": 10,
                 "strain_threshold": 10,
                 "starting_xp": 100,
-                "special_abilities": ["Amphibious", "Ink cloud", "Tentacle dexterity"]
+                "special_abilities": ["Amphibious", "Ink cloud", "Tentacle dexterity"],
+                "source": "Age of Rebellion"
             },
             "Ithorian": {
                 "characteristics": {"brawn": 2, "agility": 1, "intellect": 2, 
@@ -404,17 +405,19 @@ class CharacterCreator:
                 "wound_threshold": 11,
                 "strain_threshold": 11,
                 "starting_xp": 100,
-                "special_abilities": ["Nature bond", "Sonic bellow", "Peaceful nature"]
+                "special_abilities": ["Nature bond", "Sonic bellow", "Peaceful nature"],
+                "source": "Lords of Nal Hutta"
             },
             
-            # Additional Species from Complete Species List
+            # Additional Species from Sourcebooks
             "Aqualish": {
                 "characteristics": {"brawn": 3, "agility": 2, "intellect": 2, 
                                  "cunning": 1, "willpower": 2, "presence": 2},
                 "wound_threshold": 11,
                 "strain_threshold": 8,
                 "starting_xp": 90,
-                "special_abilities": ["One rank in Brawl", "Amphibious: Can breathe underwater", "Sub-species options available"]
+                "special_abilities": ["One rank in Brawl", "Amphibious: Can breathe underwater"],
+                "source": "Lords of Nal Hutta"
             },
             "Arcona": {
                 "characteristics": {"brawn": 2, "agility": 2, "intellect": 2, 
@@ -422,15 +425,8 @@ class CharacterCreator:
                 "wound_threshold": 10,
                 "strain_threshold": 10,
                 "starting_xp": 100,
-                "special_abilities": ["One rank in Vigilance", "Desert adaptation", "Mood readers: Boost to Charm/Negotiation"]
-            },
-            "Chevin": {
-                "characteristics": {"brawn": 3, "agility": 1, "intellect": 2, 
-                                 "cunning": 2, "willpower": 3, "presence": 1},
-                "wound_threshold": 11,
-                "strain_threshold": 11,
-                "starting_xp": 80,
-                "special_abilities": ["One rank in Negotiation", "Advanced olfaction", "Thick hide: One rank in Durable"]
+                "special_abilities": ["One rank in Vigilance", "Desert adaptation", "Mood readers"],
+                "source": "Lords of Nal Hutta"
             },
             "Falleen": {
                 "characteristics": {"brawn": 2, "agility": 1, "intellect": 2, 
@@ -438,15 +434,8 @@ class CharacterCreator:
                 "wound_threshold": 10,
                 "strain_threshold": 12,
                 "starting_xp": 90,
-                "special_abilities": ["One rank in Charm", "Beguiling Pheromones: Upgrade social checks"]
-            },
-            "Gotal": {
-                "characteristics": {"brawn": 2, "agility": 2, "intellect": 2, 
-                                 "cunning": 2, "willpower": 3, "presence": 1},
-                "wound_threshold": 9,
-                "strain_threshold": 8,
-                "starting_xp": 100,
-                "special_abilities": ["One rank in Perception", "Energy Sensitivity: Sense emotions within short range"]
+                "special_abilities": ["One rank in Charm", "Beguiling Pheromones"],
+                "source": "Lords of Nal Hutta"
             },
             "Gran": {
                 "characteristics": {"brawn": 2, "agility": 1, "intellect": 2, 
@@ -454,80 +443,13 @@ class CharacterCreator:
                 "wound_threshold": 10,
                 "strain_threshold": 9,
                 "starting_xp": 100,
-                "special_abilities": ["One rank in Charm or Negotiation", "Enhanced Vision: Remove setback from ranged/perception"]
-            },
-            "Klatooinian": {
-                "characteristics": {"brawn": 2, "agility": 2, "intellect": 2, 
-                                 "cunning": 1, "willpower": 3, "presence": 2},
-                "wound_threshold": 10,
-                "strain_threshold": 10,
-                "starting_xp": 100,
-                "special_abilities": ["One rank in Brawl, Ranged (Heavy), or Ranged (Light)", "One additional non-career skill rank"]
-            },
-            "Muun": {
-                "characteristics": {"brawn": 1, "agility": 2, "intellect": 3, 
-                                 "cunning": 3, "willpower": 1, "presence": 2},
-                "wound_threshold": 9,
-                "strain_threshold": 9,
-                "starting_xp": 90,
-                "special_abilities": ["One rank in Knowledge (Education) and Knowledge (Core Worlds)", "Deep Pockets: +1,000 credits"]
-            },
-            "Sathari": {
-                "characteristics": {"brawn": 1, "agility": 3, "intellect": 2, 
-                                 "cunning": 2, "willpower": 2, "presence": 2},
-                "wound_threshold": 8,
-                "strain_threshold": 10,
-                "starting_xp": 100,
-                "special_abilities": ["One rank in Coordination", "Glider: Safe falling and gap crossing"]
-            },
-            "Toydarian": {
-                "characteristics": {"brawn": 1, "agility": 3, "intellect": 2, 
-                                 "cunning": 2, "willpower": 2, "presence": 2},
-                "wound_threshold": 9,
-                "strain_threshold": 12,
-                "starting_xp": 90,
-                "special_abilities": ["Silhouette 0: Smaller than average", "Hoverer: Wings allow hovering movement"]
+                "special_abilities": ["One rank in Charm or Negotiation", "Enhanced Vision"],
+                "source": "Lords of Nal Hutta"
             }
         }
     
-    def _load_extracted_species_data(self) -> Dict[str, Dict]:
-        """Load species data from extracted SWRPG PDF data, with core species fallback."""
-        # Start with core hardcoded species for compatibility
-        core_species = self._get_core_species_data()
-        
-        # Get the path to the comprehensive species data
-        current_dir = os.path.dirname(os.path.abspath(__file__))
-        project_root = os.path.dirname(os.path.dirname(current_dir))
-        species_file = os.path.join(project_root, 'swrpg_extracted_data', 'json', 'comprehensive_species_data_v2.json')
-        
-        try:
-            with open(species_file, 'r', encoding='utf-8') as f:
-                data = json.load(f)
-            
-            # Extract species data from the JSON
-            extracted_species = data.get('species', {})
-            
-            if extracted_species:
-                # Merge extracted species with core species (extracted takes precedence)
-                combined_species = {**core_species, **extracted_species}
-                print(f"✅ Loaded {len(extracted_species)} species from comprehensive SWRPG sourcebooks + {len(core_species)} core species")
-                return combined_species
-            else:
-                print("⚠️ No species found in extracted data, using core species only")
-                return core_species
-                
-        except FileNotFoundError:
-            print("⚠️ Extracted species data file not found, using core species only")
-            return core_species
-        except json.JSONDecodeError:
-            print("⚠️ Error parsing extracted species data, using core species only")
-            return core_species
-        except Exception as e:
-            print(f"⚠️ Unexpected error loading extracted species data: {e}, using core species only")
-            return core_species
-    
     def _get_core_species_data(self) -> Dict[str, Dict]:
-        """Get essential core species data for compatibility."""
+        """Get minimal core species data for compatibility."""
         return {
             "Human": {
                 "characteristics": {"brawn": 2, "agility": 2, "intellect": 2, 
