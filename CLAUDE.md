@@ -8,7 +8,8 @@ This is a Python application called "star-wars-rpg-character-manager" for dynami
 
 **Docker Image**: `ghcr.io/gr3enarr0w/python-course-app:latest`
 
-**Note**: The repository name is `python-course-app` but this contains the Star Wars RPG Character Manager application.
+**IMPORTANT**: Always use `ghcr.io/gr3enarr0w/python-course-app:latest` for deployments. 
+Do NOT use `ghcr.io/gr3enarr0w/star-wars-rpg-character-manager:latest` - this is an old/incorrect image.
 
 ## SWRPG Content Reference
 
