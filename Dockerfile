@@ -20,9 +20,11 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy application source
 COPY src/ ./src/
 COPY web/ ./web/
-COPY swrpg_extracted_data/ ./swrpg_extracted_data/
 COPY wsgi.py .
 COPY startup_production.py .
+
+# Create swrpg_extracted_data directory (fallback if not in git)
+RUN mkdir -p /app/swrpg_extracted_data/json
 
 # Create encryption key at runtime if it doesn't exist
 # (Security keys should not be committed to git)
