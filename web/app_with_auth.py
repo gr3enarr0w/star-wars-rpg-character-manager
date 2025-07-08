@@ -2234,6 +2234,51 @@ def main_dashboard():
     """Legacy main dashboard route - redirects to new dashboard."""
     return redirect(url_for('index'))
 
+@app.route('/api/game-data', methods=['GET'])
+@auth_manager.require_auth 
+def get_game_data():
+    """Get game data for character creation wizard."""
+    try:
+        from swrpg_character_manager.character_creator import CharacterCreator
+        creator = CharacterCreator()
+        
+        # Get available species and careers
+        species = creator.get_available_species()
+        careers = creator.get_available_careers()
+        
+        # Get species details for each species - convert to array for frontend
+        species_list = []
+        for species_name in species:
+            species_info = creator.get_species_info(species_name)
+            if species_info:
+                species_data = species_info.copy()
+                species_data["name"] = species_name  # Ensure name is included
+                species_list.append(species_data)
+        
+        # Get career details for each career - convert to array for frontend
+        career_list = []
+        for career_name in careers:
+            career_info = creator.get_career_info(career_name)
+            if career_info:
+                career_data = {
+                    "name": career_info.name,
+                    "game_line": career_info.game_line.value,
+                    "career_skills": career_info.career_skills,
+                    "starting_wound_threshold": career_info.starting_wound_threshold,
+                    "starting_strain_threshold": career_info.starting_strain_threshold
+                }
+                career_list.append(career_data)
+        
+        return jsonify({
+            "species": species_list,
+            "careers": {"all": career_list},  # Keep careers.all structure for frontend compatibility
+            "game_lines": ["Edge of the Empire", "Age of Rebellion", "Force and Destiny"]
+        }), 200
+        
+    except Exception as e:
+        app.logger.error(f"Error getting game data: {e}")
+        return jsonify({"error": "Failed to load game data"}), 500
+
 if __name__ == '__main__':
     # Create character data directory if it doesn't exist
     os.makedirs('character_data', exist_ok=True)
