@@ -23,6 +23,7 @@ COPY src/ ./src/
 COPY web/ ./web/
 COPY run_web.py .
 COPY startup.py .
+COPY startup_production.py .
 COPY startup_ci.py .
 COPY tools/ ./tools/
 
@@ -51,4 +52,4 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
 
 # Use entrypoint script for proper permission handling
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
-CMD ["python", "startup.py"]
+CMD ["python", "startup_production.py"]

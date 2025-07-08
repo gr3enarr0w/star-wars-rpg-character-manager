@@ -491,9 +491,9 @@ class CharacterCreator:
         }
     
     def _load_extracted_species_data(self) -> Dict[str, Dict]:
-        """Load species data from extracted SWRPG PDF data, with core species fallback."""
-        # Start with core hardcoded species for compatibility
-        core_species = self._get_core_species_data()
+        """Load species data from extracted SWRPG PDF data, with comprehensive built-in species fallback."""
+        # Start with comprehensive built-in species for compatibility
+        builtin_species = self._initialize_species()
         
         # Get the path to the comprehensive species data
         current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -508,23 +508,23 @@ class CharacterCreator:
             extracted_species = data.get('species', {})
             
             if extracted_species:
-                # Merge extracted species with core species (extracted takes precedence)
-                combined_species = {**core_species, **extracted_species}
-                print(f"✅ Loaded {len(extracted_species)} species from comprehensive SWRPG sourcebooks + {len(core_species)} core species")
+                # Merge extracted species with built-in species (extracted takes precedence)
+                combined_species = {**builtin_species, **extracted_species}
+                # Silent success for production deployment
                 return combined_species
             else:
-                print("⚠️ No species found in extracted data, using core species only")
-                return core_species
+                # Silent fallback to comprehensive built-in species
+                return builtin_species
                 
         except FileNotFoundError:
-            print("⚠️ Extracted species data file not found, using core species only")
-            return core_species
+            # Silent fallback to comprehensive built-in species for production deployment
+            return builtin_species
         except json.JSONDecodeError:
-            print("⚠️ Error parsing extracted species data, using core species only")
-            return core_species
+            # Silent fallback to comprehensive built-in species
+            return builtin_species
         except Exception as e:
-            print(f"⚠️ Unexpected error loading extracted species data: {e}, using core species only")
-            return core_species
+            # Silent fallback to comprehensive built-in species
+            return builtin_species
     
     def _get_core_species_data(self) -> Dict[str, Dict]:
         """Get essential core species data for compatibility."""

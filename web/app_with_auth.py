@@ -2,6 +2,7 @@
 
 import os
 import sys
+import secrets
 from datetime import datetime, timedelta
 from flask import Flask, render_template, request, jsonify, redirect, url_for, session
 from flask_jwt_extended import JWTManager, jwt_required, get_jwt_identity, get_jwt
@@ -21,9 +22,18 @@ from secure_error_handlers import setup_production_error_handlers, setup_product
 
 load_dotenv()
 
+def get_or_generate_secret_key(env_var_name, default_fallback):
+    """Get secret key from environment or generate secure random key if empty/default."""
+    key = os.getenv(env_var_name, '').strip()
+    if not key or key == default_fallback:
+        # Generate cryptographically secure random key
+        generated_key = secrets.token_urlsafe(32)
+        return generated_key
+    return key
+
 app = Flask(__name__)
-app.config['SECRET_KEY'] = os.getenv('FLASK_SECRET_KEY', 'dev-key-change-in-production')
-app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY', 'jwt-dev-key-change-in-production')
+app.config['SECRET_KEY'] = get_or_generate_secret_key('FLASK_SECRET_KEY', 'dev-key-change-in-production')
+app.config['JWT_SECRET_KEY'] = get_or_generate_secret_key('JWT_SECRET_KEY', 'jwt-dev-key-change-in-production')
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(hours=24)
 
 # CRITICAL: Disable all template caching to fix stale template issue
