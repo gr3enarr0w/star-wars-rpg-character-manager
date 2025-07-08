@@ -1,0 +1,20 @@
+{
+  "name": "Mon Calamari",
+  "characteristics": {
+    "brawn": 2,
+    "agility": 2,
+    "intellect": 3,
+    "cunning": 1,
+    "willpower": 2,
+    "presence": 2
+  },
+  "wound_threshold": "10 + Brawn",
+  "strain_threshold": "10 + Willpower",
+  "starting_xp": 100,
+  "special_abilities": [
+    "Mon Calamari begin the game with one rank in Knowledge (Education). They still may not train Knowledge (Education) above rank 2 during character creation.",
+    "Amphibious: Mon Calamari can breathe underwater without penalty and never suffer movement penalties for traveling through water."
+  ],
+  "source": "FFG Wiki",
+  "extraction_date": "2025-07-08"
+}

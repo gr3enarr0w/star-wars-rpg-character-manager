@@ -499,15 +499,14 @@
         "willpower": 3,
         "presence": 2
       },
-      "wound_threshold": 11,
-      "strain_threshold": 11,
-      "starting_xp": 100,
+      "wound_threshold": 9,
+      "strain_threshold": 12,
+      "starting_xp": 90,
       "special_abilities": [
-        "Nature Bond: Upgrade Knowledge (Xenology) checks for plants/animals",
-        "Sonic Bellow: Special Coercion attack using voice",
-        "Peaceful Nature: Extra conflict for combat actions"
+        "Ithorians begin the game with one rank in Survival. They still may not train Survival above rank 2 during character creation.",
+        "Ithorian Bellow: With two mouths and four throats, Ithorians have a unique natural weapon they can call upon when threatened (Resilience; Damage 6; Critical 4; Range [Short]; Blast 3, Concussive 1, Slow-Firing 2, Stun Damage). Each time they use this ability, they suffer 3 strain."
       ],
-      "source": "Various sourcebooks"
+      "source": "Age of Rebellion Core Rulebook"
     },
     "Karkarodon": {
       "characteristics": {
@@ -608,18 +607,18 @@
         "brawn": 2,
         "agility": 2,
         "intellect": 3,
-        "cunning": 3,
+        "cunning": 1,
         "willpower": 2,
-        "presence": 3
+        "presence": 2
       },
       "wound_threshold": 10,
-      "strain_threshold": 13,
-      "starting_xp": 120,
+      "strain_threshold": 10,
+      "starting_xp": 100,
       "special_abilities": [
-        "Amphibious: Can breathe underwater",
-        "Keen Vision: Enhanced visual capabilities"
+        "Mon Calamari begin the game with one rank in Knowledge (Education). They still may not train Knowledge (Education) above rank 2 during character creation.",
+        "Amphibious: Mon Calamari can breathe underwater without penalty and never suffer movement penalties for traveling through water."
       ],
-      "source": "Age of Rebellion COMPLETE (AI OCR)"
+      "source": "Age of Rebellion Core Rulebook"
     },
     "Muun": {
       "characteristics": {
@@ -780,20 +779,18 @@
         "brawn": 2,
         "agility": 3,
         "intellect": 2,
-        "cunning": 2,
+        "cunning": 1,
         "willpower": 2,
         "presence": 2
       },
-      "wound_threshold": 12,
-      "strain_threshold": 12,
+      "wound_threshold": 10,
+      "strain_threshold": 10,
       "starting_xp": 100,
       "special_abilities": [
-        "Darkvision: Can see in low-light conditions",
-        "Expert Navigator: Bonuses to navigation checks",
-        "Keen Senses: Enhanced sensory capabilities",
-        "Sure-Footed: Improved balance and movement"
+        "Sullustans begin with 1 rank in Astrogation; they may not train this skill above rank 2 at character creation.",
+        "They also start with one rank in the Skilled Jockey talent."
       ],
-      "source": "Age of Rebellion COMPLETE (AI OCR)"
+      "source": "Age of Rebellion Core Rulebook"
     },
     "Talz": {
       "characteristics": {

@@ -1,0 +1,96 @@
+Complete FFG Wiki Species List for Systematic Scraping
+=======================================================
+
+Aleena
+Anx
+Aqualish
+Arcona
+Bardottan
+Besalisk
+Bothan
+Caamasi
+Cerean
+Chadra-Fan
+Chagrian
+Chevin
+Chiss
+Clawdite
+Clone
+Corellian Human
+Dathomirian
+Devaronian
+Drall
+Dressellian
+Droid
+Dug
+Duros
+Elom
+Elomin
+Ewok
+Falleen
+Gand
+Gank
+Gossam
+Gotal
+Gran
+Gungan
+Harch
+Human
+Hutt
+Iktotchi
+Ishi Tib
+Ithorian
+Kaleesh
+Kalleran
+Karkarodon
+Kel Dor
+Klatooinian
+Kyuzo
+Lannik
+Mandalorian Human
+Miraluka
+Mirialan
+Mon Calamari
+Mustafarian
+Muun
+Nautolan
+Neimoidian
+Nikto
+Pantoran
+Polis Massan
+Quarren
+Quermian
+Rodian
+Sakiyan
+Sathari
+Selonian
+Shistavanen
+Sullustan
+Talz
+Togruta
+Toydarian
+Trandoshan
+Twi'lek
+Verpine
+Weequay
+Whipid
+Wookiee
+Xexto
+Zabrak
+
+PRIORITY SPECIES (Most commonly used in character creation):
+- Human
+- Twi'lek  
+- Rodian
+- Wookiee
+- Bothan
+- Duros
+- Gand
+- Trandoshan
+- Chiss
+- Kel Dor
+- Nautolan
+- Zabrak
+- Mon Calamari
+- Sullustan
+- Cerean
