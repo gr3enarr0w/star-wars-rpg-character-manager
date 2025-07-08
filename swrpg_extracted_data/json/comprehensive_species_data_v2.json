@@ -1,0 +1,1056 @@
+{
+  "extraction_method": "comprehensive_sourcebook_search_plus_ai_ocr",
+  "extraction_date": "2025-06-16",
+  "total_species": 55,
+  "note": "Extended with 6 additional high-demand species",
+  "sources": [
+    "EotE Core Rulebook",
+    "Lords of Nal Hutta",
+    "Nexus of Power",
+    "Suns of Fortune",
+    "Era - Collapse of the Republic",
+    "Dangerous Covenants",
+    "Enter the Unknown",
+    "Far Horizons",
+    "Fly Casual",
+    "Endless Vigil",
+    "Chronicles of the Gatekeeper",
+    "Age of Rebellion COMPLETE (AI OCR)",
+    "Force and Destiny COMPLETE (AI OCR)"
+  ],
+  "species": {
+    "Aleena": {
+      "characteristics": {
+        "brawn": 1,
+        "agility": 3,
+        "intellect": 2,
+        "cunning": 2,
+        "willpower": 2,
+        "presence": 2
+      },
+      "wound_threshold": 8,
+      "strain_threshold": 12,
+      "starting_xp": 100,
+      "special_abilities": [
+        "Small Stature: Difficulty targeting at long range",
+        "Quick Reflexes: Remove setback from Coordination",
+        "Nimble: One free rank in Coordination"
+      ],
+      "source": "Lords of Nal Hutta"
+    },
+    "Aqualish": {
+      "characteristics": {
+        "brawn": 3,
+        "agility": 2,
+        "intellect": 1,
+        "cunning": 2,
+        "willpower": 2,
+        "presence": 2
+      },
+      "wound_threshold": 11,
+      "strain_threshold": 8,
+      "starting_xp": 90,
+      "special_abilities": [
+        "All Aqualish are capable of breathing underwater.",
+        "They begin the game with one rank in Brawl. Characters cannot train Brawl above rank 2 during character creation.",
+        "Sub-Species Options: Aquala (begin with one rank in Resilience, can remove setback dice in cold/wet conditions), Ualaq (begin with one rank in Survival or Perception, can remove setback dice in dark conditions), Quara (begin with one rank in Athletics or Coercion, can remove setback dice when tracking in natural environments)"
+      ],
+      "source": "Dangerous Covenants"
+    },
+    "Arcona": {
+      "characteristics": {
+        "brawn": 2,
+        "agility": 2,
+        "intellect": 2,
+        "cunning": 3,
+        "willpower": 2,
+        "presence": 1
+      },
+      "wound_threshold": 10,
+      "strain_threshold": 10,
+      "starting_xp": 100,
+      "special_abilities": [
+        "One rank in Vigilance",
+        "Mood Readers: Add boost to Charm/Negotiation",
+        "Heat resistance: Remove setback from arid conditions"
+      ],
+      "source": "Far Horizons"
+    },
+    "Bardottan": {
+      "characteristics": {
+        "brawn": 1,
+        "agility": 2,
+        "intellect": 3,
+        "cunning": 2,
+        "willpower": 3,
+        "presence": 1
+      },
+      "wound_threshold": 9,
+      "strain_threshold": 10,
+      "starting_xp": 105,
+      "special_abilities": [
+        "One rank in Knowledge (Lore)",
+        "Proud and secretive nature",
+        "Strong spiritual traditions"
+      ],
+      "source": "Nexus of Power"
+    },
+    "Bothan": {
+      "characteristics": {
+        "brawn": 1,
+        "agility": 2,
+        "intellect": 2,
+        "cunning": 3,
+        "willpower": 2,
+        "presence": 2
+      },
+      "wound_threshold": 10,
+      "strain_threshold": 11,
+      "starting_xp": 100,
+      "special_abilities": [
+        "Bothans begin the game with one rank in Streetwise. They still may not train Streetwise above rank 2 during character creation.",
+        "They also start with one rank in the Convincing Demeanor talent."
+      ],
+      "source": "Age of Rebellion COMPLETE (AI OCR)"
+    },
+    "Cerean": {
+      "characteristics": {
+        "brawn": 2,
+        "agility": 1,
+        "intellect": 3,
+        "cunning": 2,
+        "willpower": 2,
+        "presence": 2
+      },
+      "wound_threshold": 10,
+      "strain_threshold": 13,
+      "starting_xp": 90,
+      "special_abilities": [
+        "Cereans begin the game with one rank in Vigilance. They still may not train Vigilance above rank 2 during character creation.",
+        "Binary Processing: Cereans treat all Knowledge skills as career skills."
+      ],
+      "source": "Force and Destiny Core Rulebook"
+    },
+    "Chevin": {
+      "characteristics": {
+        "brawn": 3,
+        "agility": 1,
+        "intellect": 2,
+        "cunning": 3,
+        "willpower": 2,
+        "presence": 1
+      },
+      "wound_threshold": 11,
+      "strain_threshold": 11,
+      "starting_xp": 80,
+      "special_abilities": [
+        "One rank in Negotiation",
+        "Advanced Olfaction: Enhanced smell tracking",
+        "Large size and thick hide"
+      ],
+      "source": "Far Horizons"
+    },
+    "Chiss": {
+      "characteristics": {
+        "brawn": 2,
+        "agility": 2,
+        "intellect": 3,
+        "cunning": 2,
+        "willpower": 2,
+        "presence": 1
+      },
+      "wound_threshold": 10,
+      "strain_threshold": 10,
+      "starting_xp": 100,
+      "special_abilities": [
+        "Chiss begin the game with one rank in Cool. They still may not train Cool above rank 2 during character creation.",
+        "Infravision: Chiss have adapted to be able to see in both the infrared and normal visual spectra. This enables Chiss characters to remove up to a setback die added to checks by lighting conditions."
+      ],
+      "source": "Enter the Unknown"
+    },
+    "Clone": {
+      "characteristics": {
+        "brawn": 2,
+        "agility": 2,
+        "intellect": 2,
+        "cunning": 2,
+        "willpower": 2,
+        "presence": 2
+      },
+      "wound_threshold": 11,
+      "strain_threshold": 11,
+      "starting_xp": 100,
+      "special_abilities": [
+        "One rank in Knowledge (Warfare)",
+        "One rank in Resilience",
+        "Kamino Training: One rank in Physical Training talent"
+      ],
+      "source": "Era - Collapse of the Republic"
+    },
+    "Cotal": {
+      "characteristics": {
+        "brawn": 2,
+        "agility": 2,
+        "intellect": 2,
+        "cunning": 3,
+        "willpower": 1,
+        "presence": 2
+      },
+      "wound_threshold": 9,
+      "strain_threshold": 8,
+      "starting_xp": 100,
+      "special_abilities": [
+        "One rank in Perception",
+        "Energy Sensitivity: Detect electromagnetic spectrum",
+        "Emotion sensing head cones"
+      ],
+      "source": "Fly Casual"
+    },
+    "Dathomirian": {
+      "characteristics": {
+        "brawn": 3,
+        "agility": 2,
+        "intellect": 2,
+        "cunning": 2,
+        "willpower": 3,
+        "presence": 1
+      },
+      "wound_threshold": 10,
+      "strain_threshold": 11,
+      "starting_xp": 100,
+      "special_abilities": [
+        "One rank in Coordination",
+        "One rank in Survival",
+        "Nightsister Magic: Access to unique Force abilities"
+      ],
+      "source": "Era - Collapse of the Republic"
+    },
+    "Devaronian": {
+      "characteristics": {
+        "brawn": 2,
+        "agility": 2,
+        "intellect": 2,
+        "cunning": 3,
+        "willpower": 2,
+        "presence": 1
+      },
+      "wound_threshold": 11,
+      "strain_threshold": 10,
+      "starting_xp": 95,
+      "special_abilities": [
+        "One rank in Survival or Deception",
+        "Resilient Metabolism: Automatic boost to Resilience checks",
+        "Hardy physiology resistant to toxins"
+      ],
+      "source": "Nexus of Power"
+    },
+    "Drall": {
+      "characteristics": {
+        "brawn": 1,
+        "agility": 1,
+        "intellect": 3,
+        "cunning": 2,
+        "willpower": 3,
+        "presence": 2
+      },
+      "wound_threshold": 8,
+      "strain_threshold": 12,
+      "starting_xp": 90,
+      "special_abilities": [
+        "One rank in Knowledge (Education)",
+        "Problem solving bonus: Add boost to assistance",
+        "Small size and analytical mind"
+      ],
+      "source": "Suns of Fortune"
+    },
+    "Droid": {
+      "characteristics": {
+        "brawn": 1,
+        "agility": 1,
+        "intellect": 1,
+        "cunning": 1,
+        "willpower": 1,
+        "presence": 1
+      },
+      "wound_threshold": 10,
+      "strain_threshold": 10,
+      "starting_xp": 175,
+      "special_abilities": [
+        "Inorganic: No bacta/stimpack healing, use Mechanics",
+        "Mechanical Being: Cannot use Force powers",
+        "Enduring talent",
+        "Enhanced skill training options"
+      ],
+      "source": "EotE Core Rulebook"
+    },
+    "Duros": {
+      "characteristics": {
+        "brawn": 1,
+        "agility": 2,
+        "intellect": 3,
+        "cunning": 2,
+        "willpower": 2,
+        "presence": 2
+      },
+      "wound_threshold": 11,
+      "strain_threshold": 10,
+      "starting_xp": 100,
+      "special_abilities": [
+        "Duros begin the game with one rank in Piloting (Space). They still may not train Piloting (Space) above rank 2 during character creation.",
+        "Intuitive Navigation: Duros may add an advantage result to all Astrogation checks they make."
+      ],
+      "source": "Age of Rebellion Core Rulebook"
+    },
+    "Ewok": {
+      "characteristics": {
+        "brawn": 2,
+        "agility": 2,
+        "intellect": 2,
+        "cunning": 2,
+        "willpower": 2,
+        "presence": 1
+      },
+      "wound_threshold": 10,
+      "strain_threshold": 12,
+      "starting_xp": 90,
+      "special_abilities": [
+        "One free rank in Survival (cannot train above rank 2 during creation)",
+        "Small size: Melee defense of 1, add 1 setback die to combat checks against them at short range or engaged",
+        "Add 1 setback die to all Stealth checks they attempt"
+      ],
+      "source": "Age of Rebellion COMPLETE (AI OCR)"
+    },
+    "Falleen": {
+      "characteristics": {
+        "brawn": 2,
+        "agility": 2,
+        "intellect": 2,
+        "cunning": 2,
+        "willpower": 2,
+        "presence": 3
+      },
+      "wound_threshold": 10,
+      "strain_threshold": 12,
+      "starting_xp": 90,
+      "special_abilities": [
+        "One rank in Charm",
+        "Beguiling Pheromones: Upgrade Charm/Deception/Negotiation",
+        "Color-changing skin and emotional manipulation"
+      ],
+      "source": "Fly Casual"
+    },
+    "Gamorrean": {
+      "characteristics": {
+        "brawn": 3,
+        "agility": 1,
+        "intellect": 1,
+        "cunning": 2,
+        "willpower": 2,
+        "presence": 1
+      },
+      "wound_threshold": 15,
+      "strain_threshold": 11,
+      "starting_xp": 90,
+      "special_abilities": [
+        "One free rank in Brawl (cannot train above rank 2 during creation)",
+        "Add 1 automatic success to all Brawl checks"
+      ],
+      "source": "Age of Rebellion COMPLETE (AI OCR)"
+    },
+    "Gand": {
+      "characteristics": {
+        "brawn": 2,
+        "agility": 2,
+        "intellect": 2,
+        "cunning": 2,
+        "willpower": 3,
+        "presence": 1
+      },
+      "wound_threshold": 10,
+      "strain_threshold": 10,
+      "starting_xp": 100,
+      "special_abilities": [
+        "Gand begin the game with one rank in Discipline. They still may not train Discipline above rank 2 during character creation.",
+        "Ammonia Breathers: Players choose between two subspecies - Lungless Gand (immune to suffocation but not vacuum wounds) or Lung-having Gand (start with ammonia respirator, treat oxygen as atmosphere Rating 8, gain +10 starting XP)."
+      ],
+      "source": "Edge of the Empire Core Rulebook"
+    },
+    "Gank": {
+      "characteristics": {
+        "brawn": 2,
+        "agility": 2,
+        "intellect": 2,
+        "cunning": 2,
+        "willpower": 2,
+        "presence": 2
+      },
+      "wound_threshold": 10,
+      "strain_threshold": 10,
+      "starting_xp": 110,
+      "special_abilities": [
+        "One rank in Coercion or Vigilance",
+        "Cyborg: Start with up to two cybernetic implants",
+        "Mysterious species of mercenaries"
+      ],
+      "source": "Lords of Nal Hutta"
+    },
+    "Gran": {
+      "characteristics": {
+        "brawn": 2,
+        "agility": 2,
+        "intellect": 2,
+        "cunning": 2,
+        "willpower": 1,
+        "presence": 3
+      },
+      "wound_threshold": 10,
+      "strain_threshold": 9,
+      "starting_xp": 100,
+      "special_abilities": [
+        "One rank in Charm or Negotiation",
+        "Enhanced Vision: Remove setback from ranged combat/Perception",
+        "Three-eyed peaceful species"
+      ],
+      "source": "Far Horizons"
+    },
+    "Gungan": {
+      "characteristics": {
+        "brawn": 2,
+        "agility": 3,
+        "intellect": 2,
+        "cunning": 1,
+        "willpower": 2,
+        "presence": 2
+      },
+      "wound_threshold": 10,
+      "strain_threshold": 10,
+      "starting_xp": 100,
+      "special_abilities": [
+        "One rank in Athletics",
+        "Amphibious: Breathe underwater, no water movement penalties",
+        "Natural swimmers and aquatic fighters"
+      ],
+      "source": "Nexus of Power"
+    },
+    "Harch": {
+      "characteristics": {
+        "brawn": 2,
+        "agility": 3,
+        "intellect": 2,
+        "cunning": 2,
+        "willpower": 1,
+        "presence": 2
+      },
+      "wound_threshold": 10,
+      "strain_threshold": 10,
+      "starting_xp": 100,
+      "special_abilities": [
+        "Multiple Arms: Additional manipulation during encounters",
+        "Natural Climbers: Remove setback dice from climbing",
+        "Web Spinners: Can create web-based tools and traps"
+      ],
+      "source": "Era - Collapse of the Republic"
+    },
+    "Human": {
+      "characteristics": {
+        "brawn": 2,
+        "agility": 2,
+        "intellect": 2,
+        "cunning": 2,
+        "willpower": 2,
+        "presence": 2
+      },
+      "wound_threshold": 10,
+      "strain_threshold": 10,
+      "starting_xp": 110,
+      "special_abilities": [
+        "Two non-career skills of choice",
+        "Most adaptable and numerous species",
+        "Balanced characteristics"
+      ],
+      "source": "EotE Core Rulebook"
+    },
+    "Hutt": {
+      "characteristics": {
+        "brawn": 3,
+        "agility": 0,
+        "intellect": 2,
+        "cunning": 3,
+        "willpower": 3,
+        "presence": 1
+      },
+      "wound_threshold": 13,
+      "strain_threshold": 11,
+      "starting_xp": 70,
+      "special_abilities": [
+        "Enduring talent",
+        "Nobody's Fool talent",
+        "One rank in Coercion or Discipline",
+        "Ponderous: Cannot spend more than one maneuver moving"
+      ],
+      "source": "Lords of Nal Hutta"
+    },
+    "Ithorian": {
+      "characteristics": {
+        "brawn": 2,
+        "agility": 1,
+        "intellect": 2,
+        "cunning": 2,
+        "willpower": 3,
+        "presence": 2
+      },
+      "wound_threshold": 11,
+      "strain_threshold": 11,
+      "starting_xp": 100,
+      "special_abilities": [
+        "Nature Bond: Upgrade Knowledge (Xenology) checks for plants/animals",
+        "Sonic Bellow: Special Coercion attack using voice",
+        "Peaceful Nature: Extra conflict for combat actions"
+      ],
+      "source": "Various sourcebooks"
+    },
+    "Karkarodon": {
+      "characteristics": {
+        "brawn": 3,
+        "agility": 2,
+        "intellect": 2,
+        "cunning": 2,
+        "willpower": 2,
+        "presence": 1
+      },
+      "wound_threshold": 12,
+      "strain_threshold": 10,
+      "starting_xp": 90,
+      "special_abilities": [
+        "One rank in Athletics",
+        "Amphibious: Breathe underwater without penalty",
+        "Jaws: Brawl attacks deal +1 damage with Critical 3"
+      ],
+      "source": "Era - Collapse of the Republic"
+    },
+    "Kel Dor": {
+      "characteristics": {
+        "brawn": 1,
+        "agility": 2,
+        "intellect": 2,
+        "cunning": 2,
+        "willpower": 3,
+        "presence": 2
+      },
+      "wound_threshold": 9,
+      "strain_threshold": 11,
+      "starting_xp": 100,
+      "special_abilities": [
+        "Kel Dors begin the game with one rank in Knowledge (Education). They still may not train Knowledge (Education) above rank 2 during character creation.",
+        "Dark Vision: When making skill checks, Kel Dors remove up to two setback dice imposed due to darkness.",
+        "Atmospheric Requirement: Kel Dors must wear a specialized mask to breathe and see outside of their native atmosphere. A Kel Dor character starts the game with an antitox breath mask and treats oxygen as a dangerous atmosphere with Rating 8. However, Kel Dors may survive in vacuum for up to five minutes before suffering its effects."
+      ],
+      "source": "Force and Destiny Core"
+    },
+    "Klatooinian": {
+      "characteristics": {
+        "brawn": 3,
+        "agility": 2,
+        "intellect": 2,
+        "cunning": 1,
+        "willpower": 2,
+        "presence": 2
+      },
+      "wound_threshold": 10,
+      "strain_threshold": 10,
+      "starting_xp": 100,
+      "special_abilities": [
+        "One rank in Brawl, Ranged (Heavy), or Ranged (Light)",
+        "One additional rank in non-career skill of choice",
+        "Traditionally enslaved to Hutts"
+      ],
+      "source": "Dangerous Covenants"
+    },
+    "Miraluka": {
+      "characteristics": {
+        "brawn": 1,
+        "agility": 2,
+        "intellect": 3,
+        "cunning": 2,
+        "willpower": 3,
+        "presence": 2
+      },
+      "wound_threshold": 9,
+      "strain_threshold": 12,
+      "starting_xp": 100,
+      "special_abilities": [
+        "Force Sight: Ignore penalties from darkness and concealment; upgrade Perception checks at no cost for visual senses",
+        "Natural Force Sensitivity: Strong connection to the Force"
+      ],
+      "source": "Force and Destiny COMPLETE (AI OCR)"
+    },
+    "Mirialan": {
+      "characteristics": {
+        "brawn": 2,
+        "agility": 3,
+        "intellect": 2,
+        "cunning": 2,
+        "willpower": 2,
+        "presence": 2
+      },
+      "wound_threshold": 10,
+      "strain_threshold": 10,
+      "starting_xp": 100,
+      "special_abilities": [
+        "Begin with one free rank in Discipline",
+        "Dedication (+10 XP to spend on Force Rating talent)",
+        "Strong in the Force (Begin with one Force power)"
+      ],
+      "source": "Force and Destiny COMPLETE (AI OCR)"
+    },
+    "Mon Calamari": {
+      "characteristics": {
+        "brawn": 2,
+        "agility": 2,
+        "intellect": 3,
+        "cunning": 3,
+        "willpower": 2,
+        "presence": 3
+      },
+      "wound_threshold": 10,
+      "strain_threshold": 13,
+      "starting_xp": 120,
+      "special_abilities": [
+        "Amphibious: Can breathe underwater",
+        "Keen Vision: Enhanced visual capabilities"
+      ],
+      "source": "Age of Rebellion COMPLETE (AI OCR)"
+    },
+    "Muun": {
+      "characteristics": {
+        "brawn": 1,
+        "agility": 2,
+        "intellect": 3,
+        "cunning": 3,
+        "willpower": 2,
+        "presence": 1
+      },
+      "wound_threshold": 9,
+      "strain_threshold": 9,
+      "starting_xp": 90,
+      "special_abilities": [
+        "One rank in Knowledge (Education)",
+        "One rank in Knowledge (Core Worlds)",
+        "Deep Pockets: Start with additional 1,000 credits",
+        "Natural bankers and economists"
+      ],
+      "source": "Endless Vigil"
+    },
+    "Nautolan": {
+      "characteristics": {
+        "brawn": 3,
+        "agility": 2,
+        "intellect": 2,
+        "cunning": 2,
+        "willpower": 1,
+        "presence": 2
+      },
+      "wound_threshold": 11,
+      "strain_threshold": 9,
+      "starting_xp": 100,
+      "special_abilities": [
+        "Nautolans begin the game with one rank in Athletics. They still may not train Athletics above rank 2 during character creation.",
+        "Amphibious: Nautolans may breathe underwater without penalty and never suffer movement penalties for traveling through water."
+      ],
+      "source": "Force and Destiny Core Rulebook"
+    },
+    "Nikto": {
+      "characteristics": {
+        "brawn": 3,
+        "agility": 2,
+        "intellect": 2,
+        "cunning": 1,
+        "willpower": 2,
+        "presence": 2
+      },
+      "wound_threshold": 11,
+      "strain_threshold": 10,
+      "starting_xp": 100,
+      "special_abilities": [
+        "Five subspecies with different adaptations",
+        "Red Niktos: Desert adaptation",
+        "Green Niktos: Forest adaptation",
+        "Blue Niktos: Coastal adaptation",
+        "Pale Niktos: Mountain adaptation"
+      ],
+      "source": "Lords of Nal Hutta"
+    },
+    "Quarren": {
+      "characteristics": {
+        "brawn": 2,
+        "agility": 2,
+        "intellect": 3,
+        "cunning": 2,
+        "willpower": 1,
+        "presence": 2
+      },
+      "wound_threshold": 10,
+      "strain_threshold": 10,
+      "starting_xp": 100,
+      "special_abilities": [
+        "Amphibious: Can breathe underwater",
+        "Ink Cloud: Once per encounter, create concealment cloud",
+        "Tentacle Dexterity: Additional manipulation capabilities"
+      ],
+      "source": "Various sourcebooks"
+    },
+    "Rodian": {
+      "characteristics": {
+        "brawn": 2,
+        "agility": 3,
+        "intellect": 2,
+        "cunning": 2,
+        "willpower": 1,
+        "presence": 2
+      },
+      "wound_threshold": 10,
+      "strain_threshold": 10,
+      "starting_xp": 100,
+      "special_abilities": [
+        "Rodians begin the game with one rank in Survival. They still may not train Survival above rank 2 during character creation.",
+        "Rodians start with one rank in the Expert Tracker talent."
+      ],
+      "source": "Age of Rebellion COMPLETE (AI OCR)"
+    },
+    "Sakiyan": {
+      "characteristics": {
+        "brawn": 2,
+        "agility": 2,
+        "intellect": 2,
+        "cunning": 3,
+        "willpower": 2,
+        "presence": 1
+      },
+      "wound_threshold": 10,
+      "strain_threshold": 11,
+      "starting_xp": 100,
+      "special_abilities": [
+        "Enhanced Senses: Upgrade Perception checks",
+        "Natural Trackers: Remove setback from tracking",
+        "Keen Hearing: Additional audio detection capabilities"
+      ],
+      "source": "Lords of Nal Hutta"
+    },
+    "Sathari": {
+      "characteristics": {
+        "brawn": 1,
+        "agility": 3,
+        "intellect": 2,
+        "cunning": 2,
+        "willpower": 2,
+        "presence": 2
+      },
+      "wound_threshold": 8,
+      "strain_threshold": 10,
+      "starting_xp": 100,
+      "special_abilities": [
+        "One rank in Coordination",
+        "Glider: Can fall safely and glide over gaps",
+        "Four-eyed avian species"
+      ],
+      "source": "Chronicles of the Gatekeeper"
+    },
+    "Selonian": {
+      "characteristics": {
+        "brawn": 2,
+        "agility": 3,
+        "intellect": 2,
+        "cunning": 1,
+        "willpower": 2,
+        "presence": 2
+      },
+      "wound_threshold": 11,
+      "strain_threshold": 10,
+      "starting_xp": 80,
+      "special_abilities": [
+        "One rank in Coordination",
+        "Darkvision: Remove setback from darkness",
+        "Tail: Can be used as Brawl weapon",
+        "Fierce loyalty to family/den"
+      ],
+      "source": "Suns of Fortune"
+    },
+    "Sullustan": {
+      "characteristics": {
+        "brawn": 2,
+        "agility": 3,
+        "intellect": 2,
+        "cunning": 2,
+        "willpower": 2,
+        "presence": 2
+      },
+      "wound_threshold": 12,
+      "strain_threshold": 12,
+      "starting_xp": 100,
+      "special_abilities": [
+        "Darkvision: Can see in low-light conditions",
+        "Expert Navigator: Bonuses to navigation checks",
+        "Keen Senses: Enhanced sensory capabilities",
+        "Sure-Footed: Improved balance and movement"
+      ],
+      "source": "Age of Rebellion COMPLETE (AI OCR)"
+    },
+    "Talz": {
+      "characteristics": {
+        "brawn": 4,
+        "agility": 1,
+        "intellect": 2,
+        "cunning": 2,
+        "willpower": 2,
+        "presence": 2
+      },
+      "wound_threshold": 17,
+      "strain_threshold": 9,
+      "starting_xp": 80,
+      "special_abilities": [
+        "Cold environment adaptations",
+        "Four arms for enhanced manipulation",
+        "Natural cold resistance"
+      ],
+      "source": "Age of Rebellion COMPLETE (AI OCR)"
+    },
+    "Togruta": {
+      "characteristics": {
+        "brawn": 2,
+        "agility": 2,
+        "intellect": 2,
+        "cunning": 2,
+        "willpower": 2,
+        "presence": 3
+      },
+      "wound_threshold": 10,
+      "strain_threshold": 11,
+      "starting_xp": 100,
+      "special_abilities": [
+        "Montrals: Togruta have a pair of hollow horn-like projections called montrals that grow from the top of their heads. These montrals are used for echolocation. Togruta ignore the effects of all environmental conditions that would cause them to upgrade the difficulty of Perception checks once.",
+        "Natural Hunters: Add boost dice to checks to track or hunt prey"
+      ],
+      "source": "Force and Destiny COMPLETE (AI OCR)"
+    },
+    "Toydarian": {
+      "characteristics": {
+        "brawn": 1,
+        "agility": 2,
+        "intellect": 2,
+        "cunning": 3,
+        "willpower": 3,
+        "presence": 1
+      },
+      "wound_threshold": 9,
+      "strain_threshold": 12,
+      "starting_xp": 90,
+      "special_abilities": [
+        "Silhouette 0: Smaller than average",
+        "Hoverer: Wings allow hovering and easier terrain navigation",
+        "Natural merchants and traders"
+      ],
+      "source": "Enter the Unknown"
+    },
+    "Trandoshan": {
+      "characteristics": {
+        "brawn": 3,
+        "agility": 1,
+        "intellect": 2,
+        "cunning": 2,
+        "willpower": 2,
+        "presence": 2
+      },
+      "wound_threshold": 12,
+      "strain_threshold": 9,
+      "starting_xp": 90,
+      "special_abilities": [
+        "Trandoshans begin the game with one rank in Perception. They still may not train Perception above rank 2 during character creation.",
+        "Regeneration: Whenever a Trandoshan would recover one or more wounds from natural rest or recuperation in a Bacta tank, they recover one additional wound. They do not recover one additional wound when receiving first aid or medical treatment from a character, or when using a stimpack. Trandoshans can regrow lost limbs as well, though it usually takes at least a month before the limb is usable.",
+        "Claws: When a Trandoshan makes Brawl checks to deal damage to an opponent, they deal +1 damage and have a Critical Rating of 3."
+      ],
+      "source": "Age of Rebellion COMPLETE (AI OCR)"
+    },
+    "Twi'lek": {
+      "characteristics": {
+        "brawn": 1,
+        "agility": 2,
+        "intellect": 2,
+        "cunning": 2,
+        "willpower": 2,
+        "presence": 3
+      },
+      "wound_threshold": 10,
+      "strain_threshold": 11,
+      "starting_xp": 100,
+      "special_abilities": [
+        "Twi'leks begin the game with one rank in either Charm or Deception. They still may not train Charm or Deception above rank 2 during character creation.",
+        "Desert Dwellers: When making skill checks, Twi'leks may remove a setback die imposed due to arid or hot environmental conditions."
+      ],
+      "source": "EotE Core Rulebook"
+    },
+    "Weequay": {
+      "characteristics": {
+        "brawn": 3,
+        "agility": 1,
+        "intellect": 2,
+        "cunning": 2,
+        "willpower": 2,
+        "presence": 2
+      },
+      "wound_threshold": 12,
+      "strain_threshold": 9,
+      "starting_xp": 90,
+      "special_abilities": [
+        "Desert Dwellers: Remove setback dice from heat/desert environments",
+        "Pheromone Communication: Silent communication with other Weequay",
+        "Thick Hide: +1 soak value"
+      ],
+      "source": "Lords of Nal Hutta"
+    },
+    "Wookiee": {
+      "characteristics": {
+        "brawn": 3,
+        "agility": 2,
+        "intellect": 2,
+        "cunning": 2,
+        "willpower": 1,
+        "presence": 2
+      },
+      "wound_threshold": 14,
+      "strain_threshold": 8,
+      "starting_xp": 90,
+      "special_abilities": [
+        "Wookiees begin the game with oner rank in Brawl. They still may not train Brawl above rank 2 during character creation.",
+        "Wookiee Rage: When a Wookiee has suffered any wounds [they] deal +1 damage to Brawl and Melee attacks. When a Wookiee is Critically Injured, [they] instead deal +2 damage to Brawl and Melee attacks."
+      ],
+      "source": "Edge of the Empire Core Rulebook"
+    },
+    "Zabrak": {
+      "characteristics": {
+        "brawn": 2,
+        "agility": 2,
+        "intellect": 2,
+        "cunning": 2,
+        "willpower": 3,
+        "presence": 1
+      },
+      "wound_threshold": 10,
+      "strain_threshold": 10,
+      "starting_xp": 100,
+      "special_abilities": [
+        "Zabrak begin the game with one rank in Survival. They still may not train Survival above rank 2 during character creation.",
+        "Fearsome Countenance: Zabrak add an automatic advantage result to all Coercion checks the make."
+      ],
+      "source": "Force and Destiny Core Rulebook"
+    },
+    "Neimoidian": {
+      "starting_characteristics": {
+        "Brawn": 1,
+        "Agility": 2,
+        "Intellect": 3,
+        "Cunning": 3,
+        "Willpower": 2,
+        "Presence": 2
+      },
+      "wound_threshold": 9,
+      "strain_threshold": 12,
+      "starting_xp": 100,
+      "special_abilities": [
+        "Business Sense: Neimoidians add an automatic advantage to all Negotiation checks.",
+        "Cowardly: When a Neimoidian becomes the target of a combat check, they suffer 1 strain."
+      ],
+      "source": "Various SWRPG Supplements"
+    },
+    "Pantoran": {
+      "starting_characteristics": {
+        "Brawn": 2,
+        "Agility": 2,
+        "Intellect": 2,
+        "Cunning": 2,
+        "Willpower": 3,
+        "Presence": 2
+      },
+      "wound_threshold": 11,
+      "strain_threshold": 11,
+      "starting_xp": 100,
+      "special_abilities": [
+        "Natural Diplomats: Pantorans add an automatic advantage to all Charm and Negotiation checks.",
+        "Cold Adaptation: Pantorans can function normally in cold environments down to -30°C."
+      ],
+      "source": "Endless Vigil"
+    },
+    "Caamasi": {
+      "starting_characteristics": {
+        "Brawn": 1,
+        "Agility": 2,
+        "Intellect": 2,
+        "Cunning": 2,
+        "Willpower": 3,
+        "Presence": 3
+      },
+      "wound_threshold": 10,
+      "strain_threshold": 12,
+      "starting_xp": 100,
+      "special_abilities": [
+        "Memory Share: Caamasi can share specific memories with other Caamasi through touch.",
+        "Pacifist Tendencies: Caamasi upgrade the difficulty of all combat checks once."
+      ],
+      "source": "Desperate Allies"
+    },
+    "Besalisk": {
+      "starting_characteristics": {
+        "Brawn": 3,
+        "Agility": 2,
+        "Intellect": 2,
+        "Cunning": 2,
+        "Willpower": 2,
+        "Presence": 2
+      },
+      "wound_threshold": 12,
+      "strain_threshold": 10,
+      "starting_xp": 90,
+      "special_abilities": [
+        "Four Arms: Besalisks have four arms and may perform a maneuver to add an automatic advantage to their next Brawl or Melee combat check.",
+        "Thick Hide: Besalisks have +1 soak value."
+      ],
+      "source": "Special Modifications"
+    },
+    "Chagrian": {
+      "starting_characteristics": {
+        "Brawn": 2,
+        "Agility": 2,
+        "Intellect": 3,
+        "Cunning": 2,
+        "Willpower": 2,
+        "Presence": 2
+      },
+      "wound_threshold": 11,
+      "strain_threshold": 11,
+      "starting_xp": 100,
+      "special_abilities": [
+        "Amphibious: Chagrians can breathe underwater and never suffer movement penalties for traveling through water.",
+        "Radiation Sensitivity: Chagrians upgrade the difficulty of all checks twice when exposed to radiation."
+      ],
+      "source": "Lead by Example"
+    },
+    "Iktotchi": {
+      "starting_characteristics": {
+        "Brawn": 2,
+        "Agility": 2,
+        "Intellect": 2,
+        "Cunning": 3,
+        "Willpower": 3,
+        "Presence": 1
+      },
+      "wound_threshold": 11,
+      "strain_threshold": 11,
+      "starting_xp": 100,
+      "special_abilities": [
+        "Precognition: Once per session, an Iktotchi may add two boost dice to any one check.",
+        "Desert Dweller: Iktotchi remove one setback die imposed due to arid or hot environmental conditions."
+      ],
+      "source": "Keeping the Peace"
+    }
+  },
+  "last_updated": "2025-06-29"
+}
