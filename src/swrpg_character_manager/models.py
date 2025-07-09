@@ -141,6 +141,7 @@ class Character:
             ("Coordination", Characteristic.AGILITY),
             ("Deception", Characteristic.CUNNING),
             ("Discipline", Characteristic.WILLPOWER),
+            ("Gunnery", Characteristic.AGILITY),
             ("Knowledge (Core Worlds)", Characteristic.INTELLECT),
             ("Knowledge (Education)", Characteristic.INTELLECT),
             ("Knowledge (Lore)", Characteristic.INTELLECT),

@@ -76,8 +76,8 @@ class CharacterCreator:
         careers["Ace"] = Career(
             name="Ace",
             game_line=GameLine.AGE_OF_REBELLION,
-            career_skills=["Cool", "Coordination", "Mechanics", "Perception", 
-                          "Piloting (Planetary)", "Piloting (Space)", "Ranged (Light)", "Vigilance"],
+            career_skills=["Astrogation", "Cool", "Gunnery", "Mechanics", "Perception", 
+                          "Piloting (Planetary)", "Piloting (Space)", "Ranged (Light)"],
             starting_wound_threshold=11,
             starting_strain_threshold=13
         )
@@ -85,8 +85,8 @@ class CharacterCreator:
         careers["Commander"] = Career(
             name="Commander",
             game_line=GameLine.AGE_OF_REBELLION,
-            career_skills=["Cool", "Discipline", "Knowledge (Core Worlds)", 
-                          "Knowledge (Warfare)", "Leadership", "Perception", "Ranged (Light)", "Vigilance"],
+            career_skills=["Coercion", "Cool", "Discipline", "Knowledge (Warfare)", 
+                          "Leadership", "Perception", "Ranged (Light)", "Vigilance"],
             starting_wound_threshold=10,
             starting_strain_threshold=14
         )
@@ -95,7 +95,7 @@ class CharacterCreator:
             name="Diplomat",
             game_line=GameLine.AGE_OF_REBELLION,
             career_skills=["Charm", "Deception", "Knowledge (Core Worlds)", 
-                          "Knowledge (Lore)", "Leadership", "Negotiation", "Knowledge (Xenology)", "Cool"],
+                          "Knowledge (Lore)", "Knowledge (Outer Rim)", "Knowledge (Xenology)", "Leadership", "Negotiation"],
             starting_wound_threshold=10,
             starting_strain_threshold=14
         )
@@ -103,8 +103,8 @@ class CharacterCreator:
         careers["Engineer"] = Career(
             name="Engineer",
             game_line=GameLine.AGE_OF_REBELLION,
-            career_skills=["Astrogation", "Computers", "Discipline", "Knowledge (Education)", 
-                          "Mechanics", "Piloting (Space)", "Ranged (Light)", "Vigilance"],
+            career_skills=["Athletics", "Computers", "Knowledge (Education)", "Mechanics", 
+                          "Perception", "Piloting (Space)", "Ranged (Light)", "Vigilance"],
             starting_wound_threshold=11,
             starting_strain_threshold=13
         )
@@ -112,8 +112,8 @@ class CharacterCreator:
         careers["Soldier"] = Career(
             name="Soldier",
             game_line=GameLine.AGE_OF_REBELLION,
-            career_skills=["Athletics", "Discipline", "Medicine", "Ranged (Heavy)", 
-                          "Resilience", "Survival", "Brawl", "Ranged (Light)"],
+            career_skills=["Athletics", "Brawl", "Knowledge (Warfare)", "Medicine", 
+                          "Melee", "Ranged (Light)", "Ranged (Heavy)", "Survival"],
             starting_wound_threshold=12,
             starting_strain_threshold=12
         )
@@ -121,8 +121,8 @@ class CharacterCreator:
         careers["Spy"] = Career(
             name="Spy",
             game_line=GameLine.AGE_OF_REBELLION,
-            career_skills=["Computers", "Deception", "Knowledge (Underworld)", 
-                          "Perception", "Skulduggery", "Stealth", "Streetwise", "Vigilance"],
+            career_skills=["Computers", "Cool", "Coordination", "Deception", 
+                          "Knowledge (Warfare)", "Perception", "Skulduggery", "Stealth"],
             starting_wound_threshold=10,
             starting_strain_threshold=14
         )
@@ -131,8 +131,8 @@ class CharacterCreator:
         careers["Consular"] = Career(
             name="Consular",
             game_line=GameLine.FORCE_AND_DESTINY,
-            career_skills=["Cool", "Discipline", "Leadership", "Negotiation", 
-                          "Knowledge (Education)", "Knowledge (Lore)", "Charm", "Knowledge (Xenology)"],
+            career_skills=["Cool", "Discipline", "Knowledge (Education)", "Knowledge (Lore)", 
+                          "Leadership", "Negotiation"],
             starting_wound_threshold=10,
             starting_strain_threshold=14
         )
@@ -140,8 +140,7 @@ class CharacterCreator:
         careers["Guardian"] = Career(
             name="Guardian",
             game_line=GameLine.FORCE_AND_DESTINY,
-            career_skills=["Brawl", "Discipline", "Melee", "Resilience", 
-                          "Vigilance", "Cool", "Athletics", "Coercion"],
+            career_skills=["Brawl", "Cool", "Discipline", "Melee", "Resilience", "Vigilance"],
             starting_wound_threshold=13,
             starting_strain_threshold=11
         )
@@ -149,8 +148,8 @@ class CharacterCreator:
         careers["Mystic"] = Career(
             name="Mystic",
             game_line=GameLine.FORCE_AND_DESTINY,
-            career_skills=["Charm", "Coercion", "Deception", "Knowledge (Lore)", 
-                          "Perception", "Vigilance", "Discipline", "Knowledge (Outer Rim)"],
+            career_skills=["Charm", "Coercion", "Knowledge (Lore)", "Knowledge (Outer Rim)", 
+                          "Perception", "Vigilance"],
             starting_wound_threshold=11,
             starting_strain_threshold=13
         )
@@ -158,8 +157,8 @@ class CharacterCreator:
         careers["Seeker"] = Career(
             name="Seeker",
             game_line=GameLine.FORCE_AND_DESTINY,
-            career_skills=["Knowledge (Xenology)", "Medicine", "Perception", 
-                          "Piloting (Planetary)", "Stealth", "Survival", "Astrogation", "Athletics"],
+            career_skills=["Knowledge (Xenology)", "Piloting (Planetary)", "Piloting (Space)", 
+                          "Ranged (Heavy)", "Survival", "Vigilance"],
             starting_wound_threshold=11,
             starting_strain_threshold=13
         )
@@ -167,8 +166,8 @@ class CharacterCreator:
         careers["Sentinel"] = Career(
             name="Sentinel",
             game_line=GameLine.FORCE_AND_DESTINY,
-            career_skills=["Computers", "Deception", "Knowledge (Underworld)", 
-                          "Skulduggery", "Stealth", "Streetwise", "Mechanics", "Vigilance"],
+            career_skills=["Computers", "Deception", "Knowledge (Core Worlds)", 
+                          "Perception", "Skulduggery", "Stealth"],
             starting_wound_threshold=11,
             starting_strain_threshold=13
         )
@@ -176,8 +175,7 @@ class CharacterCreator:
         careers["Warrior"] = Career(
             name="Warrior",
             game_line=GameLine.FORCE_AND_DESTINY,
-            career_skills=["Athletics", "Brawl", "Melee", "Ranged (Light)", 
-                          "Resilience", "Survival", "Coordination", "Piloting (Planetary)"],
+            career_skills=["Athletics", "Brawl", "Cool", "Melee", "Perception", "Survival"],
             starting_wound_threshold=12,
             starting_strain_threshold=12
         )
