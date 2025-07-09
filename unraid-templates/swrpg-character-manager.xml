@@ -1,19 +1,19 @@
 <?xml version="1.0"?>
 <Container version="2">
   <Name>SWRPG-Character-Manager</Name>
-  <Repository>ghcr.io/gr3enarr0w/swrpg-character-manager:latest</Repository>
-  <Registry>https://github.com/gr3enarr0w/python-course-app/pkgs/container/swrpg-character-manager</Registry>
+  <Repository>ghcr.io/gr3enarr0w/star-wars-rpg-character-manager:latest</Repository>
+  <Registry>https://github.com/gr3enarr0w/star-wars-rpg-character-manager/pkgs/container/star-wars-rpg-character-manager</Registry>
   <Network>bridge</Network>
   <MyIP/>
   <Shell>bash</Shell>
   <Privileged>false</Privileged>
-  <Support>https://github.com/gr3enarr0w/python-course-app/issues</Support>
-  <Project>https://github.com/gr3enarr0w/python-course-app</Project>
-  <Overview>Star Wars RPG Character Manager - A comprehensive web application for managing Star Wars RPG characters, campaigns, and game sessions. Features 55+ species, character advancement tracking, and role-based access control.</Overview>
+  <Support>https://github.com/gr3enarr0w/star-wars-rpg-character-manager/issues</Support>
+  <Project>https://github.com/gr3enarr0w/star-wars-rpg-character-manager</Project>
+  <Overview>Star Wars RPG Character Manager - A comprehensive web application for managing Star Wars RPG characters, campaigns, and game sessions. Features 97+ official species, character advancement tracking, and role-based access control.</Overview>
   <Category>GameServers:</Category>
   <WebUI>http://[IP]:[PORT:8000]</WebUI>
-  <TemplateURL>https://raw.githubusercontent.com/gr3enarr0w/python-course-app/main/unraid-templates/swrpg-character-manager.xml</TemplateURL>
-  <Icon>https://raw.githubusercontent.com/gr3enarr0w/python-course-app/main/icons/swrpg-logo.png</Icon>
+  <TemplateURL>https://raw.githubusercontent.com/gr3enarr0w/star-wars-rpg-character-manager/main/unraid-templates/swrpg-character-manager.xml</TemplateURL>
+  <Icon>https://raw.githubusercontent.com/gr3enarr0w/star-wars-rpg-character-manager/main/icons/swrpg-logo.png</Icon>
   <ExtraParams>--restart=unless-stopped --health-cmd="curl -f http://localhost:8000/health || exit 1" --health-interval=30s --health-timeout=10s --health-retries=3</ExtraParams>
   <PostArgs/>
   <CPUset/>
@@ -23,7 +23,7 @@
   <Description>Star Wars RPG Character Manager is a comprehensive web application for managing characters, campaigns, and game sessions for Star Wars RPG systems (Edge of the Empire, Age of Rebellion, Force and Destiny). 
 
 Features:
-- 55+ Star Wars species with accurate stats and abilities
+- 97+ official Star Wars species with accurate stats and abilities
 - Dynamic character creation and advancement
 - XP tracking and skill progression
 - Campaign and session management
