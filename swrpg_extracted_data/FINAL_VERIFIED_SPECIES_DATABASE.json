@@ -1,0 +1,1377 @@
+{
+  "metadata": {
+    "database_version": "5.0.0",
+    "creation_date": "2025-07-09T11:58:04.887810",
+    "verification_method": "comprehensive_sourcebook_cross_reference",
+    "data_sources": [
+      "Official FFG/Edge Studio sourcebooks",
+      "Comprehensive authoritative database",
+      "Clean species database"
+    ],
+    "authority_level": "canonical_official_only"
+  },
+  "statistics": {
+    "total_official_species": 67,
+    "verified_species_count": 42,
+    "questionable_species_removed": 14,
+    "missing_species_count": 1,
+    "core_species_verified": 18
+  },
+  "verification_results": {
+    "verified_species": [
+      "Aleena",
+      "Arcona",
+      "Bothan",
+      "Caamasi",
+      "Cerean",
+      "Chagrian",
+      "Chevin",
+      "Chiss",
+      "Devaronian",
+      "Drall",
+      "Droid",
+      "Falleen",
+      "Gand",
+      "Gank",
+      "Gran",
+      "Gungan",
+      "Human",
+      "Hutt",
+      "Iktotchi",
+      "Ithorian",
+      "Kel Dor",
+      "Klatooinian",
+      "Mirialan",
+      "Mon Calamari",
+      "Muun",
+      "Nautolan",
+      "Neimoidian",
+      "Nikto",
+      "Pantoran",
+      "Quarren",
+      "Rodian",
+      "Sakiyan",
+      "Sathari",
+      "Selonian",
+      "Sullustan",
+      "Togruta",
+      "Toydarian",
+      "Trandoshan",
+      "Twi'lek",
+      "Weequay",
+      "Wookiee",
+      "Zabrak"
+    ],
+    "questionable_species": [
+      "Aqualish",
+      "Bardottan",
+      "Besalisk",
+      "Clone",
+      "Cotal",
+      "Dathomirian",
+      "Duros",
+      "Ewok",
+      "Gamorrean",
+      "Harch",
+      "Jawa",
+      "Karkarodon",
+      "Miraluka",
+      "Talz"
+    ],
+    "missing_species": [
+      "Duro (CORE SPECIES - CRITICAL)"
+    ]
+  },
+  "species": {
+    "Neimoidian": {
+      "name": "Neimoidian",
+      "characteristics": {
+        "brawn": 1,
+        "agility": 2,
+        "intellect": 3,
+        "cunning": 3,
+        "willpower": 1,
+        "presence": 2
+      },
+      "derived_attributes": {
+        "wound_threshold": "11 + Brawn",
+        "strain_threshold": "9 + Willpower",
+        "starting_xp": 90
+      },
+      "special_abilities": [
+        "Neimoidians begin the game with one rank in either Deception or Negotiation. They still may not train Deception or Negotiation above rank 2 during character creation."
+      ],
+      "metadata": {
+        "source": "FFG Wiki",
+        "data_source_priority": "FFG_WIKI_PRIMARY",
+        "extraction_date": "2025-07-08",
+        "game_line": "Universal",
+        "rarity": "uncommon"
+      },
+      "ai_searchable_text": "neimoidian neimoidians begin the game with one rank in either deception or negotiation. they still may not train deception or negotiation above rank 2 during character creation. ffg wiki",
+      "vector_ready": true,
+      "official_sources": []
+    },
+    "Mirialan": {
+      "name": "Mirialan",
+      "characteristics": {
+        "brawn": 2,
+        "agility": 3,
+        "intellect": 2,
+        "cunning": 1,
+        "willpower": 2,
+        "presence": 2
+      },
+      "derived_attributes": {
+        "wound_threshold": "11 + Brawn",
+        "strain_threshold": "10 + Willpower",
+        "starting_xp": 100
+      },
+      "special_abilities": [
+        "Mirialans begin the game with one rank in Discipline and one rank in Cool. They still may not train Discipline or Cool above rank 2 during character creation."
+      ],
+      "metadata": {
+        "source": "FFG Wiki",
+        "data_source_priority": "FFG_WIKI_PRIMARY",
+        "extraction_date": "2025-07-08",
+        "game_line": "Universal",
+        "rarity": "uncommon"
+      },
+      "ai_searchable_text": "mirialan mirialans begin the game with one rank in discipline and one rank in cool. they still may not train discipline or cool above rank 2 during character creation. ffg wiki",
+      "vector_ready": true,
+      "official_sources": []
+    },
+    "Pantoran": {
+      "name": "Pantoran",
+      "characteristics": {
+        "brawn": 2,
+        "agility": 2,
+        "intellect": 2,
+        "cunning": 2,
+        "willpower": 1,
+        "presence": 3
+      },
+      "derived_attributes": {
+        "wound_threshold": "10 + Brawn",
+        "strain_threshold": "11 + Willpower",
+        "starting_xp": 110
+      },
+      "special_abilities": [
+        "Pantorans begin the game with one rank in either Cool or Negotiation. They still may not train Cool or Negotiation above rank 2 during character creation.",
+        "Tundra Dwellers: When making skill checks, Pantorans may remove a setback die imposed due to cold environmental conditions."
+      ],
+      "metadata": {
+        "source": "FFG Wiki",
+        "data_source_priority": "FFG_WIKI_PRIMARY",
+        "extraction_date": "2025-07-08",
+        "game_line": "Universal",
+        "rarity": "common"
+      },
+      "ai_searchable_text": "pantoran pantorans begin the game with one rank in either cool or negotiation. they still may not train cool or negotiation above rank 2 during character creation. tundra dwellers: when making skill checks, pantorans may remove a setback die imposed due to cold environmental conditions. ffg wiki",
+      "vector_ready": true,
+      "official_sources": []
+    },
+    "Droid": {
+      "name": "Droid",
+      "characteristics": {
+        "brawn": 1,
+        "agility": 1,
+        "intellect": 1,
+        "cunning": 1,
+        "willpower": 1,
+        "presence": 1
+      },
+      "derived_attributes": {
+        "wound_threshold": "10 + Brawn",
+        "strain_threshold": "10 + Willpower",
+        "starting_xp": 175
+      },
+      "special_abilities": [
+        "Droids do not need to eat, sleep, or breathe, and are unaffected by toxins and poisons.",
+        "Cybernetic implant cap of 6",
+        "Can train one rank in six career skills (instead of four)",
+        "Can train one rank in three specialization skills (instead of two)",
+        "Inorganic: Cannot use bacta, stimpacks, or Medicine checks for healing",
+        "Mechanical Being: Cannot become Force-sensitive or use Force powers",
+        "Starts with one rank in Enduring talent due to resilient metallic construction"
+      ],
+      "metadata": {
+        "source": "FFG Wiki",
+        "data_source_priority": "FFG_WIKI_PRIMARY",
+        "extraction_date": "2025-07-08",
+        "game_line": "Universal",
+        "rarity": "common"
+      },
+      "ai_searchable_text": "droid droids do not need to eat, sleep, or breathe, and are unaffected by toxins and poisons. cybernetic implant cap of 6 can train one rank in six career skills (instead of four) can train one rank in three specialization skills (instead of two) inorganic: cannot use bacta, stimpacks, or medicine checks for healing mechanical being: cannot become force-sensitive or use force powers starts with one rank in enduring talent due to resilient metallic construction ffg wiki",
+      "vector_ready": true,
+      "official_sources": []
+    },
+    "Caamasi": {
+      "name": "Caamasi",
+      "characteristics": {
+        "brawn": 2,
+        "agility": 2,
+        "intellect": 2,
+        "cunning": 1,
+        "willpower": 3,
+        "presence": 2
+      },
+      "derived_attributes": {
+        "wound_threshold": "10 + Brawn",
+        "strain_threshold": "11 + Willpower",
+        "starting_xp": 100
+      },
+      "special_abilities": [
+        "Caamasi begin the game with one rank in either Charm or Discipline. They still may not train Charm or Discipline above rank 2 during character creation.",
+        "Memnii: Caamasi often imprint significant events in their life as unfading memories called memnii. Once per game session, a Caamasi may form a new memnis that encompasses one scene or encounter. At any time, a Caamasi may perfectly recall any memnis that [they] have formed or witnessed, or share it with another Caamasi or a Force-sensitive character."
+      ],
+      "metadata": {
+        "source": "FFG Wiki",
+        "data_source_priority": "FFG_WIKI_PRIMARY",
+        "extraction_date": "2025-07-08",
+        "game_line": "Universal",
+        "rarity": "uncommon"
+      },
+      "ai_searchable_text": "caamasi caamasi begin the game with one rank in either charm or discipline. they still may not train charm or discipline above rank 2 during character creation. memnii: caamasi often imprint significant events in their life as unfading memories called memnii. once per game session, a caamasi may form a new memnis that encompasses one scene or encounter. at any time, a caamasi may perfectly recall any memnis that [they] have formed or witnessed, or share it with another caamasi or a force-sensitive character. ffg wiki",
+      "vector_ready": true,
+      "official_sources": []
+    },
+    "Sullustan": {
+      "name": "Sullustan",
+      "characteristics": {
+        "brawn": 2,
+        "agility": 3,
+        "intellect": 2,
+        "cunning": 1,
+        "willpower": 2,
+        "presence": 2
+      },
+      "derived_attributes": {
+        "wound_threshold": "10 + Brawn",
+        "strain_threshold": "10 + Willpower",
+        "starting_xp": 100
+      },
+      "special_abilities": [
+        "Sullustans begin with 1 rank in Astrogation; they may not train this skill above rank 2 at character creation.",
+        "They also start with one rank in the Skilled Jockey talent."
+      ],
+      "metadata": {
+        "source": "FFG Wiki",
+        "data_source_priority": "FFG_WIKI_PRIMARY",
+        "extraction_date": "2025-07-08",
+        "game_line": "Universal",
+        "rarity": "uncommon"
+      },
+      "ai_searchable_text": "sullustan sullustans begin with 1 rank in astrogation; they may not train this skill above rank 2 at character creation. they also start with one rank in the skilled jockey talent. ffg wiki",
+      "vector_ready": true,
+      "official_sources": []
+    },
+    "Hutt": {
+      "name": "Hutt",
+      "characteristics": {
+        "brawn": 3,
+        "agility": 1,
+        "intellect": 2,
+        "cunning": 2,
+        "willpower": 3,
+        "presence": 2
+      },
+      "derived_attributes": {
+        "wound_threshold": "13 + Brawn",
+        "strain_threshold": "11 + Willpower",
+        "starting_xp": 70
+      },
+      "special_abilities": [
+        "Begin with one rank in Enduring talent",
+        "Begin with one rank in Nobody's Fool talents",
+        "Begin with one rank in Coercion or Discipline",
+        "Cannot train Coercion or Discipline above rank 2 during character creation",
+        "Ponderous: A Hutt can never spend more than one maneuver moving per turn."
+      ],
+      "metadata": {
+        "source": "FFG Wiki - Lords of Nal Hutta: A Sourcebook for Hutt Space (Page 94)",
+        "data_source_priority": "FFG_WIKI_PRIMARY",
+        "extraction_date": "2025-07-08",
+        "game_line": "Universal",
+        "rarity": "rare"
+      },
+      "ai_searchable_text": "hutt begin with one rank in enduring talent begin with one rank in nobody's fool talents begin with one rank in coercion or discipline cannot train coercion or discipline above rank 2 during character creation ponderous: a hutt can never spend more than one maneuver moving per turn. ffg wiki - lords of nal hutta: a sourcebook for hutt space (page 94)",
+      "vector_ready": true,
+      "official_sources": []
+    },
+    "Toydarian": {
+      "name": "Toydarian",
+      "characteristics": {
+        "brawn": 1,
+        "agility": 1,
+        "intellect": 2,
+        "cunning": 2,
+        "willpower": 3,
+        "presence": 3
+      },
+      "derived_attributes": {
+        "wound_threshold": "9 + Brawn",
+        "strain_threshold": "12 + Willpower",
+        "starting_xp": 90
+      },
+      "special_abilities": [
+        "Toydarians are smaller than average and count as silhouette 0.",
+        "Hoverer: Toydarians have wings that allow them to hover slightly off the ground. When hovering, Toydarians do not have to spend additional maneuvers when navigating difficult terrain. Otherwise, their wings allow them no extra capabilities beyond those of a normal, walking character."
+      ],
+      "metadata": {
+        "source": "FFG Wiki - Enter the Unknown: A Sourcebook for Explorers (Page 22-23)",
+        "data_source_priority": "FFG_WIKI_PRIMARY",
+        "extraction_date": "2025-07-08",
+        "game_line": "Universal",
+        "rarity": "uncommon"
+      },
+      "ai_searchable_text": "toydarian toydarians are smaller than average and count as silhouette 0. hoverer: toydarians have wings that allow them to hover slightly off the ground. when hovering, toydarians do not have to spend additional maneuvers when navigating difficult terrain. otherwise, their wings allow them no extra capabilities beyond those of a normal, walking character. ffg wiki - enter the unknown: a sourcebook for explorers (page 22-23)",
+      "vector_ready": true,
+      "official_sources": []
+    },
+    "Mon Calamari": {
+      "name": "Mon Calamari",
+      "characteristics": {
+        "brawn": 2,
+        "agility": 2,
+        "intellect": 3,
+        "cunning": 1,
+        "willpower": 2,
+        "presence": 2
+      },
+      "derived_attributes": {
+        "wound_threshold": "10 + Brawn",
+        "strain_threshold": "10 + Willpower",
+        "starting_xp": 100
+      },
+      "special_abilities": [
+        "Mon Calamari begin the game with one rank in Knowledge (Education). They still may not train Knowledge (Education) above rank 2 during character creation.",
+        "Amphibious: Mon Calamari can breathe underwater without penalty and never suffer movement penalties for traveling through water."
+      ],
+      "metadata": {
+        "source": "FFG Wiki",
+        "data_source_priority": "FFG_WIKI_PRIMARY",
+        "extraction_date": "2025-07-08",
+        "game_line": "Universal",
+        "rarity": "uncommon"
+      },
+      "ai_searchable_text": "mon calamari mon calamari begin the game with one rank in knowledge (education). they still may not train knowledge (education) above rank 2 during character creation. amphibious: mon calamari can breathe underwater without penalty and never suffer movement penalties for traveling through water. ffg wiki",
+      "vector_ready": true,
+      "official_sources": []
+    },
+    "Ithorian": {
+      "name": "Ithorian",
+      "characteristics": {
+        "brawn": 2,
+        "agility": 1,
+        "intellect": 2,
+        "cunning": 2,
+        "willpower": 3,
+        "presence": 2
+      },
+      "derived_attributes": {
+        "wound_threshold": "9 + Brawn",
+        "strain_threshold": "12 + Willpower",
+        "starting_xp": 90
+      },
+      "special_abilities": [
+        "Ithorians begin the game with one rank in Survival. They still may not train Survival above rank 2 during character creation.",
+        "Ithorian Bellow: With two mouths and four throats, Ithorians have a unique natural weapon they can call upon when threatened (Resilience; Damage 6; Critical 4; Range [Short]; Blast 3, Concussive 1, Slow-Firing 2, Stun Damage). Each time they use this ability, they suffer 3 strain."
+      ],
+      "metadata": {
+        "source": "FFG Wiki",
+        "data_source_priority": "FFG_WIKI_PRIMARY",
+        "extraction_date": "2025-07-08",
+        "game_line": "Universal",
+        "rarity": "uncommon"
+      },
+      "ai_searchable_text": "ithorian ithorians begin the game with one rank in survival. they still may not train survival above rank 2 during character creation. ithorian bellow: with two mouths and four throats, ithorians have a unique natural weapon they can call upon when threatened (resilience; damage 6; critical 4; range [short]; blast 3, concussive 1, slow-firing 2, stun damage). each time they use this ability, they suffer 3 strain. ffg wiki",
+      "vector_ready": true,
+      "official_sources": []
+    },
+    "Aleena": {
+      "name": "Unknown",
+      "characteristics": {
+        "brawn": 1,
+        "agility": 3,
+        "intellect": 2,
+        "cunning": 2,
+        "willpower": 2,
+        "presence": 2
+      },
+      "derived_attributes": {
+        "wound_threshold": 8,
+        "strain_threshold": 12,
+        "starting_xp": 100
+      },
+      "special_abilities": [
+        "Small Stature: Difficulty targeting at long range",
+        "Quick Reflexes: Remove setback from Coordination",
+        "Nimble: One free rank in Coordination"
+      ],
+      "metadata": {
+        "source": "Lords of Nal Hutta",
+        "data_source_priority": "VECTOR_DB_SECONDARY",
+        "extraction_date": "Unknown",
+        "game_line": "Universal",
+        "rarity": "uncommon"
+      },
+      "ai_searchable_text": " small stature: difficulty targeting at long range quick reflexes: remove setback from coordination nimble: one free rank in coordination lords of nal hutta",
+      "vector_ready": true,
+      "official_sources": []
+    },
+    "Arcona": {
+      "name": "Unknown",
+      "characteristics": {
+        "brawn": 2,
+        "agility": 2,
+        "intellect": 2,
+        "cunning": 3,
+        "willpower": 2,
+        "presence": 1
+      },
+      "derived_attributes": {
+        "wound_threshold": 10,
+        "strain_threshold": 10,
+        "starting_xp": 100
+      },
+      "special_abilities": [
+        "One rank in Vigilance",
+        "Mood Readers: Add boost to Charm/Negotiation",
+        "Heat resistance: Remove setback from arid conditions"
+      ],
+      "metadata": {
+        "source": "Far Horizons",
+        "data_source_priority": "VECTOR_DB_SECONDARY",
+        "extraction_date": "Unknown",
+        "game_line": "Universal",
+        "rarity": "uncommon"
+      },
+      "ai_searchable_text": " one rank in vigilance mood readers: add boost to charm/negotiation heat resistance: remove setback from arid conditions far horizons",
+      "vector_ready": true,
+      "official_sources": []
+    },
+    "Bothan": {
+      "name": "Unknown",
+      "characteristics": {
+        "brawn": 1,
+        "agility": 2,
+        "intellect": 2,
+        "cunning": 3,
+        "willpower": 2,
+        "presence": 2
+      },
+      "derived_attributes": {
+        "wound_threshold": 10,
+        "strain_threshold": 11,
+        "starting_xp": 100
+      },
+      "special_abilities": [
+        "Bothans begin the game with one rank in Streetwise. They still may not train Streetwise above rank 2 during character creation.",
+        "They also start with one rank in the Convincing Demeanor talent."
+      ],
+      "metadata": {
+        "source": "Age of Rebellion COMPLETE (AI OCR)",
+        "data_source_priority": "VECTOR_DB_SECONDARY",
+        "extraction_date": "Unknown",
+        "game_line": "Age of Rebellion",
+        "rarity": "uncommon"
+      },
+      "ai_searchable_text": " bothans begin the game with one rank in streetwise. they still may not train streetwise above rank 2 during character creation. they also start with one rank in the convincing demeanor talent. age of rebellion complete (ai ocr)",
+      "vector_ready": true,
+      "official_sources": []
+    },
+    "Cerean": {
+      "name": "Unknown",
+      "characteristics": {
+        "brawn": 2,
+        "agility": 1,
+        "intellect": 3,
+        "cunning": 2,
+        "willpower": 2,
+        "presence": 2
+      },
+      "derived_attributes": {
+        "wound_threshold": 10,
+        "strain_threshold": 13,
+        "starting_xp": 90
+      },
+      "special_abilities": [
+        "Cereans begin the game with one rank in Vigilance. They still may not train Vigilance above rank 2 during character creation.",
+        "Binary Processing: Cereans treat all Knowledge skills as career skills."
+      ],
+      "metadata": {
+        "source": "Force and Destiny Core Rulebook",
+        "data_source_priority": "VECTOR_DB_SECONDARY",
+        "extraction_date": "Unknown",
+        "game_line": "Force and Destiny",
+        "rarity": "uncommon"
+      },
+      "ai_searchable_text": " cereans begin the game with one rank in vigilance. they still may not train vigilance above rank 2 during character creation. binary processing: cereans treat all knowledge skills as career skills. force and destiny core rulebook",
+      "vector_ready": true,
+      "official_sources": []
+    },
+    "Chevin": {
+      "name": "Unknown",
+      "characteristics": {
+        "brawn": 3,
+        "agility": 1,
+        "intellect": 2,
+        "cunning": 3,
+        "willpower": 2,
+        "presence": 1
+      },
+      "derived_attributes": {
+        "wound_threshold": 11,
+        "strain_threshold": 11,
+        "starting_xp": 80
+      },
+      "special_abilities": [
+        "One rank in Negotiation",
+        "Advanced Olfaction: Enhanced smell tracking",
+        "Large size and thick hide"
+      ],
+      "metadata": {
+        "source": "Far Horizons",
+        "data_source_priority": "VECTOR_DB_SECONDARY",
+        "extraction_date": "Unknown",
+        "game_line": "Universal",
+        "rarity": "rare"
+      },
+      "ai_searchable_text": " one rank in negotiation advanced olfaction: enhanced smell tracking large size and thick hide far horizons",
+      "vector_ready": true,
+      "official_sources": []
+    },
+    "Chiss": {
+      "name": "Unknown",
+      "characteristics": {
+        "brawn": 2,
+        "agility": 2,
+        "intellect": 3,
+        "cunning": 2,
+        "willpower": 2,
+        "presence": 1
+      },
+      "derived_attributes": {
+        "wound_threshold": 10,
+        "strain_threshold": 10,
+        "starting_xp": 100
+      },
+      "special_abilities": [
+        "Chiss begin the game with one rank in Cool. They still may not train Cool above rank 2 during character creation.",
+        "Infravision: Chiss have adapted to be able to see in both the infrared and normal visual spectra. This enables Chiss characters to remove up to a setback die added to checks by lighting conditions."
+      ],
+      "metadata": {
+        "source": "Enter the Unknown",
+        "data_source_priority": "VECTOR_DB_SECONDARY",
+        "extraction_date": "Unknown",
+        "game_line": "Universal",
+        "rarity": "uncommon"
+      },
+      "ai_searchable_text": " chiss begin the game with one rank in cool. they still may not train cool above rank 2 during character creation. infravision: chiss have adapted to be able to see in both the infrared and normal visual spectra. this enables chiss characters to remove up to a setback die added to checks by lighting conditions. enter the unknown",
+      "vector_ready": true,
+      "official_sources": []
+    },
+    "Devaronian": {
+      "name": "Unknown",
+      "characteristics": {
+        "brawn": 2,
+        "agility": 2,
+        "intellect": 2,
+        "cunning": 3,
+        "willpower": 2,
+        "presence": 1
+      },
+      "derived_attributes": {
+        "wound_threshold": 11,
+        "strain_threshold": 10,
+        "starting_xp": 95
+      },
+      "special_abilities": [
+        "One rank in Survival or Deception",
+        "Resilient Metabolism: Automatic boost to Resilience checks",
+        "Hardy physiology resistant to toxins"
+      ],
+      "metadata": {
+        "source": "Nexus of Power",
+        "data_source_priority": "VECTOR_DB_SECONDARY",
+        "extraction_date": "Unknown",
+        "game_line": "Universal",
+        "rarity": "uncommon"
+      },
+      "ai_searchable_text": " one rank in survival or deception resilient metabolism: automatic boost to resilience checks hardy physiology resistant to toxins nexus of power",
+      "vector_ready": true,
+      "official_sources": []
+    },
+    "Drall": {
+      "name": "Unknown",
+      "characteristics": {
+        "brawn": 1,
+        "agility": 1,
+        "intellect": 3,
+        "cunning": 2,
+        "willpower": 3,
+        "presence": 2
+      },
+      "derived_attributes": {
+        "wound_threshold": 8,
+        "strain_threshold": 12,
+        "starting_xp": 90
+      },
+      "special_abilities": [
+        "One rank in Knowledge (Education)",
+        "Problem solving bonus: Add boost to assistance",
+        "Small size and analytical mind"
+      ],
+      "metadata": {
+        "source": "Suns of Fortune",
+        "data_source_priority": "VECTOR_DB_SECONDARY",
+        "extraction_date": "Unknown",
+        "game_line": "Universal",
+        "rarity": "uncommon"
+      },
+      "ai_searchable_text": " one rank in knowledge (education) problem solving bonus: add boost to assistance small size and analytical mind suns of fortune",
+      "vector_ready": true,
+      "official_sources": []
+    },
+    "Falleen": {
+      "name": "Unknown",
+      "characteristics": {
+        "brawn": 2,
+        "agility": 2,
+        "intellect": 2,
+        "cunning": 2,
+        "willpower": 2,
+        "presence": 3
+      },
+      "derived_attributes": {
+        "wound_threshold": 10,
+        "strain_threshold": 12,
+        "starting_xp": 90
+      },
+      "special_abilities": [
+        "One rank in Charm",
+        "Beguiling Pheromones: Upgrade Charm/Deception/Negotiation",
+        "Color-changing skin and emotional manipulation"
+      ],
+      "metadata": {
+        "source": "Fly Casual",
+        "data_source_priority": "VECTOR_DB_SECONDARY",
+        "extraction_date": "Unknown",
+        "game_line": "Universal",
+        "rarity": "uncommon"
+      },
+      "ai_searchable_text": " one rank in charm beguiling pheromones: upgrade charm/deception/negotiation color-changing skin and emotional manipulation fly casual",
+      "vector_ready": true,
+      "official_sources": []
+    },
+    "Gand": {
+      "name": "Unknown",
+      "characteristics": {
+        "brawn": 2,
+        "agility": 2,
+        "intellect": 2,
+        "cunning": 2,
+        "willpower": 3,
+        "presence": 1
+      },
+      "derived_attributes": {
+        "wound_threshold": 10,
+        "strain_threshold": 10,
+        "starting_xp": 100
+      },
+      "special_abilities": [
+        "Gand begin the game with one rank in Discipline. They still may not train Discipline above rank 2 during character creation.",
+        "Ammonia Breathers: Players choose between two subspecies - Lungless Gand (immune to suffocation but not vacuum wounds) or Lung-having Gand (start with ammonia respirator, treat oxygen as atmosphere Rating 8, gain +10 starting XP)."
+      ],
+      "metadata": {
+        "source": "Edge of the Empire Core Rulebook",
+        "data_source_priority": "VECTOR_DB_SECONDARY",
+        "extraction_date": "Unknown",
+        "game_line": "Edge of the Empire",
+        "rarity": "uncommon"
+      },
+      "ai_searchable_text": " gand begin the game with one rank in discipline. they still may not train discipline above rank 2 during character creation. ammonia breathers: players choose between two subspecies - lungless gand (immune to suffocation but not vacuum wounds) or lung-having gand (start with ammonia respirator, treat oxygen as atmosphere rating 8, gain +10 starting xp). edge of the empire core rulebook",
+      "vector_ready": true,
+      "official_sources": []
+    },
+    "Gank": {
+      "name": "Unknown",
+      "characteristics": {
+        "brawn": 2,
+        "agility": 2,
+        "intellect": 2,
+        "cunning": 2,
+        "willpower": 2,
+        "presence": 2
+      },
+      "derived_attributes": {
+        "wound_threshold": 10,
+        "strain_threshold": 10,
+        "starting_xp": 110
+      },
+      "special_abilities": [
+        "One rank in Coercion or Vigilance",
+        "Cyborg: Start with up to two cybernetic implants",
+        "Mysterious species of mercenaries"
+      ],
+      "metadata": {
+        "source": "Lords of Nal Hutta",
+        "data_source_priority": "VECTOR_DB_SECONDARY",
+        "extraction_date": "Unknown",
+        "game_line": "Universal",
+        "rarity": "common"
+      },
+      "ai_searchable_text": " one rank in coercion or vigilance cyborg: start with up to two cybernetic implants mysterious species of mercenaries lords of nal hutta",
+      "vector_ready": true,
+      "official_sources": []
+    },
+    "Gran": {
+      "name": "Unknown",
+      "characteristics": {
+        "brawn": 2,
+        "agility": 2,
+        "intellect": 2,
+        "cunning": 2,
+        "willpower": 1,
+        "presence": 3
+      },
+      "derived_attributes": {
+        "wound_threshold": 10,
+        "strain_threshold": 9,
+        "starting_xp": 100
+      },
+      "special_abilities": [
+        "One rank in Charm or Negotiation",
+        "Enhanced Vision: Remove setback from ranged combat/Perception",
+        "Three-eyed peaceful species"
+      ],
+      "metadata": {
+        "source": "Far Horizons",
+        "data_source_priority": "VECTOR_DB_SECONDARY",
+        "extraction_date": "Unknown",
+        "game_line": "Universal",
+        "rarity": "uncommon"
+      },
+      "ai_searchable_text": " one rank in charm or negotiation enhanced vision: remove setback from ranged combat/perception three-eyed peaceful species far horizons",
+      "vector_ready": true,
+      "official_sources": []
+    },
+    "Gungan": {
+      "name": "Unknown",
+      "characteristics": {
+        "brawn": 2,
+        "agility": 3,
+        "intellect": 2,
+        "cunning": 1,
+        "willpower": 2,
+        "presence": 2
+      },
+      "derived_attributes": {
+        "wound_threshold": 10,
+        "strain_threshold": 10,
+        "starting_xp": 100
+      },
+      "special_abilities": [
+        "One rank in Athletics",
+        "Amphibious: Breathe underwater, no water movement penalties",
+        "Natural swimmers and aquatic fighters"
+      ],
+      "metadata": {
+        "source": "Nexus of Power",
+        "data_source_priority": "VECTOR_DB_SECONDARY",
+        "extraction_date": "Unknown",
+        "game_line": "Universal",
+        "rarity": "uncommon"
+      },
+      "ai_searchable_text": " one rank in athletics amphibious: breathe underwater, no water movement penalties natural swimmers and aquatic fighters nexus of power",
+      "vector_ready": true,
+      "official_sources": []
+    },
+    "Human": {
+      "name": "Unknown",
+      "characteristics": {
+        "brawn": 2,
+        "agility": 2,
+        "intellect": 2,
+        "cunning": 2,
+        "willpower": 2,
+        "presence": 2
+      },
+      "derived_attributes": {
+        "wound_threshold": 10,
+        "strain_threshold": 10,
+        "starting_xp": 110
+      },
+      "special_abilities": [
+        "Two non-career skills of choice",
+        "Most adaptable and numerous species",
+        "Balanced characteristics"
+      ],
+      "metadata": {
+        "source": "EotE Core Rulebook",
+        "data_source_priority": "VECTOR_DB_SECONDARY",
+        "extraction_date": "Unknown",
+        "game_line": "Edge of the Empire",
+        "rarity": "common"
+      },
+      "ai_searchable_text": " two non-career skills of choice most adaptable and numerous species balanced characteristics eote core rulebook",
+      "vector_ready": true,
+      "official_sources": []
+    },
+    "Kel Dor": {
+      "name": "Unknown",
+      "characteristics": {
+        "brawn": 1,
+        "agility": 2,
+        "intellect": 2,
+        "cunning": 2,
+        "willpower": 3,
+        "presence": 2
+      },
+      "derived_attributes": {
+        "wound_threshold": 9,
+        "strain_threshold": 11,
+        "starting_xp": 100
+      },
+      "special_abilities": [
+        "Kel Dors begin the game with one rank in Knowledge (Education). They still may not train Knowledge (Education) above rank 2 during character creation.",
+        "Dark Vision: When making skill checks, Kel Dors remove up to two setback dice imposed due to darkness.",
+        "Atmospheric Requirement: Kel Dors must wear a specialized mask to breathe and see outside of their native atmosphere. A Kel Dor character starts the game with an antitox breath mask and treats oxygen as a dangerous atmosphere with Rating 8. However, Kel Dors may survive in vacuum for up to five minutes before suffering its effects."
+      ],
+      "metadata": {
+        "source": "Force and Destiny Core",
+        "data_source_priority": "VECTOR_DB_SECONDARY",
+        "extraction_date": "Unknown",
+        "game_line": "Force and Destiny",
+        "rarity": "uncommon"
+      },
+      "ai_searchable_text": " kel dors begin the game with one rank in knowledge (education). they still may not train knowledge (education) above rank 2 during character creation. dark vision: when making skill checks, kel dors remove up to two setback dice imposed due to darkness. atmospheric requirement: kel dors must wear a specialized mask to breathe and see outside of their native atmosphere. a kel dor character starts the game with an antitox breath mask and treats oxygen as a dangerous atmosphere with rating 8. however, kel dors may survive in vacuum for up to five minutes before suffering its effects. force and destiny core",
+      "vector_ready": true,
+      "official_sources": []
+    },
+    "Klatooinian": {
+      "name": "Unknown",
+      "characteristics": {
+        "brawn": 3,
+        "agility": 2,
+        "intellect": 2,
+        "cunning": 1,
+        "willpower": 2,
+        "presence": 2
+      },
+      "derived_attributes": {
+        "wound_threshold": 10,
+        "strain_threshold": 10,
+        "starting_xp": 100
+      },
+      "special_abilities": [
+        "One rank in Brawl, Ranged (Heavy), or Ranged (Light)",
+        "One additional rank in non-career skill of choice",
+        "Traditionally enslaved to Hutts"
+      ],
+      "metadata": {
+        "source": "Dangerous Covenants",
+        "data_source_priority": "VECTOR_DB_SECONDARY",
+        "extraction_date": "Unknown",
+        "game_line": "Universal",
+        "rarity": "uncommon"
+      },
+      "ai_searchable_text": " one rank in brawl, ranged (heavy), or ranged (light) one additional rank in non-career skill of choice traditionally enslaved to hutts dangerous covenants",
+      "vector_ready": true,
+      "official_sources": []
+    },
+    "Muun": {
+      "name": "Unknown",
+      "characteristics": {
+        "brawn": 1,
+        "agility": 2,
+        "intellect": 3,
+        "cunning": 3,
+        "willpower": 2,
+        "presence": 1
+      },
+      "derived_attributes": {
+        "wound_threshold": 9,
+        "strain_threshold": 9,
+        "starting_xp": 90
+      },
+      "special_abilities": [
+        "One rank in Knowledge (Education)",
+        "One rank in Knowledge (Core Worlds)",
+        "Deep Pockets: Start with additional 1,000 credits",
+        "Natural bankers and economists"
+      ],
+      "metadata": {
+        "source": "Endless Vigil",
+        "data_source_priority": "VECTOR_DB_SECONDARY",
+        "extraction_date": "Unknown",
+        "game_line": "Universal",
+        "rarity": "uncommon"
+      },
+      "ai_searchable_text": " one rank in knowledge (education) one rank in knowledge (core worlds) deep pockets: start with additional 1,000 credits natural bankers and economists endless vigil",
+      "vector_ready": true,
+      "official_sources": []
+    },
+    "Nautolan": {
+      "name": "Unknown",
+      "characteristics": {
+        "brawn": 3,
+        "agility": 2,
+        "intellect": 2,
+        "cunning": 2,
+        "willpower": 1,
+        "presence": 2
+      },
+      "derived_attributes": {
+        "wound_threshold": 11,
+        "strain_threshold": 9,
+        "starting_xp": 100
+      },
+      "special_abilities": [
+        "Nautolans begin the game with one rank in Athletics. They still may not train Athletics above rank 2 during character creation.",
+        "Amphibious: Nautolans may breathe underwater without penalty and never suffer movement penalties for traveling through water."
+      ],
+      "metadata": {
+        "source": "Force and Destiny Core Rulebook",
+        "data_source_priority": "VECTOR_DB_SECONDARY",
+        "extraction_date": "Unknown",
+        "game_line": "Force and Destiny",
+        "rarity": "uncommon"
+      },
+      "ai_searchable_text": " nautolans begin the game with one rank in athletics. they still may not train athletics above rank 2 during character creation. amphibious: nautolans may breathe underwater without penalty and never suffer movement penalties for traveling through water. force and destiny core rulebook",
+      "vector_ready": true,
+      "official_sources": []
+    },
+    "Nikto": {
+      "name": "Unknown",
+      "characteristics": {
+        "brawn": 3,
+        "agility": 2,
+        "intellect": 2,
+        "cunning": 1,
+        "willpower": 2,
+        "presence": 2
+      },
+      "derived_attributes": {
+        "wound_threshold": 11,
+        "strain_threshold": 10,
+        "starting_xp": 100
+      },
+      "special_abilities": [
+        "Five subspecies with different adaptations",
+        "Red Niktos: Desert adaptation",
+        "Green Niktos: Forest adaptation",
+        "Blue Niktos: Coastal adaptation",
+        "Pale Niktos: Mountain adaptation"
+      ],
+      "metadata": {
+        "source": "Lords of Nal Hutta",
+        "data_source_priority": "VECTOR_DB_SECONDARY",
+        "extraction_date": "Unknown",
+        "game_line": "Universal",
+        "rarity": "uncommon"
+      },
+      "ai_searchable_text": " five subspecies with different adaptations red niktos: desert adaptation green niktos: forest adaptation blue niktos: coastal adaptation pale niktos: mountain adaptation lords of nal hutta",
+      "vector_ready": true,
+      "official_sources": []
+    },
+    "Quarren": {
+      "name": "Unknown",
+      "characteristics": {
+        "brawn": 2,
+        "agility": 2,
+        "intellect": 3,
+        "cunning": 2,
+        "willpower": 1,
+        "presence": 2
+      },
+      "derived_attributes": {
+        "wound_threshold": 10,
+        "strain_threshold": 10,
+        "starting_xp": 100
+      },
+      "special_abilities": [
+        "Amphibious: Can breathe underwater",
+        "Ink Cloud: Once per encounter, create concealment cloud",
+        "Tentacle Dexterity: Additional manipulation capabilities"
+      ],
+      "metadata": {
+        "source": "Various sourcebooks",
+        "data_source_priority": "VECTOR_DB_SECONDARY",
+        "extraction_date": "Unknown",
+        "game_line": "Universal",
+        "rarity": "uncommon"
+      },
+      "ai_searchable_text": " amphibious: can breathe underwater ink cloud: once per encounter, create concealment cloud tentacle dexterity: additional manipulation capabilities various sourcebooks",
+      "vector_ready": true,
+      "official_sources": []
+    },
+    "Rodian": {
+      "name": "Unknown",
+      "characteristics": {
+        "brawn": 2,
+        "agility": 3,
+        "intellect": 2,
+        "cunning": 2,
+        "willpower": 1,
+        "presence": 2
+      },
+      "derived_attributes": {
+        "wound_threshold": 10,
+        "strain_threshold": 10,
+        "starting_xp": 100
+      },
+      "special_abilities": [
+        "Rodians begin the game with one rank in Survival. They still may not train Survival above rank 2 during character creation.",
+        "Rodians start with one rank in the Expert Tracker talent."
+      ],
+      "metadata": {
+        "source": "Age of Rebellion COMPLETE (AI OCR)",
+        "data_source_priority": "VECTOR_DB_SECONDARY",
+        "extraction_date": "Unknown",
+        "game_line": "Age of Rebellion",
+        "rarity": "uncommon"
+      },
+      "ai_searchable_text": " rodians begin the game with one rank in survival. they still may not train survival above rank 2 during character creation. rodians start with one rank in the expert tracker talent. age of rebellion complete (ai ocr)",
+      "vector_ready": true,
+      "official_sources": []
+    },
+    "Sakiyan": {
+      "name": "Unknown",
+      "characteristics": {
+        "brawn": 2,
+        "agility": 2,
+        "intellect": 2,
+        "cunning": 3,
+        "willpower": 2,
+        "presence": 1
+      },
+      "derived_attributes": {
+        "wound_threshold": 10,
+        "strain_threshold": 11,
+        "starting_xp": 100
+      },
+      "special_abilities": [
+        "Enhanced Senses: Upgrade Perception checks",
+        "Natural Trackers: Remove setback from tracking",
+        "Keen Hearing: Additional audio detection capabilities"
+      ],
+      "metadata": {
+        "source": "Lords of Nal Hutta",
+        "data_source_priority": "VECTOR_DB_SECONDARY",
+        "extraction_date": "Unknown",
+        "game_line": "Universal",
+        "rarity": "uncommon"
+      },
+      "ai_searchable_text": " enhanced senses: upgrade perception checks natural trackers: remove setback from tracking keen hearing: additional audio detection capabilities lords of nal hutta",
+      "vector_ready": true,
+      "official_sources": []
+    },
+    "Sathari": {
+      "name": "Unknown",
+      "characteristics": {
+        "brawn": 1,
+        "agility": 3,
+        "intellect": 2,
+        "cunning": 2,
+        "willpower": 2,
+        "presence": 2
+      },
+      "derived_attributes": {
+        "wound_threshold": 8,
+        "strain_threshold": 10,
+        "starting_xp": 100
+      },
+      "special_abilities": [
+        "One rank in Coordination",
+        "Glider: Can fall safely and glide over gaps",
+        "Four-eyed avian species"
+      ],
+      "metadata": {
+        "source": "Chronicles of the Gatekeeper",
+        "data_source_priority": "VECTOR_DB_SECONDARY",
+        "extraction_date": "Unknown",
+        "game_line": "Universal",
+        "rarity": "uncommon"
+      },
+      "ai_searchable_text": " one rank in coordination glider: can fall safely and glide over gaps four-eyed avian species chronicles of the gatekeeper",
+      "vector_ready": true,
+      "official_sources": []
+    },
+    "Selonian": {
+      "name": "Unknown",
+      "characteristics": {
+        "brawn": 2,
+        "agility": 3,
+        "intellect": 2,
+        "cunning": 1,
+        "willpower": 2,
+        "presence": 2
+      },
+      "derived_attributes": {
+        "wound_threshold": 11,
+        "strain_threshold": 10,
+        "starting_xp": 80
+      },
+      "special_abilities": [
+        "One rank in Coordination",
+        "Darkvision: Remove setback from darkness",
+        "Tail: Can be used as Brawl weapon",
+        "Fierce loyalty to family/den"
+      ],
+      "metadata": {
+        "source": "Suns of Fortune",
+        "data_source_priority": "VECTOR_DB_SECONDARY",
+        "extraction_date": "Unknown",
+        "game_line": "Universal",
+        "rarity": "rare"
+      },
+      "ai_searchable_text": " one rank in coordination darkvision: remove setback from darkness tail: can be used as brawl weapon fierce loyalty to family/den suns of fortune",
+      "vector_ready": true,
+      "official_sources": []
+    },
+    "Togruta": {
+      "name": "Unknown",
+      "characteristics": {
+        "brawn": 2,
+        "agility": 2,
+        "intellect": 2,
+        "cunning": 2,
+        "willpower": 2,
+        "presence": 3
+      },
+      "derived_attributes": {
+        "wound_threshold": 10,
+        "strain_threshold": 11,
+        "starting_xp": 100
+      },
+      "special_abilities": [
+        "Montrals: Togruta have a pair of hollow horn-like projections called montrals that grow from the top of their heads. These montrals are used for echolocation. Togruta ignore the effects of all environmental conditions that would cause them to upgrade the difficulty of Perception checks once.",
+        "Natural Hunters: Add boost dice to checks to track or hunt prey"
+      ],
+      "metadata": {
+        "source": "Force and Destiny COMPLETE (AI OCR)",
+        "data_source_priority": "VECTOR_DB_SECONDARY",
+        "extraction_date": "Unknown",
+        "game_line": "Force and Destiny",
+        "rarity": "uncommon"
+      },
+      "ai_searchable_text": " montrals: togruta have a pair of hollow horn-like projections called montrals that grow from the top of their heads. these montrals are used for echolocation. togruta ignore the effects of all environmental conditions that would cause them to upgrade the difficulty of perception checks once. natural hunters: add boost dice to checks to track or hunt prey force and destiny complete (ai ocr)",
+      "vector_ready": true,
+      "official_sources": []
+    },
+    "Trandoshan": {
+      "name": "Unknown",
+      "characteristics": {
+        "brawn": 3,
+        "agility": 1,
+        "intellect": 2,
+        "cunning": 2,
+        "willpower": 2,
+        "presence": 2
+      },
+      "derived_attributes": {
+        "wound_threshold": 12,
+        "strain_threshold": 9,
+        "starting_xp": 90
+      },
+      "special_abilities": [
+        "Trandoshans begin the game with one rank in Perception. They still may not train Perception above rank 2 during character creation.",
+        "Regeneration: Whenever a Trandoshan would recover one or more wounds from natural rest or recuperation in a Bacta tank, they recover one additional wound. They do not recover one additional wound when receiving first aid or medical treatment from a character, or when using a stimpack. Trandoshans can regrow lost limbs as well, though it usually takes at least a month before the limb is usable.",
+        "Claws: When a Trandoshan makes Brawl checks to deal damage to an opponent, they deal +1 damage and have a Critical Rating of 3."
+      ],
+      "metadata": {
+        "source": "Age of Rebellion COMPLETE (AI OCR)",
+        "data_source_priority": "VECTOR_DB_SECONDARY",
+        "extraction_date": "Unknown",
+        "game_line": "Age of Rebellion",
+        "rarity": "uncommon"
+      },
+      "ai_searchable_text": " trandoshans begin the game with one rank in perception. they still may not train perception above rank 2 during character creation. regeneration: whenever a trandoshan would recover one or more wounds from natural rest or recuperation in a bacta tank, they recover one additional wound. they do not recover one additional wound when receiving first aid or medical treatment from a character, or when using a stimpack. trandoshans can regrow lost limbs as well, though it usually takes at least a month before the limb is usable. claws: when a trandoshan makes brawl checks to deal damage to an opponent, they deal +1 damage and have a critical rating of 3. age of rebellion complete (ai ocr)",
+      "vector_ready": true,
+      "official_sources": []
+    },
+    "Twi'lek": {
+      "name": "Unknown",
+      "characteristics": {
+        "brawn": 1,
+        "agility": 2,
+        "intellect": 2,
+        "cunning": 2,
+        "willpower": 2,
+        "presence": 3
+      },
+      "derived_attributes": {
+        "wound_threshold": 10,
+        "strain_threshold": 11,
+        "starting_xp": 100
+      },
+      "special_abilities": [
+        "Twi'leks begin the game with one rank in either Charm or Deception. They still may not train Charm or Deception above rank 2 during character creation.",
+        "Desert Dwellers: When making skill checks, Twi'leks may remove a setback die imposed due to arid or hot environmental conditions."
+      ],
+      "metadata": {
+        "source": "EotE Core Rulebook",
+        "data_source_priority": "VECTOR_DB_SECONDARY",
+        "extraction_date": "Unknown",
+        "game_line": "Edge of the Empire",
+        "rarity": "uncommon"
+      },
+      "ai_searchable_text": " twi'leks begin the game with one rank in either charm or deception. they still may not train charm or deception above rank 2 during character creation. desert dwellers: when making skill checks, twi'leks may remove a setback die imposed due to arid or hot environmental conditions. eote core rulebook",
+      "vector_ready": true,
+      "official_sources": []
+    },
+    "Weequay": {
+      "name": "Unknown",
+      "characteristics": {
+        "brawn": 3,
+        "agility": 1,
+        "intellect": 2,
+        "cunning": 2,
+        "willpower": 2,
+        "presence": 2
+      },
+      "derived_attributes": {
+        "wound_threshold": 12,
+        "strain_threshold": 9,
+        "starting_xp": 90
+      },
+      "special_abilities": [
+        "Desert Dwellers: Remove setback dice from heat/desert environments",
+        "Pheromone Communication: Silent communication with other Weequay",
+        "Thick Hide: +1 soak value"
+      ],
+      "metadata": {
+        "source": "Lords of Nal Hutta",
+        "data_source_priority": "VECTOR_DB_SECONDARY",
+        "extraction_date": "Unknown",
+        "game_line": "Universal",
+        "rarity": "uncommon"
+      },
+      "ai_searchable_text": " desert dwellers: remove setback dice from heat/desert environments pheromone communication: silent communication with other weequay thick hide: +1 soak value lords of nal hutta",
+      "vector_ready": true,
+      "official_sources": []
+    },
+    "Wookiee": {
+      "name": "Unknown",
+      "characteristics": {
+        "brawn": 3,
+        "agility": 2,
+        "intellect": 2,
+        "cunning": 2,
+        "willpower": 1,
+        "presence": 2
+      },
+      "derived_attributes": {
+        "wound_threshold": 14,
+        "strain_threshold": 8,
+        "starting_xp": 90
+      },
+      "special_abilities": [
+        "Wookiees begin the game with oner rank in Brawl. They still may not train Brawl above rank 2 during character creation.",
+        "Wookiee Rage: When a Wookiee has suffered any wounds [they] deal +1 damage to Brawl and Melee attacks. When a Wookiee is Critically Injured, [they] instead deal +2 damage to Brawl and Melee attacks."
+      ],
+      "metadata": {
+        "source": "Edge of the Empire Core Rulebook",
+        "data_source_priority": "VECTOR_DB_SECONDARY",
+        "extraction_date": "Unknown",
+        "game_line": "Edge of the Empire",
+        "rarity": "uncommon"
+      },
+      "ai_searchable_text": " wookiees begin the game with oner rank in brawl. they still may not train brawl above rank 2 during character creation. wookiee rage: when a wookiee has suffered any wounds [they] deal +1 damage to brawl and melee attacks. when a wookiee is critically injured, [they] instead deal +2 damage to brawl and melee attacks. edge of the empire core rulebook",
+      "vector_ready": true,
+      "official_sources": []
+    },
+    "Zabrak": {
+      "name": "Unknown",
+      "characteristics": {
+        "brawn": 2,
+        "agility": 2,
+        "intellect": 2,
+        "cunning": 2,
+        "willpower": 3,
+        "presence": 1
+      },
+      "derived_attributes": {
+        "wound_threshold": 10,
+        "strain_threshold": 10,
+        "starting_xp": 100
+      },
+      "special_abilities": [
+        "Zabrak begin the game with one rank in Survival. They still may not train Survival above rank 2 during character creation.",
+        "Fearsome Countenance: Zabrak add an automatic advantage result to all Coercion checks the make."
+      ],
+      "metadata": {
+        "source": "Force and Destiny Core Rulebook",
+        "data_source_priority": "VECTOR_DB_SECONDARY",
+        "extraction_date": "Unknown",
+        "game_line": "Force and Destiny",
+        "rarity": "uncommon"
+      },
+      "ai_searchable_text": " zabrak begin the game with one rank in survival. they still may not train survival above rank 2 during character creation. fearsome countenance: zabrak add an automatic advantage result to all coercion checks the make. force and destiny core rulebook",
+      "vector_ready": true,
+      "official_sources": []
+    },
+    "Chagrian": {
+      "name": "Unknown",
+      "characteristics": {
+        "brawn": 2,
+        "agility": 2,
+        "intellect": 2,
+        "cunning": 2,
+        "willpower": 2,
+        "presence": 2
+      },
+      "derived_attributes": {
+        "wound_threshold": 11,
+        "strain_threshold": 11,
+        "starting_xp": 100
+      },
+      "special_abilities": [
+        "Amphibious: Chagrians can breathe underwater and never suffer movement penalties for traveling through water.",
+        "Radiation Sensitivity: Chagrians upgrade the difficulty of all checks twice when exposed to radiation."
+      ],
+      "metadata": {
+        "source": "Lead by Example",
+        "data_source_priority": "VECTOR_DB_SECONDARY",
+        "extraction_date": "Unknown",
+        "game_line": "Universal",
+        "rarity": "uncommon"
+      },
+      "ai_searchable_text": " amphibious: chagrians can breathe underwater and never suffer movement penalties for traveling through water. radiation sensitivity: chagrians upgrade the difficulty of all checks twice when exposed to radiation. lead by example",
+      "vector_ready": true,
+      "official_sources": []
+    },
+    "Iktotchi": {
+      "name": "Unknown",
+      "characteristics": {
+        "brawn": 2,
+        "agility": 2,
+        "intellect": 2,
+        "cunning": 2,
+        "willpower": 2,
+        "presence": 2
+      },
+      "derived_attributes": {
+        "wound_threshold": 11,
+        "strain_threshold": 11,
+        "starting_xp": 100
+      },
+      "special_abilities": [
+        "Precognition: Once per session, an Iktotchi may add two boost dice to any one check.",
+        "Desert Dweller: Iktotchi remove one setback die imposed due to arid or hot environmental conditions."
+      ],
+      "metadata": {
+        "source": "Keeping the Peace",
+        "data_source_priority": "VECTOR_DB_SECONDARY",
+        "extraction_date": "Unknown",
+        "game_line": "Universal",
+        "rarity": "uncommon"
+      },
+      "ai_searchable_text": " precognition: once per session, an iktotchi may add two boost dice to any one check. desert dweller: iktotchi remove one setback die imposed due to arid or hot environmental conditions. keeping the peace",
+      "vector_ready": true,
+      "official_sources": []
+    }
+  }
+}

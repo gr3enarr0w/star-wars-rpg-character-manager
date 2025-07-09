@@ -180,11 +180,11 @@ class CharacterCreator:
         if vector_db_species:
             combined_species.update(vector_db_species)
         
-        # Priority 1: Load from Verified Database (highest priority)
-        verified_db_file = os.path.join(project_root, 'swrpg_extracted_data', 'verified_species_database.json')
-        verified_species = self._load_verified_species_database(verified_db_file)
-        if verified_species:
-            combined_species.update(verified_species)
+        # Priority 1: Load from Final Verified Database (highest priority - official species only)
+        final_verified_db_file = os.path.join(project_root, 'swrpg_extracted_data', 'FINAL_VERIFIED_SPECIES_DATABASE.json')
+        final_verified_species = self._load_final_verified_species_database(final_verified_db_file)
+        if final_verified_species:
+            combined_species.update(final_verified_species)
         
         print(f"✅ Final species count: {len(combined_species)} species loaded")
         return combined_species
@@ -290,6 +290,25 @@ class CharacterCreator:
             
         except Exception as e:
             print(f"⚠️  Could not load verified database: {e}")
+            return {}
+    
+    def _load_final_verified_species_database(self, final_verified_db_file: str) -> Dict[str, Dict]:
+        """Load final verified species database with only official FFG/Edge Studio species"""
+        try:
+            with open(final_verified_db_file, 'r', encoding='utf-8') as f:
+                final_verified_db = json.load(f)
+            
+            final_verified_species = {}
+            for name, species_info in final_verified_db.get("species", {}).items():
+                # Use the final verified data with proper normalization
+                species_data = species_info.get("data", {})
+                final_verified_species[name] = self._normalize_species_data(species_data, "Final Verified Database (Official Only)")
+            
+            print(f"✅ Loaded {len(final_verified_species)} official species from final verified database")
+            return final_verified_species
+            
+        except Exception as e:
+            print(f"⚠️  Could not load final verified database: {e}")
             return {}
     
     def _normalize_species_data(self, species_info: Dict[str, Any], source: str) -> Dict[str, Any]:
