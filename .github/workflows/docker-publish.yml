@@ -10,7 +10,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: gr3enarr0w/star-wars-rpg-character-manager
+  IMAGE_NAME: gr3enarr0w/python-course-app
 
 jobs:
   build-and-publish:

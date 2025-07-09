@@ -197,12 +197,12 @@ let allSpeciesData = null;  // Store all species data globally
 let startingXP = 0;
 let allocatedXP = 0;
 
-// XP costs for characteristic increases during creation
+// XP costs for characteristic increases during creation (SWRPG Official: 10 × new rank)
 const characteristicCosts = {
-    3: 20,  // 2→3
-    4: 30,  // 3→4  
-    5: 40,  // 4→5
-    6: 50   // 5→6
+    3: 30,  // 2→3 (10 × 3 = 30 XP)
+    4: 40,  // 3→4 (10 × 4 = 40 XP)
+    5: 50,  // 4→5 (10 × 5 = 50 XP)
+    6: 60   // 5→6 (10 × 6 = 60 XP)
 };
 
 // Update species characteristics when species is selected

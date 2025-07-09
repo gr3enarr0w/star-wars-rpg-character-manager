@@ -12,13 +12,18 @@ class AdvancementManager:
         self.skill_costs = self._initialize_skill_costs()
     
     def _initialize_characteristic_costs(self) -> Dict[int, int]:
-        """Initialize XP costs for characteristic increases."""
+        """Initialize XP costs for characteristic increases during character creation only.
+        
+        SWRPG Rule: Characteristics can only be increased with XP during character creation.
+        After creation, they can only be increased through specific talents like 'Dedication'.
+        Cost formula: 10 × new rank
+        """
         return {
-            2: 20,   # 1→2
-            3: 30,   # 2→3
-            4: 40,   # 3→4
-            5: 50,   # 4→5
-            6: 60    # 5→6
+            2: 20,   # 1→2 (10 × 2 = 20 XP)
+            3: 30,   # 2→3 (10 × 3 = 30 XP)
+            4: 40,   # 3→4 (10 × 4 = 40 XP)
+            5: 50,   # 4→5 (10 × 5 = 50 XP)
+            6: 60    # 5→6 (10 × 6 = 60 XP)
         }
     
     def _initialize_skill_costs(self) -> Dict[int, int]:
@@ -33,7 +38,15 @@ class AdvancementManager:
     
     def calculate_characteristic_cost(self, character: Character, 
                                     characteristic: Characteristic) -> Optional[int]:
-        """Calculate XP cost to increase a characteristic."""
+        """Calculate XP cost to increase a characteristic during character creation only.
+        
+        SWRPG Rule: After character creation, characteristics can only be increased
+        through specific talents like 'Dedication', not with XP.
+        """
+        # Check if character is already created (has been saved/finalized)
+        if hasattr(character, 'is_created') and character.is_created:
+            return None  # Cannot increase characteristics with XP after creation
+        
         char_name = characteristic.value.lower()
         current_value = getattr(character, char_name)
         
@@ -64,10 +77,18 @@ class AdvancementManager:
     
     def advance_characteristic(self, character: Character, 
                              characteristic: Characteristic) -> bool:
-        """Advance a characteristic if possible."""
+        """Advance a characteristic if possible during character creation only.
+        
+        SWRPG Rule: After character creation, characteristics can only be increased
+        through specific talents like 'Dedication', not with XP.
+        """
         cost = self.calculate_characteristic_cost(character, characteristic)
         
         if cost is None:
+            return False
+        
+        # Additional check for post-creation attempts
+        if hasattr(character, 'is_created') and character.is_created:
             return False
         
         return character.increase_characteristic(characteristic, cost)
