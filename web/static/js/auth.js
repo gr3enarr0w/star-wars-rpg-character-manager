@@ -47,7 +47,7 @@ function handleAuthError(response) {
 }
 
 // Login user
-async function loginUser(email, password, twoFactorToken = null) {
+async function loginUser(email, password) {
     try {
         const response = await fetch('/api/auth/login', {
             method: 'POST',
@@ -56,8 +56,7 @@ async function loginUser(email, password, twoFactorToken = null) {
             },
             body: JSON.stringify({
                 email,
-                password,
-                two_factor_token: twoFactorToken
+                password
             })
         });
         
@@ -68,7 +67,7 @@ async function loginUser(email, password, twoFactorToken = null) {
             localStorage.setItem('user', JSON.stringify(data.user));
             return { success: true, data };
         } else {
-            return { success: false, error: data.error, requires2FA: data.requires_2fa };
+            return { success: false, error: data.error };
         }
     } catch (error) {
         return { success: false, error: error.message };
@@ -110,48 +109,6 @@ function logoutUser() {
     window.location.href = '/login';
 }
 
-// Setup 2FA
-async function setup2FA() {
-    try {
-        const response = await authenticatedFetch('/api/auth/setup-2fa', {
-            method: 'POST'
-        });
-        
-        if (handleAuthError(response)) return null;
-        
-        const data = await response.json();
-        
-        if (response.ok) {
-            return { success: true, data };
-        } else {
-            return { success: false, error: data.error };
-        }
-    } catch (error) {
-        return { success: false, error: error.message };
-    }
-}
-
-// Verify 2FA setup
-async function verify2FASetup(token) {
-    try {
-        const response = await authenticatedFetch('/api/auth/verify-2fa-setup', {
-            method: 'POST',
-            body: JSON.stringify({ token })
-        });
-        
-        if (handleAuthError(response)) return null;
-        
-        const data = await response.json();
-        
-        if (response.ok) {
-            return { success: true, data };
-        } else {
-            return { success: false, error: data.error };
-        }
-    } catch (error) {
-        return { success: false, error: error.message };
-    }
-}
 
 // Check if user has role
 function hasRole(role) {
@@ -203,8 +160,6 @@ window.auth = {
     loginUser,
     registerUser,
     logoutUser,
-    setup2FA,
-    verify2FASetup,
     hasRole,
     isAdmin,
     isGameMaster,

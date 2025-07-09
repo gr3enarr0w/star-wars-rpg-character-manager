@@ -4,25 +4,56 @@
 import os
 import sys
 
-# Get the directory where this script is located
-script_dir = os.path.dirname(os.path.abspath(__file__))
+# Configuration constants
+DEFAULT_PORT = 8000
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 
-# Add the src directory to Python path
-sys.path.insert(0, os.path.join(script_dir, 'src'))
+def setup_python_paths():
+    """Setup Python paths for imports."""
+    sys.path.insert(0, os.path.join(SCRIPT_DIR, 'src'))
+    sys.path.insert(0, os.path.join(SCRIPT_DIR, 'web'))
 
-# Add the web directory to Python path
-sys.path.insert(0, os.path.join(script_dir, 'web'))
+def change_to_web_directory():
+    """Change to web directory for Flask template/static file discovery."""
+    web_dir = os.path.join(SCRIPT_DIR, 'web')
+    if not os.path.exists(web_dir):
+        raise FileNotFoundError(f"Web directory not found: {web_dir}")
+    os.chdir(web_dir)
+    return web_dir
 
-# Change to web directory so Flask can find templates and static files
-web_dir = os.path.join(script_dir, 'web')
-os.chdir(web_dir)
+def get_port():
+    """Get port from environment variables with fallback."""
+    return int(os.getenv('PORT', os.getenv('FLASK_PORT', DEFAULT_PORT)))
 
-# Now import and run the app (Production Auth System)
-from app_with_auth import app
+def main():
+    """Main application entry point."""
+    try:
+        print("🚀 Starting Star Wars RPG Character Manager Web Application...")
+        
+        # Setup environment
+        setup_python_paths()
+        web_dir = change_to_web_directory()
+        port = get_port()
+        
+        print(f"📁 Working directory: {web_dir}")
+        print(f"🌐 Server will start at: http://localhost:{port}")
+        
+        # Import and run Flask app
+        from app_with_auth import app
+        
+        # Run in production mode
+        app.run(debug=False, host='0.0.0.0', port=port)
+        
+    except ImportError as e:
+        print(f"❌ Failed to import Flask application: {e}")
+        print("   Make sure the web application files are present")
+        sys.exit(1)
+    except FileNotFoundError as e:
+        print(f"❌ Required directory not found: {e}")
+        sys.exit(1)
+    except Exception as e:
+        print(f"❌ Application startup failed: {e}")
+        sys.exit(1)
 
 if __name__ == '__main__':
-    print("Starting Star Wars RPG Character Manager Web Application...")
-    port = int(os.getenv('FLASK_PORT', 8001))
-    print(f"Open your browser to: http://localhost:{port}")
-    print(f"Working directory: {os.getcwd()}")
-    app.run(debug=False, host='0.0.0.0', port=port)
+    main()

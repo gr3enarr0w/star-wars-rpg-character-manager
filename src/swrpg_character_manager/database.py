@@ -26,16 +26,6 @@ class User:
     created_at: Optional[datetime] = None
     updated_at: Optional[datetime] = None
     
-    # 2FA settings
-    two_factor_enabled: bool = False
-    two_factor_secret: Optional[str] = None
-    backup_codes: List[str] = None
-    
-    # Passkey settings
-    passkey_enabled: bool = False
-    passkey_only: bool = False
-    last_passkey_used: Optional[datetime] = None
-    
     # Social login
     google_id: Optional[str] = None
     discord_id: Optional[str] = None
@@ -48,33 +38,9 @@ class User:
             self.created_at = datetime.now(timezone.utc)
         if self.updated_at is None:
             self.updated_at = datetime.now(timezone.utc)
-        if self.backup_codes is None:
-            self.backup_codes = []
         if self.campaigns is None:
             self.campaigns = []
 
-@dataclass
-class Passkey:
-    """Passkey model for WebAuthn credentials."""
-    _id: Optional[ObjectId] = None
-    user_id: ObjectId = None
-    credential_id: str = ""  # Base64url encoded credential ID
-    public_key: str = ""  # Base64url encoded public key
-    sign_count: int = 0  # Counter for replay protection
-    name: str = ""  # User-friendly name (e.g. "iPhone", "YubiKey")
-    created_at: Optional[datetime] = None
-    last_used: Optional[datetime] = None
-    is_active: bool = True
-    
-    # Optional: Store full attestation data for compliance/debugging
-    attestation_object: Optional[str] = None
-    client_data_json: Optional[str] = None
-    
-    def __post_init__(self):
-        if self.created_at is None:
-            self.created_at = datetime.now(timezone.utc)
-        if self.last_used is None:
-            self.last_used = datetime.now(timezone.utc)
 
 @dataclass
 class Campaign:
@@ -206,7 +172,6 @@ class MongoDBManager:
             
             # Initialize collections
             self.users = self.db.users
-            self.passkeys = self.db.passkeys
             self.campaigns = self.db.campaigns
             self.characters = self.db.characters
             self.invite_codes = self.db.invite_codes
@@ -238,12 +203,6 @@ class MongoDBManager:
         self.users.create_index("google_id", sparse=True)
         self.users.create_index("discord_id", sparse=True)
         
-        # Passkey indexes
-        self.passkeys.create_index("credential_id", unique=True)  # For authentication lookups
-        self.passkeys.create_index("user_id")  # For user passkey queries
-        self.passkeys.create_index([("user_id", 1), ("is_active", 1)])  # For active passkey queries
-        self.passkeys.create_index("created_at")  # For sorting by creation date
-        self.passkeys.create_index("last_used")  # For activity tracking
         
         # Campaign indexes
         self.campaigns.create_index("game_master_id")
@@ -303,6 +262,17 @@ class MongoDBManager:
                     audit_log.log_encryption_event("email_decryption", False)
                     print(f"Failed to decrypt email for user {user_id}: {e}")
             
+            # Remove ALL deprecated 2FA/security fields from document before creating User
+            deprecated_fields = [
+                'two_factor_enabled', 'totp_secret', 'backup_codes', 'passkeys',
+                'two_factor_secret', 'webauthn_credentials', 'authenticator_secret',
+                'recovery_codes', 'mfa_enabled', 'security_keys', 'yubikey_data',
+                'otp_secret', 'backup_tokens', 'passkey_credentials', 'passkey_enabled',
+                'passkey_only', 'last_passkey_used'
+            ]
+            for field in deprecated_fields:
+                doc.pop(field, None)
+            
             audit_log.log_data_access(str(user_id), "get_user_by_id", "user_data", True)
             return User(**doc)
         return None
@@ -323,6 +293,17 @@ class MongoDBManager:
                     audit_log.log_encryption_event("email_decryption", False)
                     print(f"Failed to decrypt email for user lookup: {e}")
             
+            # Remove ALL deprecated 2FA/security fields from document before creating User
+            deprecated_fields = [
+                'two_factor_enabled', 'totp_secret', 'backup_codes', 'passkeys',
+                'two_factor_secret', 'webauthn_credentials', 'authenticator_secret',
+                'recovery_codes', 'mfa_enabled', 'security_keys', 'yubikey_data',
+                'otp_secret', 'backup_tokens', 'passkey_credentials', 'passkey_enabled',
+                'passkey_only', 'last_passkey_used'
+            ]
+            for field in deprecated_fields:
+                doc.pop(field, None)
+            
             audit_log.log_data_access("system", "get_user_by_email", "user_data", True)
             return User(**doc)
         return None
@@ -330,7 +311,19 @@ class MongoDBManager:
     def get_user_by_username(self, username: str) -> Optional[User]:
         """Get user by username."""
         doc = self.users.find_one({"username": username})
-        return User(**doc) if doc else None
+        if doc:
+            # Remove ALL deprecated 2FA/security fields from document before creating User
+            deprecated_fields = [
+                'two_factor_enabled', 'totp_secret', 'backup_codes', 'passkeys',
+                'two_factor_secret', 'webauthn_credentials', 'authenticator_secret',
+                'recovery_codes', 'mfa_enabled', 'security_keys', 'yubikey_data',
+                'otp_secret', 'backup_tokens', 'passkey_credentials', 'passkey_enabled',
+                'passkey_only', 'last_passkey_used'
+            ]
+            for field in deprecated_fields:
+                doc.pop(field, None)
+            return User(**doc)
+        return None
     
     def update_user(self, user_id: ObjectId, updates: Dict) -> bool:
         """Update user document."""
@@ -338,89 +331,11 @@ class MongoDBManager:
         result = self.users.update_one({"_id": user_id}, {"$set": updates})
         return result.modified_count > 0
     
-    # Passkey operations
-    def create_passkey(self, passkey: Passkey) -> ObjectId:
-        """Create a new passkey credential."""
-        passkey_dict = asdict(passkey)
-        passkey_dict.pop('_id', None)  # Remove _id to let MongoDB generate it
-        result = self.passkeys.insert_one(passkey_dict)
-        audit_log.log_data_access(str(passkey.user_id), "create_passkey", "passkey_data", True)
-        return result.inserted_id
+    def delete_user(self, user_id: ObjectId) -> bool:
+        """Delete user document."""
+        result = self.users.delete_one({"_id": user_id})
+        return result.deleted_count > 0
     
-    def get_passkeys_by_user(self, user_id: ObjectId, active_only: bool = True) -> List[Passkey]:
-        """Get all passkeys for a user."""
-        query = {"user_id": user_id}
-        if active_only:
-            query["is_active"] = True
-        
-        docs = self.passkeys.find(query).sort("created_at", -1)  # Most recent first
-        audit_log.log_data_access(str(user_id), "get_passkeys_by_user", "passkey_data", True)
-        return [Passkey(**doc) for doc in docs]
-    
-    def get_passkey_by_credential_id(self, credential_id: str) -> Optional[Passkey]:
-        """Get passkey by credential ID for authentication."""
-        doc = self.passkeys.find_one({"credential_id": credential_id, "is_active": True})
-        if doc:
-            audit_log.log_data_access(str(doc['user_id']), "get_passkey_by_credential_id", "passkey_data", True)
-            return Passkey(**doc)
-        return None
-    
-    def update_passkey_usage(self, credential_id: str, sign_count: int) -> bool:
-        """Update passkey sign count and last used timestamp."""
-        result = self.passkeys.update_one(
-            {"credential_id": credential_id, "is_active": True},
-            {
-                "$set": {
-                    "sign_count": sign_count,
-                    "last_used": datetime.now(timezone.utc)
-                }
-            }
-        )
-        if result.matched_count > 0:
-            # Get the passkey to log the user_id
-            doc = self.passkeys.find_one({"credential_id": credential_id})
-            if doc:
-                audit_log.log_data_access(str(doc['user_id']), "update_passkey_usage", "passkey_data", True)
-        return result.modified_count > 0
-    
-    def rename_passkey(self, passkey_id: ObjectId, new_name: str, user_id: ObjectId) -> bool:
-        """Rename a passkey (user can only rename their own passkeys)."""
-        result = self.passkeys.update_one(
-            {"_id": passkey_id, "user_id": user_id, "is_active": True},
-            {"$set": {"name": new_name}}
-        )
-        if result.modified_count > 0:
-            audit_log.log_data_access(str(user_id), "rename_passkey", "passkey_data", True)
-        return result.modified_count > 0
-    
-    def deactivate_passkey(self, passkey_id: ObjectId, user_id: ObjectId) -> bool:
-        """Deactivate a passkey (soft delete - user can only deactivate their own passkeys)."""
-        result = self.passkeys.update_one(
-            {"_id": passkey_id, "user_id": user_id},
-            {"$set": {"is_active": False}}
-        )
-        if result.modified_count > 0:
-            audit_log.log_data_access(str(user_id), "deactivate_passkey", "passkey_data", True)
-        return result.modified_count > 0
-    
-    def count_user_passkeys(self, user_id: ObjectId) -> int:
-        """Count active passkeys for a user."""
-        return self.passkeys.count_documents({"user_id": user_id, "is_active": True})
-    
-    def update_user_passkey_status(self, user_id: ObjectId) -> bool:
-        """Update user's passkey_enabled flag based on active passkeys."""
-        passkey_count = self.count_user_passkeys(user_id)
-        result = self.users.update_one(
-            {"_id": user_id},
-            {
-                "$set": {
-                    "passkey_enabled": passkey_count > 0,
-                    "updated_at": datetime.now(timezone.utc)
-                }
-            }
-        )
-        return result.modified_count > 0
-
     # Campaign operations
     def create_campaign(self, campaign: Campaign) -> ObjectId:
         """Create a new campaign."""

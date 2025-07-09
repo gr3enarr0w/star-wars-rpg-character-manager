@@ -473,7 +473,7 @@
         <!-- Main Navigation Links -->
         <nav class="main-nav-links">
             <a href="{{ url_for('index') }}" class="nav-link">Characters</a>
-            <a href="{{ url_for('campaigns_page') }}" class="nav-link">Campaigns</a>
+            <a href="{{ url_for('campaigns_page_backup') }}" class="nav-link">Campaigns</a>
         </nav>
         
         <!-- User Menu in Top Right -->
@@ -503,7 +503,7 @@
                 <nav class="nav" style="margin-bottom: 1rem;">
                     <a href="{{ url_for('index') }}" class="{% if request.endpoint == 'index' %}active{% endif %}">Dashboard</a>
                     <a href="{{ url_for('create_character_start') }}" class="{% if request.endpoint == 'create_character_start' %}active{% endif %}">Create Character</a>
-                    <a href="{{ url_for('campaigns_page') }}" class="{% if request.endpoint == 'campaigns_page' %}active{% endif %}">Campaigns</a>
+                    <a href="{{ url_for('campaigns_page_backup') }}" class="{% if request.endpoint == 'campaigns_page_backup' %}active{% endif %}">Campaigns</a>
                 </nav>
 
                 {% block sidebar_content %}{% endblock %}

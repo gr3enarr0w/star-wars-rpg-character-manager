@@ -1,0 +1,159 @@
+<?xml version="1.0"?>
+<Container version="2">
+  <Name>SWRPG-Character-Manager</Name>
+  <Repository>ghcr.io/gr3enarr0w/swrpg-character-manager:latest</Repository>
+  <Registry>https://github.com/gr3enarr0w/python-course-app/pkgs/container/swrpg-character-manager</Registry>
+  <Network>bridge</Network>
+  <MyIP/>
+  <Shell>bash</Shell>
+  <Privileged>false</Privileged>
+  <Support>https://github.com/gr3enarr0w/python-course-app/issues</Support>
+  <Project>https://github.com/gr3enarr0w/python-course-app</Project>
+  <Overview>Star Wars RPG Character Manager - A comprehensive web application for managing Star Wars RPG characters, campaigns, and game sessions. Features 55+ species, character advancement tracking, and role-based access control.</Overview>
+  <Category>GameServers:</Category>
+  <WebUI>http://[IP]:[PORT:8000]</WebUI>
+  <TemplateURL>https://raw.githubusercontent.com/gr3enarr0w/python-course-app/main/unraid-templates/swrpg-character-manager.xml</TemplateURL>
+  <Icon>https://raw.githubusercontent.com/gr3enarr0w/python-course-app/main/icons/swrpg-logo.png</Icon>
+  <ExtraParams>--restart=unless-stopped --health-cmd="curl -f http://localhost:8000/health || exit 1" --health-interval=30s --health-timeout=10s --health-retries=3</ExtraParams>
+  <PostArgs/>
+  <CPUset/>
+  <DateInstalled>1704067200</DateInstalled>
+  <DonateText>Support the developers</DonateText>
+  <DonateLink>https://github.com/sponsors/gr3enarr0w</DonateLink>
+  <Description>Star Wars RPG Character Manager is a comprehensive web application for managing characters, campaigns, and game sessions for Star Wars RPG systems (Edge of the Empire, Age of Rebellion, Force and Destiny). 
+
+Features:
+- 55+ Star Wars species with accurate stats and abilities
+- Dynamic character creation and advancement
+- XP tracking and skill progression
+- Campaign and session management
+- Role-based access (Admin, Gamemaster, Player)
+- Character sheet export/import
+- Real-time dice pool calculations
+
+IMPORTANT: This application requires MongoDB. Install the "MongoDB-SWRPG" container first, then configure this container to connect to it.</Description>
+  <Networking>
+    <Mode>bridge</Mode>
+    <Publish>
+      <Port>
+        <HostPort>8000</HostPort>
+        <ContainerPort>8000</ContainerPort>
+        <Protocol>tcp</Protocol>
+      </Port>
+    </Publish>
+  </Networking>
+  <Data>
+    <Volume>
+      <HostDir>/mnt/user/appdata/swrpg-character-manager</HostDir>
+      <ContainerDir>/app/data</ContainerDir>
+      <Mode>rw</Mode>
+    </Volume>
+    <Volume>
+      <HostDir>/mnt/user/appdata/swrpg-character-manager/logs</HostDir>
+      <ContainerDir>/app/logs</ContainerDir>
+      <Mode>rw</Mode>
+    </Volume>
+  </Data>
+  <Environment>
+    <Variable>
+      <Value>mongodb://[UNRAID-IP]:27017/swrpg_character_manager</Value>
+      <Name>MONGO_URI</Name>
+      <Mode/>
+    </Variable>
+    <Variable>
+      <Value>admin@example.com</Value>
+      <Name>ADMIN_EMAIL</Name>
+      <Mode/>
+    </Variable>
+    <Variable>
+      <Value>ChangeThisPassword123!</Value>
+      <Name>ADMIN_PASSWORD</Name>
+      <Mode/>
+    </Variable>
+    <Variable>
+      <Value/>
+      <Name>FLASK_SECRET_KEY</Name>
+      <Mode/>
+    </Variable>
+    <Variable>
+      <Value/>
+      <Name>JWT_SECRET_KEY</Name>
+      <Mode/>
+    </Variable>
+    <Variable>
+      <Value>production</Value>
+      <Name>FLASK_ENV</Name>
+      <Mode/>
+    </Variable>
+    <Variable>
+      <Value>production</Value>
+      <Name>APP_ENV</Name>
+      <Mode/>
+    </Variable>
+    <Variable>
+      <Value>/app/src</Value>
+      <Name>PYTHONPATH</Name>
+      <Mode/>
+    </Variable>
+    <Variable>
+      <Value>1</Value>
+      <Name>PYTHONUNBUFFERED</Name>
+      <Mode/>
+    </Variable>
+    <Variable>
+      <Value>8000</Value>
+      <Name>PORT</Name>
+      <Mode/>
+    </Variable>
+    <Variable>
+      <Value>99</Value>
+      <Name>PUID</Name>
+      <Mode/>
+    </Variable>
+    <Variable>
+      <Value>100</Value>
+      <Name>PGID</Name>
+      <Mode/>
+    </Variable>
+    <Variable>
+      <Value>America/New_York</Value>
+      <Name>TZ</Name>
+      <Mode/>
+    </Variable>
+    <Variable>
+      <Value>INFO</Value>
+      <Name>LOG_LEVEL</Name>
+      <Mode/>
+    </Variable>
+  </Environment>
+  <Labels/>
+  
+  <!-- Port Configuration -->
+  <Config Name="Web UI Port" Target="8000" Default="8000" Mode="tcp" Description="Web interface port for SWRPG Character Manager" Type="Port" Display="always" Required="true" Mask="false">8000</Config>
+  
+  <!-- Volume Configuration -->
+  <Config Name="App Data" Target="/app/data" Default="/mnt/user/appdata/swrpg-character-manager" Mode="rw" Description="Application data directory" Type="Path" Display="always" Required="true" Mask="false">/mnt/user/appdata/swrpg-character-manager</Config>
+  <Config Name="Logs" Target="/app/logs" Default="/mnt/user/appdata/swrpg-character-manager/logs" Mode="rw" Description="Application logs directory" Type="Path" Display="always" Required="true" Mask="false">/mnt/user/appdata/swrpg-character-manager/logs</Config>
+  
+  <!-- Required Configuration -->
+  <Config Name="MongoDB URI" Target="MONGO_URI" Default="mongodb://[UNRAID-IP]:27017/swrpg_character_manager" Mode="" Description="MongoDB connection string. Replace [UNRAID-IP] with your Unraid server IP address." Type="Variable" Display="always" Required="true" Mask="false">mongodb://[UNRAID-IP]:27017/swrpg_character_manager</Config>
+  <Config Name="Admin Email" Target="ADMIN_EMAIL" Default="admin@example.com" Mode="" Description="Administrator email address for initial login" Type="Variable" Display="always" Required="true" Mask="false">admin@example.com</Config>
+  <Config Name="Admin Password" Target="ADMIN_PASSWORD" Default="ChangeThisPassword123!" Mode="" Description="Administrator password - CHANGE THIS IMMEDIATELY" Type="Variable" Display="always" Required="true" Mask="true">ChangeThisPassword123!</Config>
+  
+  <!-- Security Configuration -->
+  <Config Name="Flask Secret Key" Target="FLASK_SECRET_KEY" Default="" Mode="" Description="Flask session secret key. Leave blank to auto-generate on first run." Type="Variable" Display="always" Required="false" Mask="true"></Config>
+  <Config Name="JWT Secret Key" Target="JWT_SECRET_KEY" Default="" Mode="" Description="JWT token secret key. Leave blank to auto-generate on first run." Type="Variable" Display="always" Required="false" Mask="true"></Config>
+  
+  <!-- Application Configuration -->
+  <Config Name="Flask Environment" Target="FLASK_ENV" Default="production" Mode="" Description="Flask environment (production/development)" Type="Variable" Display="advanced" Required="true" Mask="false">production</Config>
+  <Config Name="App Environment" Target="APP_ENV" Default="production" Mode="" Description="Application environment" Type="Variable" Display="advanced" Required="true" Mask="false">production</Config>
+  <Config Name="Python Path" Target="PYTHONPATH" Default="/app/src" Mode="" Description="Python module path" Type="Variable" Display="advanced" Required="true" Mask="false">/app/src</Config>
+  <Config Name="Python Unbuffered" Target="PYTHONUNBUFFERED" Default="1" Mode="" Description="Python unbuffered output" Type="Variable" Display="advanced" Required="false" Mask="false">1</Config>
+  <Config Name="Application Port" Target="PORT" Default="8000" Mode="" Description="Internal application port" Type="Variable" Display="advanced" Required="true" Mask="false">8000</Config>
+  
+  <!-- System Configuration -->
+  <Config Name="PUID" Target="PUID" Default="99" Mode="" Description="User ID for file permissions" Type="Variable" Display="advanced" Required="false" Mask="false">99</Config>
+  <Config Name="PGID" Target="PGID" Default="100" Mode="" Description="Group ID for file permissions" Type="Variable" Display="advanced" Required="false" Mask="false">100</Config>
+  <Config Name="Timezone" Target="TZ" Default="America/New_York" Mode="" Description="Container timezone" Type="Variable" Display="advanced" Required="false" Mask="false">America/New_York</Config>
+  <Config Name="Log Level" Target="LOG_LEVEL" Default="INFO" Mode="" Description="Application log level (DEBUG, INFO, WARNING, ERROR)" Type="Variable" Display="advanced" Required="false" Mask="false">INFO</Config>
+</Container>

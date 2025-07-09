@@ -479,7 +479,7 @@ class StarWarsRPGTester:
             print(f"✅ Found {clickable_buttons} clickable buttons out of {len(all_buttons)} total on {browser_name}")
             
             # Test modal dialogs
-            modal_triggers = await page.query_selector_all("[data-toggle='modal'], .modal-trigger, button:has-text('Profile'), button:has-text('2FA')")
+            modal_triggers = await page.query_selector_all("[data-toggle='modal'], .modal-trigger, button:has-text('Profile'), button:has-text('Settings')")
             test_result["details"]["modal_triggers"] = len(modal_triggers)
             
             if modal_triggers:

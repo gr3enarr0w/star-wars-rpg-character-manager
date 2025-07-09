@@ -1,12 +1,12 @@
-"""Character data models for Star Wars RPG."""
+"""Core data models for Star Wars RPG character management."""
 
 from dataclasses import dataclass, field
-from typing import Dict, List, Optional
 from enum import Enum
+from typing import Dict, List, Optional, Any
 
 
 class Characteristic(Enum):
-    """The six characteristics in Star Wars RPG."""
+    """The six core characteristics in Star Wars RPG."""
     BRAWN = "Brawn"
     AGILITY = "Agility"
     INTELLECT = "Intellect"
@@ -16,24 +16,56 @@ class Characteristic(Enum):
 
 
 class GameLine(Enum):
-    """The Star Wars RPG game lines."""
+    """The Star Wars RPG game lines (migrated version with Rise of the Separatist)."""
     EDGE_OF_EMPIRE = "Edge of the Empire"
     AGE_OF_REBELLION = "Age of Rebellion"
     FORCE_AND_DESTINY = "Force and Destiny"
     RISE_OF_THE_SEPARATIST = "Rise of the Separatist"
 
 
+# Legacy game line enum (kept for backwards compatibility)
+class GameLine_old(Enum):
+    """Legacy game line enum without Rise of the Separatist."""
+    EDGE_OF_THE_EMPIRE = "Edge of the Empire"
+    AGE_OF_REBELLION = "Age of Rebellion"
+    FORCE_AND_DESTINY = "Force and Destiny"
+
+
 @dataclass
 class Skill:
-    """Represents a skill in the game."""
+    """Represents a character skill (migrated version with improved dice pool calculation)."""
     name: str
     characteristic: Characteristic
-    career_skill: bool = False
     ranks: int = 0
+    career_skill: bool = False
     
+    def get_dice_pool(self, char_value: int) -> Dict[str, int]:
+        """Calculate the dice pool for this skill (migrated version)."""
+        # In SWRPG, you roll ability dice (green) equal to characteristic
+        # and proficiency dice (yellow) equal to skill ranks
+        # But proficiency dice "upgrade" ability dice on a 1:1 basis
+        
+        ability_dice = max(0, char_value - self.ranks)
+        proficiency_dice = min(char_value, self.ranks)
+        
+        # If skill ranks exceed characteristic, add more proficiency dice
+        if self.ranks > char_value:
+            proficiency_dice = char_value
+            ability_dice = self.ranks - char_value
+        
+        # Calculate difficulty dice (this would depend on the task)
+        difficulty_dice = 0  # Default, would be set by GM
+        
+        return {
+            "ability": ability_dice,
+            "proficiency": proficiency_dice,
+            "difficulty": difficulty_dice
+        }
+    
+    # Legacy dice pool property (kept for backwards compatibility)
     @property
     def dice_pool(self) -> Dict[str, int]:
-        """Calculate the dice pool for this skill."""
+        """Legacy dice pool calculation for backwards compatibility."""
         char_value = getattr(self.character, self.characteristic.value.lower()) if hasattr(self, 'character') else 2
         ability_dice = min(char_value, self.ranks)
         proficiency_dice = max(0, min(char_value, self.ranks) - ability_dice)
@@ -129,7 +161,7 @@ class Character:
     
     def _initialize_skills(self):
         """Initialize all skills with default values."""
-        # General skills (this would be expanded with full skill list)
+        # Complete skill list with all official SWRPG skills (migrated version)
         skill_list = [
             ("Astrogation", Characteristic.INTELLECT),
             ("Athletics", Characteristic.BRAWN),
@@ -168,50 +200,63 @@ class Character:
             ("Vigilance", Characteristic.WILLPOWER),
         ]
         
+        # Initialize all skills
         for skill_name, characteristic in skill_list:
-            career_skill = skill_name in self.career.career_skills
+            # Check if this skill is a career skill
+            is_career_skill = skill_name in self.career.career_skills
+            
             self.skills[skill_name] = Skill(
                 name=skill_name,
                 characteristic=characteristic,
-                career_skill=career_skill
+                ranks=0,
+                career_skill=is_career_skill
             )
     
-    def add_xp(self, amount: int):
-        """Add experience points to the character."""
-        self.total_xp += amount
-        self.available_xp += amount
+    def get_characteristic_value(self, characteristic: Characteristic) -> int:
+        """Get the current value of a characteristic."""
+        char_name = characteristic.value.lower()
+        return getattr(self, char_name)
     
     def spend_xp(self, amount: int) -> bool:
-        """Spend experience points if available."""
+        """Spend XP if available."""
         if self.available_xp >= amount:
             self.available_xp -= amount
             self.spent_xp += amount
             return True
         return False
     
+    def award_xp(self, amount: int, reason: str = "") -> None:
+        """Award XP to the character."""
+        self.total_xp += amount
+        self.available_xp += amount
+    
     def increase_characteristic(self, characteristic: Characteristic, cost: int) -> bool:
         """Increase a characteristic if XP is available."""
-        if not self.spend_xp(cost):
-            return False
-        
         char_name = characteristic.value.lower()
         current_value = getattr(self, char_name)
-        setattr(self, char_name, current_value + 1)
         
-        # Update derived attributes if needed
-        if characteristic == Characteristic.BRAWN:
-            self.wound_threshold = self.brawn + self.career.starting_wound_threshold
-        elif characteristic == Characteristic.WILLPOWER:
-            self.strain_threshold = self.willpower + self.career.starting_strain_threshold
+        if current_value >= 6:
+            return False  # Cannot increase beyond 6
         
-        return True
+        if self.spend_xp(cost):
+            setattr(self, char_name, current_value + 1)
+            # Update derived attributes
+            if characteristic == Characteristic.BRAWN:
+                self.wound_threshold = self.brawn + self.career.starting_wound_threshold
+            elif characteristic == Characteristic.WILLPOWER:
+                self.strain_threshold = self.willpower + self.career.starting_strain_threshold
+            return True
+        return False
     
     def increase_skill(self, skill_name: str) -> bool:
-        """Increase a skill rank."""
+        """Increase a skill rank if XP is available."""
         if skill_name not in self.skills:
             return False
         
         skill = self.skills[skill_name]
+        
+        if skill.ranks >= 5:
+            return False  # Cannot increase beyond rank 5
         
         # Calculate cost based on whether it's a career skill
         if skill.career_skill:
@@ -230,3 +275,64 @@ class Character:
             self.talents.append(talent)
             return True
         return False
+    
+    def get_skill_dice_pool(self, skill_name: str) -> Optional[Dict[str, int]]:
+        """Get the dice pool for a specific skill."""
+        if skill_name not in self.skills:
+            return None
+        
+        skill = self.skills[skill_name]
+        char_value = self.get_characteristic_value(skill.characteristic)
+        return skill.get_dice_pool(char_value)
+    
+    def to_dict(self) -> Dict[str, Any]:
+        """Convert character to dictionary for serialization."""
+        return {
+            "name": self.name,
+            "player_name": self.player_name,
+            "species": self.species,
+            "career": {
+                "name": self.career.name,
+                "game_line": self.career.game_line.value,
+                "career_skills": self.career.career_skills,
+                "starting_wound_threshold": self.career.starting_wound_threshold,
+                "starting_strain_threshold": self.career.starting_strain_threshold
+            },
+            "characteristics": {
+                "brawn": self.brawn,
+                "agility": self.agility,
+                "intellect": self.intellect,
+                "cunning": self.cunning,
+                "willpower": self.willpower,
+                "presence": self.presence
+            },
+            "wound_threshold": self.wound_threshold,
+            "strain_threshold": self.strain_threshold,
+            "total_xp": self.total_xp,
+            "available_xp": self.available_xp,
+            "spent_xp": self.spent_xp,
+            "skills": {
+                name: {
+                    "name": skill.name,
+                    "characteristic": skill.characteristic.value,
+                    "ranks": skill.ranks,
+                    "career_skill": skill.career_skill
+                }
+                for name, skill in self.skills.items()
+            },
+            "talents": [
+                {
+                    "name": talent.name,
+                    "description": talent.description,
+                    "activation": talent.activation,
+                    "ranked": talent.ranked,
+                    "current_rank": talent.current_rank
+                }
+                for talent in self.talents
+            ],
+            "credits": self.credits,
+            "equipment": self.equipment,
+            "motivation": self.motivation,
+            "background": self.background,
+            "is_created": self.is_created
+        }

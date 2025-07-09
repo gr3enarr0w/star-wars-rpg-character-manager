@@ -15,7 +15,7 @@ console.log(`
 ===================================
 
 Testing ALL features from ALL user perspectives:
-✅ Authentication (Password, 2FA, Passkeys)
+✅ Authentication (Password)
 ✅ Character Management (All User Roles)
 ✅ Campaign Management
 ✅ Profile & Account Management

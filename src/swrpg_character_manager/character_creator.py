@@ -743,6 +743,43 @@ class CharacterCreator:
             }
         }
     
+    # Legacy species data loading method (kept for backwards compatibility)
+    def _load_extracted_species_data_old(self) -> Dict[str, Dict]:
+        """Legacy method: Load species data from extracted SWRPG PDF data, with comprehensive built-in species fallback."""
+        # Start with comprehensive built-in species for compatibility
+        builtin_species = self._initialize_species()
+        
+        # Get the path to the comprehensive species data
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        project_root = os.path.dirname(os.path.dirname(current_dir))
+        species_file = os.path.join(project_root, 'swrpg_extracted_data', 'json', 'comprehensive_species_data_v2.json')
+        
+        try:
+            with open(species_file, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+            
+            # Extract species data from the JSON
+            extracted_species = data.get('species', {})
+            
+            if extracted_species:
+                # Merge extracted species with built-in species (extracted takes precedence)
+                combined_species = {**builtin_species, **extracted_species}
+                # Silent success for production deployment
+                return combined_species
+            else:
+                # Silent fallback to comprehensive built-in species
+                return builtin_species
+                
+        except FileNotFoundError:
+            # Silent fallback to comprehensive built-in species for production deployment
+            return builtin_species
+        except json.JSONDecodeError:
+            # Silent fallback to comprehensive built-in species
+            return builtin_species
+        except Exception as e:
+            # Silent fallback to comprehensive built-in species
+            return builtin_species
+    
     def _get_core_species_data(self) -> Dict[str, Dict]:
         """Get minimal core species data for compatibility."""
         return {

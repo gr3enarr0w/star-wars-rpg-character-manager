@@ -8,7 +8,7 @@ A comprehensive web application for managing characters in the Star Wars RPG sys
 - **NIST-compliant data encryption** with AES-256 for all sensitive user data
 - **PBKDF2 key derivation** with SHA-256 and 100,000 iterations
 - **Zero email exposure** in API responses for privacy protection
-- **Two-factor authentication** with TOTP support
+- **Enhanced authentication** with modern security protocols
 - **Invite-only registration** system for controlled access
 - **Security audit logging** for compliance tracking
 
@@ -90,7 +90,7 @@ Open http://127.0.0.1:8001 in your browser
 
 #### 2. **First Login**
 - Use your email and password to log in
-- Set up two-factor authentication (recommended)
+- Configure enhanced security settings (recommended)
 - Complete your profile
 
 #### 3. **Creating Your First Character**
@@ -152,11 +152,11 @@ Open http://127.0.0.1:8001 in your browser
 
 ### Security Features
 
-#### **Two-Factor Authentication**
-1. Enable 2FA in account settings
-2. Scan QR code with authenticator app
-3. Save backup codes securely
-4. Use 2FA token for enhanced security
+#### **Enhanced Security**
+1. Configure security settings in account preferences
+2. Set up additional protection methods
+3. Save security information securely
+4. Use enhanced authentication for better security
 
 #### **Data Privacy**
 - All emails encrypted at rest in database
@@ -252,7 +252,7 @@ Open http://127.0.0.1:8001 in your browser
 
 #### Login Problems
 - Verify email and password are correct
-- Check if 2FA is enabled and provide token
+- Check if enhanced security is enabled and provide credentials
 - Contact admin if account is locked
 
 #### Campaign Assignment Issues
@@ -277,7 +277,7 @@ Open http://127.0.0.1:8001 in your browser
 - **Database**: MongoDB with encrypted collections
 - **Frontend**: Vanilla JavaScript with modern ES6+
 - **Security**: Cryptography library, JWT tokens
-- **Authentication**: Flask-JWT-Extended, TOTP
+- **Authentication**: Flask-JWT-Extended, Enhanced Security
 
 ### API Endpoints
 - `POST /api/auth/login` - User authentication

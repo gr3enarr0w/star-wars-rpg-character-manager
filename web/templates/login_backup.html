@@ -159,6 +159,7 @@
                 const data = JSON.parse(responseText);
                 
                 if (response.ok) {
+                    // Store token and redirect
                     localStorage.setItem('access_token', data.access_token);
                     localStorage.setItem('user', JSON.stringify(data.user));
                     

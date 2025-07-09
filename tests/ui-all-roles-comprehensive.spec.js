@@ -6,10 +6,10 @@ test.describe('Comprehensive All Roles UI Testing - GitHub Codespaces', () => {
     // Test user configurations for different roles
     const testUsers = {
         admin: {
-            email: 'clark@everson.dev',
-            password: 'with1artie4oskar3VOCATION!advances',
+            email: process.env.ADMIN_EMAIL || 'clark@everson.dev',
+            password: process.env.ADMIN_PASSWORD || 'github-testing-admin-password-2024',
             expectedRole: 'admin',
-            expectedUsername: 'clark_admin'
+            expectedUsername: 'admin'
         },
         user: {
             email: 'test.user@example.com',

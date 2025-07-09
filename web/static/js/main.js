@@ -1262,16 +1262,12 @@ class CharacterManager {
     }
 
     async advanceSkill(skillName) {
-        console.log('advanceSkill called with:', skillName);
-        console.log('Current character:', this.currentCharacter);
-        
         if (!this.currentCharacter) {
             alert('No character selected. Please select a character first.');
             return;
         }
 
         try {
-            console.log('Making API call to advance skill...');
             const token = localStorage.getItem('access_token');
             const response = await fetch(`/api/characters/${encodeURIComponent(this.currentCharacter.id)}/advance-skill`, {
                 method: 'POST',
@@ -1285,10 +1281,8 @@ class CharacterManager {
             });
 
             const result = await response.json();
-            console.log('API response:', result);
 
             if (response.ok) {
-                console.log('Skill advancement successful, reloading data...');
                 await this.loadCharactersFromAPI();
                 // Update current character reference
                 this.currentCharacter = this.characters.find(c => c.id === this.currentCharacter.id);
@@ -1305,16 +1299,12 @@ class CharacterManager {
     }
 
     async advanceCharacteristic(characteristicName) {
-        console.log('advanceCharacteristic called with:', characteristicName);
-        console.log('Current character:', this.currentCharacter);
-        
         if (!this.currentCharacter) {
             alert('No character selected. Please select a character first.');
             return;
         }
 
         try {
-            console.log('Making API call to advance characteristic...');
             const token = localStorage.getItem('access_token');
             const response = await fetch(`/api/characters/${encodeURIComponent(this.currentCharacter.id)}/advance-characteristic`, {
                 method: 'POST',
@@ -1328,10 +1318,8 @@ class CharacterManager {
             });
 
             const result = await response.json();
-            console.log('API response:', result);
 
             if (response.ok) {
-                console.log('Characteristic advancement successful, reloading data...');
                 await this.loadCharactersFromAPI();
                 // Update current character reference
                 this.currentCharacter = this.characters.find(c => c.id === this.currentCharacter.id);
@@ -1348,8 +1336,6 @@ class CharacterManager {
     }
 
     async reduceCharacteristic(characteristicName) {
-        console.log('reduceCharacteristic called with:', characteristicName);
-        console.log('Current character:', this.currentCharacter);
         
         if (!this.currentCharacter) {
             alert('No character selected. Please select a character first.');
@@ -1361,7 +1347,6 @@ class CharacterManager {
         }
 
         try {
-            console.log('Making API call to reduce characteristic...');
             const token = localStorage.getItem('access_token');
             const response = await fetch(`/api/characters/${encodeURIComponent(this.currentCharacter.id)}/characteristics/${encodeURIComponent(characteristicName.toLowerCase())}`, {
                 method: 'POST',
@@ -1375,10 +1360,8 @@ class CharacterManager {
             });
 
             const result = await response.json();
-            console.log('API response:', result);
 
             if (response.ok) {
-                console.log('Characteristic reduction successful, reloading data...');
                 await this.loadCharactersFromAPI();
                 this.currentCharacter = this.characters.find(c => c.id === this.currentCharacter.id);
                 await this.showCharacter(this.currentCharacter.id);
@@ -1394,8 +1377,6 @@ class CharacterManager {
     }
 
     async reduceSkill(skillName) {
-        console.log('reduceSkill called with:', skillName);
-        console.log('Current character:', this.currentCharacter);
         
         if (!this.currentCharacter) {
             alert('No character selected. Please select a character first.');
@@ -1407,7 +1388,6 @@ class CharacterManager {
         }
 
         try {
-            console.log('Making API call to reduce skill...');
             const token = localStorage.getItem('access_token');
             const response = await fetch(`/api/characters/${encodeURIComponent(this.currentCharacter.id)}/skills/${encodeURIComponent(skillName)}`, {
                 method: 'POST',
@@ -1421,10 +1401,8 @@ class CharacterManager {
             });
 
             const result = await response.json();
-            console.log('API response:', result);
 
             if (response.ok) {
-                console.log('Skill reduction successful, reloading data...');
                 await this.loadCharactersFromAPI();
                 this.currentCharacter = this.characters.find(c => c.id === this.currentCharacter.id);
                 await this.showCharacter(this.currentCharacter.id);
