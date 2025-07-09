@@ -11,6 +11,39 @@ from datetime import datetime, timezone, timedelta
 # Add the src directory to the Python path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
 
+# CRITICAL: Ensure encryption key exists before ANY imports that might use security module
+def _ensure_encryption_key_early():
+    """Ensure encryption key exists immediately - called before any imports."""
+    encryption_key_path = '.encryption_key'
+    
+    if not os.path.exists(encryption_key_path):
+        # Generate a proper Fernet key using PBKDF2 (same as security module)
+        from cryptography.hazmat.primitives import hashes
+        from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
+        import base64
+        
+        password = os.getenv('ENCRYPTION_PASSWORD', 'default-key-change-in-production').encode()
+        salt = os.getenv('ENCRYPTION_SALT', 'swrpg-salt-change-in-production').encode()
+        
+        # Use PBKDF2 with SHA256 and 100,000 iterations (NIST recommended)
+        kdf = PBKDF2HMAC(
+            algorithm=hashes.SHA256(),
+            length=32,  # 256-bit key
+            salt=salt,
+            iterations=100000,  # NIST recommended minimum
+        )
+        encryption_key = base64.urlsafe_b64encode(kdf.derive(password))
+        
+        # Write key to file as binary (same as security module expects)
+        with open(encryption_key_path, 'wb') as f:
+            f.write(encryption_key)
+        
+        # Set secure permissions (owner read/write only)
+        os.chmod(encryption_key_path, 0o600)
+
+# Generate encryption key immediately
+_ensure_encryption_key_early()
+
 def ensure_encryption_key():
     """Ensure encryption key exists for security module."""
     encryption_key_path = '.encryption_key'
@@ -183,7 +216,7 @@ def main():
     print("🌟 Star Wars RPG Character Manager - Production Startup")
     print("=" * 60)
     
-    # Step 1: Ensure encryption key exists
+    # Step 1: Ensure encryption key exists BEFORE any imports that use security module
     if not ensure_encryption_key():
         print("❌ Encryption key setup failed")
         sys.exit(1)
