@@ -40,6 +40,11 @@ jobs:
       uses: docker/metadata-action@v5
       with:
         images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+        labels: |
+          org.opencontainers.image.title=star-wars-rpg-character-manager
+          org.opencontainers.image.description=Star Wars RPG Character Manager - Professional character creation and management tool
+          org.opencontainers.image.source=https://github.com/gr3enarr0w/star-wars-rpg-character-manager
+          org.opencontainers.image.url=https://github.com/gr3enarr0w/star-wars-rpg-character-manager
         tags: |
           type=ref,event=branch
           type=ref,event=pr
