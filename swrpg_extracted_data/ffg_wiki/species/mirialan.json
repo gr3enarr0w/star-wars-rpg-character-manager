@@ -1,0 +1,19 @@
+{
+  "name": "Mirialan",
+  "characteristics": {
+    "brawn": 2,
+    "agility": 3,
+    "intellect": 2,
+    "cunning": 1,
+    "willpower": 2,
+    "presence": 2
+  },
+  "wound_threshold": "11 + Brawn",
+  "strain_threshold": "10 + Willpower",
+  "starting_xp": 100,
+  "special_abilities": [
+    "Mirialans begin the game with one rank in Discipline and one rank in Cool. They still may not train Discipline or Cool above rank 2 during character creation."
+  ],
+  "source": "FFG Wiki",
+  "extraction_date": "2025-07-08"
+}

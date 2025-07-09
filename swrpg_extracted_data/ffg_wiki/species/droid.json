@@ -1,0 +1,25 @@
+{
+  "name": "Droid",
+  "characteristics": {
+    "brawn": 1,
+    "agility": 1,
+    "intellect": 1,
+    "cunning": 1,
+    "willpower": 1,
+    "presence": 1
+  },
+  "wound_threshold": "10 + Brawn",
+  "strain_threshold": "10 + Willpower",
+  "starting_xp": 175,
+  "special_abilities": [
+    "Droids do not need to eat, sleep, or breathe, and are unaffected by toxins and poisons.",
+    "Cybernetic implant cap of 6",
+    "Can train one rank in six career skills (instead of four)",
+    "Can train one rank in three specialization skills (instead of two)",
+    "Inorganic: Cannot use bacta, stimpacks, or Medicine checks for healing",
+    "Mechanical Being: Cannot become Force-sensitive or use Force powers",
+    "Starts with one rank in Enduring talent due to resilient metallic construction"
+  ],
+  "source": "FFG Wiki",
+  "extraction_date": "2025-07-08"
+}

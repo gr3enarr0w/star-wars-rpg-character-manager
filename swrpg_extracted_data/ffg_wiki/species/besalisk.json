@@ -1,0 +1,20 @@
+{
+  "name": "Besalisk",
+  "characteristics": {
+    "brawn": 3,
+    "agility": 1,
+    "intellect": 2,
+    "cunning": 1,
+    "willpower": 2,
+    "presence": 2
+  },
+  "wound_threshold": "12 + Brawn",
+  "strain_threshold": "7 + Willpower",
+  "starting_xp": 85,
+  "special_abilities": [
+    "Besalisks begin the game with one rank in Resilience. They still may not train Resilience above rank 2 during character creation.",
+    "Additional Limbs: Besalisks have multiple sets of arms. As a result, they gain an additional free maneuver per turn, though still may not perform more than two maneuvers per turn."
+  ],
+  "source": "FFG Wiki",
+  "extraction_date": "2025-07-08"
+}

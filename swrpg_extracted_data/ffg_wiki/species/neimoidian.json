@@ -1,0 +1,19 @@
+{
+  "name": "Neimoidian",
+  "characteristics": {
+    "brawn": 1,
+    "agility": 2,
+    "intellect": 3,
+    "cunning": 3,
+    "willpower": 1,
+    "presence": 2
+  },
+  "wound_threshold": "11 + Brawn",
+  "strain_threshold": "9 + Willpower",
+  "starting_xp": 90,
+  "special_abilities": [
+    "Neimoidians begin the game with one rank in either Deception or Negotiation. They still may not train Deception or Negotiation above rank 2 during character creation."
+  ],
+  "source": "FFG Wiki",
+  "extraction_date": "2025-07-08"
+}

@@ -1,0 +1,20 @@
+{
+  "name": "Caamasi",
+  "characteristics": {
+    "brawn": 2,
+    "agility": 2,
+    "intellect": 2,
+    "cunning": 1,
+    "willpower": 3,
+    "presence": 2
+  },
+  "wound_threshold": "10 + Brawn",
+  "strain_threshold": "11 + Willpower",
+  "starting_xp": 100,
+  "special_abilities": [
+    "Caamasi begin the game with one rank in either Charm or Discipline. They still may not train Charm or Discipline above rank 2 during character creation.",
+    "Memnii: Caamasi often imprint significant events in their life as unfading memories called memnii. Once per game session, a Caamasi may form a new memnis that encompasses one scene or encounter. At any time, a Caamasi may perfectly recall any memnis that [they] have formed or witnessed, or share it with another Caamasi or a Force-sensitive character."
+  ],
+  "source": "FFG Wiki",
+  "extraction_date": "2025-07-08"
+}

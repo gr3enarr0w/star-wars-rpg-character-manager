@@ -1,0 +1,23 @@
+{
+  "name": "Hutt",
+  "characteristics": {
+    "brawn": 3,
+    "agility": 1,
+    "intellect": 2,
+    "cunning": 2,
+    "willpower": 3,
+    "presence": 2
+  },
+  "wound_threshold": "13 + Brawn",
+  "strain_threshold": "11 + Willpower",
+  "starting_xp": 70,
+  "special_abilities": [
+    "Begin with one rank in Enduring talent",
+    "Begin with one rank in Nobody's Fool talents",
+    "Begin with one rank in Coercion or Discipline",
+    "Cannot train Coercion or Discipline above rank 2 during character creation",
+    "Ponderous: A Hutt can never spend more than one maneuver moving per turn."
+  ],
+  "source": "FFG Wiki - Lords of Nal Hutta: A Sourcebook for Hutt Space (Page 94)",
+  "extraction_date": "2025-07-08"
+}

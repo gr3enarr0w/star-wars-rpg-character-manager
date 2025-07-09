@@ -1,0 +1,20 @@
+{
+  "name": "Miraluka",
+  "characteristics": {
+    "brawn": 2,
+    "agility": 2,
+    "intellect": 2,
+    "cunning": 2,
+    "willpower": 3,
+    "presence": 1
+  },
+  "wound_threshold": "9 + Brawn",
+  "strain_threshold": "10 + Willpower",
+  "starting_xp": 100,
+  "special_abilities": [
+    "Miraluka begin the game with one rank in Discipline. They still may not train Discipline above rank 2 during character creation.",
+    "Force Sight: Miraluka are blind from birth but rely on the Force to perceive their environment. They remove any setback die added to their checks as a result of smoke, darkness or concealment, but add two setback dice to any checks that require precise investigation. They may never benefit from equipment that relies on the user's vision. Should a Miraluka become disconnected from the Force, they lose any benefits of Force Sight and incur all penalties of the 'Blinded' Critical Injury."
+  ],
+  "source": "FFG Wiki",
+  "extraction_date": "2025-07-08"
+}

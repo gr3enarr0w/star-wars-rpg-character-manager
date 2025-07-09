@@ -1,0 +1,20 @@
+{
+  "name": "Toydarian",
+  "characteristics": {
+    "brawn": 1,
+    "agility": 1,
+    "intellect": 2,
+    "cunning": 2,
+    "willpower": 3,
+    "presence": 3
+  },
+  "wound_threshold": "9 + Brawn",
+  "strain_threshold": "12 + Willpower",
+  "starting_xp": 90,
+  "special_abilities": [
+    "Toydarians are smaller than average and count as silhouette 0.",
+    "Hoverer: Toydarians have wings that allow them to hover slightly off the ground. When hovering, Toydarians do not have to spend additional maneuvers when navigating difficult terrain. Otherwise, their wings allow them no extra capabilities beyond those of a normal, walking character."
+  ],
+  "source": "FFG Wiki - Enter the Unknown: A Sourcebook for Explorers (Page 22-23)",
+  "extraction_date": "2025-07-08"
+}

@@ -1,0 +1,21 @@
+{
+  "name": "Ewok",
+  "characteristics": {
+    "brawn": 1,
+    "agility": 2,
+    "intellect": 2,
+    "cunning": 3,
+    "willpower": 1,
+    "presence": 2
+  },
+  "wound_threshold": "9 + Brawn",
+  "strain_threshold": "11 + Willpower",
+  "starting_xp": 120,
+  "special_abilities": [
+    "Ewoks are usually smaller than average and count as silhouette 0. They begin the game with one rank in either Stealth or Survival. They still may not train either skill above rank 2 during character creation.",
+    "Acute Senses: Ewoks add a boost die to Perception and Vigilance checks.",
+    "Low-Tech Users: Ewoks upgrade the difficulty of any checks involving advanced technology not available on their home planet once. If an Ewok uses a particular piece of technology for an extended period of time, they make become familiar with it and may be exempt from this rule when using that piece of technology (at the GM's discretion). In addition, with their GM's approval a player with an Ewok character may spend 10 XP to remove this disadvantage from their character."
+  ],
+  "source": "FFG Wiki",
+  "extraction_date": "2025-07-08"
+}
