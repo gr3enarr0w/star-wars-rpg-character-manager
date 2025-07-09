@@ -17,11 +17,25 @@ def ensure_encryption_key():
     
     if not os.path.exists(encryption_key_path):
         print("🔐 Generating encryption key...")
-        # Generate a 32-byte (256-bit) encryption key
-        encryption_key = secrets.token_urlsafe(32)
+        # Generate a proper Fernet key using PBKDF2 (same as security module)
+        from cryptography.hazmat.primitives import hashes
+        from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
+        import base64
         
-        # Write key to file with secure permissions
-        with open(encryption_key_path, 'w') as f:
+        password = os.getenv('ENCRYPTION_PASSWORD', 'default-key-change-in-production').encode()
+        salt = os.getenv('ENCRYPTION_SALT', 'swrpg-salt-change-in-production').encode()
+        
+        # Use PBKDF2 with SHA256 and 100,000 iterations (NIST recommended)
+        kdf = PBKDF2HMAC(
+            algorithm=hashes.SHA256(),
+            length=32,  # 256-bit key
+            salt=salt,
+            iterations=100000,  # NIST recommended minimum
+        )
+        encryption_key = base64.urlsafe_b64encode(kdf.derive(password))
+        
+        # Write key to file as binary (same as security module expects)
+        with open(encryption_key_path, 'wb') as f:
             f.write(encryption_key)
         
         # Set secure permissions (owner read/write only)
