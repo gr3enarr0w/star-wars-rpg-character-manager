@@ -68,7 +68,7 @@ logs/
 
 # Data processing (large files)
 swrpg_complete_extraction/
-swrpg_extracted_data/
+# swrpg_extracted_data/ - REMOVED: This data is needed in Docker for species/career loading
 
 # Build artifacts
 archive/

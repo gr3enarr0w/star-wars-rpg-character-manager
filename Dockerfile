@@ -23,8 +23,8 @@ COPY web/ ./web/
 COPY wsgi.py .
 COPY startup_production.py .
 
-# Create swrpg_extracted_data directory (fallback if not in git)
-RUN mkdir -p /app/swrpg_extracted_data/json
+# Copy complete SWRPG extracted data (all species, careers, and content)
+COPY swrpg_extracted_data/ ./swrpg_extracted_data/
 
 # Create encryption key at runtime if it doesn't exist
 # (Security keys should not be committed to git)
