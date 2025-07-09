@@ -587,7 +587,84 @@ def health_check():
         app.logger.error(f"Health check failed: {e}")
         return jsonify({"status": "unhealthy", "error": "Database connection failed"}), 503
 
-# [REST OF THE FILE CONTINUES UNCHANGED - including all the other routes and functions]
+# Character Management API Routes
+@app.route('/api/characters', methods=['GET'])
+@auth_manager.require_auth
+def get_characters():
+    """Get all characters for the current user."""
+    try:
+        current_user_id = get_current_user_id()
+        user = db_manager.get_user_by_id(current_user_id)
+        
+        # Get characters from database
+        characters = db_manager.get_characters_by_user(current_user_id)
+        
+        # Convert to dict format
+        characters_data = []
+        for char in characters:
+            characters_data.append({
+                'id': str(char._id),
+                'name': char.name,
+                'playerName': char.player_name,
+                'species': char.species,
+                'career': char.career,
+                'background': char.background or '',
+                'created_at': char.created_at.isoformat() if hasattr(char, 'created_at') else None
+            })
+        
+        return jsonify({
+            'characters': characters_data,
+            'total': len(characters_data)
+        })
+        
+    except Exception as e:
+        app.logger.error(f"Error getting characters: {e}")
+        return jsonify({'error': 'Failed to retrieve characters'}), 500
+
+@app.route('/api/characters', methods=['POST'])
+@auth_manager.require_auth
+def create_character():
+    """Create a new character."""
+    try:
+        current_user_id = get_current_user_id()
+        data = request.get_json()
+        
+        # Validate required fields
+        required_fields = ['name', 'playerName', 'species', 'career']
+        for field in required_fields:
+            if not data.get(field):
+                return jsonify({'error': f'{field} is required'}), 400
+        
+        # Create character using the character creator
+        character = creator.create_character(
+            name=data['name'],
+            player_name=data['playerName'],
+            species=data['species'],
+            career=data['career']
+        )
+        
+        # Add background if provided
+        if data.get('background'):
+            character.background = data['background']
+        
+        # Save to database
+        character_id = db_manager.save_character(character, current_user_id)
+        
+        return jsonify({
+            'message': 'Character created successfully',
+            'character': {
+                'id': str(character_id),
+                'name': character.name,
+                'playerName': character.player_name,
+                'species': character.species,
+                'career': character.career,
+                'background': character.background or ''
+            }
+        }), 201
+        
+    except Exception as e:
+        app.logger.error(f"Error creating character: {e}")
+        return jsonify({'error': 'Failed to create character'}), 500
 
 def get_current_user_id():
     """Get current user ID from either JWT token or session."""
@@ -646,6 +723,18 @@ def admin_page():
         app.logger.error(f"Error loading admin page: {e}")
         return redirect(url_for('login_page'))
 
+@app.route('/profile')
+@auth_manager.require_auth
+def profile_page():
+    """User profile page."""
+    try:
+        current_user_id = get_current_user_id()
+        current_user = db_manager.get_user_by_id(current_user_id)
+        return render_template('profile.html', current_user=current_user)
+    except Exception as e:
+        app.logger.error(f"Error loading profile page: {e}")
+        return redirect(url_for('login_page'))
+
 @app.route('/create-character')
 @auth_manager.require_auth
 def create_character_start():
@@ -653,7 +742,7 @@ def create_character_start():
     try:
         current_user_id = get_current_user_id()
         current_user = db_manager.get_user_by_id(current_user_id)
-        return render_template('create_character_wizard.html', current_user=current_user)
+        return render_template('create_character_fixed.html', current_user=current_user)
     except Exception as e:
         app.logger.error(f"Error loading character creation page: {e}")
         return redirect(url_for('login_page'))
