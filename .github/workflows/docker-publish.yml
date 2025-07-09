@@ -10,7 +10,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: gr3enarr0w/star-wars-rpg-character-manager
+  IMAGE_NAME: gr3enarr0w/python-course-app
 
 jobs:
   build-and-publish:
@@ -43,8 +43,8 @@ jobs:
         labels: |
           org.opencontainers.image.title=star-wars-rpg-character-manager
           org.opencontainers.image.description=Star Wars RPG Character Manager - Professional character creation and management tool
-          org.opencontainers.image.source=https://github.com/gr3enarr0w/star-wars-rpg-character-manager
-          org.opencontainers.image.url=https://github.com/gr3enarr0w/star-wars-rpg-character-manager
+          org.opencontainers.image.source=https://github.com/gr3enarr0w/python-course-app
+          org.opencontainers.image.url=https://github.com/gr3enarr0w/python-course-app
         tags: |
           type=ref,event=branch
           type=ref,event=pr
@@ -58,7 +58,7 @@ jobs:
       with:
         context: .
         platforms: linux/amd64
-        push: false
+        push: ${{ github.event_name != 'pull_request' }}
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
         cache-from: type=gha
