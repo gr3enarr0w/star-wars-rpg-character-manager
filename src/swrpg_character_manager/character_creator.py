@@ -158,36 +158,31 @@ class CharacterCreator:
         return careers
     
     def _load_extracted_species_data(self) -> Dict[str, Dict]:
-        """Load species data with priority system: FFG Wiki > Vector DB > Books > Hardcoded."""
-        print("🔄 Loading species data with priority system...")
-        
-        # Priority 4: Start with comprehensive hardcoded species (fallback)
-        core_species = self._get_comprehensive_species_data()
-        combined_species = core_species.copy()
+        """Load species data from the official 97 species database (user-verified official species only)."""
+        print("🔄 Loading species data from official 97 species database...")
         
         current_dir = os.path.dirname(os.path.abspath(__file__))
         project_root = os.path.dirname(os.path.dirname(current_dir))
         
-        # Priority 3: Load from extracted books
-        books_file = os.path.join(project_root, 'swrpg_extracted_data', 'json', 'comprehensive_species_data_v2.json')
-        books_species = self._load_species_from_file(books_file, "books")
-        if books_species:
-            combined_species.update(books_species)
+        # Priority 1: Load from Official Species Database (user-verified official species ONLY)
+        official_db_file = os.path.join(project_root, 'swrpg_extracted_data', 'OFFICIAL_SPECIES_DATABASE.json')
+        official_species = self._load_official_species_database(official_db_file)
+        if official_species:
+            print(f"✅ Loaded {len(official_species)} official species from organized database")
+            return official_species
         
-        # Priority 2: Load from Vector DB (clean species data)
-        vector_db_file = os.path.join(project_root, 'swrpg_extracted_data', 'json', 'clean_species_data.json')
-        vector_db_species = self._load_species_from_file(vector_db_file, "vector_db")
-        if vector_db_species:
-            combined_species.update(vector_db_species)
+        # Fallback: Load from previous official database
+        official_109_db_file = os.path.join(project_root, 'swrpg_extracted_data', 'json', 'official_109_species_database.json')
+        official_109_species = self._load_official_109_species_database(official_109_db_file)
+        if official_109_species:
+            print(f"✅ Loaded {len(official_109_species)} official species from 109 species database")
+            return official_109_species
         
-        # Priority 1: Load from Final Verified Database (highest priority - official species only)
-        final_verified_db_file = os.path.join(project_root, 'swrpg_extracted_data', 'FINAL_VERIFIED_SPECIES_DATABASE.json')
-        final_verified_species = self._load_final_verified_species_database(final_verified_db_file)
-        if final_verified_species:
-            combined_species.update(final_verified_species)
-        
-        print(f"✅ Final species count: {len(combined_species)} species loaded")
-        return combined_species
+        # Final fallback: Load from hardcoded species
+        print("⚠️  No official databases found, falling back to hardcoded species")
+        core_species = self._get_comprehensive_species_data()
+        print(f"✅ Loaded {len(core_species)} hardcoded species")
+        return core_species
     
     def _load_species_from_file(self, file_path: str, source_name: str) -> Dict[str, Dict]:
         """Load species data from a JSON file."""
@@ -248,6 +243,42 @@ class CharacterCreator:
             
         return species_data
     
+    def _load_protected_species_database(self, protected_db_file: str) -> Dict[str, Dict]:
+        """Load protected species database with all 150 official FFG Wiki species"""
+        try:
+            with open(protected_db_file, 'r', encoding='utf-8') as f:
+                protected_db = json.load(f)
+            
+            protected_species = {}
+            for name, species_info in protected_db.get("species", {}).items():
+                # Use the validated and protected species data
+                protected_species[name] = self._normalize_species_data(species_info, "Protected Database")
+            
+            print(f"✅ Loaded {len(protected_species)} protected species from database")
+            return protected_species
+            
+        except Exception as e:
+            print(f"⚠️  Could not load protected database: {e}")
+            return {}
+    
+    def _load_comprehensive_species_database(self, comprehensive_db_file: str) -> Dict[str, Dict]:
+        """Load comprehensive species database with all official FFG Wiki species"""
+        try:
+            with open(comprehensive_db_file, 'r', encoding='utf-8') as f:
+                comprehensive_db = json.load(f)
+            
+            comprehensive_species = {}
+            for name, species_info in comprehensive_db.get("species", {}).items():
+                # Use the comprehensive species data
+                comprehensive_species[name] = self._normalize_species_data(species_info, "Comprehensive Database")
+            
+            print(f"✅ Loaded {len(comprehensive_species)} comprehensive species from database")
+            return comprehensive_species
+            
+        except Exception as e:
+            print(f"⚠️  Could not load comprehensive database: {e}")
+            return {}
+    
     def _filter_valid_ffg_species(self, ffg_species: Dict[str, Dict]) -> Dict[str, Dict]:
         """Filter out FFG Wiki species with invalid/placeholder data."""
         valid_species = {}
@@ -292,6 +323,24 @@ class CharacterCreator:
             print(f"⚠️  Could not load verified database: {e}")
             return {}
     
+    def _load_official_species_database(self, official_db_file: str) -> Dict[str, Dict]:
+        """Load official species database with organized categories"""
+        try:
+            with open(official_db_file, 'r', encoding='utf-8') as f:
+                official_db = json.load(f)
+            
+            official_species = {}
+            for name, species_info in official_db.get("species", {}).items():
+                # Use the official data with proper normalization
+                official_species[name] = self._normalize_species_data(species_info, "Official Species Database")
+            
+            print(f"✅ Loaded {len(official_species)} official species from organized database")
+            return official_species
+            
+        except Exception as e:
+            print(f"⚠️  Could not load official species database: {e}")
+            return {}
+    
     def _load_final_verified_species_database(self, final_verified_db_file: str) -> Dict[str, Dict]:
         """Load final verified species database with only official FFG/Edge Studio species"""
         try:
@@ -309,6 +358,42 @@ class CharacterCreator:
             
         except Exception as e:
             print(f"⚠️  Could not load final verified database: {e}")
+            return {}
+    
+    def _load_final_official_species_database(self, final_official_db_file: str) -> Dict[str, Dict]:
+        """Load final official species database with only 130 official FFG Wiki species"""
+        try:
+            with open(final_official_db_file, 'r', encoding='utf-8') as f:
+                final_official_db = json.load(f)
+            
+            final_official_species = {}
+            for name, species_info in final_official_db.get("species", {}).items():
+                # Use the final official data with proper normalization
+                final_official_species[name] = self._normalize_species_data(species_info, "Final Official Database (FFG Wiki Only)")
+            
+            print(f"✅ Loaded {len(final_official_species)} official species from final official database")
+            return final_official_species
+            
+        except Exception as e:
+            print(f"⚠️  Could not load final official database: {e}")
+            return {}
+    
+    def _load_official_109_species_database(self, official_109_db_file: str) -> Dict[str, Dict]:
+        """Load official 109 species database with user-verified official species"""
+        try:
+            with open(official_109_db_file, 'r', encoding='utf-8') as f:
+                official_109_db = json.load(f)
+            
+            official_109_species = {}
+            for name, species_info in official_109_db.get("species", {}).items():
+                # Use the official 109 species data with proper normalization
+                official_109_species[name] = self._normalize_species_data(species_info, "Official 109 Species Database")
+            
+            print(f"✅ Loaded {len(official_109_species)} official species from 109 species database")
+            return official_109_species
+            
+        except Exception as e:
+            print(f"⚠️  Could not load official 109 species database: {e}")
             return {}
     
     def _normalize_species_data(self, species_info: Dict[str, Any], source: str) -> Dict[str, Any]:

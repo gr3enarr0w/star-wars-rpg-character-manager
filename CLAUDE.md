@@ -24,7 +24,9 @@ This extracted content includes:
 - **Game Mechanics**: Characteristics, wound/strain thresholds, starting XP, special abilities
 - **Rules Reference**: Combat, Force powers, talents, equipment stats
 
-**Data Verification Protocol**: Always cross-reference character creation data, species stats, career information, and game mechanics against these extracted sources to ensure accuracy and completeness. The application currently has 28+ species available in the character creation wizard.
+**Data Verification Protocol**: Always cross-reference character creation data, species stats, career information, and game mechanics against these extracted sources to ensure accuracy and completeness. The application currently has **97 official species** available in the character creation wizard.
+
+**FINAL OFFICIAL SPECIES LIST**: The character creation tool uses the definitive list of 97 official Star Wars RPG species from FFG/Edge Studio, organized by characteristics and verified for accuracy. This list is stored in `swrpg_extracted_data/OFFICIAL_SPECIES_DATABASE.json` and includes all species from the official FFG Wiki with proper characteristics, starting XP calculations, and categorical organization for easy navigation.
 
 ## Development Commands
 
