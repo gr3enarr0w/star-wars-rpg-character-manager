@@ -20,7 +20,13 @@ This is a Python application called "star-wars-rpg-character-manager" for dynami
 
 This extracted content includes:
 - **All Species**: Human, Twi'lek, Wookiee, Clone, Dathomirian, Harch, Karkarodon, Togruta, Weequay, Quarren, Ithorian, etc.
-- **All Careers**: Bounty Hunter, Smuggler, Jedi, Diplomat, Ace, Guardian, etc.
+- **All Careers**: 
+  - **Edge of the Empire**: Bounty Hunter, Colonist, Explorer, Hired Gun, Smuggler, Technician
+  - **Age of Rebellion**: Ace, Commander, Diplomat, Engineer, Soldier, Spy
+  - **Force and Destiny**: Consular, Guardian, Mystic, Seeker, Sentinel, Warrior
+  - **Rise of the Separatist**: Clone Soldier, Jedi
+- **Universal Force Sensitive Specializations**: Force-Sensitive Emergent, Force-Sensitive Exile, Force-Sensitive Outcast, Nightsister, Padawan Survivor
+- **Universal Combat Specializations**: Death Watch Warrior, Force Adherent, Imperial Academy Cadet, Recruit, Retired Clone Trooper
 - **Game Mechanics**: Characteristics, wound/strain thresholds, starting XP, special abilities
 - **Rules Reference**: Combat, Force powers, talents, equipment stats
 

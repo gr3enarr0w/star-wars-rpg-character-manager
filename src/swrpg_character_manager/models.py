@@ -16,10 +16,11 @@ class Characteristic(Enum):
 
 
 class GameLine(Enum):
-    """The three Star Wars RPG game lines."""
+    """The Star Wars RPG game lines."""
     EDGE_OF_EMPIRE = "Edge of the Empire"
     AGE_OF_REBELLION = "Age of Rebellion"
     FORCE_AND_DESTINY = "Force and Destiny"
+    RISE_OF_THE_SEPARATIST = "Rise of the Separatist"
 
 
 @dataclass
@@ -116,6 +117,9 @@ class Character:
     # Story elements
     motivation: str = ""
     background: str = ""
+    
+    # Character creation state
+    is_created: bool = False  # True after character creation is finalized
     
     def __post_init__(self):
         """Initialize derived values after creation."""

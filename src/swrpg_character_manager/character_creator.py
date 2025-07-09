@@ -100,6 +100,33 @@ class CharacterCreator:
             starting_strain_threshold=14
         )
         
+        careers["Engineer"] = Career(
+            name="Engineer",
+            game_line=GameLine.AGE_OF_REBELLION,
+            career_skills=["Computers", "Discipline", "Knowledge (Education)", 
+                          "Mechanics", "Piloting (Space)", "Vigilance"],
+            starting_wound_threshold=11,
+            starting_strain_threshold=13
+        )
+        
+        careers["Soldier"] = Career(
+            name="Soldier",
+            game_line=GameLine.AGE_OF_REBELLION,
+            career_skills=["Athletics", "Discipline", "Medicine", "Ranged (Heavy)", 
+                          "Resilience", "Survival"],
+            starting_wound_threshold=12,
+            starting_strain_threshold=12
+        )
+        
+        careers["Spy"] = Career(
+            name="Spy",
+            game_line=GameLine.AGE_OF_REBELLION,
+            career_skills=["Computers", "Deception", "Knowledge (Underworld)", 
+                          "Perception", "Skulduggery", "Stealth"],
+            starting_wound_threshold=10,
+            starting_strain_threshold=14
+        )
+        
         # Force and Destiny Careers
         careers["Consular"] = Career(
             name="Consular",
@@ -153,6 +180,25 @@ class CharacterCreator:
                           "Resilience", "Survival"],
             starting_wound_threshold=12,
             starting_strain_threshold=12
+        )
+        
+        # Rise of the Separatist Careers
+        careers["Clone Soldier"] = Career(
+            name="Clone Soldier",
+            game_line=GameLine.RISE_OF_THE_SEPARATIST,
+            career_skills=["Athletics", "Discipline", "Knowledge (Warfare)", 
+                          "Medicine", "Ranged (Heavy)", "Resilience"],
+            starting_wound_threshold=12,
+            starting_strain_threshold=12
+        )
+        
+        careers["Jedi"] = Career(
+            name="Jedi",
+            game_line=GameLine.RISE_OF_THE_SEPARATIST,
+            career_skills=["Discipline", "Knowledge (Education)", "Knowledge (Lore)", 
+                          "Leadership", "Lightsaber", "Vigilance"],
+            starting_wound_threshold=11,
+            starting_strain_threshold=13
         )
         
         return careers
