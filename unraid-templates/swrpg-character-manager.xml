@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <Container version="2">
   <Name>SWRPG-Character-Manager</Name>
-  <Repository>ghcr.io/gr3enarr0w/star-wars-rpg-character-manager:latest</Repository>
+  <Repository>ghcr.io/gr3enarr0w/star-wars-rpg-character-manager:v1.0.0</Repository>
   <Registry>https://github.com/gr3enarr0w/star-wars-rpg-character-manager/pkgs/container/star-wars-rpg-character-manager</Registry>
   <Network>bridge</Network>
   <MyIP/>
@@ -32,6 +32,16 @@ Features:
 - Real-time dice pool calculations
 
 IMPORTANT: This application requires MongoDB. Install the "MongoDB-SWRPG" container first, then configure this container to connect to it.</Description>
+  <Changes>
+###v1.0.0
+- Complete repository migration with 97 official species
+- All 20 FFG careers with corrected skills
+- Enhanced GameLine support (Rise of the Separatist)
+- Complete SWRPG extracted data in Docker
+- Production-ready authentication and security features
+- Multi-platform Docker support (amd64/arm64)
+- Unraid Community Application ready
+  </Changes>
   <Networking>
     <Mode>bridge</Mode>
     <Publish>
