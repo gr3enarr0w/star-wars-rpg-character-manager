@@ -1,5 +1,6 @@
 {
   "name": "Sullustan",
+  "category": "species",
   "characteristics": {
     "brawn": 2,
     "agility": 3,
@@ -8,13 +9,20 @@
     "willpower": 2,
     "presence": 2
   },
+  "special_abilities": [
+    "Sullustans begin with 1 rank in Astrogation; they may not train this skill above rank 2 at character creation. They also start with one rank in the Skilled Jockey talent."
+  ],
+  "metadata": {
+    "source": "FFG Wiki",
+    "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Sullustan",
+    "data_source_priority": "FFG_WIKI_PRIMARY",
+    "extraction_date": "2025-07-09",
+    "authority_level": "canonical",
+    "extraction_method": "fixed_html_parser"
+  },
+  "ai_searchable_text": "sullustan species characteristics abilities",
+  "vector_ready": true,
   "wound_threshold": "10 + Brawn",
   "strain_threshold": "10 + Willpower",
-  "starting_xp": 100,
-  "special_abilities": [
-    "Sullustans begin with 1 rank in Astrogation; they may not train this skill above rank 2 at character creation.",
-    "They also start with one rank in the Skilled Jockey talent."
-  ],
-  "source": "FFG Wiki",
-  "extraction_date": "2025-07-08"
+  "starting_xp": 100
 }

@@ -1,5 +1,6 @@
 {
   "name": "Toydarian",
+  "category": "species",
   "characteristics": {
     "brawn": 1,
     "agility": 1,
@@ -8,13 +9,20 @@
     "willpower": 3,
     "presence": 3
   },
+  "special_abilities": [
+    "Toydarians are smaller than average and count as silhouette 0."
+  ],
+  "metadata": {
+    "source": "FFG Wiki",
+    "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Toydarian",
+    "data_source_priority": "FFG_WIKI_PRIMARY",
+    "extraction_date": "2025-07-09",
+    "authority_level": "canonical",
+    "extraction_method": "fixed_html_parser"
+  },
+  "ai_searchable_text": "toydarian species characteristics abilities",
+  "vector_ready": true,
   "wound_threshold": "9 + Brawn",
   "strain_threshold": "12 + Willpower",
-  "starting_xp": 90,
-  "special_abilities": [
-    "Toydarians are smaller than average and count as silhouette 0.",
-    "Hoverer: Toydarians have wings that allow them to hover slightly off the ground. When hovering, Toydarians do not have to spend additional maneuvers when navigating difficult terrain. Otherwise, their wings allow them no extra capabilities beyond those of a normal, walking character."
-  ],
-  "source": "FFG Wiki - Enter the Unknown: A Sourcebook for Explorers (Page 22-23)",
-  "extraction_date": "2025-07-08"
+  "starting_xp": 90
 }

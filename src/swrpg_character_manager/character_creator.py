@@ -2,7 +2,7 @@
 
 import json
 import os
-from typing import Dict, List
+from typing import Dict, List, Any
 from .models import Character, Career, Specialization, GameLine, Characteristic
 
 
@@ -158,33 +158,181 @@ class CharacterCreator:
         return careers
     
     def _load_extracted_species_data(self) -> Dict[str, Dict]:
-        """Load species data from extracted SWRPG PDF data, with core species fallback."""
-        # Start with comprehensive hardcoded species for production deployment
-        core_species = self._get_comprehensive_species_data()
+        """Load species data with priority system: FFG Wiki > Vector DB > Books > Hardcoded."""
+        print("🔄 Loading species data with priority system...")
         
-        # Try to load extracted data if available (for development environments)
+        # Priority 4: Start with comprehensive hardcoded species (fallback)
+        core_species = self._get_comprehensive_species_data()
+        combined_species = core_species.copy()
+        
         current_dir = os.path.dirname(os.path.abspath(__file__))
         project_root = os.path.dirname(os.path.dirname(current_dir))
-        species_file = os.path.join(project_root, 'swrpg_extracted_data', 'json', 'comprehensive_species_data_v2.json')
         
+        # Priority 3: Load from extracted books
+        books_file = os.path.join(project_root, 'swrpg_extracted_data', 'json', 'comprehensive_species_data_v2.json')
+        books_species = self._load_species_from_file(books_file, "books")
+        if books_species:
+            combined_species.update(books_species)
+        
+        # Priority 2: Load from Vector DB (clean species data)
+        vector_db_file = os.path.join(project_root, 'swrpg_extracted_data', 'json', 'clean_species_data.json')
+        vector_db_species = self._load_species_from_file(vector_db_file, "vector_db")
+        if vector_db_species:
+            combined_species.update(vector_db_species)
+        
+        # Priority 1: Load from Verified Database (highest priority)
+        verified_db_file = os.path.join(project_root, 'swrpg_extracted_data', 'verified_species_database.json')
+        verified_species = self._load_verified_species_database(verified_db_file)
+        if verified_species:
+            combined_species.update(verified_species)
+        
+        print(f"✅ Final species count: {len(combined_species)} species loaded")
+        return combined_species
+    
+    def _load_species_from_file(self, file_path: str, source_name: str) -> Dict[str, Dict]:
+        """Load species data from a JSON file."""
         try:
-            with open(species_file, 'r', encoding='utf-8') as f:
+            with open(file_path, 'r', encoding='utf-8') as f:
                 data = json.load(f)
             
-            extracted_species = data.get('species', {})
-            
-            if extracted_species:
-                # Merge extracted species with core species (extracted takes precedence)
-                combined_species = {**core_species, **extracted_species}
-                print(f"✅ Loaded {len(extracted_species)} species from extracted sourcebooks + {len(core_species)} built-in species")
-                return combined_species
-            else:
-                # Use comprehensive built-in species
-                return core_species
+            species_data = data.get('species', {})
+            if species_data:
+                # Normalize species data format
+                normalized_species = {}
+                for name, species_info in species_data.items():
+                    normalized_species[name] = self._normalize_species_data(species_info, source_name)
                 
-        except (FileNotFoundError, json.JSONDecodeError, Exception):
-            # Silently fall back to comprehensive built-in species for production
-            return core_species
+                print(f"✅ Loaded {len(normalized_species)} species from {source_name}")
+                return normalized_species
+            else:
+                print(f"⚠️  No species data found in {source_name}")
+                return {}
+                
+        except (FileNotFoundError, json.JSONDecodeError, Exception) as e:
+            print(f"⚠️  Could not load {source_name}: {e}")
+            return {}
+    
+    def _load_species_from_ffg_wiki(self, ffg_wiki_dir: str) -> Dict[str, Dict]:
+        """Load species data from FFG Wiki JSON files."""
+        species_data = {}
+        
+        try:
+            if not os.path.exists(ffg_wiki_dir):
+                print(f"⚠️  FFG Wiki directory not found: {ffg_wiki_dir}")
+                return {}
+            
+            json_files = [f for f in os.listdir(ffg_wiki_dir) if f.endswith('.json')]
+            
+            for json_file in json_files:
+                try:
+                    file_path = os.path.join(ffg_wiki_dir, json_file)
+                    with open(file_path, 'r', encoding='utf-8') as f:
+                        species_info = json.load(f)
+                    
+                    if 'name' in species_info:
+                        # Normalize the FFG Wiki data format
+                        normalized_species = self._normalize_species_data(species_info, "FFG Wiki")
+                        species_data[species_info['name']] = normalized_species
+                        
+                except (json.JSONDecodeError, Exception) as e:
+                    print(f"⚠️  Error loading {json_file}: {e}")
+                    continue
+            
+            if species_data:
+                print(f"✅ Loaded {len(species_data)} species from FFG Wiki")
+            else:
+                print(f"⚠️  No valid species data found in FFG Wiki")
+                
+        except Exception as e:
+            print(f"⚠️  Error loading FFG Wiki species: {e}")
+            
+        return species_data
+    
+    def _filter_valid_ffg_species(self, ffg_species: Dict[str, Dict]) -> Dict[str, Dict]:
+        """Filter out FFG Wiki species with invalid/placeholder data."""
+        valid_species = {}
+        
+        for name, species_data in ffg_species.items():
+            # Check if species has valid characteristics (not all 2s)
+            chars = species_data.get('characteristics', {})
+            if not chars:
+                continue
+                
+            # Check if all characteristics are 2 (invalid placeholder data)
+            all_twos = all(value == 2 for value in chars.values())
+            
+            # Check if species has proper data structure
+            has_wound_threshold = 'wound_threshold' in species_data
+            has_strain_threshold = 'strain_threshold' in species_data
+            has_starting_xp = 'starting_xp' in species_data
+            
+            if not all_twos and has_wound_threshold and has_strain_threshold and has_starting_xp:
+                valid_species[name] = species_data
+            else:
+                print(f"⚠️  Skipping {name} - invalid FFG Wiki data (using fallback)")
+                
+        return valid_species
+    
+    def _load_verified_species_database(self, verified_db_file: str) -> Dict[str, Dict]:
+        """Load verified species database with deduplication and verification"""
+        try:
+            with open(verified_db_file, 'r', encoding='utf-8') as f:
+                verified_db = json.load(f)
+            
+            verified_species = {}
+            for name, species_info in verified_db.get("species", {}).items():
+                # Use the verified data with proper normalization
+                species_data = species_info.get("data", {})
+                verified_species[name] = self._normalize_species_data(species_data, "Verified Database")
+            
+            print(f"✅ Loaded {len(verified_species)} species from verified database")
+            return verified_species
+            
+        except Exception as e:
+            print(f"⚠️  Could not load verified database: {e}")
+            return {}
+    
+    def _normalize_species_data(self, species_info: Dict[str, Any], source: str) -> Dict[str, Any]:
+        """Normalize species data to consistent format for character creation."""
+        
+        # Handle different data formats from different sources
+        normalized = {
+            "characteristics": species_info.get("characteristics", {}),
+            "wound_threshold": species_info.get("wound_threshold", "10 + Brawn"),
+            "strain_threshold": species_info.get("strain_threshold", "10 + Willpower"), 
+            "starting_xp": species_info.get("starting_xp", 100),
+            "special_abilities": species_info.get("special_abilities", []),
+            "source": source
+        }
+        
+        # Handle string-based thresholds (convert to formulas if needed)
+        wound_threshold = normalized["wound_threshold"]
+        if isinstance(wound_threshold, int):
+            normalized["wound_threshold"] = wound_threshold
+        elif isinstance(wound_threshold, str) and "+" not in wound_threshold:
+            # If it's just a number as string, convert to int
+            try:
+                normalized["wound_threshold"] = int(wound_threshold)
+            except (ValueError, TypeError):
+                normalized["wound_threshold"] = "10 + Brawn"
+        
+        strain_threshold = normalized["strain_threshold"]
+        if isinstance(strain_threshold, int):
+            normalized["strain_threshold"] = strain_threshold
+        elif isinstance(strain_threshold, str) and "+" not in strain_threshold:
+            # If it's just a number as string, convert to int
+            try:
+                normalized["strain_threshold"] = int(strain_threshold)
+            except (ValueError, TypeError):
+                normalized["strain_threshold"] = "10 + Willpower"
+        
+        # Ensure special_abilities is a list
+        if isinstance(normalized["special_abilities"], str):
+            normalized["special_abilities"] = [normalized["special_abilities"]]
+        elif not isinstance(normalized["special_abilities"], list):
+            normalized["special_abilities"] = []
+        
+        return normalized
     
     def _get_comprehensive_species_data(self) -> Dict[str, Dict]:
         """Get comprehensive built-in species data for production deployment."""

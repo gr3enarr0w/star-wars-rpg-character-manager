@@ -1,0 +1,4724 @@
+{
+  "verification_date": "2025-07-09",
+  "total_species": 151,
+  "verified_species": 10,
+  "updated_species": 4,
+  "duplicates_removed": 64,
+  "species": {
+    "Devaronian": {
+      "data": {
+        "name": "Devaronian",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 2,
+          "intellect": 2,
+          "cunning": 3,
+          "willpower": 2,
+          "presence": 1
+        },
+        "special_abilities": [
+          "Devaronians begin the game with one rank in Survival or Deception. They still may not train Survival or Deception  above rank 2 during character creation."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Devaronian",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "devaronian species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "11 + Brawn",
+        "strain_threshold": "10 + Willpower",
+        "starting_xp": 95
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Pau'an": {
+      "data": {
+        "name": "Pau'an",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 2,
+          "intellect": 2,
+          "cunning": 2,
+          "willpower": 2,
+          "presence": 2
+        },
+        "wound_threshold": "10 + Brawn",
+        "strain_threshold": "10 + Willpower",
+        "starting_xp": 100,
+        "special_abilities": [],
+        "metadata": {
+          "source": "FFG Wiki",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_status": "needs_validation"
+        },
+        "ai_searchable_text": "pau'an species characteristics abilities",
+        "vector_ready": true
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Anzat": {
+      "data": {
+        "name": "Anzat",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 2,
+          "intellect": 2,
+          "cunning": 2,
+          "willpower": 2,
+          "presence": 2
+        },
+        "wound_threshold": "10 + Brawn",
+        "strain_threshold": "10 + Willpower",
+        "starting_xp": 100,
+        "special_abilities": [],
+        "metadata": {
+          "source": "FFG Wiki",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_status": "needs_validation"
+        },
+        "ai_searchable_text": "anzat species characteristics abilities",
+        "vector_ready": true
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Kyuzo": {
+      "data": {
+        "name": "Kyuzo",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 3,
+          "intellect": 2,
+          "cunning": 2,
+          "willpower": 2,
+          "presence": 1
+        },
+        "special_abilities": [
+          "Kyuzo begin the game with one rank in Coordination. They still may not train Coordination above rank 2 during character creation.."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Kyuzo",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "kyuzo species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "11 + Brawn",
+        "strain_threshold": "11 + Willpower",
+        "starting_xp": 90
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Nautolan": {
+      "data": {
+        "name": "Nautolan",
+        "category": "species",
+        "characteristics": {
+          "brawn": 3,
+          "agility": 2,
+          "intellect": 2,
+          "cunning": 2,
+          "willpower": 1,
+          "presence": 2
+        },
+        "special_abilities": [
+          "Nautolans begin the game with one rank in Athletics. They still may not train Athletics above rank 2 during character creation."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Nautolan",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "nautolan species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "11 + Brawn",
+        "strain_threshold": "9 + Willpower",
+        "starting_xp": 100
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Ubese": {
+      "data": {
+        "name": "Ubese",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 2,
+          "intellect": 2,
+          "cunning": 2,
+          "willpower": 2,
+          "presence": 2
+        },
+        "wound_threshold": "10 + Brawn",
+        "strain_threshold": "10 + Willpower",
+        "starting_xp": 100,
+        "special_abilities": [],
+        "metadata": {
+          "source": "FFG Wiki",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_status": "needs_validation"
+        },
+        "ai_searchable_text": "ubese species characteristics abilities",
+        "vector_ready": true
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Dathomirian": {
+      "data": {
+        "name": "Dathomirian",
+        "category": "species",
+        "characteristics": {
+          "brawn": 3,
+          "agility": 2,
+          "intellect": 2,
+          "cunning": 2,
+          "willpower": 3,
+          "presence": 1
+        },
+        "wound_threshold": "10 + Brawn",
+        "strain_threshold": "11 + Willpower",
+        "starting_xp": 100,
+        "special_abilities": [
+          "Start with one rank in Survival",
+          "Start with one rank in Athletics"
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Dathomirian",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical"
+        },
+        "ai_searchable_text": "dathomirian species characteristics abilities",
+        "vector_ready": true,
+        "verified": true,
+        "verification_date": "2025-07-09"
+      },
+      "source": "FFG Wiki",
+      "verified": true
+    },
+    "Zygerrian": {
+      "data": {
+        "name": "Zygerrian",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 2,
+          "intellect": 2,
+          "cunning": 2,
+          "willpower": 3,
+          "presence": 1
+        },
+        "special_abilities": [
+          "Zygerrians begin the game with one rank in Coercion. They still may not train this skill above rank 2 during character creation."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Zygerrian",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "zygerrian species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "10 + Brawn",
+        "strain_threshold": "10 + Willpower",
+        "starting_xp": 90
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Weequay": {
+      "data": {
+        "name": "Weequay",
+        "category": "species",
+        "characteristics": {
+          "brawn": 3,
+          "agility": 2,
+          "intellect": 1,
+          "cunning": 3,
+          "willpower": 2,
+          "presence": 1
+        },
+        "special_abilities": [
+          "Weequays begin the game with one rank in Resilience or one rank in Athletics. They still may not train Resilience or Athletics above rank 2 during character creation."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Weequay",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "weequay species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "10 + Brawn",
+        "strain_threshold": "9 + Willpower",
+        "starting_xp": 90
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Tognath": {
+      "data": {
+        "name": "Tognath",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 2,
+          "intellect": 2,
+          "cunning": 2,
+          "willpower": 3,
+          "presence": 1
+        },
+        "special_abilities": [
+          "Cybernetic implants and specialized lenses for their compound eyes grant Tognath characters one free rank each in Coordination and Perception. They may not train either skill beyond rank 2 at character creation. This set of cybernetics counts as 1 implant against a Tognath's limit on cybernetic implants."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Tognath",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "tognath species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "9 + Brawn",
+        "strain_threshold": "9 + Willpower",
+        "starting_xp": 95
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Gamorrean": {
+      "data": {
+        "name": "Gamorrean",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 2,
+          "intellect": 2,
+          "cunning": 2,
+          "willpower": 2,
+          "presence": 2
+        },
+        "wound_threshold": "10 + Brawn",
+        "strain_threshold": "10 + Willpower",
+        "starting_xp": 100,
+        "special_abilities": [],
+        "metadata": {
+          "source": "FFG Wiki",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_status": "needs_validation"
+        },
+        "ai_searchable_text": "gamorrean species characteristics abilities",
+        "vector_ready": true
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Fosh": {
+      "data": {
+        "name": "Fosh",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 2,
+          "intellect": 2,
+          "cunning": 2,
+          "willpower": 2,
+          "presence": 2
+        },
+        "wound_threshold": "10 + Brawn",
+        "strain_threshold": "10 + Willpower",
+        "starting_xp": 100,
+        "special_abilities": [],
+        "metadata": {
+          "source": "FFG Wiki",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_status": "needs_validation"
+        },
+        "ai_searchable_text": "fosh species characteristics abilities",
+        "vector_ready": true
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Dashade": {
+      "data": {
+        "name": "Dashade",
+        "category": "species",
+        "characteristics": {
+          "brawn": 3,
+          "agility": 2,
+          "intellect": 2,
+          "cunning": 2,
+          "willpower": 2,
+          "presence": 1
+        },
+        "special_abilities": [
+          "Dashade begin the game with one rank in Athletics or Resilience. They still may not train Athletics or Resilience above rank 2 during character creation."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Dashade",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "dashade species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "12 + Brawn",
+        "strain_threshold": "9 + Willpower",
+        "starting_xp": 75
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Gran": {
+      "data": {
+        "name": "Gran",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 2,
+          "intellect": 2,
+          "cunning": 1,
+          "willpower": 2,
+          "presence": 3
+        },
+        "special_abilities": [
+          "Gran begin the game with one rank in Charm or Negotiation. They still may not train Charm or Negotiation above rank 2 in character creation."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Gran",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "gran species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "10 + Brawn",
+        "strain_threshold": "9 + Willpower",
+        "starting_xp": 100
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Kaleesh": {
+      "data": {
+        "name": "Kaleesh",
+        "category": "species",
+        "characteristics": {
+          "brawn": 3,
+          "agility": 2,
+          "intellect": 2,
+          "cunning": 2,
+          "willpower": 2,
+          "presence": 1
+        },
+        "special_abilities": [
+          "Kaleesh begin the game with one rank in either Coercion or Melee. They still may not train these skills above rank 2 during character creation."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Kaleesh",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "kaleesh species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "12 + Brawn",
+        "strain_threshold": "9 + Willpower",
+        "starting_xp": 90
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Pyke": {
+      "data": {
+        "name": "Pyke",
+        "category": "species",
+        "characteristics": {
+          "brawn": 1,
+          "agility": 2,
+          "intellect": 2,
+          "cunning": 3,
+          "willpower": 2,
+          "presence": 2
+        },
+        "special_abilities": [
+          "Pykes begin the game with one rank in Streetwise. They still may not train this skill above rank 2 during character creation."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Pyke",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "pyke species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "10 + Brawn",
+        "strain_threshold": "10 + Willpower",
+        "starting_xp": 90
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Neimoidian": {
+      "data": {
+        "name": "Neimoidian",
+        "category": "species",
+        "characteristics": {
+          "brawn": 1,
+          "agility": 2,
+          "intellect": 3,
+          "cunning": 3,
+          "willpower": 1,
+          "presence": 2
+        },
+        "special_abilities": [
+          "Neimoidians begin the game with one rank in either Deception or Negotiation. They still may not train Deception or Negotiation above rank 2 during character creation."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Neimoidian",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "neimoidian species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "11 + Brawn",
+        "strain_threshold": "9 + Willpower",
+        "starting_xp": 90
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Mikkian": {
+      "data": {
+        "name": "Mikkian",
+        "category": "species",
+        "characteristics": {
+          "brawn": 1,
+          "agility": 2,
+          "intellect": 2,
+          "cunning": 2,
+          "willpower": 3,
+          "presence": 2
+        },
+        "special_abilities": [
+          "Mikkians begin the game with one rank in Discipline. They still may not train Discipline above rank 2 during character creation."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Mikkian",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "mikkian species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "10 + Brawn",
+        "strain_threshold": "11 + Willpower",
+        "starting_xp": 100
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Gand": {
+      "data": {
+        "name": "Gand",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 2,
+          "intellect": 2,
+          "cunning": 2,
+          "willpower": 3,
+          "presence": 1
+        },
+        "special_abilities": [
+          "Gand begin the game with one rank in Discipline. They still may not train Discipline above rank 2 during character creation."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Gand",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "gand species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "10 + Brawn",
+        "strain_threshold": "10 + Willpower",
+        "starting_xp": 100
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Selonian": {
+      "data": {
+        "name": "Selonian",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 3,
+          "intellect": 2,
+          "cunning": 1,
+          "willpower": 3,
+          "presence": 1
+        },
+        "special_abilities": [
+          "Selonians begin the game with one rank in Coordination. They still may not train Coordination above rank 2 during character creation. The structure of a Selonian's eyes allows [them] to see in near total darkness. [They] may remove all setback dice added to checks due to darkness, though [they] still cannot see in absolute darkness."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Selonian",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "selonian species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "11 + Brawn",
+        "strain_threshold": "10 + Willpower",
+        "starting_xp": 80
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Geonosian": {
+      "data": {
+        "name": "Geonosian",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 2,
+          "intellect": 2,
+          "cunning": 1,
+          "willpower": 1,
+          "presence": 1
+        },
+        "special_abilities": [
+          "Geonosians begin with one rank in a skill of their choice. They still may not train this skill above rank 2 at character creation."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Geonosian",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "geonosian species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "9 + Brawn",
+        "strain_threshold": "9 + Willpower",
+        "starting_xp": 140
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Teedo": {
+      "data": {
+        "name": "Teedo",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 2,
+          "intellect": 2,
+          "cunning": 3,
+          "willpower": 1,
+          "presence": 1
+        },
+        "special_abilities": [
+          "Teedo begin with one rank in Survival or Mechanics. They still may not train this skill above rank 2 at character creation."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Teedo",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "teedo species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "9 + Brawn",
+        "strain_threshold": "10 + Willpower",
+        "starting_xp": 110
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Drabatan": {
+      "data": {
+        "name": "Drabatan",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 2,
+          "intellect": 2,
+          "cunning": 1,
+          "willpower": 2,
+          "presence": 3
+        },
+        "special_abilities": [
+          "Drabatans begin the game with one rank in either Charm or Leadership. They still may not train either skill above rank 2 during character creation."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Drabatan",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "drabatan species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "10 + Brawn",
+        "strain_threshold": "10 + Willpower",
+        "starting_xp": 100
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Xexto": {
+      "data": {
+        "name": "Xexto",
+        "category": "species",
+        "characteristics": {
+          "brawn": 1,
+          "agility": 3,
+          "intellect": 2,
+          "cunning": 2,
+          "willpower": 1,
+          "presence": 2
+        },
+        "special_abilities": [
+          "Xexto begin play with one rank in the Confidence talent."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Xexto",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "xexto species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "9 + Brawn",
+        "strain_threshold": "9 + Willpower",
+        "starting_xp": 85
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Muun": {
+      "data": {
+        "name": "Muun",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 2,
+          "intellect": 3,
+          "cunning": 3,
+          "willpower": 1,
+          "presence": 1
+        },
+        "special_abilities": [
+          "Muun begin the game with one rank in Knowledge (Education) and one rank in Knowledge (Core Worlds). They still may not train Knowledge (Education) or Knowledge (Core Worlds) above rank 2 during character creation."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Muun",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "muun species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "9 + Brawn",
+        "strain_threshold": "9 + Willpower",
+        "starting_xp": 90
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Besalisk": {
+      "data": {
+        "name": "Besalisk",
+        "category": "species",
+        "characteristics": {
+          "brawn": 3,
+          "agility": 1,
+          "intellect": 2,
+          "cunning": 1,
+          "willpower": 2,
+          "presence": 2
+        },
+        "special_abilities": [
+          "Besalisks begin the game with one rank in Resilience. They still may not train Resilience above rank 2 during character creation."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Besalisk",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "besalisk species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "12 + Brawn",
+        "strain_threshold": "7 + Willpower",
+        "starting_xp": 85
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Umbaran": {
+      "data": {
+        "name": "Umbaran",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 2,
+          "intellect": 2,
+          "cunning": 2,
+          "willpower": 2,
+          "presence": 2
+        },
+        "wound_threshold": "10 + Brawn",
+        "strain_threshold": "10 + Willpower",
+        "starting_xp": 100,
+        "special_abilities": [],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Umbaran",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical"
+        },
+        "ai_searchable_text": "umbaran species characteristics abilities",
+        "vector_ready": true
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Chiss": {
+      "data": {
+        "name": "Chiss",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 2,
+          "intellect": 3,
+          "cunning": 2,
+          "willpower": 3,
+          "presence": 1
+        },
+        "special_abilities": [
+          "Start with one rank in Cool",
+          "Infravision: Remove setback from darkness"
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Chiss",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "chiss species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "10 + Brawn",
+        "strain_threshold": "10 + Willpower",
+        "starting_xp": 100,
+        "verified": true,
+        "verification_date": "2025-07-09"
+      },
+      "source": "FFG Wiki",
+      "verified": true
+    },
+    "Kalleran": {
+      "data": {
+        "name": "Kalleran",
+        "category": "species",
+        "characteristics": {
+          "brawn": 3,
+          "agility": 2,
+          "intellect": 2,
+          "cunning": 2,
+          "willpower": 2,
+          "presence": 1
+        },
+        "special_abilities": [
+          "Kallerans begin the game with one rank in Streetwise. They still may not train Streetwise above rank 2 during character creation."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Kalleran",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "kalleran species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "8 + Brawn",
+        "strain_threshold": "12 + Willpower",
+        "starting_xp": 90
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Gorax": {
+      "data": {
+        "name": "Gorax",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 2,
+          "intellect": 2,
+          "cunning": 2,
+          "willpower": 2,
+          "presence": 2
+        },
+        "wound_threshold": "10 + Brawn",
+        "strain_threshold": "10 + Willpower",
+        "starting_xp": 100,
+        "special_abilities": [],
+        "metadata": {
+          "source": "FFG Wiki",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_status": "needs_validation"
+        },
+        "ai_searchable_text": "gorax species characteristics abilities",
+        "vector_ready": true
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Kaminoan": {
+      "data": {
+        "name": "Kaminoan",
+        "category": "species",
+        "characteristics": {
+          "brawn": 1,
+          "agility": 2,
+          "intellect": 3,
+          "cunning": 2,
+          "willpower": 2,
+          "presence": 2
+        },
+        "special_abilities": [
+          "Kaminoans begin the game with one rank in Medicine. They still may not train Medicine above rank 2 during character creation. They also start the game with one rank in the Researcher talent."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Kaminoan",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "kaminoan species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "9 + Brawn",
+        "strain_threshold": "10 + Willpower",
+        "starting_xp": 100
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Mandalorian": {
+      "data": {
+        "name": "Mandalorian",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 2,
+          "intellect": 2,
+          "cunning": 2,
+          "willpower": 2,
+          "presence": 2
+        },
+        "wound_threshold": "10 + Brawn",
+        "strain_threshold": "10 + Willpower",
+        "starting_xp": 100,
+        "special_abilities": [],
+        "metadata": {
+          "source": "FFG Wiki",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_status": "needs_validation"
+        },
+        "ai_searchable_text": "mandalorian species characteristics abilities",
+        "vector_ready": true
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Human (Onderonian)": {
+      "data": {
+        "name": "Human (Onderonian)",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 2,
+          "intellect": 2,
+          "cunning": 2,
+          "willpower": 2,
+          "presence": 2
+        },
+        "wound_threshold": "10 + Brawn",
+        "strain_threshold": "10 + Willpower",
+        "starting_xp": 100,
+        "special_abilities": [],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Human_(Onderonian)",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical"
+        },
+        "ai_searchable_text": "human (onderonian) species characteristics abilities",
+        "vector_ready": true
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Mirialan": {
+      "data": {
+        "name": "Mirialan",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 3,
+          "intellect": 2,
+          "cunning": 1,
+          "willpower": 2,
+          "presence": 2
+        },
+        "special_abilities": [
+          "Mirialans begin the game with one rank in Discipline and one rank in Cool. They still may not train Discipline or Cool above rank 2 during character creation."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Mirialan",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "mirialan species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "11 + Brawn",
+        "strain_threshold": "10 + Willpower",
+        "starting_xp": 100
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Lasat": {
+      "data": {
+        "name": "Lasat",
+        "category": "species",
+        "characteristics": {
+          "brawn": 3,
+          "agility": 3,
+          "intellect": 2,
+          "cunning": 1,
+          "willpower": 2,
+          "presence": 1
+        },
+        "special_abilities": [
+          "Lasats begin the game with one rank in either Brawl or Knowledge (Lore). They still may not train either skill above rank 2 during character creation."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Lasat",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "lasat species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "12 + Brawn",
+        "strain_threshold": "10 + Willpower",
+        "starting_xp": 90
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Pantoran": {
+      "data": {
+        "name": "Pantoran",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 2,
+          "intellect": 2,
+          "cunning": 2,
+          "willpower": 1,
+          "presence": 3
+        },
+        "special_abilities": [
+          "Pantorans begin the game with one rank in either Cool or Negotiation. They still may not train Cool or Negotiation above rank 2 during character creation."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Pantoran",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "pantoran species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "10 + Brawn",
+        "strain_threshold": "11 + Willpower",
+        "starting_xp": 110
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Droid": {
+      "data": {
+        "name": "Droid",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 2,
+          "intellect": 2,
+          "cunning": 2,
+          "willpower": 2,
+          "presence": 2
+        },
+        "wound_threshold": "10 + Brawn",
+        "strain_threshold": "10 + Willpower",
+        "starting_xp": 100,
+        "special_abilities": [],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Droid",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical"
+        },
+        "ai_searchable_text": "droid species characteristics abilities",
+        "vector_ready": true
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Caamasi": {
+      "data": {
+        "name": "Caamasi",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 2,
+          "intellect": 2,
+          "cunning": 1,
+          "willpower": 3,
+          "presence": 2
+        },
+        "special_abilities": [
+          "Caamasi begin the game with one rank in either Charm or Discipline. They still may not train Charm or Discipline above rank 2 during character creation."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Caamasi",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "caamasi species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "10 + Brawn",
+        "strain_threshold": "11 + Willpower",
+        "starting_xp": 100
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Abednedo": {
+      "data": {
+        "name": "Abednedo",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 2,
+          "intellect": 3,
+          "cunning": 1,
+          "willpower": 2,
+          "presence": 2
+        },
+        "special_abilities": [
+          "Abednedo begin with one rank in Education. They still may not train this skill above rank 2 at character creation."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Abednedo",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "abednedo species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "9 + Brawn",
+        "strain_threshold": "12 + Willpower",
+        "starting_xp": 100
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "H'nemthe": {
+      "data": {
+        "name": "H'nemthe",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 2,
+          "intellect": 2,
+          "cunning": 2,
+          "willpower": 2,
+          "presence": 2
+        },
+        "wound_threshold": "10 + Brawn",
+        "strain_threshold": "10 + Willpower",
+        "starting_xp": 100,
+        "special_abilities": [],
+        "metadata": {
+          "source": "FFG Wiki",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_status": "needs_validation"
+        },
+        "ai_searchable_text": "h'nemthe species characteristics abilities",
+        "vector_ready": true
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Wookiee": {
+      "data": {
+        "name": "Wookiee",
+        "category": "species",
+        "characteristics": {
+          "brawn": 3,
+          "agility": 2,
+          "intellect": 2,
+          "cunning": 2,
+          "willpower": 1,
+          "presence": 2
+        },
+        "special_abilities": [
+          "Wookiees begin the game with oner rank in Brawl. They still may not train Brawl above rank 2 during character creation."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Wookiee",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "wookiee species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "14 + Brawn",
+        "strain_threshold": "8 + Willpower",
+        "starting_xp": 90
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Elom": {
+      "data": {
+        "name": "Elom",
+        "category": "species",
+        "characteristics": {
+          "brawn": 3,
+          "agility": 2,
+          "intellect": 2,
+          "cunning": 2,
+          "willpower": 2,
+          "presence": 1
+        },
+        "special_abilities": [
+          "Eloms begin the game with one rank in Resilience. They still may not train Resilience above rank 2 during character creation."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Elom",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "elom species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "10 + Brawn",
+        "strain_threshold": "9 + Willpower",
+        "starting_xp": 100
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Jawa": {
+      "data": {
+        "name": "Jawa",
+        "category": "species",
+        "characteristics": {
+          "brawn": 1,
+          "agility": 2,
+          "intellect": 2,
+          "cunning": 3,
+          "willpower": 2,
+          "presence": 1
+        },
+        "special_abilities": [
+          "Jawas begin the game with one rank in Negotiation or Skulduggery. They still may not train Negotiation or Skulduggery above rank 2 during character creation."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Jawa",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "jawa species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "8 + Brawn",
+        "strain_threshold": "8 + Willpower",
+        "starting_xp": 120
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Arcona": {
+      "data": {
+        "name": "Arcona",
+        "category": "species",
+        "characteristics": {
+          "brawn": 1,
+          "agility": 2,
+          "intellect": 2,
+          "cunning": 2,
+          "willpower": 3,
+          "presence": 2
+        },
+        "special_abilities": [
+          "Arcona begin the game with one rank in Vigilance. They still may not train Vigilance above rank 2 during character creation. When making skill checks, Arcona may remove a setback die imposed due to arid or hot environmental conditions."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Arcona",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "arcona species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "10 + Brawn",
+        "strain_threshold": "10 + Willpower",
+        "starting_xp": 100
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Gotal": {
+      "data": {
+        "name": "Gotal",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 2,
+          "intellect": 2,
+          "cunning": 3,
+          "willpower": 2,
+          "presence": 1
+        },
+        "special_abilities": [
+          "Gotals begin the game with one rank in Perception. They still may not train Perception above rank 2 during chracter creation."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Gotal",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "gotal species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "9 + Brawn",
+        "strain_threshold": "8 + Willpower",
+        "starting_xp": 100
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Bimm": {
+      "data": {
+        "name": "Bimm",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 2,
+          "intellect": 2,
+          "cunning": 2,
+          "willpower": 2,
+          "presence": 2
+        },
+        "wound_threshold": "10 + Brawn",
+        "strain_threshold": "10 + Willpower",
+        "starting_xp": 100,
+        "special_abilities": [],
+        "metadata": {
+          "source": "FFG Wiki",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_status": "needs_validation"
+        },
+        "ai_searchable_text": "bimm species characteristics abilities",
+        "vector_ready": true
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Ugor": {
+      "data": {
+        "name": "Ugor",
+        "category": "species",
+        "characteristics": {
+          "brawn": 1,
+          "agility": 1,
+          "intellect": 2,
+          "cunning": 2,
+          "willpower": 1,
+          "presence": 1
+        },
+        "special_abilities": [
+          "Ugor begin the game with one rank in Mechanics. They still may not train Mechanics above rank 2 during character creation."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Ugor",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "ugor species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "11 + Brawn",
+        "strain_threshold": "11 + Willpower",
+        "starting_xp": 150
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Tusken Raider": {
+      "data": {
+        "name": "Tusken Raider",
+        "category": "species",
+        "characteristics": {
+          "brawn": 3,
+          "agility": 2,
+          "intellect": 2,
+          "cunning": 2,
+          "willpower": 2,
+          "presence": 1
+        },
+        "special_abilities": [
+          "Tusken Raiders begin the game with one rank in Survival. They still may not train Survival above rank 2 during character creation."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Tusken_Raider",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "tusken raider species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "11 + Brawn",
+        "strain_threshold": "11 + Willpower",
+        "starting_xp": 105
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Sullustan": {
+      "data": {
+        "name": "Sullustan",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 3,
+          "intellect": 2,
+          "cunning": 1,
+          "willpower": 2,
+          "presence": 2
+        },
+        "special_abilities": [
+          "Sullustans begin with 1 rank in Astrogation; they may not train this skill above rank 2 at character creation. They also start with one rank in the Skilled Jockey talent."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Sullustan",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "sullustan species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "10 + Brawn",
+        "strain_threshold": "10 + Willpower",
+        "starting_xp": 100
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Sathari": {
+      "data": {
+        "name": "Sathari",
+        "category": "species",
+        "characteristics": {
+          "brawn": 1,
+          "agility": 3,
+          "intellect": 2,
+          "cunning": 2,
+          "willpower": 2,
+          "presence": 2
+        },
+        "special_abilities": [
+          "Sathari begin with one rank in Coordination. They still may not train Coordination above rank 2 during character creation."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Sathari",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "sathari species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "8 + Brawn",
+        "strain_threshold": "10 + Willpower",
+        "starting_xp": 100
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Kubaz": {
+      "data": {
+        "name": "Kubaz",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 2,
+          "intellect": 2,
+          "cunning": 2,
+          "willpower": 3,
+          "presence": 1
+        },
+        "special_abilities": [
+          "Kubaz begin the game with one free rank in Stealth or Survival. They still may not train Stealth or Survival above rank 2 during character creation."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Kubaz",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "kubaz species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "9 + Brawn",
+        "strain_threshold": "10 + Willpower",
+        "starting_xp": 100
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Karkarodon": {
+      "data": {
+        "name": "Karkarodon",
+        "category": "species",
+        "characteristics": {
+          "brawn": 3,
+          "agility": 2,
+          "intellect": 1,
+          "cunning": 2,
+          "willpower": 2,
+          "presence": 2
+        },
+        "special_abilities": [
+          "Karkarodons begin the game with one rank in Athletics. They still may not train this skill above rank 2 during character creation."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Karkarodon",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "karkarodon species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "12 + Brawn",
+        "strain_threshold": "10 + Willpower",
+        "starting_xp": 90
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Jenet": {
+      "data": {
+        "name": "Jenet",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 2,
+          "intellect": 2,
+          "cunning": 2,
+          "willpower": 2,
+          "presence": 2
+        },
+        "wound_threshold": "10 + Brawn",
+        "strain_threshold": "10 + Willpower",
+        "starting_xp": 100,
+        "special_abilities": [],
+        "metadata": {
+          "source": "FFG Wiki",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_status": "needs_validation"
+        },
+        "ai_searchable_text": "jenet species characteristics abilities",
+        "vector_ready": true
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Toong": {
+      "data": {
+        "name": "Toong",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 2,
+          "intellect": 2,
+          "cunning": 2,
+          "willpower": 2,
+          "presence": 2
+        },
+        "wound_threshold": "10 + Brawn",
+        "strain_threshold": "10 + Willpower",
+        "starting_xp": 100,
+        "special_abilities": [],
+        "metadata": {
+          "source": "FFG Wiki",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_status": "needs_validation"
+        },
+        "ai_searchable_text": "toong species characteristics abilities",
+        "vector_ready": true
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Kage": {
+      "data": {
+        "name": "Kage",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 3,
+          "intellect": 2,
+          "cunning": 2,
+          "willpower": 2,
+          "presence": 1
+        },
+        "special_abilities": [
+          "Kage begin the game with one rank in either Brawl or Coordination. They still may not train these skills above rank 2 during character creation."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Kage",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "kage species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "11 + Brawn",
+        "strain_threshold": "10 + Willpower",
+        "starting_xp": 90
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Corellian Human": {
+      "data": {
+        "name": "Corellian Human",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 2,
+          "intellect": 2,
+          "cunning": 2,
+          "willpower": 2,
+          "presence": 2
+        },
+        "wound_threshold": "10 + Brawn",
+        "strain_threshold": "10 + Willpower",
+        "starting_xp": 100,
+        "special_abilities": [],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Corellian_Human",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical"
+        },
+        "ai_searchable_text": "corellian human species characteristics abilities",
+        "vector_ready": true
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Clawdite": {
+      "data": {
+        "name": "Clawdite",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 2,
+          "intellect": 2,
+          "cunning": 3,
+          "willpower": 1,
+          "presence": 2
+        },
+        "special_abilities": [
+          "Clawdites begin the game with one rank in Resilience. They still may not train Resilience above rank 2 during character creation."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Clawdite",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "clawdite species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "9 + Brawn",
+        "strain_threshold": "9 + Willpower",
+        "starting_xp": 95
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Kushiban": {
+      "data": {
+        "name": "Kushiban",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 2,
+          "intellect": 2,
+          "cunning": 2,
+          "willpower": 2,
+          "presence": 2
+        },
+        "wound_threshold": "10 + Brawn",
+        "strain_threshold": "10 + Willpower",
+        "starting_xp": 100,
+        "special_abilities": [],
+        "metadata": {
+          "source": "FFG Wiki",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_status": "needs_validation"
+        },
+        "ai_searchable_text": "kushiban species characteristics abilities",
+        "vector_ready": true
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Clone": {
+      "data": {
+        "name": "Clone",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 2,
+          "intellect": 2,
+          "cunning": 2,
+          "willpower": 2,
+          "presence": 2
+        },
+        "wound_threshold": "10 + Brawn",
+        "strain_threshold": "10 + Willpower",
+        "starting_xp": 100,
+        "special_abilities": [],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Clone",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical"
+        },
+        "ai_searchable_text": "clone species characteristics abilities",
+        "vector_ready": true
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Human": {
+      "data": {
+        "name": "Human",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 2,
+          "intellect": 2,
+          "cunning": 2,
+          "willpower": 2,
+          "presence": 2
+        },
+        "special_abilities": [
+          "Humans start the game with one rank each in two different non-career skills of their choice. They still may not train these skills above rank 2 at character creation."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Human",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "human species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "10 + Brawn",
+        "strain_threshold": "10 + Willpower",
+        "starting_xp": 110
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Rakata": {
+      "data": {
+        "name": "Rakata",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 2,
+          "intellect": 2,
+          "cunning": 2,
+          "willpower": 2,
+          "presence": 2
+        },
+        "wound_threshold": "10 + Brawn",
+        "strain_threshold": "10 + Willpower",
+        "starting_xp": 100,
+        "special_abilities": [],
+        "metadata": {
+          "source": "FFG Wiki",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_status": "needs_validation"
+        },
+        "ai_searchable_text": "rakata species characteristics abilities",
+        "vector_ready": true
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Hutt": {
+      "data": {
+        "name": "Hutt",
+        "category": "species",
+        "characteristics": {
+          "brawn": 3,
+          "agility": 1,
+          "intellect": 2,
+          "cunning": 2,
+          "willpower": 3,
+          "presence": 2
+        },
+        "special_abilities": [
+          "Hutts begin the game with one rank in the Enduring talent and one rank in the Nobody's Fool talents. Hutts begin the game with one rank in Coercion or Discipline. They still may not train Coercion or Discipline above rank 2 during character creation."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Hutt",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "hutt species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "13 + Brawn",
+        "strain_threshold": "11 + Willpower",
+        "starting_xp": 70
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Gigoran": {
+      "data": {
+        "name": "Gigoran",
+        "category": "species",
+        "characteristics": {
+          "brawn": 3,
+          "agility": 2,
+          "intellect": 1,
+          "cunning": 2,
+          "willpower": 2,
+          "presence": 3
+        },
+        "special_abilities": [
+          "Gigorans begin the game with one rank in Brawl. They still may not train Brawl above rank 2 during character creations."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Gigoran",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "gigoran species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "12 + Brawn",
+        "strain_threshold": "10 + Willpower",
+        "starting_xp": 100
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Tholothian": {
+      "data": {
+        "name": "Tholothian",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 2,
+          "intellect": 2,
+          "cunning": 2,
+          "willpower": 2,
+          "presence": 2
+        },
+        "wound_threshold": "10 + Brawn",
+        "strain_threshold": "10 + Willpower",
+        "starting_xp": 100,
+        "special_abilities": [],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Tholothian",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical"
+        },
+        "ai_searchable_text": "tholothian species characteristics abilities",
+        "vector_ready": true
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Melitto": {
+      "data": {
+        "name": "Melitto",
+        "category": "species",
+        "characteristics": {
+          "brawn": 3,
+          "agility": 2,
+          "intellect": 2,
+          "cunning": 2,
+          "willpower": 1,
+          "presence": 2
+        },
+        "special_abilities": [
+          "Melittos begin the game with one rank in Perception. They still may not train Perception above rank 2 during character creation."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Melitto",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "melitto species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "9 + Brawn",
+        "strain_threshold": "11 + Willpower",
+        "starting_xp": 100
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Vratix": {
+      "data": {
+        "name": "Vratix",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 2,
+          "intellect": 2,
+          "cunning": 2,
+          "willpower": 2,
+          "presence": 2
+        },
+        "wound_threshold": "10 + Brawn",
+        "strain_threshold": "10 + Willpower",
+        "starting_xp": 100,
+        "special_abilities": [],
+        "metadata": {
+          "source": "FFG Wiki",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_status": "needs_validation"
+        },
+        "ai_searchable_text": "vratix species characteristics abilities",
+        "vector_ready": true
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Verpine": {
+      "data": {
+        "name": "Verpine",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 3,
+          "intellect": 3,
+          "cunning": 1,
+          "willpower": 2,
+          "presence": 1
+        },
+        "special_abilities": [
+          "Verpine begin the game with one rank in Mechanics. They still may not train Mechanics above rank 2 during character creation."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Verpine",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "verpine species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "9 + Brawn",
+        "strain_threshold": "12 + Willpower",
+        "starting_xp": 80
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Sluissi": {
+      "data": {
+        "name": "Sluissi",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 2,
+          "intellect": 2,
+          "cunning": 2,
+          "willpower": 2,
+          "presence": 2
+        },
+        "wound_threshold": "10 + Brawn",
+        "strain_threshold": "10 + Willpower",
+        "starting_xp": 100,
+        "special_abilities": [],
+        "metadata": {
+          "source": "FFG Wiki",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_status": "needs_validation"
+        },
+        "ai_searchable_text": "sluissi species characteristics abilities",
+        "vector_ready": true
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Dug": {
+      "data": {
+        "name": "Dug",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 3,
+          "intellect": 2,
+          "cunning": 2,
+          "willpower": 2,
+          "presence": 1
+        },
+        "special_abilities": [
+          "Dugs begin the game with one rank in Brawl. They still may not train Brawl above rank 2 during character creation."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Dug",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "dug species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "9 + Brawn",
+        "strain_threshold": "8 + Willpower",
+        "starting_xp": 90
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Lannik": {
+      "data": {
+        "name": "Lannik",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 1,
+          "intellect": 3,
+          "cunning": 2,
+          "willpower": 2,
+          "presence": 2
+        },
+        "special_abilities": [
+          "Lanniks begin the game with one rank in Streetwise. They still may not train Streetwise above rank 2 during character creation."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Lannik",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "lannik species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "8 + Brawn",
+        "strain_threshold": "12 + Willpower",
+        "starting_xp": 100
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Farghul": {
+      "data": {
+        "name": "Farghul",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 2,
+          "intellect": 2,
+          "cunning": 2,
+          "willpower": 2,
+          "presence": 2
+        },
+        "wound_threshold": "10 + Brawn",
+        "strain_threshold": "10 + Willpower",
+        "starting_xp": 100,
+        "special_abilities": [],
+        "metadata": {
+          "source": "FFG Wiki",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_status": "needs_validation"
+        },
+        "ai_searchable_text": "farghul species characteristics abilities",
+        "vector_ready": true
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Caarite": {
+      "data": {
+        "name": "Caarite",
+        "category": "species",
+        "characteristics": {
+          "brawn": 1,
+          "agility": 2,
+          "intellect": 2,
+          "cunning": 2,
+          "willpower": 2,
+          "presence": 3
+        },
+        "special_abilities": [
+          "Caarites begin the game with one rank in Negotiation or Streetwise. They still may not train  Negotiation or Streetwise above rank 2 during character creation. Caarites are smaller than average and count as silhouette 0."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Caarite",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "caarite species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "8 + Brawn",
+        "strain_threshold": "10 + Willpower",
+        "starting_xp": 100
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Dowutin": {
+      "data": {
+        "name": "Dowutin",
+        "category": "species",
+        "characteristics": {
+          "brawn": 3,
+          "agility": 1,
+          "intellect": 2,
+          "cunning": 2,
+          "willpower": 2,
+          "presence": 2
+        },
+        "special_abilities": [
+          "Dowutins begin the game with one rank in Resilience. They still may not train Resilience above rank 2 during character creation."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Dowutin",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "dowutin species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "15 + Brawn",
+        "strain_threshold": "8 + Willpower",
+        "starting_xp": 85
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Celegian": {
+      "data": {
+        "name": "Celegian",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 2,
+          "intellect": 2,
+          "cunning": 2,
+          "willpower": 2,
+          "presence": 2
+        },
+        "wound_threshold": "10 + Brawn",
+        "strain_threshold": "10 + Willpower",
+        "starting_xp": 100,
+        "special_abilities": [],
+        "metadata": {
+          "source": "FFG Wiki",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_status": "needs_validation"
+        },
+        "ai_searchable_text": "celegian species characteristics abilities",
+        "vector_ready": true
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Phydolon": {
+      "data": {
+        "name": "Phydolon",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 2,
+          "intellect": 2,
+          "cunning": 2,
+          "willpower": 3,
+          "presence": 1
+        },
+        "special_abilities": [
+          "Phydolons begin the game with one rank in Cool or Discipline. They still may not train Cool or Discipline above rank 2 during character creation."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Phydolon",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "phydolon species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "10 + Brawn",
+        "strain_threshold": "10 + Willpower",
+        "starting_xp": 100
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Vurk": {
+      "data": {
+        "name": "Vurk",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 2,
+          "intellect": 2,
+          "cunning": 1,
+          "willpower": 2,
+          "presence": 3
+        },
+        "special_abilities": [
+          "Vurks begin the game with one rank in Negotiation. They still may not train Negotiation above rank 2 during character creation."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Vurk",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "vurk species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "11 + Brawn",
+        "strain_threshold": "11 + Willpower",
+        "starting_xp": 100
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Coruscani": {
+      "data": {
+        "name": "Coruscani",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 2,
+          "intellect": 2,
+          "cunning": 2,
+          "willpower": 2,
+          "presence": 2
+        },
+        "wound_threshold": "10 + Brawn",
+        "strain_threshold": "10 + Willpower",
+        "starting_xp": 100,
+        "special_abilities": [],
+        "metadata": {
+          "source": "FFG Wiki",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_status": "needs_validation"
+        },
+        "ai_searchable_text": "coruscani species characteristics abilities",
+        "vector_ready": true
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Quermian": {
+      "data": {
+        "name": "Quermian",
+        "category": "species",
+        "characteristics": {
+          "brawn": 1,
+          "agility": 2,
+          "intellect": 3,
+          "cunning": 2,
+          "willpower": 2,
+          "presence": 1
+        },
+        "special_abilities": [
+          "Quermians begin the game with one rank in Perception. They still may not train Perception above rank 2 during character creation."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Quermian",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "quermian species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "10 + Brawn",
+        "strain_threshold": "10 + Willpower",
+        "starting_xp": 85
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Tarasin": {
+      "data": {
+        "name": "Tarasin",
+        "category": "species",
+        "characteristics": {
+          "brawn": 1,
+          "agility": 2,
+          "intellect": 3,
+          "cunning": 2,
+          "willpower": 2,
+          "presence": 2
+        },
+        "special_abilities": [
+          "Tarasin begin the game with one rank in Stealth. They still may not train Stealth above rank 2 during character creation."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Tarasin",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "tarasin species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "10 + Brawn",
+        "strain_threshold": "9 + Willpower",
+        "starting_xp": 100
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Omwati": {
+      "data": {
+        "name": "Omwati",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 2,
+          "intellect": 2,
+          "cunning": 2,
+          "willpower": 2,
+          "presence": 2
+        },
+        "wound_threshold": "10 + Brawn",
+        "strain_threshold": "10 + Willpower",
+        "starting_xp": 100,
+        "special_abilities": [],
+        "metadata": {
+          "source": "FFG Wiki",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_status": "needs_validation"
+        },
+        "ai_searchable_text": "omwati species characteristics abilities",
+        "vector_ready": true
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Rodian": {
+      "data": {
+        "name": "Rodian",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 3,
+          "intellect": 2,
+          "cunning": 2,
+          "willpower": 1,
+          "presence": 2
+        },
+        "special_abilities": [
+          "Rodians begin the game with one rank in Survival. They still may not train Survival above rank 2 during character creation. Rodians start with one rank in the Expert Tracker talent."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Rodian",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "rodian species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "10 + Brawn",
+        "strain_threshold": "10 + Willpower",
+        "starting_xp": 100
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Crolute": {
+      "data": {
+        "name": "Crolute",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 2,
+          "intellect": 2,
+          "cunning": 2,
+          "willpower": 2,
+          "presence": 2
+        },
+        "wound_threshold": "10 + Brawn",
+        "strain_threshold": "10 + Willpower",
+        "starting_xp": 100,
+        "special_abilities": [],
+        "metadata": {
+          "source": "FFG Wiki",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_status": "needs_validation"
+        },
+        "ai_searchable_text": "crolute species characteristics abilities",
+        "vector_ready": true
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Gozzo": {
+      "data": {
+        "name": "Gozzo",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 2,
+          "intellect": 2,
+          "cunning": 2,
+          "willpower": 1,
+          "presence": 3
+        },
+        "special_abilities": [
+          "Gozzo begin with one rank in Negotiation. They still may not train this skill above rank 2 at character creation."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Gozzo",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "gozzo species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "10 + Brawn",
+        "strain_threshold": "11+ Willpower",
+        "starting_xp": 100
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Aki-Aki": {
+      "data": {
+        "name": "Aki-Aki",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 2,
+          "intellect": 2,
+          "cunning": 2,
+          "willpower": 2,
+          "presence": 2
+        },
+        "wound_threshold": "10 + Brawn",
+        "strain_threshold": "10 + Willpower",
+        "starting_xp": 100,
+        "special_abilities": [
+          "Homeworld:Desert planets may have a reputation for desolation, but Pasaana is bursting with life and culture. Towering buttes of granite and sandstone disrupt long stretches of sun-bleached dunes and shrubland, creating shadowed valleys where water, and therefore life, collects. The native Aki-Aki recognize and revere both the tenacity and fragility of life, welcoming offworlders with open arms during their biennial festival season, when food and water are plentiful and ready for sharing. Between such celebrations,the Aki-Aki live an austere life, gathering food and water for the next grand event. They adopt a few advanced tools to aid in their survival, but otherwise maintain a pre-starflight level of civilization. No spaceports dot Pasaana’s surface, but visitors are common.A rare example of modern technology eagerly embraced by the Aki-Aki can be found in the dustgrain farms they maintain. The desert winds of Pasaana carry seeds and spores amid the clouds of blown sand. Using specialized electro-sifters, a farmer can pluck these organic kernels from the silicate gusts, dragging them into collection hoppers. The pole-shaped sifters also contain moisture vaporator technology, allowing a grid of these easy-to-maintain devices to turn a stretch of arid landscape into an irrigated underground garden known as a dust farm. The phedrugrass and termania-spore that grow in these farms form daily dietary staples for entire Aki-Aki communities."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Aki-Aki",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical"
+        },
+        "ai_searchable_text": "aki-aki species characteristics abilities",
+        "vector_ready": true
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Quarren": {
+      "data": {
+        "name": "Quarren",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 2,
+          "intellect": 1,
+          "cunning": 2,
+          "willpower": 3,
+          "presence": 2
+        },
+        "special_abilities": [
+          "Quarren begin the game with one rank in Negotiation. They still may not train Negotiation above rank 2 during character creation."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Quarren",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "quarren species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "10 + Brawn",
+        "strain_threshold": "8 + Willpower",
+        "starting_xp": 95
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Shistavanen": {
+      "data": {
+        "name": "Shistavanen",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 3,
+          "intellect": 3,
+          "cunning": 2,
+          "willpower": 1,
+          "presence": 1
+        },
+        "special_abilities": [
+          "Shistavanens begin the game with one rank in either Brawl or Survival. They still may not train Brawl or Survival above rank 2 during character creation."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Shistavanen",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "shistavanen species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "12 + Brawn",
+        "strain_threshold": "10 + Willpower",
+        "starting_xp": 80
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Aleena": {
+      "data": {
+        "name": "Aleena",
+        "category": "species",
+        "characteristics": {
+          "brawn": 1,
+          "agility": 3,
+          "intellect": 2,
+          "cunning": 2,
+          "willpower": 2,
+          "presence": 2
+        },
+        "special_abilities": [
+          "Aleena begin the game with one rank in Coordination. They still may not train Coordination above rank 2 during character creation. Aleena are smaller than average and count as silhouette 0."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Aleena",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "aleena species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "8 + Brawn",
+        "strain_threshold": "10 + Willpower",
+        "starting_xp": 95
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Chevin": {
+      "data": {
+        "name": "Chevin",
+        "category": "species",
+        "characteristics": {
+          "brawn": 3,
+          "agility": 1,
+          "intellect": 2,
+          "cunning": 3,
+          "willpower": 2,
+          "presence": 1
+        },
+        "special_abilities": [
+          "Chevin begin the game with one rank in Negotiation. They still may not train Negotiation above rank 2 during character creation."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Chevin",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "chevin species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "11 + Brawn",
+        "strain_threshold": "11 + Willpower",
+        "starting_xp": 80
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Chadra-Fan": {
+      "data": {
+        "name": "Chadra-Fan",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 2,
+          "intellect": 2,
+          "cunning": 2,
+          "willpower": 2,
+          "presence": 2
+        },
+        "wound_threshold": "10 + Brawn",
+        "strain_threshold": "10 + Willpower",
+        "starting_xp": 100,
+        "special_abilities": [],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Chadra-Fan",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical"
+        },
+        "ai_searchable_text": "chadra-fan species characteristics abilities",
+        "vector_ready": true
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Nikto": {
+      "data": {
+        "name": "Nikto",
+        "category": "species",
+        "characteristics": {
+          "brawn": 3,
+          "agility": 2,
+          "intellect": 2,
+          "cunning": 2,
+          "willpower": 2,
+          "presence": 1
+        },
+        "special_abilities": [
+          "Each Nikto subspecies has its own special abilities, listed here."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Nikto",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "nikto species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "11 + Brawn",
+        "strain_threshold": "10 + Willpower",
+        "starting_xp": 100
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Arkanian": {
+      "data": {
+        "name": "Arkanian",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 2,
+          "intellect": 3,
+          "cunning": 2,
+          "willpower": 2,
+          "presence": 1
+        },
+        "special_abilities": [
+          "Arkanians begin the game with one rank in Medicine. They still cannot train Medicine above rank 2 during character creation."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Arkanian",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "arkanian species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "10 + Brawn",
+        "strain_threshold": "10 + Willpower",
+        "starting_xp": 100
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Cerean": {
+      "data": {
+        "name": "Cerean",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 1,
+          "intellect": 3,
+          "cunning": 2,
+          "willpower": 2,
+          "presence": 2
+        },
+        "special_abilities": [
+          "Cereans begin the game with one rank in Vigilance. They still may not train Vigilance above rank 2 during character creation."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Cerean",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "cerean species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "10 + Brawn",
+        "strain_threshold": "13 + Willpower",
+        "starting_xp": 90
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Elomin": {
+      "data": {
+        "name": "Elomin",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 2,
+          "intellect": 3,
+          "cunning": 2,
+          "willpower": 1,
+          "presence": 2
+        },
+        "special_abilities": [
+          "Elomin begin the game with one rank in Charm and one rank in Knowledge (Education). They still may not train Charm or Knowledge (Education) above rank 2 during character creation."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Elomin",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "elomin species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "9 + Brawn",
+        "strain_threshold": "10 + Willpower",
+        "starting_xp": 105
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Balosar": {
+      "data": {
+        "name": "Balosar",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 2,
+          "intellect": 2,
+          "cunning": 3,
+          "willpower": 1,
+          "presence": 2
+        },
+        "special_abilities": [
+          "Balosars begin the game with one free ranks of Streetwise. They still may not train Streetwise above rank 2 during character creation."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Balosar",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "balosar species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "10 + Brawn",
+        "strain_threshold": "10 + Willpower",
+        "starting_xp": 100
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Mandalorian Human": {
+      "data": {
+        "name": "Mandalorian Human",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 2,
+          "intellect": 2,
+          "cunning": 2,
+          "willpower": 2,
+          "presence": 2
+        },
+        "wound_threshold": "10 + Brawn",
+        "strain_threshold": "10 + Willpower",
+        "starting_xp": 100,
+        "special_abilities": [],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Mandalorian_Human",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical"
+        },
+        "ai_searchable_text": "mandalorian human species characteristics abilities",
+        "vector_ready": true
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Twi'Lek": {
+      "data": {
+        "name": "Twi'Lek",
+        "category": "species",
+        "characteristics": {
+          "brawn": 1,
+          "agility": 2,
+          "intellect": 2,
+          "cunning": 2,
+          "willpower": 2,
+          "presence": 3
+        },
+        "special_abilities": [
+          "Twi'leks begin the game with one rank in either Charm or Deception. They still may not train Charm or Deception above rank 2 during character creation."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Twi'Lek",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "twi'lek species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "10 + Brawn",
+        "strain_threshold": "11 + Willpower",
+        "starting_xp": 100
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Barabel": {
+      "data": {
+        "name": "Barabel",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 2,
+          "intellect": 2,
+          "cunning": 2,
+          "willpower": 2,
+          "presence": 2
+        },
+        "wound_threshold": "10 + Brawn",
+        "strain_threshold": "10 + Willpower",
+        "starting_xp": 100,
+        "special_abilities": [],
+        "metadata": {
+          "source": "FFG Wiki",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_status": "needs_validation"
+        },
+        "ai_searchable_text": "barabel species characteristics abilities",
+        "vector_ready": true
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Squib": {
+      "data": {
+        "name": "Squib",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 2,
+          "intellect": 2,
+          "cunning": 2,
+          "willpower": 2,
+          "presence": 2
+        },
+        "wound_threshold": "10 + Brawn",
+        "strain_threshold": "10 + Willpower",
+        "starting_xp": 100,
+        "special_abilities": [],
+        "metadata": {
+          "source": "FFG Wiki",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_status": "needs_validation"
+        },
+        "ai_searchable_text": "squib species characteristics abilities",
+        "vector_ready": true
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Noghri": {
+      "data": {
+        "name": "Noghri",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 3,
+          "intellect": 2,
+          "cunning": 2,
+          "willpower": 2,
+          "presence": 1
+        },
+        "special_abilities": [
+          "Noghri gain a free rank in the Stalker Talent."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Noghri",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "noghri species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "11 + Brawn",
+        "strain_threshold": "10 + Willpower",
+        "starting_xp": 90
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Corellian": {
+      "data": {
+        "name": "Corellian",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 2,
+          "intellect": 2,
+          "cunning": 2,
+          "willpower": 2,
+          "presence": 2
+        },
+        "wound_threshold": "10 + Brawn",
+        "strain_threshold": "10 + Willpower",
+        "starting_xp": 100,
+        "special_abilities": [],
+        "metadata": {
+          "source": "FFG Wiki",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_status": "needs_validation"
+        },
+        "ai_searchable_text": "corellian species characteristics abilities",
+        "vector_ready": true
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Zeltron": {
+      "data": {
+        "name": "Zeltron",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 2,
+          "intellect": 2,
+          "cunning": 2,
+          "willpower": 2,
+          "presence": 2
+        },
+        "wound_threshold": "10 + Brawn",
+        "strain_threshold": "10 + Willpower",
+        "starting_xp": 100,
+        "special_abilities": [],
+        "metadata": {
+          "source": "FFG Wiki",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_status": "needs_validation"
+        },
+        "ai_searchable_text": "zeltron species characteristics abilities",
+        "vector_ready": true
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Toydarian": {
+      "data": {
+        "name": "Toydarian",
+        "category": "species",
+        "characteristics": {
+          "brawn": 1,
+          "agility": 1,
+          "intellect": 2,
+          "cunning": 2,
+          "willpower": 3,
+          "presence": 3
+        },
+        "special_abilities": [
+          "Toydarians are smaller than average and count as silhouette 0."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Toydarian",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "toydarian species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "9 + Brawn",
+        "strain_threshold": "12 + Willpower",
+        "starting_xp": 90
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Hapan": {
+      "data": {
+        "name": "Hapan",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 2,
+          "intellect": 2,
+          "cunning": 2,
+          "willpower": 2,
+          "presence": 2
+        },
+        "wound_threshold": "10 + Brawn",
+        "strain_threshold": "10 + Willpower",
+        "starting_xp": 100,
+        "special_abilities": [],
+        "metadata": {
+          "source": "FFG Wiki",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_status": "needs_validation"
+        },
+        "ai_searchable_text": "hapan species characteristics abilities",
+        "vector_ready": true
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Yarkora": {
+      "data": {
+        "name": "Yarkora",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 2,
+          "intellect": 2,
+          "cunning": 2,
+          "willpower": 2,
+          "presence": 2
+        },
+        "wound_threshold": "10 + Brawn",
+        "strain_threshold": "10 + Willpower",
+        "starting_xp": 100,
+        "special_abilities": [],
+        "metadata": {
+          "source": "FFG Wiki",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_status": "needs_validation"
+        },
+        "ai_searchable_text": "yarkora species characteristics abilities",
+        "vector_ready": true
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Iakaru": {
+      "data": {
+        "name": "Iakaru",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 3,
+          "intellect": 2,
+          "cunning": 2,
+          "willpower": 1,
+          "presence": 2
+        },
+        "special_abilities": [
+          "Iakaru begin the game with one rank in Piloting (Space). They still may not train Piloting (Space) above rank 2 during character creation."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Iakaru",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "iakaru species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "9 + Brawn",
+        "strain_threshold": "10 + Willpower",
+        "starting_xp": 100
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Talpini": {
+      "data": {
+        "name": "Talpini",
+        "category": "species",
+        "characteristics": {
+          "brawn": 1,
+          "agility": 2,
+          "intellect": 2,
+          "cunning": 3,
+          "willpower": 2,
+          "presence": 2
+        },
+        "special_abilities": [
+          "Talpini begin the game with one rank in Mechanics. They still may not train Mechanics above rank 2 during character creation."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Talpini",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "talpini species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "10 + Willpower",
+        "strain_threshold": "10 + Willpower",
+        "starting_xp": 100
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Yahk-Tosh": {
+      "data": {
+        "name": "Yahk-Tosh",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 2,
+          "intellect": 2,
+          "cunning": 2,
+          "willpower": 2,
+          "presence": 2
+        },
+        "wound_threshold": "10 + Brawn",
+        "strain_threshold": "10 + Willpower",
+        "starting_xp": 100,
+        "special_abilities": [],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Yahk-Tosh",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical"
+        },
+        "ai_searchable_text": "yahk-tosh species characteristics abilities",
+        "vector_ready": true
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Cosian": {
+      "data": {
+        "name": "Cosian",
+        "category": "species",
+        "characteristics": {
+          "brawn": 1,
+          "agility": 2,
+          "intellect": 3,
+          "cunning": 2,
+          "willpower": 2,
+          "presence": 2
+        },
+        "special_abilities": [
+          "Cosians begin the game with one rank in Knowledge (Lore). They still cannot train Knowledge (Lore) above rank 2 during character creation."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Cosian",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "cosian species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "10 + Brawn",
+        "strain_threshold": "11 + Willpower",
+        "starting_xp": 95
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Bardottan": {
+      "data": {
+        "name": "Bardottan",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 2,
+          "intellect": 2,
+          "cunning": 1,
+          "willpower": 3,
+          "presence": 2
+        },
+        "special_abilities": [
+          "Bardottans begin the game with one rank in Knowledge (Lore). They still may not train Knowledge (Lore) above rank 2 during character creation."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Bardottan",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "bardottan species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "9 + Brawn",
+        "strain_threshold": "10 + Willpower",
+        "starting_xp": 105
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Togruta": {
+      "data": {
+        "name": "Togruta",
+        "category": "species",
+        "characteristics": {
+          "brawn": 1,
+          "agility": 2,
+          "intellect": 2,
+          "cunning": 3,
+          "willpower": 2,
+          "presence": 2
+        },
+        "special_abilities": [
+          "Togrutas begin the game with one rank in Perception. They still may not train Perception above rank 2 during character creation."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Togruta",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "togruta species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "10 + Brawn",
+        "strain_threshold": "10 + Willpower",
+        "starting_xp": 100
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Evereni": {
+      "data": {
+        "name": "Evereni",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 2,
+          "intellect": 2,
+          "cunning": 3,
+          "willpower": 2,
+          "presence": 2
+        },
+        "special_abilities": [
+          "Evereni begin the game with one rank in either Deception or Skulduggery. They still may not train Deception or Skulduggery above rank 2 during character creation."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Evereni",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "evereni species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "10 + Brawn",
+        "strain_threshold": "10 + Willpower",
+        "starting_xp": 100
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Twi'lek": {
+      "data": {
+        "name": "Twi'lek",
+        "category": "species",
+        "characteristics": {
+          "brawn": 1,
+          "agility": 2,
+          "intellect": 2,
+          "cunning": 3,
+          "willpower": 2,
+          "presence": 2
+        },
+        "wound_threshold": "10 + Brawn",
+        "strain_threshold": "11 + Willpower",
+        "starting_xp": 100,
+        "special_abilities": [
+          "Start with one rank in Charm or Deception",
+          "Remove setback from arid/hot conditions"
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Twi%27lek",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical"
+        },
+        "ai_searchable_text": "twi'lek species characteristics abilities",
+        "vector_ready": true,
+        "verified": true,
+        "verification_date": "2025-07-09"
+      },
+      "source": "FFG Wiki",
+      "verified": true
+    },
+    "Duros": {
+      "data": {
+        "name": "Duros",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 2,
+          "intellect": 3,
+          "cunning": 2,
+          "willpower": 1,
+          "presence": 2
+        },
+        "special_abilities": [
+          "Start with one rank in Piloting (Space)",
+          "Natural spacers"
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Duros",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "duros species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "10 + Brawn",
+        "strain_threshold": "10 + Willpower",
+        "starting_xp": 100,
+        "verified": true,
+        "verification_date": "2025-07-09"
+      },
+      "source": "FFG Wiki",
+      "verified": true
+    },
+    "Gank": {
+      "data": {
+        "name": "Gank",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 2,
+          "intellect": 2,
+          "cunning": 2,
+          "willpower": 2,
+          "presence": 1
+        },
+        "special_abilities": [
+          "Ganks begin the game with one rank in Coercion or Vigilance. They still may not train Coercion or Vigilance above rank 2 during character creation."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Gank",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "gank species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "10 + Brawn",
+        "strain_threshold": "10 + Willpower",
+        "starting_xp": 110
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Chagrian": {
+      "data": {
+        "name": "Chagrian",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 1,
+          "intellect": 2,
+          "cunning": 2,
+          "willpower": 3,
+          "presence": 2
+        },
+        "special_abilities": [
+          "Chagrians begin the game with one rank in Resilience. They still may not train Resilience above rank 2 during character creation."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Chagrian",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "chagrian species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "11 + Brawn",
+        "strain_threshold": "10 + Willpower",
+        "starting_xp": 90
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Melodie": {
+      "data": {
+        "name": "Melodie",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 2,
+          "intellect": 2,
+          "cunning": 2,
+          "willpower": 2,
+          "presence": 2
+        },
+        "wound_threshold": "10 + Brawn",
+        "strain_threshold": "10 + Willpower",
+        "starting_xp": 100,
+        "special_abilities": [],
+        "metadata": {
+          "source": "FFG Wiki",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_status": "needs_validation"
+        },
+        "ai_searchable_text": "melodie species characteristics abilities",
+        "vector_ready": true
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Sith Pureblood": {
+      "data": {
+        "name": "Sith Pureblood",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 2,
+          "intellect": 2,
+          "cunning": 3,
+          "willpower": 1,
+          "presence": 2
+        },
+        "special_abilities": [
+          "Sith Purebloods begin the game with one rank in Knowledge (Lore) or Leadership. They still may not train Knowledge (Lore) or Leadership above rank 2 during character creation."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Sith_Pureblood",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "sith pureblood species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "10 + Brawn",
+        "strain_threshold": "11 + Willpower",
+        "starting_xp": 95
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Ewok": {
+      "data": {
+        "name": "Ewok",
+        "category": "species",
+        "characteristics": {
+          "brawn": 1,
+          "agility": 2,
+          "intellect": 2,
+          "cunning": 3,
+          "willpower": 1,
+          "presence": 2
+        },
+        "special_abilities": [
+          "Ewoks are usually smaller than average and count as silhouette 0. They begin the game with one rank in either Stealth or Survival. They still may not train either skill above rank 2 during character creation."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Ewok",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "ewok species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "9 + Brawn",
+        "strain_threshold": "11 + Willpower",
+        "starting_xp": 120
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Harch": {
+      "data": {
+        "name": "Harch",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 2,
+          "intellect": 2,
+          "cunning": 3,
+          "willpower": 2,
+          "presence": 1
+        },
+        "special_abilities": [
+          "Harches begin the game with one rank in Perception. They still may not train this skill above rank 2 during character creation."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Harch",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "harch species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "11 + Brawn",
+        "strain_threshold": "11 + Willpower",
+        "starting_xp": 75
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Klatooinian": {
+      "data": {
+        "name": "Klatooinian",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 3,
+          "intellect": 2,
+          "cunning": 2,
+          "willpower": 1,
+          "presence": 2
+        },
+        "special_abilities": [
+          "Klatooinians begin the game with one rank in either Brawl or Ranged (Heavy) or Ranged (Light). In addition, a Klatooinian starts the game with one additional rank of one non-career skill of [their] choice. [They] may not train any of these skills above rank 2 during character creation."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Klatooinian",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "klatooinian species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "10 + Brawn",
+        "strain_threshold": "10 + Willpower",
+        "starting_xp": 100
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Skakoan": {
+      "data": {
+        "name": "Skakoan",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 2,
+          "intellect": 3,
+          "cunning": 1,
+          "willpower": 2,
+          "presence": 2
+        },
+        "special_abilities": [
+          "Skakoans begin the game with one rank in Knowledge (Education) and one rank in Mechanics. They still may not train either above rank 2 during character creation."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Skakoan",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "skakoan species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "10 + Brawn",
+        "strain_threshold": "8 + Willpower",
+        "starting_xp": 80
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Echani": {
+      "data": {
+        "name": "Echani",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 2,
+          "intellect": 2,
+          "cunning": 2,
+          "willpower": 2,
+          "presence": 2
+        },
+        "wound_threshold": "10 + Brawn",
+        "strain_threshold": "10 + Willpower",
+        "starting_xp": 100,
+        "special_abilities": [],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Echani",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical"
+        },
+        "ai_searchable_text": "echani species characteristics abilities",
+        "vector_ready": true
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Givin": {
+      "data": {
+        "name": "Givin",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 2,
+          "intellect": 2,
+          "cunning": 2,
+          "willpower": 2,
+          "presence": 2
+        },
+        "wound_threshold": "10 + Brawn",
+        "strain_threshold": "10 + Willpower",
+        "starting_xp": 100,
+        "special_abilities": [],
+        "metadata": {
+          "source": "FFG Wiki",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_status": "needs_validation"
+        },
+        "ai_searchable_text": "givin species characteristics abilities",
+        "vector_ready": true
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Anx": {
+      "data": {
+        "name": "Anx",
+        "category": "species",
+        "characteristics": {
+          "brawn": 3,
+          "agility": 1,
+          "intellect": 2,
+          "cunning": 2,
+          "willpower": 2,
+          "presence": 2
+        },
+        "special_abilities": [
+          "Anx begin the game with one rank in the Kill with Kindness talent."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Anx",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "anx species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "13 + Brawn",
+        "strain_threshold": "10 + Willpower",
+        "starting_xp": 85
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Filordi": {
+      "data": {
+        "name": "Filordi",
+        "category": "species",
+        "characteristics": {
+          "brawn": 3,
+          "agility": 1,
+          "intellect": 2,
+          "cunning": 2,
+          "willpower": 2,
+          "presence": 2
+        },
+        "special_abilities": [
+          "Filordi begin the game with one rank in Perception or Vigilance. They still may not train Perception or Vigilance above rank 2 during character creation."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Filordi",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "filordi species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "12 + Brawn",
+        "strain_threshold": "10 + Willpower",
+        "starting_xp": 75
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Mustafarian": {
+      "data": {
+        "name": "Mustafarian",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 2,
+          "intellect": 2,
+          "cunning": 2,
+          "willpower": 2,
+          "presence": 1
+        },
+        "special_abilities": [
+          "Each Mustafarian subspecies has its own special abilities, listed below."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Mustafarian",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "mustafarian species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "10 + Brawn",
+        "strain_threshold": "10 + Willpower",
+        "starting_xp": 100
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Mon Calamari": {
+      "data": {
+        "name": "Mon Calamari",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 2,
+          "intellect": 3,
+          "cunning": 1,
+          "willpower": 2,
+          "presence": 2
+        },
+        "special_abilities": [
+          "Mon Calamari begin the game with one rank in Knowledge (Education). They still may not train Knowledge (Education) above rank 2 during character creation."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Mon_Calamari",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "mon calamari species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "10 + Brawn",
+        "strain_threshold": "10 + Willpower",
+        "starting_xp": 100
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Gossam": {
+      "data": {
+        "name": "Gossam",
+        "category": "species",
+        "characteristics": {
+          "brawn": 1,
+          "agility": 2,
+          "intellect": 2,
+          "cunning": 3,
+          "willpower": 2,
+          "presence": 2
+        },
+        "special_abilities": [
+          "Gossams begin the game with one rank in Deception. They still may not train Deception above rank 2 during character creation."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Gossam",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "gossam species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "9 + Brawn",
+        "strain_threshold": "11 + Willpower",
+        "starting_xp": 100
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Zabrak": {
+      "data": {
+        "name": "Zabrak",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 2,
+          "intellect": 2,
+          "cunning": 2,
+          "willpower": 3,
+          "presence": 1
+        },
+        "special_abilities": [
+          "Zabrak begin the game with one rank in Survival. They still may not train Survival above rank 2 during character creation."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Zabrak",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "zabrak species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "10 + Brawn",
+        "strain_threshold": "10 + Willpower",
+        "starting_xp": 100
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Polis Massan": {
+      "data": {
+        "name": "Polis Massan",
+        "category": "species",
+        "characteristics": {
+          "brawn": 1,
+          "agility": 2,
+          "intellect": 3,
+          "cunning": 2,
+          "willpower": 3,
+          "presence": 1
+        },
+        "special_abilities": [
+          "Polis Massans begin the game with one rank in Medicine. They still may not train Medicine above rank 2 during character creation."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Polis_Massan",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "polis massan species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "8 + Brawn",
+        "strain_threshold": "11 + Willpower",
+        "starting_xp": 100
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Rattataki": {
+      "data": {
+        "name": "Rattataki",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 2,
+          "intellect": 2,
+          "cunning": 2,
+          "willpower": 2,
+          "presence": 2
+        },
+        "wound_threshold": "10 + Brawn",
+        "strain_threshold": "10 + Willpower",
+        "starting_xp": 100,
+        "special_abilities": [],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Rattataki",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical"
+        },
+        "ai_searchable_text": "rattataki species characteristics abilities",
+        "vector_ready": true
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Falleen": {
+      "data": {
+        "name": "Falleen",
+        "category": "species",
+        "characteristics": {
+          "brawn": 1,
+          "agility": 2,
+          "intellect": 2,
+          "cunning": 2,
+          "willpower": 2,
+          "presence": 3
+        },
+        "special_abilities": [
+          "Falleen begin the game with one rank in Charm. They still may not train Charm above rank 2 during character creation."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Falleen",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "falleen species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "10 + Brawn",
+        "strain_threshold": "12 + Willpower",
+        "starting_xp": 90
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Iktotchi": {
+      "data": {
+        "name": "Iktotchi",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 2,
+          "intellect": 2,
+          "cunning": 2,
+          "willpower": 3,
+          "presence": 1
+        },
+        "special_abilities": [
+          "Iktotchi begin the game with one rank in Vigilance. They still may not train Vigilance above rank 2 during character creation."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Iktotchi",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "iktotchi species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "10 + Brawn",
+        "strain_threshold": "12 + Willpower",
+        "starting_xp": 90
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Talz": {
+      "data": {
+        "name": "Talz",
+        "category": "species",
+        "characteristics": {
+          "brawn": 3,
+          "agility": 2,
+          "intellect": 2,
+          "cunning": 2,
+          "willpower": 2,
+          "presence": 1
+        },
+        "special_abilities": [
+          "Talz begin the game with one rank in Resilience. They still may not train this skill above rank 2 during character creation."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Talz",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "talz species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "13 + Brawn",
+        "strain_threshold": "9 + Willpower",
+        "starting_xp": 100
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Sakiyan": {
+      "data": {
+        "name": "Sakiyan",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 2,
+          "intellect": 3,
+          "cunning": 2,
+          "willpower": 2,
+          "presence": 2
+        },
+        "special_abilities": [
+          "Sakiyans begin the game with one rank in Perception or Vigilance. They still may not train Perception or Vigilance above rank 2 during character creation. Sakiyans also start with one rank in the Expert Tracker talent."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Sakiyan",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "sakiyan species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "8 + Brawn",
+        "strain_threshold": "10 + Willpower",
+        "starting_xp": 80
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Whiphid": {
+      "data": {
+        "name": "Whiphid",
+        "category": "species",
+        "characteristics": {
+          "brawn": 3,
+          "agility": 2,
+          "intellect": 2,
+          "cunning": 1,
+          "willpower": 2,
+          "presence": 2
+        },
+        "special_abilities": [
+          "Whiphids begin the game with one rank in Survival. They still may not train Survival above rank 2 during character creation."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Whiphid",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "whiphid species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "12 + Brawn",
+        "strain_threshold": "10 + Willpower",
+        "starting_xp": 80
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Patrolian": {
+      "data": {
+        "name": "Patrolian",
+        "category": "species",
+        "characteristics": {
+          "brawn": 1,
+          "agility": 2,
+          "intellect": 3,
+          "cunning": 3,
+          "willpower": 2,
+          "presence": 1
+        },
+        "special_abilities": [
+          "Patrolians are smaller than average and count as Silhouette 0. Patrolians begin the game with one rank in either Computers or Skulduggery. They still may not train these skills above rank 2 during character creation."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Patrolian",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "patrolian species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "9 + Brawn",
+        "strain_threshold": "11 + Willpower",
+        "starting_xp": 90
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Aqualish": {
+      "data": {
+        "name": "Aqualish",
+        "category": "species",
+        "characteristics": {
+          "brawn": 3,
+          "agility": 2,
+          "intellect": 1,
+          "cunning": 2,
+          "willpower": 2,
+          "presence": 2
+        },
+        "special_abilities": [
+          "All Aqualish are capable of breathing underwater. In addition, they begin the game with one rank in Brawl. Characters cannot train Brawl above rank 2 during character creation."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Aqualish",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "aqualish species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "11 + Brawn",
+        "strain_threshold": "8 + Willpower",
+        "starting_xp": 90
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Ishi Tib": {
+      "data": {
+        "name": "Ishi Tib",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 2,
+          "intellect": 3,
+          "cunning": 2,
+          "willpower": 1,
+          "presence": 2
+        },
+        "special_abilities": [
+          "Ishi Tib begin the game with one rank in Discipline. They still may not train Discipline above rank 2 during character creation."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Ishi_Tib",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "ishi tib species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": 2,
+        "strain_threshold": "10 + Willpower",
+        "starting_xp": 100
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Gungan": {
+      "data": {
+        "name": "Gungan",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 2,
+          "intellect": 1,
+          "cunning": 2,
+          "willpower": 2,
+          "presence": 3
+        },
+        "special_abilities": [
+          "Gungans begin the game with one rank in Athletics. They still may not train Athletics above rank 2 during character creation."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Gungan",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "gungan species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "10 + Brawn",
+        "strain_threshold": "10 + Willpower",
+        "starting_xp": 100
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Miraluka": {
+      "data": {
+        "name": "Miraluka",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 2,
+          "intellect": 2,
+          "cunning": 2,
+          "willpower": 3,
+          "presence": 1
+        },
+        "special_abilities": [
+          "Miraluka begin the game with one rank in Discipline. They still may not train Discipline above rank 2 during character creation."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Miraluka",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "miraluka species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "9 + Brawn",
+        "strain_threshold": "10 + Willpower",
+        "starting_xp": 100
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Thisspiasian": {
+      "data": {
+        "name": "Thisspiasian",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 3,
+          "intellect": 2,
+          "cunning": 2,
+          "willpower": 2,
+          "presence": 1
+        },
+        "special_abilities": [
+          "Thisspiasians begin the game with one rank in Discipline. They still may not train Discipline above rank 2 during character creation."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Thisspiasian",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "thisspiasian species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "10 + Brawn",
+        "strain_threshold": "8 + Willpower",
+        "starting_xp": 100
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Drall": {
+      "data": {
+        "name": "Drall",
+        "category": "species",
+        "characteristics": {
+          "brawn": 1,
+          "agility": 1,
+          "intellect": 4,
+          "cunning": 2,
+          "willpower": 2,
+          "presence": 2
+        },
+        "special_abilities": [
+          "Drall begin the game with one rank in Knowledge (Education). They still may not train Knowledge (Education) above rank 2 during character creation. Drall have a mind for problems and solutions. In addition to using [their] skill or characteristic rating, a Drall adds a boost die to the dice pool when providing skilled assistance."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Drall",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "drall species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "8 + Brawn",
+        "strain_threshold": "12 + Willpower",
+        "starting_xp": 90
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Dressellian": {
+      "data": {
+        "name": "Dressellian",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 2,
+          "intellect": 2,
+          "cunning": 2,
+          "willpower": 3,
+          "presence": 1
+        },
+        "special_abilities": [
+          "Dressellians begin the game with one rank in Survival. They still may not train Survival above rank 2 during character creation."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Dressellian",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "dressellian species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "11 + Brawn",
+        "strain_threshold": "10 + Willpower",
+        "starting_xp": 110
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Trandoshan": {
+      "data": {
+        "name": "Trandoshan",
+        "category": "species",
+        "characteristics": {
+          "brawn": 3,
+          "agility": 1,
+          "intellect": 2,
+          "cunning": 2,
+          "willpower": 2,
+          "presence": 2
+        },
+        "special_abilities": [
+          "Trandoshans begin the game with one rank in Perception. They still may not train Perception above rank 2 during character creation."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Trandoshan",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "trandoshan species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "12 + Brawn",
+        "strain_threshold": "9 + Willpower",
+        "starting_xp": 90
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Bothan": {
+      "data": {
+        "name": "Bothan",
+        "category": "species",
+        "characteristics": {
+          "brawn": 1,
+          "agility": 2,
+          "intellect": 2,
+          "cunning": 3,
+          "willpower": 2,
+          "presence": 2
+        },
+        "special_abilities": [
+          "Bothans begin the game with one rank in Streetwise. They still may not train Streetwise above rank 2 during character creation. They also start with one rank in the Convincing Demeanor talent."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Bothan",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "bothan species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "10 + Brawn",
+        "strain_threshold": "11 + Willpower",
+        "starting_xp": 100
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Bith": {
+      "data": {
+        "name": "Bith",
+        "category": "species",
+        "characteristics": {
+          "brawn": 1,
+          "agility": 2,
+          "intellect": 2,
+          "cunning": 2,
+          "willpower": 2,
+          "presence": 3
+        },
+        "special_abilities": [
+          "Bith begin the game with one rank in Perception. They still may not train Perception above rank 2 during character creation."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Bith",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "bith species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "10 + Brawn",
+        "strain_threshold": "10 + Willpower",
+        "starting_xp": 100
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Ithorian": {
+      "data": {
+        "name": "Ithorian",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 1,
+          "intellect": 2,
+          "cunning": 2,
+          "willpower": 3,
+          "presence": 2
+        },
+        "special_abilities": [
+          "Ithorians begin the game with one rank in Survival. They still may not train Survival above rank 2 during character creation."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Ithorian",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "ithorian species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "9 + Brawn",
+        "strain_threshold": "12 + Willpower",
+        "starting_xp": 90
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Selkath": {
+      "data": {
+        "name": "Selkath",
+        "category": "species",
+        "characteristics": {
+          "brawn": 2,
+          "agility": 2,
+          "intellect": 3,
+          "cunning": 2,
+          "willpower": 1,
+          "presence": 2
+        },
+        "special_abilities": [
+          "Selkath begin the game with one rank in Medicine. They still may not train this skill above rank 2 during character creation."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Selkath",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "selkath species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "11 + Brawn",
+        "strain_threshold": "9 + Willpower",
+        "starting_xp": 100
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Kel Dor": {
+      "data": {
+        "name": "Kel Dor",
+        "category": "species",
+        "characteristics": {
+          "brawn": 1,
+          "agility": 2,
+          "intellect": 2,
+          "cunning": 2,
+          "willpower": 3,
+          "presence": 2
+        },
+        "special_abilities": [
+          "Kel Dors begin the game with one rank in Knowledge (Education). They still may not train Knowledge (Education) above rank 2 during character creation."
+        ],
+        "metadata": {
+          "source": "FFG Wiki",
+          "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Kel_Dor",
+          "data_source_priority": "FFG_WIKI_PRIMARY",
+          "extraction_date": "2025-07-09",
+          "authority_level": "canonical",
+          "extraction_method": "fixed_html_parser"
+        },
+        "ai_searchable_text": "kel dor species characteristics abilities",
+        "vector_ready": true,
+        "wound_threshold": "10 + Brawn",
+        "strain_threshold": "10 + Willpower",
+        "starting_xp": 100
+      },
+      "source": "FFG Wiki",
+      "verified": false
+    },
+    "Cotal": {
+      "data": {
+        "characteristics": {
+          "brawn": 2,
+          "agility": 2,
+          "intellect": 2,
+          "cunning": 3,
+          "willpower": 1,
+          "presence": 2
+        },
+        "wound_threshold": 9,
+        "strain_threshold": 8,
+        "starting_xp": 100,
+        "special_abilities": [
+          "One rank in Perception",
+          "Energy Sensitivity: Detect electromagnetic spectrum",
+          "Emotion sensing head cones"
+        ],
+        "source": "Fly Casual"
+      },
+      "source": "Books",
+      "verified": false
+    }
+  }
+}

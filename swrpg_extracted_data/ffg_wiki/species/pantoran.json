@@ -1,5 +1,6 @@
 {
   "name": "Pantoran",
+  "category": "species",
   "characteristics": {
     "brawn": 2,
     "agility": 2,
@@ -8,13 +9,20 @@
     "willpower": 1,
     "presence": 3
   },
+  "special_abilities": [
+    "Pantorans begin the game with one rank in either Cool or Negotiation. They still may not train Cool or Negotiation above rank 2 during character creation."
+  ],
+  "metadata": {
+    "source": "FFG Wiki",
+    "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Pantoran",
+    "data_source_priority": "FFG_WIKI_PRIMARY",
+    "extraction_date": "2025-07-09",
+    "authority_level": "canonical",
+    "extraction_method": "fixed_html_parser"
+  },
+  "ai_searchable_text": "pantoran species characteristics abilities",
+  "vector_ready": true,
   "wound_threshold": "10 + Brawn",
   "strain_threshold": "11 + Willpower",
-  "starting_xp": 110,
-  "special_abilities": [
-    "Pantorans begin the game with one rank in either Cool or Negotiation. They still may not train Cool or Negotiation above rank 2 during character creation.",
-    "Tundra Dwellers: When making skill checks, Pantorans may remove a setback die imposed due to cold environmental conditions."
-  ],
-  "source": "FFG Wiki",
-  "extraction_date": "2025-07-08"
+  "starting_xp": 110
 }

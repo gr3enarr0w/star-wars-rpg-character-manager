@@ -1,5 +1,6 @@
 {
   "name": "Neimoidian",
+  "category": "species",
   "characteristics": {
     "brawn": 1,
     "agility": 2,
@@ -8,12 +9,20 @@
     "willpower": 1,
     "presence": 2
   },
-  "wound_threshold": "11 + Brawn",
-  "strain_threshold": "9 + Willpower",
-  "starting_xp": 90,
   "special_abilities": [
     "Neimoidians begin the game with one rank in either Deception or Negotiation. They still may not train Deception or Negotiation above rank 2 during character creation."
   ],
-  "source": "FFG Wiki",
-  "extraction_date": "2025-07-08"
+  "metadata": {
+    "source": "FFG Wiki",
+    "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Neimoidian",
+    "data_source_priority": "FFG_WIKI_PRIMARY",
+    "extraction_date": "2025-07-09",
+    "authority_level": "canonical",
+    "extraction_method": "fixed_html_parser"
+  },
+  "ai_searchable_text": "neimoidian species characteristics abilities",
+  "vector_ready": true,
+  "wound_threshold": "11 + Brawn",
+  "strain_threshold": "9 + Willpower",
+  "starting_xp": 90
 }

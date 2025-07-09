@@ -1,5 +1,6 @@
 {
   "name": "Ithorian",
+  "category": "species",
   "characteristics": {
     "brawn": 2,
     "agility": 1,
@@ -8,13 +9,20 @@
     "willpower": 3,
     "presence": 2
   },
+  "special_abilities": [
+    "Ithorians begin the game with one rank in Survival. They still may not train Survival above rank 2 during character creation."
+  ],
+  "metadata": {
+    "source": "FFG Wiki",
+    "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Ithorian",
+    "data_source_priority": "FFG_WIKI_PRIMARY",
+    "extraction_date": "2025-07-09",
+    "authority_level": "canonical",
+    "extraction_method": "fixed_html_parser"
+  },
+  "ai_searchable_text": "ithorian species characteristics abilities",
+  "vector_ready": true,
   "wound_threshold": "9 + Brawn",
   "strain_threshold": "12 + Willpower",
-  "starting_xp": 90,
-  "special_abilities": [
-    "Ithorians begin the game with one rank in Survival. They still may not train Survival above rank 2 during character creation.",
-    "Ithorian Bellow: With two mouths and four throats, Ithorians have a unique natural weapon they can call upon when threatened (Resilience; Damage 6; Critical 4; Range [Short]; Blast 3, Concussive 1, Slow-Firing 2, Stun Damage). Each time they use this ability, they suffer 3 strain."
-  ],
-  "source": "FFG Wiki",
-  "extraction_date": "2025-07-08"
+  "starting_xp": 90
 }

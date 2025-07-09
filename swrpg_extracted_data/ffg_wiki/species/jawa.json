@@ -1,5 +1,6 @@
 {
   "name": "Jawa",
+  "category": "species",
   "characteristics": {
     "brawn": 1,
     "agility": 2,
@@ -8,13 +9,20 @@
     "willpower": 2,
     "presence": 1
   },
+  "special_abilities": [
+    "Jawas begin the game with one rank in Negotiation or Skulduggery. They still may not train Negotiation or Skulduggery above rank 2 during character creation."
+  ],
+  "metadata": {
+    "source": "FFG Wiki",
+    "source_url": "https://star-wars-rpg-ffg.fandom.com/wiki/Jawa",
+    "data_source_priority": "FFG_WIKI_PRIMARY",
+    "extraction_date": "2025-07-09",
+    "authority_level": "canonical",
+    "extraction_method": "fixed_html_parser"
+  },
+  "ai_searchable_text": "jawa species characteristics abilities",
+  "vector_ready": true,
   "wound_threshold": "8 + Brawn",
   "strain_threshold": "8 + Willpower",
-  "starting_xp": 120,
-  "special_abilities": [
-    "Jawas begin the game with one rank in Negotiation or Skulduggery. They still may not train Negotiation or Skulduggery above rank 2 during character creation.",
-    "Clever Negotiators: Jawas may use Cunning instead of Presence when making Negotiation checks."
-  ],
-  "source": "FFG Wiki",
-  "extraction_date": "2025-07-08"
+  "starting_xp": 120
 }
