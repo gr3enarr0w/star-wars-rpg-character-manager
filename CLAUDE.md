@@ -27,6 +27,10 @@ This extracted content includes:
   - **Rise of the Separatist**: Clone Soldier, Jedi
 - **Universal Force Sensitive Specializations**: Force-Sensitive Emergent, Force-Sensitive Exile, Force-Sensitive Outcast, Nightsister, Padawan Survivor
 - **Universal Combat Specializations**: Death Watch Warrior, Force Adherent, Imperial Academy Cadet, Recruit, Retired Clone Trooper
+- **Universal Support Specializations**: Pirate, Republic Navy Officer, Republic Representative, Scavenger, Senator, Separatist Commander, Ship Captain
+
+**Universal Specialization Costs**: The experience cost to take a universal specialization is ten times the total number of specializations that the character would have after adding the new specialization. While this means that the specialization costs the same as a career specialization, note that universal specializations are not career specializations.
+
 - **Game Mechanics**: Characteristics, wound/strain thresholds, starting XP, special abilities
 - **Rules Reference**: Combat, Force powers, talents, equipment stats
 
