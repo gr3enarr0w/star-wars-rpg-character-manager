@@ -186,11 +186,29 @@ class AuthManager:
         """Decorator to require authentication."""
         @wraps(f)
         def decorated_function(*args, **kwargs):
+            current_user_id = None
+            
             try:
                 # Try JWT authentication first
                 verify_jwt_in_request()
                 current_user_id = get_jwt_identity()
-                
+            except Exception:
+                # Fall back to session-based authentication
+                from flask import session
+                session_user_id = session.get('user_id')
+                if session_user_id and session.get('authenticated'):
+                    current_user_id = session_user_id
+                else:
+                    current_user_id = None
+            
+            # If no authentication method worked, deny access
+            if not current_user_id:
+                if request.path.startswith('/api/'):
+                    return jsonify({"error": "Authentication required"}), 401
+                else:
+                    return redirect(url_for('login_page'))
+            
+            try:
                 # Verify user exists and is active
                 user = db_manager.get_user_by_id(ObjectId(current_user_id))
                 if not user or not user.is_active:
@@ -211,10 +229,29 @@ class AuthManager:
         def decorator(f):
             @wraps(f)
             def decorated_function(*args, **kwargs):
+                current_user_id = None
+                
                 try:
+                    # Try JWT authentication first
                     verify_jwt_in_request()
                     current_user_id = get_jwt_identity()
-                    
+                except Exception:
+                    # Fall back to session-based authentication
+                    from flask import session
+                    session_user_id = session.get('user_id')
+                    if session_user_id and session.get('authenticated'):
+                        current_user_id = session_user_id
+                    else:
+                        current_user_id = None
+                
+                # If no authentication method worked, deny access
+                if not current_user_id:
+                    if request.path.startswith('/api/'):
+                        return jsonify({"error": "Authentication required"}), 401
+                    else:
+                        return redirect(url_for('login_page'))
+                
+                try:
                     user = db_manager.get_user_by_id(ObjectId(current_user_id))
                     if not user or user.role not in allowed_roles:
                         if request.path.startswith('/api/'):
@@ -235,10 +272,29 @@ class AuthManager:
         """Decorator to require access to specific campaign."""
         @wraps(f)
         def decorated_function(*args, **kwargs):
+            current_user_id = None
+            
             try:
+                # Try JWT authentication first
                 verify_jwt_in_request()
                 current_user_id = get_jwt_identity()
-                
+            except Exception:
+                # Fall back to session-based authentication
+                from flask import session
+                session_user_id = session.get('user_id')
+                if session_user_id and session.get('authenticated'):
+                    current_user_id = session_user_id
+                else:
+                    current_user_id = None
+            
+            # If no authentication method worked, deny access
+            if not current_user_id:
+                if request.path.startswith('/api/'):
+                    return jsonify({"error": "Authentication required"}), 401
+                else:
+                    return redirect(url_for('login_page'))
+            
+            try:
                 # Get campaign_id from request
                 campaign_id = request.view_args.get('campaign_id') or request.form.get('campaign_id') or request.json.get('campaign_id')
                 if not campaign_id:
