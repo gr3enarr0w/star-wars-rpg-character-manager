@@ -20,6 +20,9 @@ from swrpg_character_manager.social_auth import social_auth_manager
 from swrpg_character_manager.character_walkthrough import character_walkthrough
 from secure_error_handlers import setup_production_error_handlers, setup_production_logging
 
+# Initialize character creator
+creator = CharacterCreator()
+
 load_dotenv()
 
 def get_or_generate_secret_key(env_var_name, default_fallback):
@@ -597,7 +600,7 @@ def get_characters():
         user = db_manager.get_user_by_id(current_user_id)
         
         # Get characters from database
-        characters = db_manager.get_characters_by_user(current_user_id)
+        characters = db_manager.get_user_characters(current_user_id)
         
         # Convert to dict format
         characters_data = []
@@ -647,8 +650,10 @@ def create_character():
         if data.get('background'):
             character.background = data['background']
         
-        # Save to database
-        character_id = db_manager.save_character(character, current_user_id)
+        # Save to database  
+        # Add user_id to character before saving
+        character.user_id = current_user_id
+        character_id = db_manager.create_character(character)
         
         return jsonify({
             'message': 'Character created successfully',
@@ -665,6 +670,486 @@ def create_character():
     except Exception as e:
         app.logger.error(f"Error creating character: {e}")
         return jsonify({'error': 'Failed to create character'}), 500
+
+# Additional Character Management API Routes
+@app.route('/api/characters/<character_id>', methods=['GET'])
+@auth_manager.require_auth
+def get_character_detail(character_id):
+    """Get detailed character information."""
+    try:
+        current_user_id = get_current_user_id()
+        character = db_manager.get_character_by_id(ObjectId(character_id))
+        
+        if not character:
+            return jsonify({'error': 'Character not found'}), 404
+            
+        # Check if user owns this character or is admin
+        current_user = db_manager.get_user_by_id(current_user_id)
+        if character.user_id != current_user_id and current_user.role != 'admin':
+            return jsonify({'error': 'Access denied'}), 403
+            
+        return jsonify({
+            'id': str(character._id),
+            'name': character.name,
+            'player_name': character.player_name,
+            'species': character.species,
+            'career': character.career,
+            'background': character.background,
+            'brawn': character.brawn,
+            'agility': character.agility,
+            'intellect': character.intellect,
+            'cunning': character.cunning,
+            'willpower': character.willpower,
+            'presence': character.presence,
+            'total_xp': character.total_xp,
+            'available_xp': character.available_xp,
+            'spent_xp': character.spent_xp,
+            'skills': character.skills,
+            'talents': character.talents,
+            'credits': character.credits,
+            'equipment': character.equipment,
+            'obligations': character.obligations,
+            'creation_context': character.creation_context,
+            'created_at': character.created_at.isoformat() if character.created_at else None,
+            'updated_at': character.updated_at.isoformat() if character.updated_at else None,
+            'campaign_id': str(character.campaign_id) if character.campaign_id else None
+        }), 200
+        
+    except Exception as e:
+        app.logger.error(f"Get character detail error: {str(e)}")
+        return jsonify({'error': 'Operation failed'}), 500
+
+@app.route('/api/characters/<character_id>', methods=['PUT'])
+@auth_manager.require_auth
+def update_character(character_id):
+    """Update character information."""
+    try:
+        current_user_id = get_current_user_id()
+        character = db_manager.get_character_by_id(ObjectId(character_id))
+        
+        if not character:
+            return jsonify({'error': 'Character not found'}), 404
+            
+        # Check if user owns this character
+        if character.user_id != current_user_id:
+            return jsonify({'error': 'Access denied'}), 403
+            
+        data = request.get_json()
+        
+        # Build update dictionary
+        updates = {}
+        updatable_fields = ['name', 'player_name', 'background', 'brawn', 'agility', 
+                           'intellect', 'cunning', 'willpower', 'presence', 'credits',
+                           'equipment', 'obligations', 'skills', 'talents']
+        
+        for field in updatable_fields:
+            if field in data:
+                updates[field] = data[field]
+        
+        if updates:
+            success = db_manager.update_character(ObjectId(character_id), updates)
+            if success:
+                return jsonify({'message': 'Character updated successfully'}), 200
+            else:
+                return jsonify({'error': 'Failed to update character'}), 500
+        else:
+            return jsonify({'error': 'No valid fields to update'}), 400
+            
+    except Exception as e:
+        app.logger.error(f"Update character error: {str(e)}")
+        return jsonify({'error': 'Operation failed'}), 500
+
+@app.route('/api/characters/<character_id>', methods=['DELETE'])
+@auth_manager.require_auth
+def delete_character(character_id):
+    """Delete character."""
+    try:
+        current_user_id = get_current_user_id()
+        character = db_manager.get_character_by_id(ObjectId(character_id))
+        
+        if not character:
+            return jsonify({'error': 'Character not found'}), 404
+            
+        # Check if user owns this character
+        if character.user_id != current_user_id:
+            return jsonify({'error': 'Access denied'}), 403
+            
+        # Mark character as inactive instead of deleting
+        success = db_manager.update_character(ObjectId(character_id), {'is_active': False})
+        
+        if success:
+            return jsonify({'message': 'Character deleted successfully'}), 200
+        else:
+            return jsonify({'error': 'Failed to delete character'}), 500
+            
+    except Exception as e:
+        app.logger.error(f"Delete character error: {str(e)}")
+        return jsonify({'error': 'Operation failed'}), 500
+
+@app.route('/api/characters/<character_id>/award-xp', methods=['POST'])
+@auth_manager.require_auth
+def award_xp(character_id):
+    """Award XP to a character."""
+    try:
+        current_user_id = get_current_user_id()
+        character = db_manager.get_character_by_id(ObjectId(character_id))
+        
+        if not character:
+            return jsonify({'error': 'Character not found'}), 404
+            
+        # Check if user owns this character or is GM of the campaign
+        current_user = db_manager.get_user_by_id(current_user_id)
+        can_award = (character.user_id == current_user_id or 
+                    current_user.role == 'admin' or 
+                    current_user.role == 'gamemaster')
+        
+        if not can_award:
+            return jsonify({'error': 'Access denied'}), 403
+            
+        data = request.get_json()
+        xp_amount = data.get('xp_amount', 0)
+        reason = data.get('reason', 'XP Award')
+        
+        if xp_amount <= 0:
+            return jsonify({'error': 'XP amount must be positive'}), 400
+            
+        # Award XP
+        new_total_xp = character.total_xp + xp_amount
+        new_available_xp = character.available_xp + xp_amount
+        
+        updates = {
+            'total_xp': new_total_xp,
+            'available_xp': new_available_xp
+        }
+        
+        success = db_manager.update_character(ObjectId(character_id), updates)
+        
+        if success:
+            return jsonify({
+                'message': f'Awarded {xp_amount} XP for: {reason}',
+                'total_xp': new_total_xp,
+                'available_xp': new_available_xp
+            }), 200
+        else:
+            return jsonify({'error': 'Failed to award XP'}), 500
+            
+    except Exception as e:
+        app.logger.error(f"Award XP error: {str(e)}")
+        return jsonify({'error': 'Operation failed'}), 500
+
+@app.route('/api/characters/<character_id>/advance-skill', methods=['POST'])
+@auth_manager.require_auth
+def advance_skill(character_id):
+    """Advance a character's skill."""
+    try:
+        current_user_id = get_current_user_id()
+        character = db_manager.get_character_by_id(ObjectId(character_id))
+        
+        if not character:
+            return jsonify({'error': 'Character not found'}), 404
+            
+        # Check if user owns this character
+        if character.user_id != current_user_id:
+            return jsonify({'error': 'Access denied'}), 403
+            
+        data = request.get_json()
+        skill_name = data.get('skill_name')
+        
+        if not skill_name or skill_name not in character.skills:
+            return jsonify({'error': 'Invalid skill name'}), 400
+            
+        current_rank = character.skills[skill_name].get('rank', 0)
+        new_rank = current_rank + 1
+        
+        if new_rank > 5:
+            return jsonify({'error': 'Skill rank cannot exceed 5'}), 400
+            
+        # Calculate XP cost (5 * new rank)
+        xp_cost = 5 * new_rank
+        
+        if character.available_xp < xp_cost:
+            return jsonify({'error': f'Insufficient XP. Need {xp_cost}, have {character.available_xp}'}), 400
+            
+        # Update skill and XP
+        character.skills[skill_name]['rank'] = new_rank
+        new_available_xp = character.available_xp - xp_cost
+        new_spent_xp = character.spent_xp + xp_cost
+        
+        updates = {
+            'skills': character.skills,
+            'available_xp': new_available_xp,
+            'spent_xp': new_spent_xp
+        }
+        
+        success = db_manager.update_character(ObjectId(character_id), updates)
+        
+        if success:
+            return jsonify({
+                'message': f'Advanced {skill_name} to rank {new_rank}',
+                'skill_name': skill_name,
+                'new_rank': new_rank,
+                'xp_cost': xp_cost,
+                'available_xp': new_available_xp
+            }), 200
+        else:
+            return jsonify({'error': 'Failed to advance skill'}), 500
+            
+    except Exception as e:
+        app.logger.error(f"Advance skill error: {str(e)}")
+        return jsonify({'error': 'Operation failed'}), 500
+
+@app.route('/api/characters/<character_id>/advance-characteristic', methods=['POST'])
+@auth_manager.require_auth
+def advance_characteristic(character_id):
+    """Advance a character's characteristic."""
+    try:
+        current_user_id = get_current_user_id()
+        character = db_manager.get_character_by_id(ObjectId(character_id))
+        
+        if not character:
+            return jsonify({'error': 'Character not found'}), 404
+            
+        # Check if user owns this character
+        if character.user_id != current_user_id:
+            return jsonify({'error': 'Access denied'}), 403
+            
+        data = request.get_json()
+        characteristic_name = data.get('characteristic_name')
+        
+        valid_characteristics = ['brawn', 'agility', 'intellect', 'cunning', 'willpower', 'presence']
+        if characteristic_name not in valid_characteristics:
+            return jsonify({'error': 'Invalid characteristic name'}), 400
+            
+        current_value = getattr(character, characteristic_name)
+        new_value = current_value + 1
+        
+        if new_value > 6:
+            return jsonify({'error': 'Characteristic cannot exceed 6'}), 400
+            
+        # Calculate XP cost based on new value
+        xp_costs = {3: 30, 4: 40, 5: 50, 6: 60}
+        xp_cost = xp_costs.get(new_value, 10)
+        
+        if character.available_xp < xp_cost:
+            return jsonify({'error': f'Insufficient XP. Need {xp_cost}, have {character.available_xp}'}), 400
+            
+        # Update characteristic and XP
+        new_available_xp = character.available_xp - xp_cost
+        new_spent_xp = character.spent_xp + xp_cost
+        
+        updates = {
+            characteristic_name: new_value,
+            'available_xp': new_available_xp,
+            'spent_xp': new_spent_xp
+        }
+        
+        success = db_manager.update_character(ObjectId(character_id), updates)
+        
+        if success:
+            return jsonify({
+                'message': f'Advanced {characteristic_name} to {new_value}',
+                'characteristic_name': characteristic_name,
+                'new_value': new_value,
+                'xp_cost': xp_cost,
+                'available_xp': new_available_xp
+            }), 200
+        else:
+            return jsonify({'error': 'Failed to advance characteristic'}), 500
+            
+    except Exception as e:
+        app.logger.error(f"Advance characteristic error: {str(e)}")
+        return jsonify({'error': 'Operation failed'}), 500
+
+@app.route('/api/characters/<character_id>/assign-campaign', methods=['POST'])
+@auth_manager.require_auth
+def assign_character_to_campaign(character_id):
+    """Assign character to a campaign."""
+    try:
+        current_user_id = get_current_user_id()
+        character = db_manager.get_character_by_id(ObjectId(character_id))
+        
+        if not character:
+            return jsonify({'error': 'Character not found'}), 404
+            
+        # Check if user owns this character
+        if character.user_id != current_user_id:
+            return jsonify({'error': 'Access denied'}), 403
+            
+        data = request.get_json()
+        campaign_id = data.get('campaign_id')
+        
+        if not campaign_id:
+            return jsonify({'error': 'Campaign ID is required'}), 400
+            
+        # Verify campaign exists and user is a member
+        campaign = db_manager.get_campaign_by_id(ObjectId(campaign_id))
+        if not campaign:
+            return jsonify({'error': 'Campaign not found'}), 404
+            
+        if current_user_id not in campaign.players and campaign.game_master_id != current_user_id:
+            return jsonify({'error': 'You are not a member of this campaign'}), 403
+            
+        # Assign character to campaign
+        success = db_manager.assign_character_to_campaign(ObjectId(character_id), ObjectId(campaign_id))
+        
+        if success:
+            return jsonify({
+                'message': 'Character assigned to campaign successfully',
+                'campaign_id': campaign_id,
+                'campaign_name': campaign.name
+            }), 200
+        else:
+            return jsonify({'error': 'Failed to assign character to campaign'}), 500
+            
+    except Exception as e:
+        app.logger.error(f"Assign character to campaign error: {str(e)}")
+        return jsonify({'error': 'Operation failed'}), 500
+
+# Character Data API Routes
+@app.route('/api/character-data/species', methods=['GET'])
+def get_species_data():
+    """Get all species data for character creation."""
+    try:
+        # This would normally come from the extracted SWRPG data
+        # For now, return a basic structure with key species
+        species_data = [
+            {
+                'name': 'Human',
+                'description': 'Versatile and adaptable, humans are found throughout the galaxy.',
+                'characteristics': {'brawn': 2, 'agility': 2, 'intellect': 2, 'cunning': 2, 'willpower': 2, 'presence': 2},
+                'wound_threshold': 10,
+                'strain_threshold': 10,
+                'starting_xp': 110,
+                'special_abilities': ['Extra Skill Rank', 'Extra Career Skill']
+            },
+            {
+                'name': 'Twi\'lek',
+                'description': 'Graceful humanoids with distinctive head-tails called lekku.',
+                'characteristics': {'brawn': 1, 'agility': 2, 'intellect': 2, 'cunning': 3, 'willpower': 2, 'presence': 2},
+                'wound_threshold': 9,
+                'strain_threshold': 11,
+                'starting_xp': 100,
+                'special_abilities': ['Natural Charm']
+            },
+            {
+                'name': 'Wookiee',
+                'description': 'Tall, strong, and covered in fur, Wookiees are known for their loyalty.',
+                'characteristics': {'brawn': 3, 'agility': 2, 'intellect': 2, 'cunning': 2, 'willpower': 1, 'presence': 2},
+                'wound_threshold': 14,
+                'strain_threshold': 8,
+                'starting_xp': 90,
+                'special_abilities': ['Wookiee Rage', 'Natural Weapon']
+            },
+            {
+                'name': 'Rodian',
+                'description': 'Green-skinned hunters with excellent tracking abilities.',
+                'characteristics': {'brawn': 2, 'agility': 3, 'intellect': 2, 'cunning': 2, 'willpower': 1, 'presence': 2},
+                'wound_threshold': 10,
+                'strain_threshold': 9,
+                'starting_xp': 100,
+                'special_abilities': ['Expert Tracker']
+            },
+            {
+                'name': 'Zabrak',
+                'description': 'Horned humanoids known for their mental discipline and endurance.',
+                'characteristics': {'brawn': 2, 'agility': 2, 'intellect': 2, 'cunning': 2, 'willpower': 3, 'presence': 1},
+                'wound_threshold': 10,
+                'strain_threshold': 12,
+                'starting_xp': 100,
+                'special_abilities': ['Mental Fortitude']
+            }
+        ]
+        
+        return jsonify({'species': species_data}), 200
+        
+    except Exception as e:
+        app.logger.error(f"Get species data error: {str(e)}")
+        return jsonify({'error': 'Operation failed'}), 500
+
+@app.route('/api/character-data/careers', methods=['GET'])
+def get_careers_data():
+    """Get all careers data for character creation."""
+    try:
+        # This would normally come from the extracted SWRPG data
+        # For now, return a basic structure with key careers
+        careers_data = [
+            {
+                'name': 'Guardian',
+                'description': 'Protectors and defenders, often serving as bodyguards or peacekeepers.',
+                'career_skills': ['Brawl', 'Discipline', 'Melee', 'Resilience', 'Vigilance', 'Cool'],
+                'game_line': 'Force and Destiny',
+                'specializations': ['Protector', 'Soresu Defender', 'Peacekeeper']
+            },
+            {
+                'name': 'Bounty Hunter',
+                'description': 'Trackers and hunters who pursue targets for credits.',
+                'career_skills': ['Athletics', 'Brawl', 'Perception', 'Piloting', 'Ranged Heavy', 'Streetwise'],
+                'game_line': 'Edge of the Empire',
+                'specializations': ['Assassin', 'Gadgeteer', 'Survivalist']
+            },
+            {
+                'name': 'Smuggler',
+                'description': 'Pilots and traders who work in the shadows of the galaxy.',
+                'career_skills': ['Coordination', 'Deception', 'Knowledge', 'Piloting', 'Streetwise', 'Vigilance'],
+                'game_line': 'Edge of the Empire',
+                'specializations': ['Pilot', 'Scoundrel', 'Thief']
+            },
+            {
+                'name': 'Diplomat',
+                'description': 'Skilled negotiators and representatives of the Rebel Alliance.',
+                'career_skills': ['Charm', 'Deception', 'Knowledge', 'Leadership', 'Negotiation', 'Vigilance'],
+                'game_line': 'Age of Rebellion',
+                'specializations': ['Ambassador', 'Agitator', 'Quartermaster']
+            },
+            {
+                'name': 'Technician',
+                'description': 'Engineers and mechanics who keep equipment running.',
+                'career_skills': ['Astrogation', 'Computers', 'Coordination', 'Discipline', 'Knowledge', 'Mechanics'],
+                'game_line': 'Edge of the Empire',
+                'specializations': ['Mechanic', 'Outlaw Tech', 'Slicer']
+            }
+        ]
+        
+        return jsonify({'careers': careers_data}), 200
+        
+    except Exception as e:
+        app.logger.error(f"Get careers data error: {str(e)}")
+        return jsonify({'error': 'Operation failed'}), 500
+
+# Basic Admin API Routes
+@app.route('/api/admin/stats', methods=['GET'])
+@auth_manager.require_role('admin')
+def get_admin_stats():
+    """Get system statistics for admin dashboard."""
+    try:
+        # Basic stats - would be expanded with more detailed information
+        stats = {
+            'total_users': 1,  # Placeholder
+            'total_characters': 0,  # Placeholder
+            'total_campaigns': 0,  # Placeholder
+            'active_sessions': 1,  # Placeholder
+        }
+        
+        return jsonify(stats), 200
+        
+    except Exception as e:
+        app.logger.error(f"Get admin stats error: {str(e)}")
+        return jsonify({'error': 'Operation failed'}), 500
+
+@app.route('/api/admin/users', methods=['GET'])
+@auth_manager.require_role('admin')
+def get_all_users():
+    """Get all users for admin management."""
+    try:
+        # This would return basic user information for admin management
+        # For now, return empty array as placeholder
+        users = []
+        
+        return jsonify({'users': users, 'total': len(users)}), 200
+        
+    except Exception as e:
+        app.logger.error(f"Get all users error: {str(e)}")
+        return jsonify({'error': 'Operation failed'}), 500
 
 def get_current_user_id():
     """Get current user ID from either JWT token or session."""
@@ -734,6 +1219,36 @@ def profile_page():
     except Exception as e:
         app.logger.error(f"Error loading profile page: {e}")
         return redirect(url_for('login_page'))
+
+@app.route('/character/<character_id>')
+@auth_manager.require_auth
+def character_detail_page(character_id):
+    """Character detail page."""
+    try:
+        current_user_id = get_current_user_id()
+        character = db_manager.get_character_by_id(ObjectId(character_id))
+        
+        if not character:
+            return render_template('error.html', 
+                                 error_code=404, 
+                                 error_message='Character not found'), 404
+            
+        # Check if user owns this character or is admin
+        current_user = db_manager.get_user_by_id(current_user_id)
+        if character.user_id != current_user_id and current_user.role != 'admin':
+            return render_template('error.html', 
+                                 error_code=403, 
+                                 error_message='Access denied'), 403
+            
+        return render_template('character_sheet.html', 
+                             character=character,
+                             user=current_user)
+        
+    except Exception as e:
+        app.logger.error(f"Character detail page error: {str(e)}")
+        return render_template('error.html', 
+                             error_code=500, 
+                             error_message='Internal server error'), 500
 
 @app.route('/create-character')
 @auth_manager.require_auth
