@@ -1,0 +1,501 @@
+{
+  "verification_metadata": {
+    "verification_date": "2025-07-10",
+    "total_species_verified": 66,
+    "total_species_in_database": 97,
+    "verification_source": "FFG Star Wars RPG Wiki",
+    "verification_complete": true,
+    "discrepancies_found": 46
+  },
+  "verified_species_xp": {
+    "Aleena": {
+      "ffg_wiki_xp": 95,
+      "database_xp": 110,
+      "discrepancy": true
+    },
+    "Anx": {
+      "ffg_wiki_xp": 85,
+      "database_xp": 110,
+      "discrepancy": true
+    },
+    "Aqualish": {
+      "ffg_wiki_xp": 90,
+      "database_xp": 110,
+      "discrepancy": true
+    },
+    "Arcona": {
+      "ffg_wiki_xp": 100,
+      "database_xp": 110,
+      "discrepancy": true
+    },
+    "Arkanian": {
+      "ffg_wiki_xp": 100,
+      "database_xp": 100,
+      "discrepancy": false
+    },
+    "Balosar": {
+      "ffg_wiki_xp": 100,
+      "database_xp": 110,
+      "discrepancy": true
+    },
+    "Bardottan": {
+      "ffg_wiki_xp": 105,
+      "database_xp": 110,
+      "discrepancy": true
+    },
+    "Besalisk": {
+      "ffg_wiki_xp": 85,
+      "database_xp": 120,
+      "discrepancy": true
+    },
+    "Bith": {
+      "ffg_wiki_xp": 100,
+      "database_xp": 110,
+      "discrepancy": true
+    },
+    "Caamasi": {
+      "ffg_wiki_xp": 100,
+      "database_xp": 110,
+      "discrepancy": true
+    },
+    "Cerean": {
+      "ffg_wiki_xp": 90,
+      "database_xp": 90,
+      "discrepancy": false
+    },
+    "Chadra-Fan": {
+      "ffg_wiki_xp": 90,
+      "database_xp": 110,
+      "discrepancy": true
+    },
+    "Chagrian": {
+      "ffg_wiki_xp": 90,
+      "database_xp": 110,
+      "discrepancy": true
+    },
+    "Chevin": {
+      "ffg_wiki_xp": 80,
+      "database_xp": 110,
+      "discrepancy": true
+    },
+    "Clawdite": {
+      "ffg_wiki_xp": 95,
+      "database_xp": 110,
+      "discrepancy": true
+    },
+    "Cosian": {
+      "ffg_wiki_xp": 95,
+      "database_xp": 110,
+      "discrepancy": true
+    },
+    "Dathomirian": {
+      "ffg_wiki_xp": 100,
+      "database_xp": 100,
+      "discrepancy": false
+    },
+    "Devaronian": {
+      "ffg_wiki_xp": 95,
+      "database_xp": 110,
+      "discrepancy": true
+    },
+    "Dowutin": {
+      "ffg_wiki_xp": 85,
+      "database_xp": 110,
+      "discrepancy": true
+    },
+    "Drabatan": {
+      "ffg_wiki_xp": 100,
+      "database_xp": 110,
+      "discrepancy": true
+    },
+    "Drall": {
+      "ffg_wiki_xp": 90,
+      "database_xp": 110,
+      "discrepancy": true
+    },
+    "Dug": {
+      "ffg_wiki_xp": 90,
+      "database_xp": 110,
+      "discrepancy": true
+    },
+    "Duros": {
+      "ffg_wiki_xp": 100,
+      "database_xp": 100,
+      "discrepancy": false
+    },
+    "Elomin": {
+      "ffg_wiki_xp": 105,
+      "database_xp": 110,
+      "discrepancy": true
+    },
+    "Elom": {
+      "ffg_wiki_xp": 100,
+      "database_xp": 110,
+      "discrepancy": true
+    },
+    "Ewok": {
+      "ffg_wiki_xp": 120,
+      "database_xp": 120,
+      "discrepancy": false
+    },
+    "Falleen": {
+      "ffg_wiki_xp": 90,
+      "database_xp": 90,
+      "discrepancy": false
+    },
+    "Gand": {
+      "ffg_wiki_xp": 100,
+      "database_xp": 110,
+      "discrepancy": true
+    },
+    "Gank": {
+      "ffg_wiki_xp": 110,
+      "database_xp": 120,
+      "discrepancy": true
+    },
+    "Geonosian": {
+      "ffg_wiki_xp": 140,
+      "database_xp": 140,
+      "discrepancy": false
+    },
+    "Gigoran": {
+      "ffg_wiki_xp": 100,
+      "database_xp": 110,
+      "discrepancy": true
+    },
+    "Gossam": {
+      "ffg_wiki_xp": 100,
+      "database_xp": 110,
+      "discrepancy": true
+    },
+    "Gotal": {
+      "ffg_wiki_xp": 100,
+      "database_xp": 110,
+      "discrepancy": true
+    },
+    "Gran": {
+      "ffg_wiki_xp": 100,
+      "database_xp": 110,
+      "discrepancy": true
+    },
+    "Gungan": {
+      "ffg_wiki_xp": 100,
+      "database_xp": 110,
+      "discrepancy": true
+    },
+    "Harch": {
+      "ffg_wiki_xp": 75,
+      "database_xp": 110,
+      "discrepancy": true
+    },
+    "Human": {
+      "ffg_wiki_xp": 110,
+      "database_xp": 110,
+      "discrepancy": false
+    },
+    "Human (Corellian)": {
+      "ffg_wiki_xp": 110,
+      "database_xp": 110,
+      "discrepancy": false
+    },
+    "Human (Mandalorian)": {
+      "ffg_wiki_xp": 110,
+      "database_xp": 110,
+      "discrepancy": false
+    },
+    "Hutt": {
+      "ffg_wiki_xp": 70,
+      "database_xp": 70,
+      "discrepancy": false
+    },
+    "Iakaru": {
+      "ffg_wiki_xp": 100,
+      "database_xp": 110,
+      "discrepancy": true
+    },
+    "Ishi Tib": {
+      "ffg_wiki_xp": 100,
+      "database_xp": 110,
+      "discrepancy": true
+    },
+    "Jawa": {
+      "ffg_wiki_xp": 120,
+      "database_xp": 120,
+      "discrepancy": false
+    },
+    "Kaleesh": {
+      "ffg_wiki_xp": 90,
+      "database_xp": null,
+      "discrepancy": "not_in_database"
+    },
+    "Kalleran": {
+      "ffg_wiki_xp": 90,
+      "database_xp": 110,
+      "discrepancy": true
+    },
+    "Kaminoan": {
+      "ffg_wiki_xp": 100,
+      "database_xp": 110,
+      "discrepancy": true
+    },
+    "Karkarodon": {
+      "ffg_wiki_xp": 90,
+      "database_xp": 110,
+      "discrepancy": true
+    },
+    "Klatooinian": {
+      "ffg_wiki_xp": 100,
+      "database_xp": 110,
+      "discrepancy": true
+    },
+    "Kyuzo": {
+      "ffg_wiki_xp": 90,
+      "database_xp": 110,
+      "discrepancy": true
+    },
+    "Lannik": {
+      "ffg_wiki_xp": 100,
+      "database_xp": 110,
+      "discrepancy": true
+    },
+    "Lasat": {
+      "ffg_wiki_xp": 90,
+      "database_xp": 110,
+      "discrepancy": true
+    },
+    "Melitto": {
+      "ffg_wiki_xp": 100,
+      "database_xp": 110,
+      "discrepancy": true
+    },
+    "Mirialan": {
+      "ffg_wiki_xp": 100,
+      "database_xp": 110,
+      "discrepancy": true
+    },
+    "Mon Calamari": {
+      "ffg_wiki_xp": 100,
+      "database_xp": 100,
+      "discrepancy": false
+    },
+    "Muun": {
+      "ffg_wiki_xp": 90,
+      "database_xp": 110,
+      "discrepancy": true
+    },
+    "Nautolan": {
+      "ffg_wiki_xp": 100,
+      "database_xp": 100,
+      "discrepancy": false
+    },
+    "Neimoidian": {
+      "ffg_wiki_xp": 90,
+      "database_xp": 110,
+      "discrepancy": true
+    },
+    "Nikto": {
+      "ffg_wiki_xp": 100,
+      "database_xp": 110,
+      "discrepancy": true
+    },
+    "Pantoran": {
+      "ffg_wiki_xp": 110,
+      "database_xp": 110,
+      "discrepancy": false
+    },
+    "Polis Massan": {
+      "ffg_wiki_xp": 100,
+      "database_xp": 110,
+      "discrepancy": true
+    },
+    "Quarren": {
+      "ffg_wiki_xp": 95,
+      "database_xp": 95,
+      "discrepancy": false
+    },
+    "Sathari": {
+      "ffg_wiki_xp": 100,
+      "database_xp": 110,
+      "discrepancy": true
+    },
+    "Selonian": {
+      "ffg_wiki_xp": 80,
+      "database_xp": 110,
+      "discrepancy": true
+    },
+    "Shistavanen": {
+      "ffg_wiki_xp": 80,
+      "database_xp": 110,
+      "discrepancy": true
+    },
+    "Skakoan": {
+      "ffg_wiki_xp": 80,
+      "database_xp": 110,
+      "discrepancy": true
+    },
+    "Sullustan": {
+      "ffg_wiki_xp": 100,
+      "database_xp": 110,
+      "discrepancy": true
+    },
+    "Thisspiasian": {
+      "ffg_wiki_xp": 100,
+      "database_xp": 110,
+      "discrepancy": true
+    },
+    "Tholothian": {
+      "ffg_wiki_xp": 95,
+      "database_xp": 95,
+      "discrepancy": false
+    },
+    "Tognath": {
+      "ffg_wiki_xp": 95,
+      "database_xp": 110,
+      "discrepancy": true
+    },
+    "Togruta": {
+      "ffg_wiki_xp": 100,
+      "database_xp": 100,
+      "discrepancy": false
+    },
+    "Toydarian": {
+      "ffg_wiki_xp": 90,
+      "database_xp": 110,
+      "discrepancy": true
+    },
+    "Trandoshan": {
+      "ffg_wiki_xp": 90,
+      "database_xp": 90,
+      "discrepancy": false
+    },
+    "Tusken Raider": {
+      "ffg_wiki_xp": 105,
+      "database_xp": 110,
+      "discrepancy": true
+    },
+    "Twi'lek": {
+      "ffg_wiki_xp": 100,
+      "database_xp": 100,
+      "discrepancy": false
+    },
+    "Umbaran": {
+      "ffg_wiki_xp": 100,
+      "database_xp": 100,
+      "discrepancy": false
+    },
+    "Verpine": {
+      "ffg_wiki_xp": 80,
+      "database_xp": 110,
+      "discrepancy": true
+    },
+    "Vurk": {
+      "ffg_wiki_xp": 100,
+      "database_xp": 110,
+      "discrepancy": true
+    },
+    "Weequay": {
+      "ffg_wiki_xp": 90,
+      "database_xp": 110,
+      "discrepancy": true
+    },
+    "Whiphid": {
+      "ffg_wiki_xp": 80,
+      "database_xp": 110,
+      "discrepancy": true
+    },
+    "Wookiee": {
+      "ffg_wiki_xp": 90,
+      "database_xp": 90,
+      "discrepancy": false
+    },
+    "Zabrak": {
+      "ffg_wiki_xp": 100,
+      "database_xp": 100,
+      "discrepancy": false
+    }
+  },
+  "species_requiring_corrections": [
+    "Aleena",
+    "Anx",
+    "Aqualish",
+    "Arcona",
+    "Balosar",
+    "Bardottan",
+    "Besalisk",
+    "Bith",
+    "Caamasi",
+    "Chadra-Fan",
+    "Chagrian",
+    "Chevin",
+    "Clawdite",
+    "Cosian",
+    "Devaronian",
+    "Dowutin",
+    "Drabatan",
+    "Drall",
+    "Dug",
+    "Elomin",
+    "Elom",
+    "Gand",
+    "Gank",
+    "Gigoran",
+    "Gossam",
+    "Gotal",
+    "Gran",
+    "Gungan",
+    "Harch",
+    "Iakaru",
+    "Ishi Tib",
+    "Kalleran",
+    "Kaminoan",
+    "Karkarodon",
+    "Klatooinian",
+    "Kyuzo",
+    "Lannik",
+    "Lasat",
+    "Melitto",
+    "Mirialan",
+    "Muun",
+    "Neimoidian",
+    "Nikto",
+    "Polis Massan",
+    "Sathari",
+    "Selonian",
+    "Shistavanen",
+    "Skakoan",
+    "Sullustan",
+    "Thisspiasian",
+    "Tognath",
+    "Toydarian",
+    "Tusken Raider",
+    "Verpine",
+    "Vurk",
+    "Weequay",
+    "Whiphid"
+  ],
+  "species_with_correct_values": [
+    "Arkanian",
+    "Cerean",
+    "Dathomirian",
+    "Duros",
+    "Ewok",
+    "Falleen",
+    "Geonosian",
+    "Human",
+    "Human (Corellian)",
+    "Human (Mandalorian)",
+    "Hutt",
+    "Jawa",
+    "Mon Calamari",
+    "Nautolan",
+    "Pantoran",
+    "Quarren",
+    "Tholothian",
+    "Togruta",
+    "Trandoshan",
+    "Twi'lek",
+    "Umbaran",
+    "Wookiee",
+    "Zabrak"
+  ]
+}
