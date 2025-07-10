@@ -1041,57 +1041,33 @@ def assign_character_to_campaign(character_id):
 def get_species_data():
     """Get all species data for character creation."""
     try:
-        # This would normally come from the extracted SWRPG data
-        # For now, return a basic structure with key species
-        species_data = [
-            {
-                'name': 'Human',
-                'description': 'Versatile and adaptable, humans are found throughout the galaxy.',
-                'characteristics': {'brawn': 2, 'agility': 2, 'intellect': 2, 'cunning': 2, 'willpower': 2, 'presence': 2},
-                'wound_threshold': 10,
-                'strain_threshold': 10,
-                'starting_xp': 110,
-                'special_abilities': ['Extra Skill Rank', 'Extra Career Skill']
-            },
-            {
-                'name': 'Twi\'lek',
-                'description': 'Graceful humanoids with distinctive head-tails called lekku.',
-                'characteristics': {'brawn': 1, 'agility': 2, 'intellect': 2, 'cunning': 3, 'willpower': 2, 'presence': 2},
-                'wound_threshold': 9,
-                'strain_threshold': 11,
-                'starting_xp': 100,
-                'special_abilities': ['Natural Charm']
-            },
-            {
-                'name': 'Wookiee',
-                'description': 'Tall, strong, and covered in fur, Wookiees are known for their loyalty.',
-                'characteristics': {'brawn': 3, 'agility': 2, 'intellect': 2, 'cunning': 2, 'willpower': 1, 'presence': 2},
-                'wound_threshold': 14,
-                'strain_threshold': 8,
-                'starting_xp': 90,
-                'special_abilities': ['Wookiee Rage', 'Natural Weapon']
-            },
-            {
-                'name': 'Rodian',
-                'description': 'Green-skinned hunters with excellent tracking abilities.',
-                'characteristics': {'brawn': 2, 'agility': 3, 'intellect': 2, 'cunning': 2, 'willpower': 1, 'presence': 2},
-                'wound_threshold': 10,
-                'strain_threshold': 9,
-                'starting_xp': 100,
-                'special_abilities': ['Expert Tracker']
-            },
-            {
-                'name': 'Zabrak',
-                'description': 'Horned humanoids known for their mental discipline and endurance.',
-                'characteristics': {'brawn': 2, 'agility': 2, 'intellect': 2, 'cunning': 2, 'willpower': 3, 'presence': 1},
-                'wound_threshold': 10,
-                'strain_threshold': 12,
-                'starting_xp': 100,
-                'special_abilities': ['Mental Fortitude']
-            }
-        ]
+        # Use the loaded species data from CharacterCreator
+        species_list = []
         
-        return jsonify({'species': species_data}), 200
+        for species_name, species_info in creator.species_data.items():
+            # Convert the internal species data format to API format
+            species_entry = {
+                'name': species_name,
+                'description': species_info.get('description', f'{species_name} species from the Star Wars universe.'),
+                'characteristics': {
+                    'brawn': species_info.get('brawn', 2),
+                    'agility': species_info.get('agility', 2), 
+                    'intellect': species_info.get('intellect', 2),
+                    'cunning': species_info.get('cunning', 2),
+                    'willpower': species_info.get('willpower', 2),
+                    'presence': species_info.get('presence', 2)
+                },
+                'wound_threshold': species_info.get('wound_threshold', 10),
+                'strain_threshold': species_info.get('strain_threshold', 10),
+                'starting_xp': species_info.get('starting_xp', 100),
+                'special_abilities': species_info.get('special_abilities', [])
+            }
+            species_list.append(species_entry)
+        
+        # Sort alphabetically for better UI experience
+        species_list.sort(key=lambda x: x['name'])
+        
+        return jsonify({'species': species_list}), 200
         
     except Exception as e:
         app.logger.error(f"Get species data error: {str(e)}")
@@ -1101,47 +1077,26 @@ def get_species_data():
 def get_careers_data():
     """Get all careers data for character creation."""
     try:
-        # This would normally come from the extracted SWRPG data
-        # For now, return a basic structure with key careers
-        careers_data = [
-            {
-                'name': 'Guardian',
-                'description': 'Protectors and defenders, often serving as bodyguards or peacekeepers.',
-                'career_skills': ['Brawl', 'Discipline', 'Melee', 'Resilience', 'Vigilance', 'Cool'],
-                'game_line': 'Force and Destiny',
-                'specializations': ['Protector', 'Soresu Defender', 'Peacekeeper']
-            },
-            {
-                'name': 'Bounty Hunter',
-                'description': 'Trackers and hunters who pursue targets for credits.',
-                'career_skills': ['Athletics', 'Brawl', 'Perception', 'Piloting', 'Ranged Heavy', 'Streetwise'],
-                'game_line': 'Edge of the Empire',
-                'specializations': ['Assassin', 'Gadgeteer', 'Survivalist']
-            },
-            {
-                'name': 'Smuggler',
-                'description': 'Pilots and traders who work in the shadows of the galaxy.',
-                'career_skills': ['Coordination', 'Deception', 'Knowledge', 'Piloting', 'Streetwise', 'Vigilance'],
-                'game_line': 'Edge of the Empire',
-                'specializations': ['Pilot', 'Scoundrel', 'Thief']
-            },
-            {
-                'name': 'Diplomat',
-                'description': 'Skilled negotiators and representatives of the Rebel Alliance.',
-                'career_skills': ['Charm', 'Deception', 'Knowledge', 'Leadership', 'Negotiation', 'Vigilance'],
-                'game_line': 'Age of Rebellion',
-                'specializations': ['Ambassador', 'Agitator', 'Quartermaster']
-            },
-            {
-                'name': 'Technician',
-                'description': 'Engineers and mechanics who keep equipment running.',
-                'career_skills': ['Astrogation', 'Computers', 'Coordination', 'Discipline', 'Knowledge', 'Mechanics'],
-                'game_line': 'Edge of the Empire',
-                'specializations': ['Mechanic', 'Outlaw Tech', 'Slicer']
-            }
-        ]
+        # Use the loaded career data from CharacterCreator
+        careers_list = []
         
-        return jsonify({'careers': careers_data}), 200
+        for career_name, career_obj in creator.careers.items():
+            # Convert the internal career data format to API format
+            career_entry = {
+                'name': career_name,
+                'description': career_obj.description if hasattr(career_obj, 'description') else f'{career_name} career from the Star Wars RPG.',
+                'career_skills': career_obj.career_skills,
+                'game_line': career_obj.game_line.value if hasattr(career_obj.game_line, 'value') else str(career_obj.game_line),
+                'starting_wound_threshold': career_obj.starting_wound_threshold,
+                'starting_strain_threshold': career_obj.starting_strain_threshold,
+                'specializations': []  # Would be populated from specializations data
+            }
+            careers_list.append(career_entry)
+        
+        # Sort alphabetically for better UI experience
+        careers_list.sort(key=lambda x: x['name'])
+        
+        return jsonify({'careers': careers_list}), 200
         
     except Exception as e:
         app.logger.error(f"Get careers data error: {str(e)}")
