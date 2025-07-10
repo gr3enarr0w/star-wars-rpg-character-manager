@@ -605,7 +605,7 @@ class CharacterCreator:
                                  "cunning": 3, "willpower": 2, "presence": 3},
                 "wound_threshold": 10,
                 "strain_threshold": 13,
-                "starting_xp": 120,
+                "starting_xp": 100,
                 "special_abilities": ["Amphibious: Can breathe underwater", "Keen Vision: Enhanced visual capabilities"],
                 "source": "Age of Rebellion"
             },
@@ -622,7 +622,7 @@ class CharacterCreator:
             # Additional Popular Species
             "Chiss": {
                 "characteristics": {"brawn": 2, "agility": 2, "intellect": 3, 
-                                 "cunning": 2, "willpower": 3, "presence": 0},
+                                 "cunning": 2, "willpower": 3, "presence": 2},
                 "wound_threshold": 10,
                 "strain_threshold": 10,
                 "starting_xp": 100,
@@ -634,7 +634,7 @@ class CharacterCreator:
                                  "cunning": 3, "willpower": 1, "presence": 2},
                 "wound_threshold": 8,
                 "strain_threshold": 11,
-                "starting_xp": 90,
+                "starting_xp": 120,
                 "special_abilities": ["Technical aptitude", "Scavenger"],
                 "source": "Lords of Nal Hutta"
             },
@@ -731,6 +731,15 @@ class CharacterCreator:
                 "starting_xp": 90,
                 "special_abilities": ["One rank in Charm", "Beguiling Pheromones: Upgrade Charm/Deception/Negotiation", "Color-changing skin and emotional manipulation"],
                 "source": "Fly Casual"
+            },
+                        "Droid": {
+                "characteristics": {"brawn": 1, "agility": 1, "intellect": 1, 
+                                 "cunning": 1, "willpower": 1, "presence": 1},
+                "wound_threshold": 10,
+                "strain_threshold": 10,
+                "starting_xp": 175,
+                "special_abilities": ["Droid: Cannot be targeted by mind-altering Force powers", "Inorganic: Does not need to breathe, eat, or drink", "Mechanical Being: +1 rank in one skill at character creation"],
+                "source": "EotE Core Rulebook"
             },
             "Gran": {
                 "characteristics": {"brawn": 2, "agility": 2, "intellect": 2, 
