@@ -26,16 +26,40 @@ creator = CharacterCreator()
 load_dotenv()
 
 def get_or_generate_secret_key(env_var_name, default_fallback):
-    """Get secret key from environment or generate a secure one."""
+    """Get secret key from environment or generate a persistent one."""
     key = os.getenv(env_var_name, '').strip()
     
-    # If key is empty or still the default fallback, generate a secure one
+    # If key is empty or still the default fallback, get/generate a persistent one
     if not key or key == default_fallback:
-        # Generate a secure random key
+        # Use a persistent key file in data directory
+        key_file = f'data/.{env_var_name.lower()}'
+        
+        try:
+            # Try to load existing key
+            if os.path.exists(key_file):
+                with open(key_file, 'r') as f:
+                    key = f.read().strip()
+                print(f"🔐 Loaded persistent {env_var_name}: {key[:8]}...")
+                return key
+        except Exception:
+            pass
+        
+        # Generate new persistent key
         generated_key = secrets.token_urlsafe(32)
-        print(f"🔐 Generated secure {env_var_name}: {generated_key[:8]}...")
+        
+        try:
+            # Save key for future use
+            os.makedirs('data', exist_ok=True)
+            with open(key_file, 'w') as f:
+                f.write(generated_key)
+            os.chmod(key_file, 0o600)  # Secure permissions
+            print(f"🔐 Generated and saved persistent {env_var_name}: {generated_key[:8]}...")
+        except Exception as e:
+            print(f"⚠️ Could not save {env_var_name} to file: {e}")
+        
         return generated_key
     
+    print(f"🔐 Using environment {env_var_name}: {key[:8]}...")
     return key
 
 app = Flask(__name__)
@@ -47,6 +71,12 @@ jwt_secret = get_or_generate_secret_key('JWT_SECRET_KEY', 'jwt-dev-key-change-in
 app.config['SECRET_KEY'] = flask_secret
 app.config['JWT_SECRET_KEY'] = jwt_secret
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(hours=24)
+
+# Session configuration for production
+app.config['SESSION_COOKIE_SECURE'] = False  # Set to True if using HTTPS
+app.config['SESSION_COOKIE_HTTPONLY'] = True
+app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(hours=24)
 
 print(f"🔐 Flask SECRET_KEY configured ({len(flask_secret)} chars)")
 print(f"🔐 JWT SECRET_KEY configured ({len(jwt_secret)} chars)")
@@ -197,6 +227,7 @@ def login():
         access_token = auth_manager.create_access_token(user)
         
         # Also set session for web navigation
+        session.permanent = True  # Make session persistent
         session['user_id'] = str(user._id)
         session['username'] = user.username
         session['role'] = user.role
@@ -1261,6 +1292,12 @@ def create_character_start():
     except Exception as e:
         app.logger.error(f"Error loading character creation page: {e}")
         return redirect(url_for('login_page'))
+
+@app.route('/create')
+@auth_manager.require_auth  
+def create_character_short():
+    """Character creation page (short route)."""
+    return redirect(url_for('create_character_start'))
 
 if __name__ == '__main__':
     # Create character data directory if it doesn't exist
